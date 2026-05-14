@@ -72,11 +72,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Nordlink — Logistiek zonder grenzen" },
+      { name: "description", content: "Premium Nederlandse logistieke en transportonderneming voor heel Europa." },
+      { name: "author", content: "Nordlink B.V." },
+      { property: "og:title", content: "Nordlink — Premium European Logistics" },
+      { property: "og:description", content: "Cinematic logistics, perfected." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
@@ -96,7 +96,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="nl" className="dark">
       <head>
         <HeadContent />
       </head>

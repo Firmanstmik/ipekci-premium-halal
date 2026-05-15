@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { ArrowUpRight, ArrowRight, Truck, Zap, ShieldCheck, Leaf } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ServiceCard } from "@/components/ServiceCard";
@@ -9,8 +9,8 @@ import { MagneticButton } from "@/components/MagneticButton";
 import { KineticHeading } from "@/components/KineticHeading";
 import { RollingCounter } from "@/components/RollingCounter";
 import { RouteNetwork } from "@/components/RouteNetwork";
-import heroImg from "@/assets/hero-truck.jpg";
-import heroVideo from "@/assets/hero-loop.mp4.asset.json";
+import heroPosterPromax from "@/assets/poster-hero-section-promax.avif";
+import heroVideoPromax from "@/assets/videos/video-hero-section-promax.webm";
 import fleetImg from "@/assets/fleet-aerial.jpg";
 import ftlImg from "@/assets/service-ftl.jpg";
 import ltlImg from "@/assets/service-ltl.jpg";
@@ -20,18 +20,19 @@ import opsImg from "@/assets/about-operations.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Nordlink — Logistiek zonder grenzen" },
+      { title: "ProMax Transport & Logistiek — Transport zonder grenzen" },
       {
         name: "description",
         content:
-          "Nordlink is een Nederlandse logistiek- en transportonderneming gespecialiseerd in premium vrachtoplossingen door heel Europa.",
+          "ProMax Transport & Logistiek levert Europees transport, logistiek en distributie met operationele zekerheid en professionele uitvoering.",
       },
-      { property: "og:title", content: "Nordlink — Premium European Logistics" },
+      { property: "og:title", content: "ProMax Transport & Logistiek — Europees transport" },
       {
         property: "og:description",
-        content: "Cinematic logistics, perfected. Wegtransport, warehousing en intermodaal vervoer.",
+        content:
+          "Transport, logistiek en truckservice voor Europese vrachtoperaties — betrouwbaar, strak gepland en transparant opgevolgd.",
       },
-      { property: "og:image", content: heroImg },
+      { property: "og:image", content: heroPosterPromax },
     ],
   }),
   component: HomePage,
@@ -41,7 +42,8 @@ const services = [
   {
     number: "01 / Wegtransport",
     title: "Full Truck Load",
-    description: "Toegewijde trailers van deur tot deur — geen tussenstops, volledige zichtbaarheid.",
+    description:
+      "Toegewijde trailers van deur tot deur — geen tussenstops, volledige zichtbaarheid.",
     image: ftlImg,
   },
   {
@@ -61,6 +63,7 @@ const services = [
 const partners = ["DSM", "ASML", "PHILIPS", "HEINEKEN", "ING", "AKZONOBEL", "SHELL", "RANDSTAD"];
 
 function HomePage() {
+  const [heroVideoReady, setHeroVideoReady] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -70,51 +73,67 @@ function HomePage() {
   const heroScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
   const heroBlur = useTransform(scrollYProgress, [0, 1], ["0px", "8px"]);
-  const overlayY = useTransform(scrollYProgress, [0, 1], ["0%", "-15%"]);
 
   return (
     <SiteLayout>
       {/* HERO — Cinematic Video */}
       <section
         ref={heroRef}
-        className="relative h-[100svh] min-h-[680px] w-full overflow-hidden bg-background"
+        className="relative h-[100svh] min-h-[700px] w-full overflow-hidden bg-background grain"
       >
         <motion.div
-          style={{ y: heroY, scale: heroScale, filter: useTransform(heroBlur, (b) => `blur(${b})`) }}
+          style={{
+            y: heroY,
+            scale: heroScale,
+            filter: useTransform(heroBlur, (b) => `blur(${b})`),
+          }}
           className="absolute inset-0"
         >
-          <video
-            src={heroVideo.url}
-            poster={heroImg}
+          {/* ── Poster (shown until video loads) ── */}
+          <img
+            src={heroPosterPromax}
+            alt=""
+            aria-hidden
+            className="h-full w-full object-cover"
+            style={{ filter: "brightness(1.32) contrast(1.06) saturate(1.15)" }}
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
+          />
+          {/* ── Video ── */}
+          <motion.video
+            src={heroVideoPromax}
+            poster={heroPosterPromax}
             autoPlay
             muted
             loop
             playsInline
-            preload="auto"
-            className="h-full w-full object-cover"
+            preload="metadata"
+            onCanPlay={() => setHeroVideoReady(true)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: heroVideoReady ? 1 : 0 }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ filter: "brightness(1.35) contrast(1.08) saturate(1.18)" }}
           />
-          {/* Cinematic vignettes */}
-          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/30 to-background" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/10 to-background/40" />
-          {/* Orange volumetric accent */}
-          <div className="absolute -bottom-40 left-1/3 h-[600px] w-[800px] rounded-full bg-primary/15 blur-[160px]" />
-          <div className="absolute -top-40 right-0 h-[500px] w-[700px] rounded-full bg-primary/10 blur-[180px]" />
-        </motion.div>
 
-        {/* Subtle scanline grid overlay */}
-        <motion.div
-          aria-hidden
-          style={{ y: overlayY }}
-          className="pointer-events-none absolute inset-0 opacity-[0.07]"
-        >
-          <div
-            className="h-full w-full"
-            style={{
-              backgroundImage:
-                "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)",
-              backgroundSize: "80px 80px",
-            }}
-          />
+          {/* ── Overlay layers ── */}
+          <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/25 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-background/35" />
+
+          {/* ── Warm volumetric spotlight (center-top) ── */}
+          <div className="absolute inset-0 bg-[radial-gradient(900px_600px_at_50%_0%,rgba(255,255,255,0.12)_0%,transparent_70%)]" />
+
+          {/* ── Orange radial accent ── */}
+          <div className="absolute inset-0 bg-[radial-gradient(900px_600px_at_78%_55%,color-mix(in_oklab,var(--primary)_8%,transparent)_0%,transparent_60%)]" />
+
+          {/* ── Subtle center brightener ── */}
+          <div className="absolute inset-0 bg-[radial-gradient(800px_500px_at_50%_50%,rgba(255,255,255,0.06)_0%,transparent_65%)]" />
+
+          {/* ── Volumetric orange floor glow ── */}
+          <div className="absolute -bottom-40 left-1/3 h-[600px] w-[700px] rounded-full bg-primary/10 blur-[180px]" />
+          {/* ── Top-right edge light ── */}
+          <div className="absolute -top-20 right-0 h-[350px] w-[500px] rounded-full bg-primary/8 blur-[180px]" />
         </motion.div>
 
         {/* Top meta bar */}
@@ -122,63 +141,113 @@ function HomePage() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.8 }}
-          className="absolute inset-x-0 top-28 z-10 mx-auto flex max-w-[1480px] items-center justify-between px-6 lg:px-10"
+          className="absolute inset-x-0 top-24 z-10 mx-auto flex max-w-[1520px] items-center justify-between px-5 sm:px-8 lg:px-12"
         >
           <div className="hidden items-center gap-3 md:flex">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
             </span>
-            <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-foreground/70">
-              Live · 1.247 zendingen onderweg
+            <span className="text-[10px] font-medium uppercase tracking-[0.32em] text-foreground/70">
+              Live · Europese ritten in uitvoering
             </span>
           </div>
-          <div className="hidden items-center gap-6 text-[10px] uppercase tracking-[0.3em] text-foreground/60 md:flex">
-            <span>Rotterdam · Amsterdam · Eindhoven</span>
+          <div className="hidden items-center gap-6 text-[10px] uppercase tracking-[0.32em] text-foreground/60 md:flex">
+            <span>Benelux · Duitsland · Frankrijk</span>
           </div>
         </motion.div>
 
         <motion.div
           style={{ opacity: heroOpacity }}
-          className="relative z-10 mx-auto flex h-full max-w-[1480px] flex-col justify-end px-6 pb-24 lg:px-10 lg:pb-32"
+          className="relative z-10 mx-auto flex h-full max-w-[1520px] flex-col justify-end px-5 pb-20 sm:px-8 sm:pb-24 lg:px-12 lg:pb-32"
         >
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="text-[11px] font-medium uppercase tracking-[0.4em] text-primary"
+            className="text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.42em] text-primary"
           >
-            Nordlink — Est. 1998
+            ProMax Transport & Logistiek
           </motion.p>
 
           <KineticHeading
-            delay={0.5}
-            className="mt-6 max-w-6xl font-display text-[clamp(3rem,9vw,9rem)] font-semibold leading-[0.92] text-foreground"
-            lines={[
-              { text: "Logistiek" },
-              { text: "zonder grenzen.", accent: true },
-            ]}
-          />
+  delay={0.5}
+  className="
+    mt-5 sm:mt-6
+    max-w-6xl
+    font-display
+    text-[clamp(2.8rem,6vw,7rem)]
+    font-semibold
+    leading-[0.95]
+    tracking-[-0.04em]
+    text-foreground
+  "
+  lines={[
+    { text: "Transport" },
+    { text: "zonder grenzen.", accent: true }
+  ]}
+/>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.6, duration: 0.9 }}
-            className="mt-12 flex flex-col items-start gap-12 md:flex-row md:items-end md:justify-between"
+            className="mt-10 sm:mt-12 flex flex-col items-start gap-10 sm:gap-12 lg:flex-row lg:items-end lg:justify-between"
           >
-            <div className="flex flex-wrap items-center gap-3">
-              <MagneticButton href="/contact">
-                Vraag Offerte
-                <ArrowUpRight size={14} />
-              </MagneticButton>
-              <MagneticButton href="/services" variant="ghost">
-                Onze diensten
-              </MagneticButton>
+            <div className="flex max-w-3xl flex-col items-start gap-6 sm:gap-8">
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+                <Link
+                  to="/contact"
+                  className="group inline-flex items-center gap-2 rounded-sm bg-primary/90 px-5 sm:px-6 py-2.5 sm:py-3 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-foreground transition-all duration-300 hover:bg-primary hover:shadow-[0_0_30px_-10px_color-mix(in_oklab,var(--primary)_60%,transparent)] active:translate-y-px"
+                >
+                  Vraag Offerte Aan
+                  <ArrowUpRight
+                    size={14}
+                    className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </Link>
+                <Link
+                  to="/services"
+                  className="group inline-flex items-center gap-2 rounded-sm border border-white/20 bg-white/[0.02] px-5 sm:px-6 py-2.5 sm:py-3 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.22em] text-foreground/90 transition-all duration-300 hover:border-white/32 hover:bg-white/[0.08]"
+                >
+                  Onze Diensten
+                  <ArrowUpRight
+                    size={14}
+                    className="text-foreground/60 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </Link>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-x-5 sm:gap-x-6 gap-y-2.5 sm:gap-y-3 text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.3em] text-foreground/60">
+                <span className="inline-flex items-center gap-2">
+                  <span className="h-1 w-1 rounded-full bg-primary" />
+                  Rotterdam operations
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <span className="h-1 w-1 rounded-full bg-primary" />
+                  Europese distributie
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <span className="h-1 w-1 rounded-full bg-primary" />
+                  24/7 transport support
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <span className="h-1 w-1 rounded-full bg-primary" />
+                  Fleet & truckservice
+                </span>
+              </div>
             </div>
-            <p className="max-w-sm text-sm leading-relaxed text-foreground/70">
-              Een nieuwe standaard voor Europees wegtransport. Toegewijd, traceerbaar en op tijd —
-              elke kilometer.
-            </p>
+
+            <div className="mt-6 lg:mt-0 max-w-xs sm:max-w-sm">
+              <p className="text-xs sm:text-sm leading-relaxed text-foreground/72">
+                Vanuit Rotterdam sturen we Europese ritten aan met strakke planning, heldere
+                communicatie en professionele opvolging — van laden tot aflevering.
+              </p>
+              <div className="mt-5 sm:mt-6 h-px w-20 bg-primary/50" />
+              <p className="mt-5 sm:mt-6 text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.3em] text-foreground/55">
+                Internationale transportoplossingen · logistiek · distributie
+              </p>
+            </div>
           </motion.div>
         </motion.div>
 
@@ -187,21 +256,21 @@ function HomePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.8, duration: 0.8 }}
-          className="absolute inset-x-0 bottom-0 z-10 border-t border-white/5 bg-background/40 backdrop-blur-md"
+          className="absolute inset-x-0 bottom-0 z-10 border-t border-white/5 bg-background/45 backdrop-blur-md"
         >
-          <div className="mx-auto flex max-w-[1480px] items-center justify-between gap-6 px-6 py-3 text-[10px] uppercase tracking-[0.3em] text-foreground/60 lg:px-10">
-            <div className="flex items-center gap-6">
-              <span className="text-primary/80">N° 04 — 17</span>
-              <span className="hidden md:inline">Lat 51.92 · Lon 4.47</span>
+          <div className="mx-auto flex max-w-[1520px] items-center justify-between gap-4 sm:gap-6 px-5 sm:px-8 py-2.5 sm:py-3 text-[9px] sm:text-[10px] uppercase tracking-[0.32em] text-foreground/60 lg:px-12">
+            <div className="flex items-center gap-4 sm:gap-6">
+              <span className="text-primary/80">ProMax · EU Operations</span>
+              <span className="hidden md:inline">Planning · Dispatch · Tracking</span>
             </div>
-            <div className="hidden items-center gap-6 md:flex">
-              <span>Avg ETA 99.2%</span>
-              <span>HVO 100 · −89% CO₂</span>
-              <span>ISO 9001 · GDP</span>
+            <div className="hidden items-center gap-4 sm:gap-6 md:flex">
+              <span>Transport</span>
+              <span>Logistics</span>
+              <span>Distribution</span>
             </div>
             <div className="flex items-center gap-2">
               <span>Scroll</span>
-              <span className="inline-block h-px w-8 bg-foreground/30" />
+              <span className="inline-block h-px w-6 sm:w-8 bg-foreground/30" />
             </div>
           </div>
         </motion.div>
@@ -469,7 +538,10 @@ function HomePage() {
                 className="group inline-flex items-center gap-3 border-b border-primary pb-1 text-sm font-medium uppercase tracking-[0.2em] text-foreground transition-colors hover:text-primary"
               >
                 Ontdek ons verhaal
-                <ArrowRight size={14} className="text-primary transition-transform group-hover:translate-x-1" />
+                <ArrowRight
+                  size={14}
+                  className="text-primary transition-transform group-hover:translate-x-1"
+                />
               </Link>
             </div>
           </div>

@@ -73,7 +73,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Nordlink — Logistiek zonder grenzen" },
-      { name: "description", content: "Premium Nederlandse logistieke en transportonderneming voor heel Europa." },
+      {
+        name: "description",
+        content: "Premium Nederlandse logistieke en transportonderneming voor heel Europa.",
+      },
       { name: "author", content: "Nordlink B.V." },
       { property: "og:title", content: "Nordlink — Premium European Logistics" },
       { property: "og:description", content: "Cinematic logistics, perfected." },
@@ -82,6 +85,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap",
+      },
       {
         rel: "stylesheet",
         href: appCss,

@@ -86,14 +86,18 @@ export const NavBody = ({ children, className, visible }: NavBodyProps) => {
         boxShadow: visible
           ? "0 8px 48px -12px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.06)"
           : "none",
-        width: visible ? "56%" : "100%",
+        width: visible ? "70%" : "100%",
         y: visible ? 12 : 0,
         borderRadius: visible ? "9999px" : "2px",
+        paddingTop: visible ? "0.6rem" : "0.75rem",
+        paddingBottom: visible ? "0.6rem" : "0.75rem",
+        paddingLeft: visible ? "1.5rem" : "1.25rem",
+        paddingRight: visible ? "1.5rem" : "1.25rem",
       }}
       transition={{ type: "spring", stiffness: 220, damping: 44 }}
-      style={{ minWidth: "800px" }}
+      style={{ minWidth: "1000px" }}
       className={cn(
-        "relative z-[60] mx-auto hidden w-full max-w-[1480px] flex-row items-center justify-between self-start border border-white/[0.06] bg-background/10 px-5 py-3 lg:flex",
+        "relative z-[60] mx-auto hidden w-full max-w-[1480px] flex-row items-center justify-between self-start border border-white/[0.06] bg-background/10 lg:flex",
         visible && "bg-background/70",
         className,
       )}
@@ -263,15 +267,31 @@ export const NavbarLogo = () => {
     <a
       href="/"
       aria-label="ProMax Transport & Logistiek"
-      className="relative z-20 flex items-center gap-2 px-2 py-1 transition-opacity duration-200 hover:opacity-80"
+      className="relative z-20 flex items-center gap-3 px-2 py-1 transition-opacity duration-200 hover:opacity-80"
     >
       <img
         src={promaxLogo}
         alt="ProMax Transport & Logistiek"
-        className="h-10 sm:h-11 w-auto select-none"
+        className="h-10 sm:h-10 w-auto select-none transition-all duration-300"
         loading="eager"
         decoding="async"
       />
+      
+      {/* Premium text separator and brand name - Manrope Font */}
+      <div className="hidden sm:flex flex-col">
+        <h1 className="text-xs sm:text-sm font-bold tracking-[0.1em] text-foreground leading-tight font-[Manrope]">
+          ProMax Transport &amp; Logistiek
+        </h1>
+        <div className="flex items-center gap-2 mt-0.5">
+          <span className="text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.25em] text-primary font-[Manrope]">
+            Logistics
+          </span>
+          <span className="h-1 w-1 rounded-full bg-primary/60" />
+          <span className="text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.25em] text-foreground/50 font-[Manrope]">
+            Truckservice
+          </span>
+        </div>
+      </div>
     </a>
   );
 };
@@ -296,7 +316,7 @@ export const NavbarButton = ({
   | React.ComponentPropsWithoutRef<"button">
 )) => {
   const base =
-    "inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-sm px-4 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.15em] transition-all duration-200 hover:-translate-y-px active:scale-[0.97]";
+    "inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-sm px-3 py-1.5 sm:px-4 sm:py-2 text-center text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.15em] transition-all duration-200 hover:-translate-y-px active:scale-[0.97] font-[Manrope]";
 
   const variants = {
     primary:

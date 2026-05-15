@@ -77,7 +77,7 @@ function PremiumCTA({
       onMouseLeave={handleMouseLeave}
       onClick={onClick}
       href="/contact"
-      className={`group relative inline-flex cursor-pointer select-none items-center gap-2 overflow-hidden rounded-sm bg-primary px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary-foreground no-underline ${className}`}
+      className={`group relative inline-flex cursor-pointer select-none items-center gap-2 overflow-hidden rounded-sm bg-primary px-4 py-1.5 sm:px-5 sm:py-2 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.15em] text-primary-foreground no-underline font-[Manrope] ${className}`}
       whileTap={{ scale: 0.96 }}
     >
       {/* ── ambient glow layer ── */}

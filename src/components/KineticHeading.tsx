@@ -7,16 +7,6 @@ interface Props {
   delay?: number;
 }
 
-/**
- * KineticHeading — Triple-layer word reveal
- *
- * Refined for:
- *  - premium typography
- *  - stable italic rendering
- *  - zero clipping on descenders
- *  - cinematic motion
- *  - high-end editorial feel
- */
 export function KineticHeading({
   lines,
   className = "",
@@ -46,7 +36,7 @@ export function KineticHeading({
             block
             overflow-visible
             pb-[0.22em]
-            leading-[0.82]
+            leading-[0.85]
           "
           style={{
             overflow: "visible",
@@ -75,51 +65,35 @@ export function KineticHeading({
                 >
                   <motion.span
                     initial={{
-                      y: 120,
+                      y: 80,
                       opacity: 0,
-                      filter: "blur(14px)",
-                      letterSpacing: "0.22em",
                     }}
                     animate={
                       isInView
                         ? {
                             y: 0,
                             opacity: 1,
-                            filter: "blur(0px)",
-                            letterSpacing: line.accent
-                              ? "-0.01em"
-                              : "0em",
                           }
                         : {}
                     }
                     transition={{
-                      duration: 1.1,
-                      delay: delay + i * 0.09,
-                      ease: [0.16, 1, 0.3, 1],
-
-                      filter: {
-                        duration: 0.9,
-                        delay: delay + i * 0.09 + 0.1,
-                        ease: [0.22, 1, 0.36, 1],
-                      },
-
-                      letterSpacing: {
-                        duration: 0.85,
-                        delay: delay + i * 0.09 + 0.2,
-                        ease: [0.22, 1, 0.36, 1],
-                      },
+                      duration: 0.9,
+                      delay: delay + i * 0.08,
+                      ease: [0.22, 1, 0.36, 1],
                     }}
                     className={`inline-block will-change-transform ${
                       line.accent
                         ? `
-                          text-gradient-orange
-                          italic
-                          font-light
-                          tracking-[-0.03em]
-                          pr-[0.08em]
-                          pb-[0.08em]
+                          text-primary
+                          font-bold
+                          tracking-[-0.02em]
+                          pr-[0.05em]
+                          pb-[0.05em]
                         `
-                        : ""
+                        : `
+                          font-[Manrope]
+                          font-semibold
+                        `
                     }`}
                     style={{
                       transformOrigin: "50% 100%",
@@ -135,7 +109,7 @@ export function KineticHeading({
                   {wi < line.text.split(" ").length - 1 && (
                     <span
                       aria-hidden
-                      className="inline-block w-[0.18em]"
+                      className="inline-block w-[0.2em]"
                     />
                   )}
                 </span>

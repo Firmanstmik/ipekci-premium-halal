@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
+import { CustomCursor } from "./CustomCursor";
 
 export function SiteLayout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -24,6 +25,7 @@ export function SiteLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
+      <CustomCursor />
       <Navbar />
       <main>{children}</main>
       <Footer />

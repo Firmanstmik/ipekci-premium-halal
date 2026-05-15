@@ -136,26 +136,7 @@ function HomePage() {
           <div className="absolute -top-20 right-0 h-[350px] w-[500px] rounded-full bg-primary/8 blur-[180px]" />
         </motion.div>
 
-        {/* Top meta bar */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-          className="absolute inset-x-0 top-24 z-10 mx-auto flex max-w-[1520px] items-center justify-between px-5 sm:px-8 lg:px-12"
-        >
-          <div className="hidden items-center gap-3 md:flex">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
-            </span>
-            <span className="text-[10px] font-medium uppercase tracking-[0.32em] text-foreground/70">
-              Live · Europese ritten in uitvoering
-            </span>
-          </div>
-          <div className="hidden items-center gap-6 text-[10px] uppercase tracking-[0.32em] text-foreground/60 md:flex">
-            <span>Benelux · Duitsland · Frankrijk</span>
-          </div>
-        </motion.div>
+
 
         <motion.div
           style={{ opacity: heroOpacity }}
@@ -170,23 +151,26 @@ function HomePage() {
             ProMax Transport & Logistiek
           </motion.p>
 
-          <KineticHeading
-  delay={0.5}
-  className="
-    mt-5 sm:mt-6
-    max-w-6xl
-    font-display
-    text-[clamp(2.8rem,6vw,7rem)]
-    font-semibold
-    leading-[0.95]
-    tracking-[-0.04em]
-    text-foreground
-  "
-  lines={[
-    { text: "Transport" },
-    { text: "zonder grenzen.", accent: true }
-  ]}
-/>
+          <motion.h1
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            className="
+              mt-5 sm:mt-6
+              max-w-6xl
+              font-display
+              text-[clamp(3rem,7vw,8rem)]
+              font-bold
+              leading-[0.9]
+              tracking-[-0.03em]
+              text-foreground
+            "
+          >
+            <span className="block">Transport</span>
+            <span className="block">
+              <span className="text-gradient-orange">zonder grenzen.</span>
+            </span>
+          </motion.h1>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}

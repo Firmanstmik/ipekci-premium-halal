@@ -1,4 +1,4 @@
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { useRef } from "react";
 
@@ -18,6 +18,7 @@ export function ServiceCard({ number, title, description, image, index }: Props)
   const ry = useSpring(useTransform(mx, [0, 1], [-6, 6]), { stiffness: 150, damping: 20 });
   const glowX = useTransform(mx, (v) => `${v * 100}%`);
   const glowY = useTransform(my, (v) => `${v * 100}%`);
+  const glowBg = useMotionTemplate`radial-gradient(380px circle at ${glowX} ${glowY}, color-mix(in oklab, var(--primary) 35%, transparent), transparent 60%)`;
 
   const onMove = (e: React.MouseEvent) => {
     const r = ref.current?.getBoundingClientRect();
@@ -50,14 +51,7 @@ export function ServiceCard({ number, title, description, image, index }: Props)
       <motion.div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-20 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-        style={{
-          background: useTransform(
-            [glowX, glowY] as never,
-            ([x, y]: string[]) =>
-              `radial-gradient(380px circle at ${x} ${y}, color-mix(in oklab, var(--primary) 35%, transparent), transparent 60%)`
-          ),
-          mixBlendMode: "screen",
-        }}
+        style={{ background: glowBg, mixBlendMode: "screen" }}
       />
 
       <div className="relative aspect-[4/5] overflow-hidden">

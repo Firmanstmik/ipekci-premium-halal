@@ -10,40 +10,72 @@ interface Props {
 /**
  * KineticHeading — Triple-layer word reveal
  *
- * Three simultaneous effects per word (agency-grade, rarely seen on public sites):
- *  1. Y-slide       — word rises from 110% → 0%
- *  2. Blur dissolve — filter: blur(14px) → blur(0px)  [almost no one does this at word level]
- *  3. Tracking compression — letterSpacing 0.22em → 0em (wide → tight as it lands)
- *
- * The combination mimics high-end broadcast motion graphics (Work & Co / Buck / Fantasy style).
+ * Refined for:
+ *  - premium typography
+ *  - stable italic rendering
+ *  - zero clipping on descenders
+ *  - cinematic motion
+ *  - high-end editorial feel
  */
-export function KineticHeading({ lines, className = "", delay = 0.5 }: Props) {
+export function KineticHeading({
+  lines,
+  className = "",
+  delay = 0.5,
+}: Props) {
   const ref = useRef<HTMLHeadingElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
+
+  const isInView = useInView(ref, {
+    once: true,
+    margin: "-60px",
+  });
+
   let wordIndex = 0;
 
   return (
-    <h1 ref={ref} className={className}>
+    <h1
+      ref={ref}
+      className={`${className} overflow-visible`}
+      style={{
+        overflow: "visible",
+      }}
+    >
       {lines.map((line, li) => (
-        /*
-         * Line-level wrapper:
-         * overflow-hidden masks the word sliding in from below.
-         * pb-[0.4em] gives full room for italic descenders (z, g, j, r)
-         * without ever clipping them.
-         */
-        <span key={li} className="block overflow-hidden pb-[0.4em]">
-          <span className="block">
+        <span
+          key={li}
+          className="
+            block
+            overflow-visible
+            pb-[0.22em]
+            leading-[0.82]
+          "
+          style={{
+            overflow: "visible",
+          }}
+        >
+          <span
+            className="block overflow-visible"
+            style={{
+              overflow: "visible",
+            }}
+          >
             {line.text.split(" ").map((word, wi) => {
               const i = wordIndex++;
+
               return (
-                /*
-                 * Word wrapper: NO overflow-hidden — that was clipping descenders.
-                 * align-top keeps baseline stable across blur/tracking animation.
-                 */
-                <span key={wi} className="inline-block align-top">
+                <span
+                  key={wi}
+                  className="
+                    inline-flex
+                    align-baseline
+                    overflow-visible
+                  "
+                  style={{
+                    overflow: "visible",
+                  }}
+                >
                   <motion.span
                     initial={{
-                      y: "110%",
+                      y: 120,
                       opacity: 0,
                       filter: "blur(14px)",
                       letterSpacing: "0.22em",
@@ -51,10 +83,12 @@ export function KineticHeading({ lines, className = "", delay = 0.5 }: Props) {
                     animate={
                       isInView
                         ? {
-                            y: "0%",
+                            y: 0,
                             opacity: 1,
                             filter: "blur(0px)",
-                            letterSpacing: line.accent ? "-0.02em" : "0em",
+                            letterSpacing: line.accent
+                              ? "-0.01em"
+                              : "0em",
                           }
                         : {}
                     }
@@ -62,13 +96,13 @@ export function KineticHeading({ lines, className = "", delay = 0.5 }: Props) {
                       duration: 1.1,
                       delay: delay + i * 0.09,
                       ease: [0.16, 1, 0.3, 1],
-                      /* Blur clears slightly faster than the slide for a crisp landing */
+
                       filter: {
                         duration: 0.9,
                         delay: delay + i * 0.09 + 0.1,
                         ease: [0.22, 1, 0.36, 1],
                       },
-                      /* Tracking compression snaps in last — the "settle" feel */
+
                       letterSpacing: {
                         duration: 0.85,
                         delay: delay + i * 0.09 + 0.2,
@@ -76,14 +110,33 @@ export function KineticHeading({ lines, className = "", delay = 0.5 }: Props) {
                       },
                     }}
                     className={`inline-block will-change-transform ${
-                      line.accent ? "text-gradient-orange italic font-light" : ""
+                      line.accent
+                        ? `
+                          text-gradient-orange
+                          italic
+                          font-light
+                          tracking-[-0.03em]
+                          pr-[0.08em]
+                          pb-[0.08em]
+                        `
+                        : ""
                     }`}
-                    style={{ transformOrigin: "50% 100%" }}
+                    style={{
+                      transformOrigin: "50% 100%",
+                      backfaceVisibility: "hidden",
+                      WebkitFontSmoothing: "antialiased",
+                      MozOsxFontSmoothing: "grayscale",
+                      overflow: "visible",
+                    }}
                   >
                     {word}
                   </motion.span>
+
                   {wi < line.text.split(" ").length - 1 && (
-                    <span aria-hidden>&nbsp;</span>
+                    <span
+                      aria-hidden
+                      className="inline-block w-[0.18em]"
+                    />
                   )}
                 </span>
               );

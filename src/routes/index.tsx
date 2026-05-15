@@ -1,12 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { ArrowUpRight, ArrowRight, Truck, Warehouse, Ship, Zap, ShieldCheck, Leaf } from "lucide-react";
+import { ArrowUpRight, ArrowRight, Truck, Zap, ShieldCheck, Leaf } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { ServiceCard } from "@/components/ServiceCard";
 import { SectionHeader } from "@/components/SectionHeader";
 import { MagneticButton } from "@/components/MagneticButton";
+import { KineticHeading } from "@/components/KineticHeading";
+import { RollingCounter } from "@/components/RollingCounter";
+import { RouteNetwork } from "@/components/RouteNetwork";
 import heroImg from "@/assets/hero-truck.jpg";
+import heroVideo from "@/assets/hero-loop.mp4.asset.json";
 import fleetImg from "@/assets/fleet-aerial.jpg";
 import ftlImg from "@/assets/service-ftl.jpg";
 import ltlImg from "@/assets/service-ltl.jpg";
@@ -62,28 +66,55 @@ function HomePage() {
     target: heroRef,
     offset: ["start start", "end start"],
   });
-  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 1.15]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
+  const heroBlur = useTransform(scrollYProgress, [0, 1], ["0px", "8px"]);
+  const overlayY = useTransform(scrollYProgress, [0, 1], ["0%", "-15%"]);
 
   return (
     <SiteLayout>
-      {/* HERO — Cinematic */}
+      {/* HERO — Cinematic Video */}
       <section
         ref={heroRef}
-        className="relative h-[100svh] min-h-[680px] w-full overflow-hidden"
+        className="relative h-[100svh] min-h-[680px] w-full overflow-hidden bg-background"
       >
         <motion.div
-          style={{ y: heroY, scale: heroScale }}
+          style={{ y: heroY, scale: heroScale, filter: useTransform(heroBlur, (b) => `blur(${b})`) }}
           className="absolute inset-0"
         >
-          <img
-            src={heroImg}
-            alt="Cinematische foto van een witte Europese vrachtwagen op een natte snelweg bij nacht"
+          <video
+            src={heroVideo.url}
+            poster={heroImg}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
             className="h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/20 to-background" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/10 to-transparent" />
+          {/* Cinematic vignettes */}
+          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/30 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/10 to-background/40" />
+          {/* Orange volumetric accent */}
+          <div className="absolute -bottom-40 left-1/3 h-[600px] w-[800px] rounded-full bg-primary/15 blur-[160px]" />
+          <div className="absolute -top-40 right-0 h-[500px] w-[700px] rounded-full bg-primary/10 blur-[180px]" />
+        </motion.div>
+
+        {/* Subtle scanline grid overlay */}
+        <motion.div
+          aria-hidden
+          style={{ y: overlayY }}
+          className="pointer-events-none absolute inset-0 opacity-[0.07]"
+        >
+          <div
+            className="h-full w-full"
+            style={{
+              backgroundImage:
+                "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)",
+              backgroundSize: "80px 80px",
+            }}
+          />
         </motion.div>
 
         {/* Top meta bar */}
@@ -94,7 +125,10 @@ function HomePage() {
           className="absolute inset-x-0 top-28 z-10 mx-auto flex max-w-[1480px] items-center justify-between px-6 lg:px-10"
         >
           <div className="hidden items-center gap-3 md:flex">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+            </span>
             <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-foreground/70">
               Live · 1.247 zendingen onderweg
             </span>
@@ -104,7 +138,10 @@ function HomePage() {
           </div>
         </motion.div>
 
-        <motion.div style={{ opacity: heroOpacity }} className="relative z-10 mx-auto flex h-full max-w-[1480px] flex-col justify-end px-6 pb-24 lg:px-10 lg:pb-32">
+        <motion.div
+          style={{ opacity: heroOpacity }}
+          className="relative z-10 mx-auto flex h-full max-w-[1480px] flex-col justify-end px-6 pb-24 lg:px-10 lg:pb-32"
+        >
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -113,20 +150,20 @@ function HomePage() {
           >
             Nordlink — Est. 1998
           </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+
+          <KineticHeading
+            delay={0.5}
             className="mt-6 max-w-6xl font-display text-[clamp(3rem,9vw,9rem)] font-semibold leading-[0.92] text-foreground"
-          >
-            Logistiek <span className="text-gradient-orange">zonder</span>
-            <br />
-            grenzen.
-          </motion.h1>
+            lines={[
+              { text: "Logistiek" },
+              { text: "zonder grenzen.", accent: true },
+            ]}
+          />
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.8 }}
+            transition={{ delay: 1.6, duration: 0.9 }}
             className="mt-12 flex flex-col items-start gap-12 md:flex-row md:items-end md:justify-between"
           >
             <div className="flex flex-wrap items-center gap-3">
@@ -145,16 +182,27 @@ function HomePage() {
           </motion.div>
         </motion.div>
 
-        {/* Scroll cue */}
+        {/* Bottom telemetry strip */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.4, duration: 0.8 }}
-          className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-[10px] uppercase tracking-[0.3em] text-foreground/50"
+          transition={{ delay: 1.8, duration: 0.8 }}
+          className="absolute inset-x-0 bottom-0 z-10 border-t border-white/5 bg-background/40 backdrop-blur-md"
         >
-          <div className="flex flex-col items-center gap-2">
-            <span>Scroll</span>
-            <span className="h-8 w-px animate-pulse bg-foreground/30" />
+          <div className="mx-auto flex max-w-[1480px] items-center justify-between gap-6 px-6 py-3 text-[10px] uppercase tracking-[0.3em] text-foreground/60 lg:px-10">
+            <div className="flex items-center gap-6">
+              <span className="text-primary/80">N° 04 — 17</span>
+              <span className="hidden md:inline">Lat 51.92 · Lon 4.47</span>
+            </div>
+            <div className="hidden items-center gap-6 md:flex">
+              <span>Avg ETA 99.2%</span>
+              <span>HVO 100 · −89% CO₂</span>
+              <span>ISO 9001 · GDP</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span>Scroll</span>
+              <span className="inline-block h-px w-8 bg-foreground/30" />
+            </div>
           </div>
         </motion.div>
       </section>
@@ -190,7 +238,8 @@ function HomePage() {
               className="md:col-span-9"
             >
               <p className="font-display text-3xl leading-[1.15] text-foreground/90 md:text-5xl lg:text-6xl text-balance">
-                Wij bewegen meer dan vracht. Wij bewegen <span className="text-primary">vertrouwen</span>,{" "}
+                Wij bewegen meer dan vracht. Wij bewegen{" "}
+                <span className="text-primary">vertrouwen</span>,{" "}
                 <span className="text-primary">precisie</span> en de Europese economie — kilometer
                 voor kilometer, op tijd, elke keer.
               </p>
@@ -220,7 +269,7 @@ function HomePage() {
             </Link>
           </div>
 
-          <div className="mt-20 grid gap-6 md:grid-cols-3">
+          <div className="mt-20 grid gap-6 md:grid-cols-3" style={{ perspective: "1500px" }}>
             {services.map((s, i) => (
               <ServiceCard key={s.title} {...s} index={i} />
             ))}
@@ -230,6 +279,68 @@ function HomePage() {
 
       {/* FLEET PARALLAX SHOWCASE */}
       <ParallaxShowcase />
+
+      {/* SIGNATURE — EUROPEAN ROUTE NETWORK */}
+      <section className="relative overflow-hidden bg-background px-6 py-32 lg:px-10 lg:py-40">
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute left-1/2 top-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[200px]" />
+        </div>
+        <div className="relative mx-auto max-w-[1480px]">
+          <div className="grid gap-16 lg:grid-cols-12 lg:items-center">
+            <div className="lg:col-span-4">
+              <div className="flex items-center gap-3">
+                <span className="h-px w-8 bg-primary" />
+                <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
+                  Live netwerk
+                </span>
+              </div>
+              <h2 className="mt-6 font-display text-4xl text-foreground md:text-5xl lg:text-6xl text-balance">
+                Eén operatie.
+                <br />
+                <span className="text-gradient-orange italic font-light">31 landen.</span>
+              </h2>
+              <p className="mt-6 text-base leading-relaxed text-muted-foreground">
+                Een autonoom Europees corridornetwerk, aangedreven door 12 hubs en 420+ Euro 6
+                voertuigen. Realtime gesynchroniseerd vanuit ons Rotterdam Control Tower.
+              </p>
+              <div className="mt-10 grid grid-cols-2 gap-6">
+                {[
+                  { k: "12", v: "Hubs" },
+                  { k: "31", v: "Landen" },
+                  { k: "420+", v: "Voertuigen" },
+                  { k: "24/7", v: "Operationeel" },
+                ].map((i) => (
+                  <div key={i.v} className="border-l border-primary/30 pl-4">
+                    <div className="font-display text-2xl text-foreground">{i.k}</div>
+                    <div className="mt-1 text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+                      {i.v}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+              className="lg:col-span-8"
+            >
+              <div className="relative overflow-hidden rounded-sm border border-white/5 bg-surface/40 p-4 md:p-8">
+                <div className="absolute left-4 top-4 z-10 flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-foreground/60">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
+                  Live · EU Corridor View
+                </div>
+                <div className="absolute right-4 top-4 z-10 text-[10px] uppercase tracking-[0.25em] text-foreground/60">
+                  v.2026.05
+                </div>
+                <RouteNetwork />
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
 
       {/* WHY US — Bento */}
       <section className="relative bg-background px-6 py-32 lg:px-10 lg:py-40">
@@ -269,14 +380,23 @@ function HomePage() {
         </div>
       </section>
 
-      {/* STATS COUNTER */}
+      {/* STATS COUNTER — Operational */}
       <section className="relative overflow-hidden border-y border-white/5 bg-surface px-6 py-24 lg:px-10">
-        <div className="mx-auto grid max-w-[1480px] gap-12 md:grid-cols-4">
+        <div
+          aria-hidden
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+          }}
+        />
+        <div className="relative mx-auto grid max-w-[1480px] gap-12 md:grid-cols-4">
           {[
-            { n: "27", l: "Jaar ervaring" },
-            { n: "12M+", l: "Zendingen geleverd" },
-            { n: "420+", l: "Euro 6 trucks" },
-            { n: "31", l: "Landen actief" },
+            { n: 27, suffix: "", l: "Jaar ervaring" },
+            { n: 12.4, suffix: "M+", l: "Zendingen geleverd", decimals: 1 },
+            { n: 420, suffix: "+", l: "Euro 6 trucks" },
+            { n: 31, suffix: "", l: "Landen actief" },
           ].map((s, i) => (
             <motion.div
               key={s.l}
@@ -284,12 +404,14 @@ function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="border-l border-white/10 pl-6"
+              className="relative border-l border-white/10 pl-6"
             >
+              <span className="absolute -left-px top-0 h-8 w-px bg-primary" />
               <div className="font-display text-6xl font-semibold text-foreground md:text-7xl">
-                {s.n}
+                <RollingCounter value={s.n} suffix={s.suffix} decimals={s.decimals ?? 0} />
               </div>
-              <div className="mt-3 text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
+              <div className="mt-3 flex items-center gap-2 text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
+                <span className="h-1 w-1 rounded-full bg-primary" />
                 {s.l}
               </div>
             </motion.div>
@@ -456,7 +578,3 @@ function ParallaxShowcase() {
     </section>
   );
 }
-
-// Provide a Warehouse/Ship import to satisfy unused-import linter visibility
-void Warehouse;
-void Ship;

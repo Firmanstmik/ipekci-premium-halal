@@ -1662,8 +1662,48 @@ function HomePage() {
                 {[
                   {
                     category: "Rundvlees",
-                    title: "Sucuk",
+                    title: "Runder Merquez",
                     image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Runder-Merquez.png",
+                  },
+                  {
+                    category: "Rundvlees",
+                    title: "Rib eye",
+                    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Rib-eye.png",
+                  },
+                  {
+                    category: "Kip",
+                    title: "Kip Shoarma",
+                    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/placeholder.webp",
+                  },
+                  {
+                    category: "Kip",
+                    title: "Kalkoens-shoarma",
+                    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Kalkoensshoarma.png",
+                  },
+                  {
+                    category: "Lamsvlees",
+                    title: "Lamsshoarma",
+                    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Lamsshoarma.png",
+                  },
+                  {
+                    category: "Rundvlees",
+                    title: "Yaprak döner",
+                    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/placeholder.webp",
+                  },
+                  {
+                    category: "Rundvlees",
+                    title: "Kalfs döner",
+                    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/placeholder.webp",
+                  },
+                  {
+                    category: "Rundvlees",
+                    title: "Pastirma",
+                    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/placeholder.webp",
+                  },
+                  {
+                    category: "Rundvlees",
+                    title: "Sucuk",
+                    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Turkse-Worst-Sucuk.png",
                   },
                   {
                     category: "Kip",
@@ -1674,6 +1714,21 @@ function HomePage() {
                     category: "Rundvlees",
                     title: "Hamburger",
                     image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Hamburger.png",
+                  },
+                  {
+                    category: "Kip",
+                    title: "Kip Merquez",
+                    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Kip-Merquez-1.png",
+                  },
+                  {
+                    category: "Rundvlees",
+                    title: "Adana Kebab",
+                    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/Adana-Kebab.png",
+                  },
+                  {
+                    category: "Kip",
+                    title: "Kip döner",
+                    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/placeholder.webp",
                   },
                 ].map((p) => (
                   <motion.article

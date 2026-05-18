@@ -86,7 +86,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
       {React.Children.map(children, (child) =>
         React.isValidElement(child)
           ? React.cloneElement(
-              child as React.ReactElement<{ visible?: boolean }>,
+              child as React.ReactElement<{ visible?: boolean; shown?: boolean }>,
               { visible, shown },
             )
           : child,

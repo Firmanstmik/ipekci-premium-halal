@@ -1,3 +1,6 @@
+@import "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap";
+@import "https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap";
 @import "tw-animate-css";
 @import "tailwindcss";
 
@@ -41,58 +44,61 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --font-display: "Manrope", system-ui, sans-serif;
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Cormorant Garamond", ui-serif, Georgia, serif;
+  --font-sans: "General Sans", "Plus Jakarta Sans", system-ui, sans-serif;
 }
 
 :root {
   --radius: 0.125rem;
 
-  /* Cinematic deep navy / charcoal base */
-  --background: oklch(0.14 0.018 250);
-  --foreground: oklch(0.97 0.005 80);
+  --background: #0b0b0b;
+  --foreground: #f5f1eb;
 
-  --surface: oklch(0.17 0.02 250);
-  --surface-elevated: oklch(0.21 0.022 250);
+  --surface: #111111;
+  --surface-elevated: #1a1a1a;
 
-  --card: oklch(0.17 0.02 250);
-  --card-foreground: oklch(0.97 0.005 80);
-  --popover: oklch(0.17 0.02 250);
-  --popover-foreground: oklch(0.97 0.005 80);
+  --card: #161616;
+  --card-foreground: #f5f1eb;
+  --popover: #161616;
+  --popover-foreground: #f5f1eb;
 
-  /* Industrial orange accent */
-  --primary: oklch(0.72 0.18 45);
-  --primary-foreground: oklch(0.14 0.018 250);
+  --primary: #b31217;
+  --primary-foreground: #f5f1eb;
 
-  --secondary: oklch(0.21 0.022 250);
-  --secondary-foreground: oklch(0.97 0.005 80);
+  --secondary: #f5f1eb;
+  --secondary-foreground: #111111;
 
-  --muted: oklch(0.21 0.022 250);
-  --muted-foreground: oklch(0.68 0.012 250);
+  --muted: #1a1a1a;
+  --muted-foreground: #d9d4ce;
 
-  --accent: oklch(0.72 0.18 45);
-  --accent-foreground: oklch(0.14 0.018 250);
+  --accent: #c8a46b;
+  --accent-foreground: #111111;
+
+  --gold-primary: #c8a46b;
+  --gold-secondary: #b8935a;
+  --gold-bronze: #9e6f3d;
+  --gold-champagne: #e2c08d;
 
   --destructive: oklch(0.6 0.22 25);
   --destructive-foreground: oklch(0.97 0.005 80);
 
-  --border: oklch(1 0 0 / 8%);
-  --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.72 0.18 45);
+  --border: color-mix(in oklab, white 10%, transparent);
+  --input: color-mix(in oklab, white 14%, transparent);
+  --ring: var(--primary);
 
-  --sidebar: oklch(0.17 0.02 250);
-  --sidebar-foreground: oklch(0.97 0.005 80);
-  --sidebar-primary: oklch(0.72 0.18 45);
-  --sidebar-primary-foreground: oklch(0.14 0.018 250);
-  --sidebar-accent: oklch(0.21 0.022 250);
-  --sidebar-accent-foreground: oklch(0.97 0.005 80);
-  --sidebar-border: oklch(1 0 0 / 8%);
-  --sidebar-ring: oklch(0.72 0.18 45);
+  --sidebar: #161616;
+  --sidebar-foreground: #f5f1eb;
+  --sidebar-primary: #b31217;
+  --sidebar-primary-foreground: #f5f1eb;
+  --sidebar-accent: #1d1d1d;
+  --sidebar-accent-foreground: #f5f1eb;
+  --sidebar-border: color-mix(in oklab, white 10%, transparent);
+  --sidebar-ring: var(--primary);
 }
 
 .dark {
-  --background: oklch(0.14 0.018 250);
-  --foreground: oklch(0.97 0.005 80);
+  --background: #111111;
+  --foreground: #f5f1eb;
 }
 
 @layer base {
@@ -110,6 +116,7 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    font-kerning: normal;
   }
 
   h1,
@@ -118,9 +125,9 @@
   h4,
   h5 {
     font-family: var(--font-display);
-    font-weight: 600;
-    letter-spacing: -0.035em;
-    line-height: 0.95;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
   }
 
   ::selection {
@@ -160,7 +167,7 @@
   }
 
   .text-gradient-orange {
-    background: linear-gradient(180deg, oklch(0.85 0.15 50) 0%, oklch(0.62 0.2 38) 100%);
+    background: linear-gradient(135deg, var(--gold-champagne) 0%, var(--gold-primary) 40%, var(--gold-bronze) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -241,6 +248,21 @@
 
     to {
       transform: scale(1.08);
+    }
+  }
+
+  .spin-ring {
+    animation: spin-ring 18s linear infinite;
+    transform-origin: 50% 50%;
+  }
+
+  @keyframes spin-ring {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
     }
   }
 }

@@ -1,6 +1,5 @@
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useEffect, useState } from "react";
-import promaxLogo from "@/assets/Logo-Promax2.svg";
 
 export function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false);
@@ -13,8 +12,8 @@ export function CustomCursor() {
 
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
-      cursorX.set(e.clientX - 20);
-      cursorY.set(e.clientY - 20);
+      cursorX.set(e.clientX - 16);
+      cursorY.set(e.clientY - 16);
     };
 
     const handleMouseEnter = () => setIsHovering(true);
@@ -41,7 +40,7 @@ export function CustomCursor() {
     <>
       {/* Custom Cursor - Logo Promax */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-difference"
+        className="fixed top-0 left-0 pointer-events-none z-[9999]"
         style={{
           x: cursorXSpring,
           y: cursorYSpring,
@@ -50,7 +49,7 @@ export function CustomCursor() {
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
           animate={{ 
-            scale: isHovering ? 1.5 : 1, 
+            scale: isHovering ? 1.25 : 1, 
             opacity: 1,
           }}
           transition={{ 
@@ -60,20 +59,50 @@ export function CustomCursor() {
           }}
           className="relative"
         >
-          <img
-            src={promaxLogo}
-            alt="Cursor"
-            className="w-10 h-10 sm:w-12 sm:h-12 select-none"
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 64 64"
+            fill="none"
+            aria-hidden="true"
+            className="select-none"
             style={{
-              filter: "drop-shadow(0 0 10px rgba(240,127,28,0.5))",
+              color: "rgba(200,164,107,0.88)",
+              filter:
+                "drop-shadow(0 14px 24px rgba(0,0,0,0.5)) drop-shadow(0 0 18px rgba(200,164,107,0.12))",
             }}
-          />
+          >
+            <path
+              d="M19 18c0 6-4 12-9 12S1 24 1 18 6 5 10 5s9 7 9 13Z"
+              fill="currentColor"
+              opacity="0.95"
+            />
+            <path
+              d="M63 18c0 6-4 12-9 12s-9-6-9-12S50 5 54 5s9 7 9 13Z"
+              fill="currentColor"
+              opacity="0.95"
+            />
+            <path
+              d="M12 36c2-5 9-9 20-9s18 4 20 9c2 5 0 18-20 18S10 41 12 36Z"
+              fill="currentColor"
+            />
+            <path
+              d="M22 33c0 2-1.8 3.5-4 3.5s-4-1.5-4-3.5 1.8-3.5 4-3.5 4 1.5 4 3.5Z"
+              fill="currentColor"
+              opacity="0.65"
+            />
+            <path
+              d="M46 33c0 2-1.8 3.5-4 3.5s-4-1.5-4-3.5 1.8-3.5 4-3.5 4 1.5 4 3.5Z"
+              fill="currentColor"
+              opacity="0.65"
+            />
+          </svg>
           {/* Glow effect */}
           {isHovering && (
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 0.6, scale: 1.8 }}
-              className="absolute inset-0 bg-primary/30 blur-2xl rounded-full -z-10"
+              animate={{ opacity: 0.35, scale: 1.6 }}
+              className="absolute inset-0 rounded-full bg-[rgba(200,164,107,0.18)] blur-2xl -z-10"
             />
           )}
         </motion.div>
@@ -81,8 +110,10 @@ export function CustomCursor() {
       
       {/* Hide default cursor */}
       <style>{`
-        * {
-          cursor: none !important;
+        @media (hover: hover) and (pointer: fine) {
+          * {
+            cursor: none !important;
+          }
         }
       `}</style>
     </>

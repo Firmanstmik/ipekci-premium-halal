@@ -8,8 +8,9 @@ import {
   useMotionValueEvent,
   useScroll,
 } from "framer-motion";
-import promaxLogo from "@/assets/Logo-Promax2.svg";
 import { cn } from "@/lib/utils";
+
+const IPEKCI_LOGO_URL = "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/logo_footer.webp";
 
 /* ─────────────────── interfaces ─────────────────── */
 
@@ -22,6 +23,7 @@ interface NavBodyProps {
   children: React.ReactNode;
   className?: string;
   visible?: boolean;
+  shown?: boolean;
 }
 
 interface NavItemsProps {
@@ -34,6 +36,7 @@ interface MobileNavProps {
   children: React.ReactNode;
   className?: string;
   visible?: boolean;
+  shown?: boolean;
 }
 
 interface MobileNavHeaderProps {
@@ -53,10 +56,26 @@ interface MobileNavMenuProps {
 export const Navbar = ({ children, className }: NavbarProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
+  const hideTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [visible, setVisible] = useState(false);
+  const [shown, setShown] = useState(true);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    setVisible(latest > 80);
+    const isPastThreshold = latest > 80;
+    setVisible(isPastThreshold);
+
+    if (!isPastThreshold) {
+      setShown(true);
+      if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
+      hideTimeoutRef.current = null;
+      return;
+    }
+
+    setShown(true);
+    if (hideTimeoutRef.current) clearTimeout(hideTimeoutRef.current);
+    hideTimeoutRef.current = setTimeout(() => {
+      setShown(false);
+    }, 3000);
   });
 
   return (
@@ -68,7 +87,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
         React.isValidElement(child)
           ? React.cloneElement(
               child as React.ReactElement<{ visible?: boolean }>,
-              { visible },
+              { visible, shown },
             )
           : child,
       )}
@@ -78,27 +97,29 @@ export const Navbar = ({ children, className }: NavbarProps) => {
 
 /* ─────────────────── NavBody (desktop pill) ─────────────────── */
 
-export const NavBody = ({ children, className, visible }: NavBodyProps) => {
+export const NavBody = ({ children, className, visible, shown }: NavBodyProps) => {
   return (
     <motion.div
       animate={{
-        backdropFilter: visible ? "blur(16px) saturate(140%)" : "blur(0px)",
+        opacity: shown === false ? 0 : 1,
+        backdropFilter: visible ? "blur(18px) saturate(150%)" : "blur(12px) saturate(150%)",
         boxShadow: visible
-          ? "0 8px 48px -12px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.06)"
-          : "none",
-        width: visible ? "70%" : "100%",
-        y: visible ? 12 : 0,
-        borderRadius: visible ? "9999px" : "2px",
-        paddingTop: visible ? "0.6rem" : "0.75rem",
-        paddingBottom: visible ? "0.6rem" : "0.75rem",
-        paddingLeft: visible ? "1.5rem" : "1.25rem",
-        paddingRight: visible ? "1.5rem" : "1.25rem",
+          ? "0 22px 70px -26px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.08)"
+          : "0 10px 40px -24px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06)",
+        width: visible ? "78%" : "100%",
+        y: shown === false ? -18 : visible ? 14 : 10,
+        borderRadius: "9999px",
+        paddingTop: visible ? "0.6rem" : "0.7rem",
+        paddingBottom: visible ? "0.6rem" : "0.7rem",
+        paddingLeft: visible ? "1.5rem" : "1.35rem",
+        paddingRight: visible ? "1.5rem" : "1.35rem",
       }}
-      transition={{ type: "spring", stiffness: 220, damping: 44 }}
-      style={{ minWidth: "1000px" }}
+      transition={{ type: "spring", stiffness: 240, damping: 44 }}
+      style={{ maxWidth: "1480px", minWidth: "1000px" }}
       className={cn(
-        "relative z-[60] mx-auto hidden w-full max-w-[1480px] flex-row items-center justify-between self-start border border-white/[0.06] bg-background/10 lg:flex",
+        "relative z-[60] mx-auto hidden w-full flex-row items-center justify-between self-start border border-white/[0.08] bg-background/15 lg:flex",
         visible && "bg-background/70",
+        shown === false && "pointer-events-none",
         className,
       )}
     >
@@ -147,24 +168,26 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
 
 /* ─────────────────── MobileNav (mobile pill) ─────────────────── */
 
-export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
+export const MobileNav = ({ children, className, visible, shown }: MobileNavProps) => {
   return (
     <motion.div
       animate={{
-        backdropFilter: visible ? "blur(16px) saturate(140%)" : "blur(0px)",
+        opacity: shown === false ? 0 : 1,
+        backdropFilter: visible ? "blur(18px) saturate(150%)" : "blur(12px) saturate(150%)",
         boxShadow: visible
-          ? "0 8px 48px -12px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.06)"
-          : "none",
+          ? "0 22px 70px -26px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.08)"
+          : "0 10px 40px -24px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06)",
         width: visible ? "92%" : "100%",
         paddingLeft: visible ? "16px" : "0px",
         paddingRight: visible ? "16px" : "0px",
-        borderRadius: visible ? "12px" : "2px",
-        y: visible ? 12 : 0,
+        borderRadius: visible ? "14px" : "14px",
+        y: shown === false ? -18 : visible ? 14 : 10,
       }}
       transition={{ type: "spring", stiffness: 220, damping: 44 }}
       className={cn(
-        "relative z-50 mx-auto flex w-full max-w-[calc(100vw-2rem)] flex-col items-center justify-between border border-white/[0.06] bg-background/10 px-0 py-2 lg:hidden",
+        "relative z-50 mx-auto flex w-full max-w-[calc(100vw-2rem)] flex-col items-center justify-between border border-white/[0.08] bg-background/15 px-0 py-2 lg:hidden",
         visible && "bg-background/70",
+        shown === false && "pointer-events-none",
         className,
       )}
     >
@@ -260,38 +283,22 @@ export const MobileNavToggle = ({
   );
 };
 
-/* ─────────────────── NavbarLogo (Promax) ─────────────────── */
+/* ─────────────────── NavbarLogo ─────────────────── */
 
 export const NavbarLogo = () => {
   return (
     <a
       href="/"
-      aria-label="ProMax Transport & Logistiek"
+      aria-label="Ipekçi Slachterij"
       className="relative z-20 flex items-center gap-3 px-2 py-1 transition-opacity duration-200 hover:opacity-80"
     >
       <img
-        src={promaxLogo}
-        alt="ProMax Transport & Logistiek"
-        className="h-10 sm:h-10 w-auto select-none transition-all duration-300"
+        src={IPEKCI_LOGO_URL}
+        alt="Ipekçi Slachterij"
+        className="h-9 w-auto select-none transition-all duration-300 sm:h-10"
         loading="eager"
         decoding="async"
       />
-      
-      {/* Premium text separator and brand name - Manrope Font */}
-      <div className="hidden sm:flex flex-col">
-        <h1 className="text-xs sm:text-sm font-bold tracking-[0.1em] text-foreground leading-tight font-[Manrope]">
-          ProMax Transport &amp; Logistiek
-        </h1>
-        <div className="flex items-center gap-2 mt-0.5">
-          <span className="text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.25em] text-primary font-[Manrope]">
-            Logistics
-          </span>
-          <span className="h-1 w-1 rounded-full bg-primary/60" />
-          <span className="text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.25em] text-foreground/50 font-[Manrope]">
-            Truckservice
-          </span>
-        </div>
-      </div>
     </a>
   );
 };
@@ -316,7 +323,7 @@ export const NavbarButton = ({
   | React.ComponentPropsWithoutRef<"button">
 )) => {
   const base =
-    "inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-sm px-3 py-1.5 sm:px-4 sm:py-2 text-center text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.15em] transition-all duration-200 hover:-translate-y-px active:scale-[0.97] font-[Manrope]";
+    "inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-sm px-3 py-1.5 text-center text-[10px] font-semibold uppercase tracking-[0.15em] transition-all duration-200 hover:-translate-y-px active:scale-[0.97] sm:px-4 sm:py-2 sm:text-[11px]";
 
   const variants = {
     primary:

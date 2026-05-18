@@ -185,7 +185,7 @@ export const MobileNav = ({ children, className, visible, shown }: MobileNavProp
       }}
       transition={{ type: "spring", stiffness: 220, damping: 44 }}
       className={cn(
-        "relative z-50 mx-auto flex w-full max-w-[calc(100vw-2rem)] flex-col items-center justify-between border border-white/[0.08] bg-background/15 px-0 py-2 lg:hidden",
+        "relative z-50 mx-auto flex w-full max-w-[calc(100vw-2rem)] flex-col items-center justify-between border border-white/[0.08] bg-background/15 px-0 py-1.5 lg:hidden",
         visible && "bg-background/70",
         shown === false && "pointer-events-none",
         className,
@@ -230,7 +230,7 @@ export const MobileNavMenu = ({
           exit={{ opacity: 0, y: -8, scale: 0.98 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
           className={cn(
-            "absolute inset-x-0 top-16 z-50 flex w-full flex-col items-start justify-start gap-4 rounded-lg border border-white/[0.08] bg-background/90 px-4 py-6 shadow-[0_16px_48px_-8px_rgba(0,0,0,0.6)] backdrop-blur-xl",
+            "absolute inset-x-0 top-14 z-50 flex w-full flex-col items-start justify-start gap-4 rounded-lg border border-white/[0.08] bg-background/90 px-4 py-6 shadow-[0_16px_48px_-8px_rgba(0,0,0,0.6)] backdrop-blur-xl",
             className,
           )}
         >
@@ -254,7 +254,7 @@ export const MobileNavToggle = ({
     <button
       onClick={onClick}
       aria-label={isOpen ? "Sluit menu" : "Open menu"}
-      className="relative flex h-9 w-9 items-center justify-center rounded-sm text-foreground transition-colors duration-200 hover:bg-white/[0.07]"
+      className="relative flex h-8 w-8 items-center justify-center rounded-sm text-foreground transition-colors duration-200 hover:bg-white/[0.07]"
     >
       <AnimatePresence mode="wait" initial={false}>
         {isOpen ? (
@@ -265,7 +265,7 @@ export const MobileNavToggle = ({
             exit={{ rotate: 90, opacity: 0 }}
             transition={{ duration: 0.18 }}
           >
-            <IconX size={20} className="text-foreground" />
+            <IconX size={18} className="text-foreground" />
           </motion.span>
         ) : (
           <motion.span
@@ -275,7 +275,7 @@ export const MobileNavToggle = ({
             exit={{ rotate: -90, opacity: 0 }}
             transition={{ duration: 0.18 }}
           >
-            <IconMenu2 size={20} className="text-foreground" />
+            <IconMenu2 size={18} className="text-foreground" />
           </motion.span>
         )}
       </AnimatePresence>
@@ -295,7 +295,7 @@ export const NavbarLogo = () => {
       <img
         src={IPEKCI_LOGO_URL}
         alt="Ipekçi Slachterij"
-        className="h-9 w-auto select-none transition-all duration-300 sm:h-10"
+        className="h-8 w-auto select-none transition-all duration-300 sm:h-10"
         loading="eager"
         decoding="async"
       />

@@ -527,7 +527,7 @@ function AssortimentUnifiedCard({
           ) : null}
         </div>
 
-        <div className="relative flex min-h-[520px] flex-col justify-end p-7">
+        <div className="relative flex min-h-[460px] flex-col justify-end p-7 sm:min-h-[520px]">
           <div className="h-px w-10 bg-[#B31217]" />
           <div className="mt-6 font-display text-3xl font-medium leading-[1.03] tracking-[-0.03em] text-[#F5F2ED]">
             {title}
@@ -1649,16 +1649,16 @@ function HomePage() {
             </div>
 
             <div className="relative lg:col-span-8">
-              <div className="pointer-events-none absolute inset-y-0 -left-6 right-0 rounded-[32px] border border-white/5 bg-white/[0.02] backdrop-blur-[2px]" />
-              <div className="pointer-events-none absolute inset-y-0 -left-6 right-0 rounded-[32px] bg-[radial-gradient(980px_640px_at_20%_20%,rgba(255,255,255,0.10)_0%,transparent_60%)]" />
-              <div className="pointer-events-none absolute inset-y-0 -left-6 right-0 rounded-[32px] bg-[radial-gradient(980px_720px_at_70%_70%,rgba(179,18,23,0.22)_0%,transparent_60%)]" />
-              <div className="pointer-events-none absolute inset-y-0 -left-6 right-0 rounded-[32px] bg-[radial-gradient(920px_640px_at_88%_24%,rgba(198,160,98,0.10)_0%,transparent_62%)]" />
-              <div className="pointer-events-none absolute inset-y-0 -left-6 right-0 rounded-[32px] bg-[linear-gradient(180deg,rgba(0,0,0,0.22)_0%,rgba(0,0,0,0.45)_100%)]" />
+              <div className="relative overflow-hidden rounded-[32px] border border-white/5 bg-white/[0.02] shadow-[0_44px_140px_-120px_rgba(0,0,0,0.95)] backdrop-blur-[2px]">
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(980px_640px_at_20%_20%,rgba(255,255,255,0.10)_0%,transparent_60%)]" />
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(980px_720px_at_70%_70%,rgba(179,18,23,0.22)_0%,transparent_60%)]" />
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(920px_640px_at_88%_24%,rgba(198,160,98,0.10)_0%,transparent_62%)]" />
+                <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.22)_0%,rgba(0,0,0,0.52)_100%)]" />
 
-              <div
-                ref={eindproductenScrollerRef}
-                className="relative flex gap-6 overflow-x-auto px-6 py-6 pb-7 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-              >
+                <div
+                  ref={eindproductenScrollerRef}
+                  className="relative flex gap-5 overflow-x-auto px-4 py-5 pb-6 sm:gap-6 sm:px-6 sm:py-6 sm:pb-7 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                >
                 {[
                   {
                     category: "Rundvlees",
@@ -1772,6 +1772,7 @@ function HomePage() {
                 ))}
 
                 <div className="w-2 shrink-0" />
+              </div>
               </div>
 
               {eindproductenCanScrollRight ? (

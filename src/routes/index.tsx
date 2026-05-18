@@ -1616,15 +1616,23 @@ function HomePage() {
 
           <div className="mt-12 grid gap-12 lg:grid-cols-12 lg:items-center">
             <div className="lg:col-span-4">
-              <div className="font-display text-[clamp(2.2rem,3.3vw,3.2rem)] font-medium leading-[1.02] tracking-[-0.03em] text-[#F5F2ED]">
-                <span className="italic">Eindproducten</span>
+              <div className="relative">
+                <div className="font-display text-[clamp(2.2rem,3.3vw,3.2rem)] font-medium leading-[1.02] tracking-[-0.03em] text-[#F5F2ED]">
+                  <span className="italic">Eindproducten</span>
+                </div>
+                <div className="mt-4 text-[10px] font-semibold uppercase tracking-[0.34em] text-[#B31217]">
+                  PREMIUM KWALITEIT
+                </div>
+
+                <div className="relative mt-6 h-px w-24 bg-[rgba(198,160,98,0.55)]">
+                  <div className="absolute left-8 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rotate-45 bg-[#B31217]" />
+                </div>
+
+                <p className="mt-6 max-w-[420px] text-sm leading-relaxed text-[#B9B9B9]">
+                  Onze eindproducten worden gemaakt van ons eigen halalvlees. Kebabstaafjes, hamburgers,
+                  kipburgers en meer voor supermarkten, slagerijen en restaurants.
+                </p>
               </div>
-              <div className="mt-4 text-[10px] font-semibold uppercase tracking-[0.34em] text-[#B31217]">
-                PREMIUM KWALITEIT
-              </div>
-              <p className="mt-6 max-w-[420px] text-sm leading-relaxed text-[#B9B9B9]">
-                {endProducts.text}
-              </p>
 
               <div className="mt-8">
                 <Link
@@ -1641,9 +1649,15 @@ function HomePage() {
             </div>
 
             <div className="relative lg:col-span-8">
+              <div className="pointer-events-none absolute inset-y-0 -left-6 right-0 rounded-[32px] border border-white/5 bg-white/[0.02] backdrop-blur-[2px]" />
+              <div className="pointer-events-none absolute inset-y-0 -left-6 right-0 rounded-[32px] bg-[radial-gradient(980px_640px_at_20%_20%,rgba(255,255,255,0.10)_0%,transparent_60%)]" />
+              <div className="pointer-events-none absolute inset-y-0 -left-6 right-0 rounded-[32px] bg-[radial-gradient(980px_720px_at_70%_70%,rgba(179,18,23,0.22)_0%,transparent_60%)]" />
+              <div className="pointer-events-none absolute inset-y-0 -left-6 right-0 rounded-[32px] bg-[radial-gradient(920px_640px_at_88%_24%,rgba(198,160,98,0.10)_0%,transparent_62%)]" />
+              <div className="pointer-events-none absolute inset-y-0 -left-6 right-0 rounded-[32px] bg-[linear-gradient(180deg,rgba(0,0,0,0.22)_0%,rgba(0,0,0,0.45)_100%)]" />
+
               <div
                 ref={eindproductenScrollerRef}
-                className="flex gap-6 overflow-x-auto pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                className="relative flex gap-6 overflow-x-auto px-6 py-6 pb-7 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
               >
                 {[
                   {
@@ -1668,11 +1682,12 @@ function HomePage() {
                     whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                     viewport={{ once: true, margin: "-120px" }}
                     transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-                    className="group relative w-[270px] shrink-0 overflow-hidden rounded-3xl border border-black/10 bg-[#F5F2ED] shadow-[0_26px_90px_-60px_rgba(0,0,0,0.70)]"
+                    className="group relative w-[270px] shrink-0 overflow-hidden rounded-3xl border border-black/10 bg-[#F5F2ED] shadow-[0_34px_120px_-85px_rgba(0,0,0,0.75)] transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] hover:-translate-y-1"
                   >
                     <div aria-hidden className="pointer-events-none absolute inset-0">
                       <div className="absolute inset-0 bg-[radial-gradient(520px_360px_at_30%_18%,rgba(0,0,0,0.06)_0%,transparent_62%)]" />
                       <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[rgba(179,18,23,0.14)] blur-[110px]" />
+                      <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.35),transparent)]" />
                     </div>
 
                     <div className="relative p-7">

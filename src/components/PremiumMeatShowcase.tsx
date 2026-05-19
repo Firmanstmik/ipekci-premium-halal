@@ -1,12 +1,22 @@
 import { memo, useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowUpRight, CalendarDays, Flame, Sparkles, UtensilsCrossed } from "lucide-react";
+import {
+  ArrowUpRight,
+  Award,
+  Beef,
+  CalendarDays,
+  Flame,
+  ShieldCheck,
+  Sparkles,
+  Truck,
+  UtensilsCrossed,
+} from "lucide-react";
 import cowImg from "@/assets/meat-cow-hero.jpg";
-import ribeyeImg from "@/assets/meat-cut-ribeye.jpg";
-import tenderloinImg from "@/assets/meat-cut-tenderloin.jpg";
-import sirloinImg from "@/assets/meat-cut-sirloin.jpg";
-import brisketImg from "@/assets/meat-cut-brisket.jpg";
-import chuckImg from "@/assets/meat-cut-chuck.jpg";
+import ribeyeImg from "@/assets/meat-cut-ribeye.avif";
+import tenderloinImg from "@/assets/meat-cut-tenderloin.avif";
+import sirloinImg from "@/assets/meat-cut-sirloin.avif";
+import brisketImg from "@/assets/meat-cut-brisket.avif";
+import chuckImg from "@/assets/meat-cut-chuck.avif";
 
 type CutSpecIconKey = "tender" | "flavor" | "prep" | "fresh";
 type Tier = "signature" | "standard";
@@ -108,6 +118,33 @@ const CUTS: Cut[] = [
   },
 ];
 
+const TRUST = [
+  {
+    icon: Award,
+    label: "HALAL & BETROUWBAAR",
+    title: "100% Halal gecertificeerd",
+    desc: "Al ons vlees voldoet aan de hoogste islamitische normen en waarden.",
+  },
+  {
+    icon: Beef,
+    label: "PREMIUM KWALITEIT",
+    title: "Geselecteerd & gecontroleerd",
+    desc: "Alleen het beste vlees, zorgvuldig geselecteerd door onze experts.",
+  },
+  {
+    icon: Truck,
+    label: "SNEL & BETROUWBAAR",
+    title: "Snelle levering",
+    desc: "Dagelijks vers geleverd door heel Nederland en daarbuiten.",
+  },
+  {
+    icon: ShieldCheck,
+    label: "VOLLEDIGE TRACEERBAARHEID",
+    title: "Van boer tot klant",
+    desc: "Volledige controle over kwaliteit, herkomst en verwerking.",
+  },
+] as const;
+
 function specIcon(k: CutSpecIconKey) {
   switch (k) {
     case "tender":
@@ -152,11 +189,11 @@ export const PremiumMeatShowcase = memo(function PremiumMeatShowcase() {
               Premium rund showcase
             </span>
           </div>
-          <h2 className="mt-7 font-display text-[clamp(2.6rem,3.6vw,4.2rem)] font-medium leading-[1.02] tracking-[-0.03em] text-foreground">
+          <h2 className="mt-7 text-balance font-display text-[clamp(2.4rem,3.6vw,4.2rem)] font-medium leading-[1.02] tracking-[-0.03em] text-foreground">
             Ontdek onze{" "}
             <span className="italic text-[rgba(226,192,141,0.92)]">premium snijstukken</span>
           </h2>
-          <p className="mt-6 text-sm leading-relaxed text-[rgba(245,241,235,0.70)] sm:text-[15px]">
+          <p className="mt-6 text-pretty text-sm leading-relaxed text-[rgba(245,241,235,0.70)] sm:text-[15px]">
             Klik op een hotspot om details te zien over malsheid, smaak en ideale bereiding. Ontworpen als een
             luxe, interactieve ervaring — volledig native in het Ipekçi systeem.
           </p>
@@ -164,12 +201,38 @@ export const PremiumMeatShowcase = memo(function PremiumMeatShowcase() {
 
         <div className="mt-12 grid grid-cols-1 gap-8 lg:mt-16 lg:grid-cols-12 lg:items-stretch lg:gap-10">
           <motion.div
-            initial={reduceMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={
+              reduceMotion
+                ? { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }
+                : { opacity: 0, x: -56, y: 12, scale: 0.99, filter: "blur(10px)" }
+            }
+            whileInView={
+              reduceMotion
+                ? { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }
+                : { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }
+            }
             viewport={{ once: true, margin: "-120px" }}
-            transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-7"
+            transition={{
+              duration: 1.65,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="relative lg:col-span-7"
           >
+            {!reduceMotion && (
+              <motion.div
+                aria-hidden
+                initial={{ x: "-130%", opacity: 0 }}
+                whileInView={{ x: "130%", opacity: [0, 0.25, 0] }}
+                viewport={{ once: true, margin: "-120px" }}
+                transition={{ duration: 1.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                className="pointer-events-none absolute inset-0 z-10"
+                style={{
+                  mixBlendMode: "screen",
+                  background:
+                    "linear-gradient(110deg, transparent 0%, rgba(226,192,141,0.10) 40%, rgba(226,192,141,0.22) 50%, rgba(226,192,141,0.10) 60%, transparent 100%)",
+                }}
+              />
+            )}
             <div className="relative aspect-[5/4] w-full overflow-hidden rounded-[28px] border border-white/10 bg-black/40 shadow-[0_60px_160px_-120px_rgba(0,0,0,0.95)]">
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_620px_at_30%_35%,rgba(255,255,255,0.08)_0%,transparent_62%)]" />
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(720px_520px_at_65%_50%,rgba(226,192,141,0.12)_0%,transparent_62%)]" />
@@ -309,13 +372,42 @@ export const PremiumMeatShowcase = memo(function PremiumMeatShowcase() {
           </motion.div>
 
           <motion.div
-            initial={reduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 24 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={
+              reduceMotion
+                ? { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }
+                : { opacity: 0, x: 56, y: 12, scale: 0.992, filter: "blur(10px)" }
+            }
+            whileInView={
+              reduceMotion
+                ? { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }
+                : { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }
+            }
             viewport={{ once: true, margin: "-120px" }}
-            transition={{ duration: 0.95, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-5"
+            transition={{
+              duration: 1.55,
+              delay: 0.12,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="relative lg:col-span-5"
           >
-            <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[color-mix(in_oklab,var(--background)_70%,transparent)] shadow-[0_80px_170px_-135px_rgba(0,0,0,0.95)] backdrop-blur-[18px]">
+            {!reduceMotion && (
+              <motion.div
+                aria-hidden
+                initial={{ x: "130%", opacity: 0 }}
+                whileInView={{ x: "-130%", opacity: [0, 0.22, 0] }}
+                viewport={{ once: true, margin: "-120px" }}
+                transition={{ duration: 1.55, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                className="pointer-events-none absolute inset-0 z-10"
+                style={{
+                  mixBlendMode: "screen",
+                  background:
+                    "linear-gradient(250deg, transparent 0%, rgba(177,18,23,0.10) 42%, rgba(226,192,141,0.16) 50%, rgba(177,18,23,0.10) 58%, transparent 100%)",
+                }}
+              />
+            )}
+            <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[color-mix(in_oklab,var(--background)_72%,transparent)] shadow-[0_90px_190px_-140px_rgba(0,0,0,0.96)] backdrop-blur-[18px]">
+              <div className="pointer-events-none absolute inset-0 border border-white/[0.03]" />
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_700px_at_25%_0%,rgba(255,255,255,0.06)_0%,transparent_62%)]" />
               <div className="pointer-events-none absolute -right-28 -top-28 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(226,192,141,0.16),transparent_70%)] blur-2xl" />
 
               <AnimatePresence mode="wait">
@@ -327,76 +419,54 @@ export const PremiumMeatShowcase = memo(function PremiumMeatShowcase() {
                   transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
                   className="relative"
                 >
-                  <div className="sm:hidden">
-                    <div className="relative aspect-[16/10] overflow-hidden">
+                  <div className="relative overflow-hidden">
+                    <div className="relative aspect-[16/11] overflow-hidden sm:aspect-[16/10]">
                       <img
                         src={active.image}
                         alt={active.name}
                         className="h-full w-full object-cover"
                         loading="lazy"
                         decoding="async"
-                        width={900}
-                        height={700}
+                        width={1100}
+                        height={820}
                       />
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(520px_280px_at_25%_15%,rgba(226,192,141,0.14)_0%,transparent_62%)]" />
-                    </div>
-                    <div className="px-6 pt-6">
-                      <div className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#B11217]">
-                        {active.label}
-                      </div>
-                      <h3 className="mt-3 font-display text-[clamp(2.0rem,7vw,2.6rem)] font-medium leading-[1.05] tracking-[-0.03em] text-foreground">
-                        {active.name}
-                      </h3>
-                      <p className="mt-4 text-sm leading-relaxed text-[rgba(245,241,235,0.72)]">
-                        {active.description}
-                      </p>
-                    </div>
-                  </div>
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/10" />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent" />
+                      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(620px_340px_at_18%_18%,rgba(226,192,141,0.14)_0%,transparent_62%)]" />
+                      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(680px_380px_at_75%_35%,rgba(177,18,23,0.16)_0%,transparent_62%)]" />
 
-                  <div className="relative hidden min-h-[340px] sm:block">
-                    <div className="absolute inset-y-0 right-0 w-[52%]">
-                      <img
-                        src={active.image}
-                        alt={active.name}
-                        className="h-full w-full object-cover"
-                        loading="lazy"
-                        decoding="async"
-                        width={900}
-                        height={900}
-                      />
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/90 via-black/35 to-transparent" />
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/25" />
-                      <div className="pointer-events-none absolute -left-10 top-1/2 h-72 w-72 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(177,18,23,0.22),transparent_70%)] blur-3xl" />
-                    </div>
-
-                    <div className="relative z-10 max-w-[56%] p-8 md:p-10">
-                      <div className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#B11217]">
-                        {active.label}
+                      <div className="absolute inset-x-0 bottom-10 px-5 sm:bottom-12 sm:px-7 md:bottom-14 md:px-8">
+                        <div className="max-w-[520px] drop-shadow-[0_22px_80px_rgba(0,0,0,0.65)]">
+                          <div className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#B11217]">
+                            {active.label}
+                          </div>
+                          <h3 className="mt-3 text-balance font-display text-[clamp(2.0rem,5.6vw,3.0rem)] font-medium leading-[1.05] tracking-[-0.03em] text-foreground">
+                            {active.name}
+                          </h3>
+                          <p className="mt-4 max-w-[42ch] text-pretty text-sm leading-relaxed text-[rgba(245,241,235,0.74)] sm:text-[15px]">
+                            {active.description}
+                          </p>
+                        </div>
                       </div>
-                      <h3 className="mt-4 font-display text-[clamp(2.2rem,2.6vw,3.0rem)] font-medium leading-[1.05] tracking-[-0.03em] text-foreground">
-                        {active.name}
-                      </h3>
-                      <p className="mt-5 text-sm leading-relaxed text-[rgba(245,241,235,0.72)] md:text-[15px]">
-                        {active.description}
-                      </p>
                     </div>
                   </div>
 
                   <div className="mx-6 mt-7 h-px bg-gradient-to-r from-transparent via-[rgba(226,192,141,0.26)] to-transparent sm:mx-8 md:mx-10" />
 
-                  <div className="grid grid-cols-2 gap-5 px-6 pt-7 sm:px-8 md:grid-cols-4 md:px-10">
+                  <div className="mx-auto grid w-full max-w-[640px] grid-cols-2 justify-items-center gap-6 px-6 pt-7 sm:px-8 md:max-w-none md:grid-cols-4 md:gap-8 md:px-10">
                     {active.specs.map((s) => {
                       const Icon = specIcon(s.icon);
                       return (
-                        <div key={`${active.id}-${s.label}`} className="text-center">
+                        <div key={`${active.id}-${s.label}`} className="flex min-w-0 flex-col items-center text-center">
                           <div className="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/[0.03] text-[rgba(226,192,141,0.92)]">
                             <Icon className="h-4 w-4" />
                           </div>
-                          <div className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/90">
+                          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground/90">
                             {s.label}
                           </div>
-                          <div className="mt-1 text-[11px] text-foreground/60">{s.value}</div>
+                          <div className="mt-1 max-w-[11.5rem] text-pretty text-[11px] leading-snug text-foreground/60">
+                            {s.value}
+                          </div>
                         </div>
                       );
                     })}
@@ -405,52 +475,80 @@ export const PremiumMeatShowcase = memo(function PremiumMeatShowcase() {
                   <div className="px-6 pb-8 pt-8 sm:px-8 md:px-10 md:pb-10">
                     <a
                       href="/assortiment#rundvlees"
-                      className="group inline-flex w-full items-center justify-center gap-2 rounded-full border border-[rgba(226,192,141,0.35)] bg-transparent py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-[rgba(226,192,141,0.92)] shadow-[0_0_0_1px_rgba(255,255,255,0.03)] transition-all duration-500 hover:border-[rgba(226,192,141,0.60)] hover:bg-white/[0.02] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.18),0_0_58px_-24px_rgba(226,192,141,0.30)] active:translate-y-px"
+                      className="group inline-flex w-full items-center justify-center gap-2 rounded-full border border-[rgba(226,192,141,0.35)] bg-transparent py-4 text-[11px] font-semibold uppercase tracking-[0.24em] text-[rgba(226,192,141,0.92)] shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_30px_110px_-80px_rgba(0,0,0,0.95)] transition-all duration-500 hover:border-[rgba(226,192,141,0.70)] hover:bg-white/[0.02] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.20),0_0_64px_-26px_rgba(226,192,141,0.32),0_30px_120px_-80px_rgba(0,0,0,0.95)] active:translate-y-px"
                     >
-                      Bekijk rundvlees assortiment
+                      Bekijk producten
                       <ArrowUpRight className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </a>
                   </div>
                 </motion.div>
               </AnimatePresence>
             </div>
-
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {CUTS.map((c) => {
-                const isActive = c.id === activeId;
-                return (
-                  <button
-                    key={`quick-${c.id}`}
-                    onClick={() => setActiveId(c.id)}
-                    className={`group flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-left transition-all duration-300 ${
-                      isActive
-                        ? "border-[rgba(226,192,141,0.40)] bg-white/[0.03] shadow-[0_26px_90px_-70px_rgba(0,0,0,0.9)]"
-                        : "border-white/10 bg-black/30 hover:border-[rgba(226,192,141,0.24)] hover:bg-white/[0.02]"
-                    }`}
-                  >
-                    <div>
-                      <div className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[rgba(226,192,141,0.80)]">
-                        {c.label}
-                      </div>
-                      <div className="mt-1 text-xs font-semibold text-foreground/85">{c.name}</div>
-                    </div>
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[0.02] text-foreground/55 transition-colors group-hover:text-foreground/80">
-                      <span
-                        className="h-2 w-2 rounded-full"
-                        style={{
-                          backgroundColor: `rgba(177,18,23,${clamp(c.tier === "signature" ? 0.88 : 0.65, 0, 1)})`,
-                          boxShadow: `0 0 0 1px rgba(226,192,141,0.22), 0 0 22px -10px rgba(177,18,23,0.7)`,
-                        }}
-                      />
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
           </motion.div>
+        </div>
+
+        <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:max-w-[720px]">
+          {CUTS.map((c) => {
+            const isActive = c.id === activeId;
+            return (
+              <button
+                key={`quick-${c.id}`}
+                onClick={() => setActiveId(c.id)}
+                className={`group flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-left transition-all duration-300 ${
+                  isActive
+                    ? "border-[rgba(226,192,141,0.40)] bg-white/[0.03] shadow-[0_26px_90px_-70px_rgba(0,0,0,0.9)]"
+                    : "border-white/10 bg-black/30 hover:border-[rgba(226,192,141,0.24)] hover:bg-white/[0.02]"
+                }`}
+              >
+                <div className="min-w-0">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[rgba(226,192,141,0.80)]">
+                    {c.label}
+                  </div>
+                  <div className="mt-1 truncate text-xs font-semibold text-foreground/85">{c.name}</div>
+                </div>
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[0.02] text-foreground/55 transition-colors group-hover:text-foreground/80">
+                  <span
+                    className="h-2 w-2 rounded-full"
+                    style={{
+                      backgroundColor: `rgba(177,18,23,${clamp(c.tier === "signature" ? 0.88 : 0.65, 0, 1)})`,
+                      boxShadow: `0 0 0 1px rgba(226,192,141,0.22), 0 0 22px -10px rgba(177,18,23,0.7)`,
+                    }}
+                  />
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="relative mt-8 overflow-hidden rounded-[28px] border border-white/10 bg-[color-mix(in_oklab,var(--background)_70%,transparent)] shadow-[0_70px_160px_-130px_rgba(0,0,0,0.95)] backdrop-blur-[18px] sm:mt-10">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(1100px_520px_at_25%_0%,rgba(226,192,141,0.08)_0%,transparent_62%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_520px_at_85%_35%,rgba(177,18,23,0.10)_0%,transparent_62%)]" />
+          <div className="grid divide-y divide-white/10 lg:grid-cols-4 lg:divide-x lg:divide-y-0">
+            {TRUST.map((t) => {
+              const Icon = t.icon;
+              return (
+                <div
+                  key={t.title}
+                  className="group relative flex min-w-0 items-start gap-4 px-6 py-6 transition-colors duration-500 hover:bg-white/[0.02] sm:px-7 sm:py-7"
+                >
+                  <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-white/10 bg-white/[0.03] text-[rgba(226,192,141,0.92)] shadow-[0_0_0_1px_rgba(226,192,141,0.10),0_0_34px_-18px_rgba(226,192,141,0.18)] transition-colors duration-500 group-hover:border-[rgba(226,192,141,0.26)]">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#B11217]">
+                      {t.label}
+                    </div>
+                    <div className="mt-2 font-display text-[18px] font-medium leading-[1.05] tracking-[-0.02em] text-foreground">
+                      {t.title}
+                    </div>
+                    <div className="mt-3 text-sm leading-relaxed text-foreground/65">{t.desc}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
   );
 });
-

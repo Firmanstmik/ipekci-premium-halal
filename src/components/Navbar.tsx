@@ -1,6 +1,15 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { useState, useRef } from "react";
-import { ArrowUpRight, ChevronDown, Phone } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  ChevronDown,
+  Gem,
+  Mail,
+  Phone,
+  ShieldCheck,
+  Truck,
+} from "lucide-react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import {
   Navbar as NavbarRoot,
@@ -96,7 +105,7 @@ function PhoneCTA({
       onMouseLeave={handleMouseLeave}
       onClick={onClick}
       href="tel:+31627273763"
-      className={`group relative inline-flex cursor-pointer select-none items-center gap-2 overflow-hidden rounded-sm bg-primary px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-primary-foreground no-underline sm:px-5 sm:py-2 sm:text-[11px] ${className}`}
+      className={`group relative inline-flex cursor-pointer select-none items-center gap-2 overflow-hidden rounded-sm bg-primary px-4 py-1.5 text-[11px] font-semibold tracking-[0.06em] text-primary-foreground no-underline sm:px-5 sm:py-2 sm:text-[12px] ${className}`}
       whileTap={{ scale: 0.96 }}
     >
       {/* ── ambient glow layer ── */}
@@ -150,6 +159,81 @@ function PhoneCTA({
   );
 }
 
+function MainCTA({ onClick, className = "" }: { onClick?: () => void; className?: string }) {
+  return (
+    <Link
+      to="/contact"
+      onClick={onClick}
+      className={`group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-full bg-gradient-to-b from-[#B11217] to-[#7E080C] px-6 py-3 text-[12px] font-semibold tracking-[0.06em] text-[#F5F1EB] transition-[filter,transform] duration-300 hover:brightness-105 active:brightness-95 active:scale-[0.99] ${className}`}
+    >
+      <span className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(520px_240px_at_30%_20%,rgba(245,241,235,0.18)_0%,transparent_62%)]" />
+      <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/35 to-transparent" />
+      <span className="relative">Contact opnemen</span>
+      <ArrowRight
+        size={14}
+        className="relative transition-transform duration-300 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-1"
+      />
+    </Link>
+  );
+}
+
+function TopInfoBar({ visible, shown }: { visible?: boolean; shown?: boolean }) {
+  const infoItems = [
+    { label: "Halal gecertificeerd", Icon: ShieldCheck },
+    { label: "Premium Nederlandse kwaliteit", Icon: Gem },
+    { label: "Snelle levering", Icon: Truck },
+  ] as const;
+
+  return (
+    <motion.div
+      animate={{
+        opacity: shown === false ? 0 : 1,
+        y: shown === false ? -18 : 0,
+      }}
+      transition={{ type: "spring", stiffness: 260, damping: 40 }}
+      style={{ backdropFilter: "none", WebkitBackdropFilter: "none" }}
+      className="pointer-events-none hidden lg:block"
+    >
+      <div className="pointer-events-auto mx-auto mt-2 w-full max-w-[1480px] px-5 sm:px-8 lg:px-12">
+        <div className="flex h-10 items-center justify-end px-2 text-white/90">
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-5">
+              {infoItems.map(({ label, Icon }) => (
+                <div
+                  key={label}
+                  className="group inline-flex items-center gap-2 text-[11px] font-medium tracking-[0.06em] text-white/85 transition-colors duration-300 hover:text-white"
+                >
+                  <Icon size={14} className="text-[rgba(226,192,141,0.92)]" />
+                  <span>{label}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-3 text-[11px] font-medium tracking-[0.06em] text-white/80">
+              <Mail size={14} className="text-[rgba(226,192,141,0.88)]" />
+              <a
+                href="mailto:info@ipekcislachterij.nl"
+                className="transition-colors duration-300 hover:text-white"
+              >
+                info@ipekcislachterij.nl
+              </a>
+              <span className="h-1 w-1 rounded-full bg-[rgba(226,192,141,0.35)]" aria-hidden="true" />
+            </div>
+
+            <a
+              href="tel:+31627273763"
+              className="group inline-flex items-center gap-2 text-[11px] font-medium tracking-[0.06em] text-white/85 transition-colors duration-300 hover:text-white"
+            >
+              <Phone size={14} className="text-[rgba(226,192,141,0.90)]" />
+              <span>+31 6 272 737 63</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 /* ─────────────────────────────────────────────────────────────────
    Navbar
    ─────────────────────────────────────────────────────────────── */
@@ -157,8 +241,18 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [isMobileMenuOpen]);
+
   return (
     <NavbarRoot>
+      <TopInfoBar />
       {/* ── Desktop ────────────────────────────────── */}
       <NavBody>
         {/* Logo */}
@@ -185,7 +279,7 @@ export function Navbar() {
         </div>
 
         {/* Right CTA */}
-        <PhoneCTA />
+        <MainCTA />
       </NavBody>
 
       {/* ── Mobile ─────────────────────────────────── */}
@@ -203,23 +297,32 @@ export function Navbar() {
           onClose={() => setIsMobileMenuOpen(false)}
         >
           <nav className="flex w-full flex-col">
+            <div className="mb-6">
+              <div className="text-[12px] font-medium tracking-[0.10em] text-[rgba(226,192,141,0.75)]">
+                Ipekçi Slachterij
+              </div>
+              <div className="mt-3 text-2xl font-display tracking-[-0.03em] text-white">
+                Premium halalvlees voor B2B.
+              </div>
+            </div>
+
             <Accordion type="multiple" className="w-full">
               <AccordionItem value="assortiment" className="border-white/[0.05]">
-                <AccordionTrigger className="px-1 text-sm uppercase tracking-[0.15em] text-foreground/80 hover:no-underline">
+                  <AccordionTrigger className="px-0 text-base font-medium tracking-[0.06em] text-white/85 hover:no-underline">
                   Assortiment
                 </AccordionTrigger>
-                <AccordionContent className="px-1">
+                <AccordionContent className="px-0">
                   <div className="flex flex-col">
                     {assortment.map((l, i) => (
                       <a
                         key={l.to}
                         href={l.to}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="flex items-center justify-between border-b border-white/[0.05] py-4 text-sm uppercase tracking-[0.15em] text-foreground/70 transition-colors duration-200 hover:text-foreground"
+                        className="flex items-center justify-between border-b border-white/[0.08] py-5 text-[15px] font-medium tracking-[0.04em] text-white/70 transition-colors duration-200 hover:text-white"
                         style={{ animationDelay: `${i * 40}ms` }}
                       >
                         <span>{l.label}</span>
-                        <span className="h-1.5 w-1.5 rounded-full bg-primary/70" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-[rgba(226,192,141,0.65)]" />
                       </a>
                     ))}
                   </div>
@@ -227,21 +330,21 @@ export function Navbar() {
               </AccordionItem>
 
               <AccordionItem value="voorwie" className="border-white/[0.05]">
-                <AccordionTrigger className="px-1 text-sm uppercase tracking-[0.15em] text-foreground/80 hover:no-underline">
+                  <AccordionTrigger className="px-0 text-base font-medium tracking-[0.06em] text-white/85 hover:no-underline">
                   Voor wie
                 </AccordionTrigger>
-                <AccordionContent className="px-1">
+                <AccordionContent className="px-0">
                   <div className="flex flex-col">
                     {segments.map((l, i) => (
                       <a
                         key={l.to}
                         href={l.to}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="flex items-center justify-between border-b border-white/[0.05] py-4 text-sm uppercase tracking-[0.15em] text-foreground/70 transition-colors duration-200 hover:text-foreground"
+                        className="flex items-center justify-between border-b border-white/[0.08] py-5 text-[15px] font-medium tracking-[0.04em] text-white/70 transition-colors duration-200 hover:text-white"
                         style={{ animationDelay: `${i * 40}ms` }}
                       >
                         <span>{l.label}</span>
-                        <span className="h-1.5 w-1.5 rounded-full bg-primary/70" />
+                        <span className="h-1.5 w-1.5 rounded-full bg-[rgba(226,192,141,0.65)]" />
                       </a>
                     ))}
                   </div>
@@ -259,24 +362,28 @@ export function Navbar() {
                   key={l.to}
                   to={l.to}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`flex items-center justify-between border-b border-white/[0.05] px-1 py-4 text-sm uppercase tracking-[0.15em] last:border-0 transition-colors duration-200 ${
-                    isActive ? "text-primary" : "text-foreground/70 hover:text-foreground"
+                  className={`flex items-center justify-between border-b border-white/[0.08] py-5 text-[15px] font-medium tracking-[0.04em] last:border-0 transition-colors duration-200 ${
+                    isActive ? "text-[rgba(226,192,141,0.95)]" : "text-white/70 hover:text-white"
                   }`}
                   style={{ animationDelay: `${i * 40}ms` }}
                 >
                   <span>{l.label}</span>
-                  {isActive && <span className="h-1.5 w-1.5 rounded-full bg-primary" />}
+                  {isActive && <span className="h-1.5 w-1.5 rounded-full bg-[rgba(226,192,141,0.85)]" />}
                 </Link>
               );
             })}
           </nav>
 
           {/* Mobile CTA */}
-          <div className="w-full pt-1">
-            <PhoneCTA
-              className="w-full justify-center"
-              onClick={() => setIsMobileMenuOpen(false)}
-            />
+          <div className="mt-7 w-full">
+            <MainCTA className="w-full" onClick={() => setIsMobileMenuOpen(false)} />
+            <a
+              href="tel:+31627273763"
+              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-6 py-3 text-[12px] font-medium tracking-[0.06em] text-white/75 transition-colors hover:bg-white/[0.06] hover:text-white/90"
+            >
+              <Phone size={14} className="text-[rgba(226,192,141,0.90)]" />
+              <span>Bel direct</span>
+            </a>
           </div>
         </MobileNavMenu>
       </MobileNav>
@@ -289,15 +396,16 @@ function NavLink({ to, label, active }: { to: string; label: string; active: boo
     <Link
       to={to}
       activeOptions={{ exact: to === "/" }}
-      className={`group relative px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 ${
-        active ? "text-foreground" : "text-foreground/60 hover:text-foreground"
+      className={`group relative px-5 py-3 text-[12px] font-medium tracking-[0.08em] transition-colors duration-200 ${
+        active ? "text-white" : "text-white/90 hover:text-white"
       }`}
     >
-      <span className="absolute inset-0 scale-95 rounded-full bg-white/[0.07] opacity-0 transition-all duration-200 group-hover:scale-100 group-hover:opacity-100" />
       {!active && (
-        <span className="absolute inset-x-4 -bottom-0.5 h-px origin-left scale-x-0 bg-primary transition-transform duration-300 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-x-100" />
+        <span className="absolute inset-x-5 -bottom-0.5 h-px origin-left scale-x-0 bg-[rgba(226,192,141,0.75)] transition-transform duration-300 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-x-100" />
       )}
-      {active && <span className="absolute inset-x-0 -bottom-0.5 mx-auto h-0.5 w-4 rounded-full bg-primary" />}
+      {active && (
+        <span className="absolute inset-x-0 -bottom-0.5 mx-auto h-0.5 w-10 rounded-full bg-[rgba(226,192,141,0.85)]" />
+      )}
       <span className="relative z-10">{label}</span>
     </Link>
   );
@@ -383,17 +491,16 @@ function NavDropdown({
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          className={`group relative inline-flex items-center gap-2 px-4 py-2 text-[13px] font-medium tracking-wide outline-none transition-colors duration-200 focus:outline-none focus-visible:ring-1 focus-visible:ring-white/20 data-[state=open]:text-foreground ${
-            active ? "text-foreground" : "text-foreground/60 hover:text-foreground"
+          className={`group relative inline-flex items-center gap-2 px-5 py-3 text-[12px] font-medium tracking-[0.08em] outline-none transition-colors duration-200 focus:outline-none focus-visible:ring-1 focus-visible:ring-white/20 data-[state=open]:text-white ${
+            active ? "text-white" : "text-white/90 hover:text-white"
           }`}
         >
-          <span className="absolute inset-0 scale-95 rounded-full bg-white/[0.07] opacity-0 transition-all duration-200 group-hover:scale-100 group-hover:opacity-100 data-[state=open]:scale-100 data-[state=open]:opacity-100" />
           <span className="relative z-10">{label}</span>
           <ChevronDown
             size={14}
-            className="relative z-10 text-foreground/60 transition-transform duration-300 group-hover:text-foreground/80 data-[state=open]:rotate-180 data-[state=open]:text-foreground/80"
+            className="relative z-10 text-white/80 transition-transform duration-300 group-hover:text-white data-[state=open]:rotate-180 data-[state=open]:text-white"
           />
-          <span className="absolute inset-x-4 -bottom-0.5 h-px origin-left scale-x-0 bg-primary transition-transform duration-300 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-x-100" />
+          <span className="absolute inset-x-5 -bottom-0.5 h-px origin-left scale-x-0 bg-[rgba(226,192,141,0.75)] transition-transform duration-300 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-x-100" />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
@@ -408,7 +515,7 @@ function NavDropdown({
             <div className="p-6">
               <div className="flex items-center justify-between gap-6">
                 <div>
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.28em] text-foreground/55">
+                  <div className="text-[12px] font-medium tracking-[0.10em] text-foreground/55">
                     {isAssortiment ? "Assortiment" : "Voor wie"}
                   </div>
                   <div className="mt-2 font-display text-2xl text-foreground">
@@ -442,7 +549,7 @@ function NavDropdown({
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="flex items-center justify-between gap-4">
-                          <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground/85 transition-colors duration-300 group-hover:text-foreground">
+                          <span className="text-[12px] font-medium tracking-[0.06em] text-foreground/85 transition-colors duration-300 group-hover:text-foreground">
                             {item.label}
                           </span>
                           <ArrowUpRight
@@ -461,7 +568,7 @@ function NavDropdown({
             </div>
 
             <div className="relative border-l border-white/10 bg-white/[0.02] p-6">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.28em] text-foreground/55">
+              <div className="text-[12px] font-medium tracking-[0.10em] text-foreground/55">
                 Uitgelicht
               </div>
               <div className="mt-3 overflow-hidden rounded-2xl border border-white/10 bg-black/20">
@@ -477,7 +584,7 @@ function NavDropdown({
                   />
                   <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/15 to-black/60" />
                   <div className="absolute inset-x-0 bottom-0 p-5">
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground/85">
+                    <div className="text-[12px] font-medium tracking-[0.06em] text-foreground/85">
                       Ipekçi Slachterij
                     </div>
                     <div className="mt-2 text-sm leading-relaxed text-foreground/65">
@@ -488,7 +595,7 @@ function NavDropdown({
                     <div className="mt-4 flex flex-wrap gap-3">
                       <a
                         href={isAssortiment ? "/assortiment" : "/contact"}
-                        className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/35 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground/85 transition-colors hover:border-white/25 hover:bg-black/55"
+                        className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/35 px-4 py-2 text-[12px] font-medium tracking-[0.06em] text-foreground/85 transition-colors hover:border-white/25 hover:bg-black/55"
                       >
                         {isAssortiment ? "Alle producten" : "Word klant"}
                         <ArrowUpRight size={14} className="text-primary" />
@@ -504,7 +611,7 @@ function NavDropdown({
             <DropdownMenuItem
               key={item.to}
               asChild
-              className="cursor-pointer rounded-sm px-3 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground/85 focus:bg-white/[0.06] focus:text-foreground"
+              className="cursor-pointer rounded-sm px-3 py-2.5 text-[12px] font-medium tracking-[0.06em] text-foreground/85 focus:bg-white/[0.06] focus:text-foreground"
             >
               <a href={item.to} className="flex items-center justify-between">
                 <span>{item.label}</span>

@@ -26,7 +26,9 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { MagneticButton } from "@/components/MagneticButton";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 import ipekciIntroVideo from "@/assets/videos/Ipekci_introductie.webm";
-import islamitischeNormenWaardenImage from "@/assets/Islamitische-normen-en-waarden.webp";
+import brandmovie1 from "@/assets/Ipekci_Brandmovie_1.webm";
+import brandmovie2 from "@/assets/Ipekci_Brandmovie_2.webm";
+import brandmovie3 from "@/assets/Ipekci_Brandmovie_3.webm";
 import assortmentLamsvleesImage from "@/assets/Ons assortiment - dombaa.avif";
 import assortmentRundvleesImage from "@/assets/Ons assortiment - sapi.avif";
 import assortmentKipImage from "@/assets/Ons assortiment - ayam.avif";
@@ -473,7 +475,7 @@ function AssortimentUnifiedCard({
       transition={{ duration: 0.95, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
       className="group relative overflow-hidden rounded-3xl border border-[rgba(198,160,98,0.28)] bg-[#070707] shadow-[0_40px_120px_-95px_rgba(0,0,0,0.98)] transition-all duration-700 hover:-translate-y-1 hover:border-[rgba(198,160,98,0.55)] hover:shadow-[0_56px_170px_-120px_rgba(0,0,0,0.98)]"
     >
-      <Link to={`/assortiment#${id}`} className="relative block h-full">
+      <a href={`/assortiment#${id}`} className="relative block h-full">
         <div className="pointer-events-none absolute inset-0">
           <motion.img
             src={image}
@@ -545,7 +547,7 @@ function AssortimentUnifiedCard({
             </div>
           </div>
         </div>
-      </Link>
+      </a>
     </motion.article>
   );
 }
@@ -895,6 +897,7 @@ function HomePage() {
   const eindproductenScrollerRef = useRef<HTMLDivElement>(null);
   const [segmentsCanScrollLeft, setSegmentsCanScrollLeft] = useState(false);
   const [segmentsCanScrollRight, setSegmentsCanScrollRight] = useState(false);
+  const [eindproductenCanScrollLeft, setEindproductenCanScrollLeft] = useState(false);
   const [eindproductenCanScrollRight, setEindproductenCanScrollRight] = useState(false);
   const [heroPoster, setHeroPoster] = useState<string | null>(null);
   const [heroVideoActive, setHeroVideoActive] = useState(false);
@@ -987,6 +990,7 @@ function HomePage() {
       if (!nextEl) return;
       const maxScrollLeft = Math.max(0, nextEl.scrollWidth - nextEl.clientWidth);
       const epsilon = 2;
+      setEindproductenCanScrollLeft(nextEl.scrollLeft > epsilon);
       setEindproductenCanScrollRight(nextEl.scrollLeft < maxScrollLeft - epsilon);
     };
 
@@ -1042,6 +1046,34 @@ function HomePage() {
     };
   }, []);
 
+  const scrollToSnapItem = (
+    ref: React.RefObject<HTMLDivElement | null>,
+    direction: "left" | "right",
+  ) => {
+    const el = ref.current;
+    if (!el) return;
+    const items = Array.from(el.querySelectorAll<HTMLElement>("[data-snap-item]"));
+    if (items.length === 0) return;
+
+    const viewportCenter = el.scrollLeft + el.clientWidth / 2;
+    const epsilon = 1;
+    const centerOf = (it: HTMLElement) => it.offsetLeft + it.offsetWidth / 2;
+    const sorted = items.slice().sort((a, b) => centerOf(a) - centerOf(b));
+
+    const target =
+      direction === "right"
+        ? sorted.find((it) => centerOf(it) > viewportCenter + epsilon) ?? sorted[sorted.length - 1]
+        : sorted
+            .slice()
+            .reverse()
+            .find((it) => centerOf(it) < viewportCenter - epsilon) ?? sorted[0];
+
+    const maxScrollLeft = Math.max(0, el.scrollWidth - el.clientWidth);
+    const targetLeft = target.offsetLeft - (el.clientWidth - target.offsetWidth) / 2;
+    const nextLeft = Math.min(maxScrollLeft, Math.max(0, targetLeft));
+    el.scrollTo({ left: nextLeft, behavior: "smooth" });
+  };
+
   return (
     <SiteLayout>
       <section
@@ -1089,6 +1121,7 @@ function HomePage() {
           </motion.div>
 
           <div className="absolute inset-0 bg-gradient-to-b from-background/44 via-background/6 to-background/46" />
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-black/70 via-black/20 to-transparent" />
           <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(11,11,11,0.86)_0%,rgba(11,11,11,0.50)_34%,rgba(11,11,11,0.16)_54%,rgba(11,11,11,0)_72%)]" />
           <div className="absolute inset-0 bg-[radial-gradient(900px_600px_at_38%_0%,rgba(255,255,255,0.10)_0%,transparent_70%)]" />
           <div className="absolute inset-0 bg-[radial-gradient(1100px_760px_at_50%_48%,rgba(0,0,0,0)_0%,rgba(0,0,0,0)_60%,rgba(0,0,0,0.62)_100%)]" />
@@ -1098,10 +1131,10 @@ function HomePage() {
 
         <motion.div
           style={{ opacity: heroOpacity }}
-          className="relative z-10 mx-auto flex h-full max-w-[1480px] flex-col px-5 pb-10 pt-24 sm:px-8 sm:pb-12 sm:pt-28 lg:px-12 lg:pb-14 lg:pt-32"
+          className="relative z-10 mx-auto flex h-full max-w-[1480px] flex-col px-5 pb-10 pt-32 sm:px-8 sm:pb-12 sm:pt-36 lg:px-12 lg:pb-14 lg:pt-44"
         >
           <div className="flex flex-1 items-center">
-            <div className="w-full max-w-[560px]">
+            <div className="w-full max-w-[660px] lg:max-w-[760px]">
               <motion.p
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -1121,19 +1154,19 @@ function HomePage() {
               </motion.p>
 
               <motion.h1
-                className="mt-7 font-display text-[clamp(3.6rem,5.8vw,6.3rem)] font-semibold leading-[0.92] tracking-[-0.04em] text-foreground"
+                className="mt-7 font-display text-[clamp(3.6rem,5.8vw,6.3rem)] font-semibold leading-[0.96] tracking-[-0.04em] text-foreground"
               >
-                <span className="block overflow-hidden">
+                <span className="block overflow-x-visible overflow-y-hidden pr-2 pb-[0.12em] -mb-[0.12em]">
                   <motion.span
                     initial={reduceMotion ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 36, filter: "blur(14px)" }}
                     animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                     transition={{ delay: 0.26, duration: 1.05, ease: [0.22, 1, 0.36, 1] }}
-                    className="block"
+                    className="block sm:whitespace-nowrap"
                   >
                     Groots in premium
                   </motion.span>
                 </span>
-                <span className="mt-1 block overflow-hidden">
+                <span className="mt-1 block overflow-x-visible overflow-y-hidden pr-2">
                   <motion.span
                     initial={reduceMotion ? { opacity: 1, y: 0, filter: "blur(0px)" } : { opacity: 0, y: 44, filter: "blur(16px)" }}
                     animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -1214,7 +1247,7 @@ function HomePage() {
             </div>
           </motion.div>
 
-          <div className="pointer-events-none absolute right-8 top-28 hidden lg:block">
+          <div className="pointer-events-none absolute right-8 top-40 hidden lg:block">
             <HalalStamp />
           </div>
         </motion.div>
@@ -1305,12 +1338,14 @@ function HomePage() {
                 <CardBody className="relative h-auto w-full rounded-3xl border border-black/10 bg-white/70 p-0 shadow-[0_36px_120px_-80px_rgba(0,0,0,0.55)]">
                   <div className="grid gap-3 p-3 sm:gap-4 sm:p-4 md:grid-cols-12">
                     <CardItem translateZ={24} className="relative w-full overflow-hidden rounded-2xl md:col-span-7 md:row-span-2">
-                      <img
-                        src={IPEKCI_HERO_IMAGE}
-                        alt=""
+                      <video
+                        src={brandmovie1}
+                        muted
+                        loop
+                        playsInline
+                        autoPlay
+                        preload="metadata"
                         aria-hidden
-                        loading="lazy"
-                        decoding="async"
                         className="h-[340px] w-full object-cover md:h-full"
                         style={{ filter: "brightness(0.9) contrast(1.06) saturate(1.02)" }}
                       />
@@ -1319,12 +1354,14 @@ function HomePage() {
                     </CardItem>
 
                     <CardItem translateZ={18} className="relative w-full overflow-hidden rounded-2xl md:col-span-5">
-                      <img
-                        src={islamitischeNormenWaardenImage}
-                        alt=""
+                      <video
+                        src={brandmovie2}
+                        muted
+                        loop
+                        playsInline
+                        autoPlay
+                        preload="metadata"
                         aria-hidden
-                        loading="lazy"
-                        decoding="async"
                         className="h-[170px] w-full object-cover md:h-[210px]"
                         style={{ filter: "brightness(0.9) contrast(1.06) saturate(1.02)" }}
                       />
@@ -1332,12 +1369,14 @@ function HomePage() {
                     </CardItem>
 
                     <CardItem translateZ={18} className="relative w-full overflow-hidden rounded-2xl md:col-span-5">
-                      <img
-                        src="https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/Voor-wie-slagerijen.webp"
-                        alt=""
+                      <video
+                        src={brandmovie3}
+                        muted
+                        loop
+                        playsInline
+                        autoPlay
+                        preload="metadata"
                         aria-hidden
-                        loading="lazy"
-                        decoding="async"
                         className="h-[170px] w-full object-cover md:h-[210px]"
                         style={{ filter: "brightness(0.9) contrast(1.06) saturate(1.02)" }}
                       />
@@ -1490,47 +1529,48 @@ function HomePage() {
               </motion.div>
             </div>
 
-            <div className="lg:col-span-7">
-              <div className="relative">
-                <div className="pointer-events-none absolute right-2 top-1/2 z-10 hidden -translate-y-1/2 items-center lg:flex">
-                  {segmentsCanScrollRight ? (
-                    <button
-                      type="button"
-                      aria-label="Scroll rechts"
-                      onClick={() => {
-                        const el = segmentsScrollerRef.current;
-                        if (!el) return;
-                        el.scrollBy({ left: 360, behavior: "smooth" });
-                      }}
-                      className="pointer-events-auto group grid h-12 w-12 place-items-center rounded-full border border-black/10 bg-white/55 shadow-[0_22px_70px_-46px_rgba(0,0,0,0.52)] backdrop-blur-xl transition-all duration-300 hover:bg-white/75 hover:shadow-[0_30px_90px_-52px_rgba(0,0,0,0.60)] active:scale-[0.98]"
-                    >
-                      <ArrowRight
-                        size={16}
-                        className="text-black/70 transition-transform duration-300 group-hover:translate-x-0.5"
-                      />
-                    </button>
-                  ) : segmentsCanScrollLeft ? (
-                    <button
-                      type="button"
-                      aria-label="Scroll links"
-                      onClick={() => {
-                        const el = segmentsScrollerRef.current;
-                        if (!el) return;
-                        el.scrollBy({ left: -360, behavior: "smooth" });
-                      }}
-                      className="pointer-events-auto group grid h-12 w-12 place-items-center rounded-full border border-black/10 bg-white/55 shadow-[0_22px_70px_-46px_rgba(0,0,0,0.52)] backdrop-blur-xl transition-all duration-300 hover:bg-white/75 hover:shadow-[0_30px_90px_-52px_rgba(0,0,0,0.60)] active:scale-[0.98]"
-                    >
-                      <ArrowRight
-                        size={16}
-                        className="rotate-180 text-black/70 transition-transform duration-300 group-hover:-translate-x-0.5"
-                      />
-                    </button>
-                  ) : null}
+            <div className="min-w-0 lg:col-span-7">
+              <div className="relative min-w-0">
+                <div className="pointer-events-none absolute inset-0 z-10">
+                  <div className="absolute left-2 top-1/2 -translate-y-1/2">
+                    {segmentsCanScrollLeft ? (
+                      <button
+                        type="button"
+                        aria-label="Scroll links"
+                        onClick={() => {
+                          scrollToSnapItem(segmentsScrollerRef, "left");
+                        }}
+                        className="pointer-events-auto group grid h-10 w-10 place-items-center rounded-full border border-black/10 bg-white/55 shadow-[0_22px_70px_-46px_rgba(0,0,0,0.52)] backdrop-blur-xl transition-all duration-300 hover:bg-white/75 hover:shadow-[0_30px_90px_-52px_rgba(0,0,0,0.60)] active:scale-[0.98] sm:h-11 sm:w-11 lg:h-12 lg:w-12"
+                      >
+                        <ArrowRight
+                          size={16}
+                          className="rotate-180 text-black/70 transition-transform duration-300 group-hover:-translate-x-0.5"
+                        />
+                      </button>
+                    ) : null}
+                  </div>
+                  <div className="absolute right-2 top-1/2 -translate-y-1/2">
+                    {segmentsCanScrollRight ? (
+                      <button
+                        type="button"
+                        aria-label="Scroll rechts"
+                        onClick={() => {
+                          scrollToSnapItem(segmentsScrollerRef, "right");
+                        }}
+                        className="pointer-events-auto group grid h-10 w-10 place-items-center rounded-full border border-black/10 bg-white/55 shadow-[0_22px_70px_-46px_rgba(0,0,0,0.52)] backdrop-blur-xl transition-all duration-300 hover:bg-white/75 hover:shadow-[0_30px_90px_-52px_rgba(0,0,0,0.60)] active:scale-[0.98] sm:h-11 sm:w-11 lg:h-12 lg:w-12"
+                      >
+                        <ArrowRight
+                          size={16}
+                          className="text-black/70 transition-transform duration-300 group-hover:translate-x-0.5"
+                        />
+                      </button>
+                    ) : null}
+                  </div>
                 </div>
 
                 <div
                   ref={segmentsScrollerRef}
-                  className="flex gap-5 overflow-x-auto pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden lg:pb-0"
+                  className="flex w-full min-w-0 snap-x snap-mandatory gap-5 overflow-x-auto pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden lg:pb-0"
                 >
                   {segments.map((s, idx) => (
                     <SegmentCard key={s.title} {...s} index={idx} />
@@ -1635,8 +1675,8 @@ function HomePage() {
               </div>
 
               <div className="mt-8">
-                <Link
-                  to="/assortiment#eindproducten"
+                <a
+                  href="/assortiment#eindproducten"
                   className="group inline-flex items-center gap-3 rounded-full bg-[#B31217] px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#F5F2ED] shadow-[0_22px_90px_-60px_rgba(0,0,0,0.85)] transition-all duration-500 hover:bg-[#C0181D] hover:shadow-[0_0_0_1px_rgba(198,160,98,0.18),0_0_58px_-24px_rgba(179,18,23,0.75),0_34px_110px_-70px_rgba(0,0,0,0.90)] active:translate-y-px"
                 >
                   Alle producten
@@ -1644,12 +1684,12 @@ function HomePage() {
                     size={14}
                     className="transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-1"
                   />
-                </Link>
+                </a>
               </div>
             </div>
 
-            <div className="relative lg:col-span-8">
-              <div className="relative overflow-hidden rounded-[32px] border border-white/5 bg-white/[0.02] shadow-[0_44px_140px_-120px_rgba(0,0,0,0.95)] backdrop-blur-[2px]">
+            <div className="relative min-w-0 lg:col-span-8">
+              <div className="relative min-w-0 overflow-hidden rounded-[32px] border border-white/5 bg-white/[0.02] shadow-[0_44px_140px_-120px_rgba(0,0,0,0.95)] backdrop-blur-[2px]">
                 <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(980px_640px_at_20%_20%,rgba(255,255,255,0.10)_0%,transparent_60%)]" />
                 <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(980px_720px_at_70%_70%,rgba(179,18,23,0.22)_0%,transparent_60%)]" />
                 <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(920px_640px_at_88%_24%,rgba(198,160,98,0.10)_0%,transparent_62%)]" />
@@ -1657,7 +1697,7 @@ function HomePage() {
 
                 <div
                   ref={eindproductenScrollerRef}
-                  className="relative flex gap-5 overflow-x-auto px-4 py-5 pb-6 sm:gap-6 sm:px-6 sm:py-6 sm:pb-7 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                  className="relative flex w-full min-w-0 snap-x snap-mandatory gap-5 overflow-x-auto px-4 py-5 pb-6 sm:gap-6 sm:px-6 sm:py-6 sm:pb-7 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
                 >
                 {[
                   {
@@ -1733,11 +1773,12 @@ function HomePage() {
                 ].map((p) => (
                   <motion.article
                     key={p.title}
+                    data-snap-item
                     initial={{ opacity: 0, y: 18, filter: "blur(10px)" }}
                     whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                     viewport={{ once: true, margin: "-120px" }}
                     transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-                    className="group relative w-[270px] shrink-0 overflow-hidden rounded-3xl border border-black/10 bg-[#F5F2ED] shadow-[0_34px_120px_-85px_rgba(0,0,0,0.75)] transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] hover:-translate-y-1"
+                    className="group relative w-[270px] shrink-0 snap-center overflow-hidden rounded-3xl border border-black/10 bg-[#F5F2ED] shadow-[0_34px_120px_-85px_rgba(0,0,0,0.75)] transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] hover:-translate-y-1"
                   >
                     <div aria-hidden className="pointer-events-none absolute inset-0">
                       <div className="absolute inset-0 bg-[radial-gradient(520px_360px_at_30%_18%,rgba(0,0,0,0.06)_0%,transparent_62%)]" />
@@ -1775,22 +1816,36 @@ function HomePage() {
               </div>
               </div>
 
-              {eindproductenCanScrollRight ? (
-                <div className="pointer-events-none absolute right-2 top-1/2 hidden -translate-y-1/2 lg:flex">
-                  <button
-                    type="button"
-                    aria-label="Volgende"
-                    onClick={() => {
-                      const el = eindproductenScrollerRef.current;
-                      if (!el) return;
-                      el.scrollBy({ left: 340, behavior: "smooth" });
-                    }}
-                    className="pointer-events-auto grid h-12 w-12 place-items-center rounded-full border border-[rgba(198,160,98,0.55)] bg-[#B31217] shadow-[0_30px_100px_-70px_rgba(0,0,0,0.90)] transition-all duration-300 hover:bg-[#C0181D] active:scale-[0.98]"
-                  >
-                    <ArrowRight size={16} className="text-[#F5F2ED]" />
-                  </button>
+              <div className="pointer-events-none absolute inset-0 z-10">
+                <div className="absolute left-2 top-1/2 -translate-y-1/2">
+                  {eindproductenCanScrollLeft ? (
+                    <button
+                      type="button"
+                      aria-label="Vorige"
+                      onClick={() => {
+                        scrollToSnapItem(eindproductenScrollerRef, "left");
+                      }}
+                      className="pointer-events-auto grid h-10 w-10 place-items-center rounded-full border border-[rgba(198,160,98,0.55)] bg-[#B31217] shadow-[0_30px_100px_-70px_rgba(0,0,0,0.90)] transition-all duration-300 hover:bg-[#C0181D] active:scale-[0.98] sm:h-11 sm:w-11 lg:h-12 lg:w-12"
+                    >
+                      <ArrowRight size={16} className="rotate-180 text-[#F5F2ED]" />
+                    </button>
+                  ) : null}
                 </div>
-              ) : null}
+                <div className="absolute right-2 top-1/2 -translate-y-1/2">
+                  {eindproductenCanScrollRight ? (
+                    <button
+                      type="button"
+                      aria-label="Volgende"
+                      onClick={() => {
+                        scrollToSnapItem(eindproductenScrollerRef, "right");
+                      }}
+                      className="pointer-events-auto grid h-10 w-10 place-items-center rounded-full border border-[rgba(198,160,98,0.55)] bg-[#B31217] shadow-[0_30px_100px_-70px_rgba(0,0,0,0.90)] transition-all duration-300 hover:bg-[#C0181D] active:scale-[0.98] sm:h-11 sm:w-11 lg:h-12 lg:w-12"
+                    >
+                      <ArrowRight size={16} className="text-[#F5F2ED]" />
+                    </button>
+                  ) : null}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1887,6 +1942,7 @@ function SegmentCard({
     <motion.article
       id={id}
       ref={ref}
+      data-snap-item
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onHoverStart={() => setHovered(true)}
@@ -1896,7 +1952,7 @@ function SegmentCard({
       viewport={{ once: true, margin: "-120px" }}
       transition={{ duration: 1, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
       style={reduceMotion ? undefined : { rotateX: rx, rotateY: ry, transformStyle: "preserve-3d" }}
-      className="group relative w-[270px] shrink-0 scroll-mt-28 overflow-hidden rounded-2xl border border-black/10 bg-[#0B0B0B] shadow-[0_24px_90px_-55px_rgba(0,0,0,0.75)] transition-shadow duration-500 hover:shadow-[0_34px_120px_-60px_rgba(0,0,0,0.85)] sm:w-[300px] lg:w-[310px]"
+      className="group relative w-[270px] shrink-0 snap-center scroll-mt-28 overflow-hidden rounded-2xl border border-black/10 bg-[#0B0B0B] shadow-[0_24px_90px_-55px_rgba(0,0,0,0.75)] transition-shadow duration-500 hover:shadow-[0_34px_120px_-60px_rgba(0,0,0,0.85)] sm:w-[300px] lg:w-[310px]"
     >
       <motion.img
         src={image}
@@ -1997,10 +2053,7 @@ function AssortmentCategoryCard({
       transition={{ duration: 0.95, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
       className="group relative overflow-hidden rounded-3xl border border-[rgba(226,192,141,0.22)] bg-[#070707] shadow-[0_40px_120px_-95px_rgba(0,0,0,0.98)] transition-shadow duration-700 hover:shadow-[0_56px_170px_-120px_rgba(0,0,0,0.98)]"
     >
-      <Link
-        to={`/assortiment#${id}`}
-        className="relative block"
-      >
+      <a href={`/assortiment#${id}`} className="relative block">
         <div className="pointer-events-none absolute inset-0">
           <motion.img
             src={image}
@@ -2074,7 +2127,7 @@ function AssortmentCategoryCard({
             </div>
           </div>
         </div>
-      </Link>
+      </a>
     </motion.article>
   );
 }

@@ -24,6 +24,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { SectionHeader } from "@/components/SectionHeader";
 import { MagneticButton } from "@/components/MagneticButton";
+import { PremiumMeatShowcase } from "@/components/PremiumMeatShowcase";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 import ipekciIntroVideo from "@/assets/videos/Ipekci_introductie.webm";
 import brandmovie1 from "@/assets/Ipekci_Brandmovie_1.webm";
@@ -1252,6 +1253,8 @@ function HomePage() {
           </div>
         </motion.div>
       </section>
+
+      <PremiumMeatShowcase />
 
       <section className="relative overflow-hidden border-y border-white/5 bg-background py-8">
         <div className="flex w-max marquee gap-14 whitespace-nowrap px-8">

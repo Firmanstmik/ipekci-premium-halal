@@ -1421,62 +1421,65 @@ function HomePage() {
   useEffect(() => {
     if (reduceMotion || !eindproductenShowcaseInView || !eindproductenIntroComplete) return;
 
-    let lastT = performance.now();
+    let cancelled = false;
+    let timeoutId = 0;
     eindproductenAutoDirRef.current = 1;
 
-    const tick = (t: number) => {
+    const scheduleNext = (delayMs = 2800) => {
+      window.clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(step, delayMs);
+    };
+
+    const step = () => {
+      if (cancelled) return;
       const el = eindproductenScrollerRef.current;
       if (!el) {
-        eindproductenAutoRafRef.current = requestAnimationFrame(tick);
+        scheduleNext(1200);
         return;
       }
-
-      const dt = Math.min(32, Math.max(1, t - lastT));
-      lastT = t;
 
       const paused =
         eindproductenAutoPausedRef.current ||
         eindproductenDraggingRef.current ||
-        t < eindproductenAutoHoldUntilRef.current ||
+        performance.now() < eindproductenAutoHoldUntilRef.current ||
         document.hidden;
 
-      if (!paused) {
-        const maxScrollLeft = Math.max(0, el.scrollWidth - el.clientWidth);
-        if (maxScrollLeft > 0) {
-          const distanceToEdge =
-            eindproductenAutoDirRef.current > 0 ? maxScrollLeft - el.scrollLeft : el.scrollLeft;
-          const edgeFactor = Math.max(0.42, Math.min(1, distanceToEdge / 260));
-          const speed = (0.024 + 0.02 * edgeFactor) * dt;
-          let next = el.scrollLeft + eindproductenAutoDirRef.current * speed;
-
-          if (next >= maxScrollLeft) {
-            next = maxScrollLeft;
-            eindproductenAutoDirRef.current = -1;
-          } else if (next <= 0) {
-            next = 0;
-            eindproductenAutoDirRef.current = 1;
-          }
-
-          el.scrollLeft = next;
-          eindproductenTiltRaw.set(
-            Math.max(-0.28, Math.min(0.28, eindproductenAutoDirRef.current * 0.14 * edgeFactor)),
-          );
-        }
-      } else {
+      if (paused) {
         eindproductenTiltRaw.set(0);
+        scheduleNext(1200);
+        return;
       }
 
-      eindproductenAutoRafRef.current = requestAnimationFrame(tick);
+      const maxScrollLeft = Math.max(0, el.scrollWidth - el.clientWidth);
+      if (maxScrollLeft <= 0) {
+        eindproductenTiltRaw.set(0);
+        scheduleNext(1600);
+        return;
+      }
+
+      if (el.scrollLeft >= maxScrollLeft - 40) {
+        eindproductenAutoDirRef.current = 1;
+        eindproductenTiltRaw.set(-0.12);
+        el.scrollTo({ left: 0, behavior: "smooth" });
+        window.setTimeout(() => eindproductenTiltRaw.set(0), 850);
+        scheduleNext(3200);
+        return;
+      }
+
+      eindproductenAutoDirRef.current = 1;
+      eindproductenTiltRaw.set(0.18);
+      scrollToSnapItem(eindproductenScrollerRef, "right");
+      window.setTimeout(() => eindproductenTiltRaw.set(0), 850);
+      scheduleNext(2800);
     };
 
-    eindproductenAutoRafRef.current = requestAnimationFrame(tick);
+    scheduleNext(1400);
     return () => {
-      const raf = eindproductenAutoRafRef.current;
-      if (raf) cancelAnimationFrame(raf);
-      eindproductenAutoRafRef.current = null;
+      cancelled = true;
+      window.clearTimeout(timeoutId);
       eindproductenTiltRaw.set(0);
     };
-  }, [reduceMotion, eindproductenDragging, eindproductenIntroComplete, eindproductenShowcaseInView, eindproductenTiltRaw]);
+  }, [reduceMotion, eindproductenIntroComplete, eindproductenShowcaseInView, eindproductenTiltRaw]);
 
   useEffect(() => {
     segmentsDraggingRef.current = segmentsDragging;

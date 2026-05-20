@@ -1,86 +1,63 @@
-import { memo, useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  ArrowUpRight,
+  ArrowRight,
   Award,
   Beef,
   CalendarDays,
   Flame,
+  MousePointerClick,
   ShieldCheck,
   Sparkles,
   Truck,
   UtensilsCrossed,
 } from "lucide-react";
-import cowImg from "@/assets/meat-cow-hero.jpg";
-import ribeyeImg from "@/assets/meat-cut-ribeye.avif";
-import tenderloinImg from "@/assets/meat-cut-tenderloin.avif";
-import sirloinImg from "@/assets/meat-cut-sirloin.avif";
-import brisketImg from "@/assets/meat-cut-brisket.avif";
-import chuckImg from "@/assets/meat-cut-chuck.avif";
-
-type CutSpecIconKey = "tender" | "flavor" | "prep" | "fresh";
-type Tier = "signature" | "standard";
-
-type CutSpec = { icon: CutSpecIconKey; label: string; value: string };
+import cowImg from "@/assets/cow-hero.jpg";
+import ribeyeImg from "@/assets/cut-ribeye.jpg";
+import tenderloinImg from "@/assets/cut-tenderloin.jpg";
+import sirloinImg from "@/assets/cut-sirloin.jpg";
+import brisketImg from "@/assets/cut-brisket.jpg";
+import chuckImg from "@/assets/cut-chuck.jpg";
+import rumpImg from "@/assets/cut-rump.jpg";
+import shortloinImg from "@/assets/cut-shortloin.jpg";
+import roundImg from "@/assets/cut-round.jpg";
+import flankImg from "@/assets/cut-flank.jpg";
+import plateImg from "@/assets/cut-plate.jpg";
+import shankImg from "@/assets/cut-shank.jpg";
+import neckImg from "@/assets/cut-neck.jpg";
 
 type Cut = {
   id: string;
   label: string;
   name: string;
   description: string;
+  chef: string;
   image: string;
-  x: number;
-  y: number;
-  tier: Tier;
-  specs: CutSpec[];
+  cx: number;
+  cy: number;
+  region: string;
+  number: number;
+  labelSize?: number;
+  specs: { icon: string; label: string; value: string }[];
 };
 
 const CUTS: Cut[] = [
   {
-    id: "ribeye",
-    label: "RIB EYE",
-    name: "Rib Eye",
-    description: "Mals, sappig en vol van smaak. Perfect voor grillen, bakken of slow cooking.",
-    image: ribeyeImg,
-    tier: "signature",
-    x: 54,
-    y: 51,
+    id: "neck",
+    label: "NEK",
+    name: "Neck",
+    description:
+      "Smaakvolle, bindweefselrijke snede. Perfect voor lange braadtijden en rijke bouillon.",
+    chef: "Chef's tip: laat 6 uur sudderen voor diepe umami.",
+    image: neckImg,
+    number: 1,
+    cx: 70,
+    cy: 44,
+    region: "M62,37.5 C65,38 67,39 69,41 C71,43 73,42 75,39 L75,50 L62,50 Z",
     specs: [
-      { icon: "tender", label: "Malsheid", value: "Uitstekend" },
-      { icon: "flavor", label: "Smaak", value: "Rijk & vol" },
-      { icon: "prep", label: "Bereiding", value: "Grill, Pan, Oven" },
-      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
-    ],
-  },
-  {
-    id: "sirloin",
-    label: "SIRLOIN",
-    name: "Sirloin",
-    description: "Premium snede uit de rug. Mals, sappig en rijk aan smaak.",
-    image: sirloinImg,
-    tier: "signature",
-    x: 29,
-    y: 52,
-    specs: [
-      { icon: "tender", label: "Malsheid", value: "Uitstekend" },
-      { icon: "flavor", label: "Smaak", value: "Verfijnd & vol" },
-      { icon: "prep", label: "Bereiding", value: "Grill, Pan" },
-      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
-    ],
-  },
-  {
-    id: "tenderloin",
-    label: "OSSENHAAS",
-    name: "Tenderloin",
-    description: "De meest delicate snede. Botermals en perfect voor de fijne keuken.",
-    image: tenderloinImg,
-    tier: "signature",
-    x: 42,
-    y: 68,
-    specs: [
-      { icon: "tender", label: "Malsheid", value: "Botermals" },
-      { icon: "flavor", label: "Smaak", value: "Verfijnd" },
-      { icon: "prep", label: "Bereiding", value: "Pan, Oven" },
+      { icon: "tender", label: "Malsheid", value: "Slow cooked" },
+      { icon: "flavor", label: "Smaak", value: "Diep" },
+      { icon: "prep", label: "Bereiding", value: "Slow, Bouillon" },
       { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
     ],
   },
@@ -88,11 +65,14 @@ const CUTS: Cut[] = [
     id: "chuck",
     label: "SCHOUDER",
     name: "Chuck",
-    description: "Rijke smaak met mooie marmering. Uitstekend voor stoofgerechten en braadstuk.",
+    description:
+      "Rijke smaak met mooie marmering. Voor pot roast, stoof, cross rib en perfecte ground beef.",
+    chef: "Chef's tip: laag-en-langzaam 4-6 uur voor vorkmals resultaat.",
     image: chuckImg,
-    tier: "standard",
-    x: 65,
-    y: 55,
+    number: 2,
+    cx: 57,
+    cy: 43,
+    region: "M52,37 C55,36.8 58,37 62,37.5 L62,50 L52,50 Z",
     specs: [
       { icon: "tender", label: "Malsheid", value: "Goed" },
       { icon: "flavor", label: "Smaak", value: "Intens" },
@@ -101,14 +81,150 @@ const CUTS: Cut[] = [
     ],
   },
   {
+    id: "ribeye",
+    label: "RIB EYE",
+    name: "Rib",
+    description:
+      "Mals, sappig en vol van smaak met rijke marmering. Voor rib roast, rib steaks en rib eye.",
+    chef: "Chef's tip: omgekeerd garen in de oven, afbakken op de grill.",
+    image: ribeyeImg,
+    number: 3,
+    cx: 47,
+    cy: 43,
+    region: "M42,37.5 C44,37 47,37 49,37 C50.5,37 52,37 52,37 L52,50 L42,50 Z",
+    specs: [
+      { icon: "tender", label: "Malsheid", value: "Uitstekend" },
+      { icon: "flavor", label: "Smaak", value: "Rijk & vol" },
+      { icon: "prep", label: "Bereiding", value: "Grill, Pan, Oven" },
+      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
+    ],
+  },
+  {
+    id: "shortloin",
+    label: "DUNNE LENDE",
+    name: "Short Loin",
+    description:
+      "Premium lendestuk. Bron van T-bone, porterhouse, club steak en striploin.",
+    chef: "Chef's tip: laat op kamertemperatuur komen voor het grillen.",
+    image: shortloinImg,
+    number: 4,
+    cx: 37,
+    cy: 43,
+    region: "M32,37.5 C34,37.3 37,37.3 40,37.3 C41,37.3 42,37.4 42,37.5 L42,50 L32,50 Z",
+    specs: [
+      { icon: "tender", label: "Malsheid", value: "Uitstekend" },
+      { icon: "flavor", label: "Smaak", value: "Verfijnd & vol" },
+      { icon: "prep", label: "Bereiding", value: "Grill, Pan" },
+      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
+    ],
+  },
+  {
+    id: "sirloin",
+    label: "ENTRECOTE",
+    name: "Sirloin",
+    description:
+      "Krachtige bite met fijne marmering. Ideaal voor de klassieke biefstuk en T-bone.",
+    chef: "Chef's tip: 2 minuten per zijde op hoog vuur, dan rust onder folie.",
+    image: sirloinImg,
+    number: 5,
+    cx: 27,
+    cy: 43,
+    region: "M22,37 C24,37 27,37 30,37.2 C31,37.3 32,37.4 32,37.5 L32,50 L22,50 Z",
+    specs: [
+      { icon: "tender", label: "Malsheid", value: "Zeer goed" },
+      { icon: "flavor", label: "Smaak", value: "Vol & krachtig" },
+      { icon: "prep", label: "Bereiding", value: "Grill, Pan" },
+      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
+    ],
+  },
+  {
+    id: "rump",
+    label: "STAARTSTUK",
+    name: "Rump",
+    description:
+      "Smaakvolle bovenkant van de achterbout. Pot roast, stoof of klassieke biefstuk.",
+    chef: "Chef's tip: laat lang rusten na het bakken voor sappige plakken.",
+    image: rumpImg,
+    number: 6,
+    cx: 17,
+    cy: 43,
+    region: "M12,40 C13,38.5 15,37.5 18,37 C20,36.8 22,37 22,37 L22,50 L12,50 Z",
+    specs: [
+      { icon: "tender", label: "Malsheid", value: "Goed" },
+      { icon: "flavor", label: "Smaak", value: "Vol" },
+      { icon: "prep", label: "Bereiding", value: "Roast, Pan" },
+      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
+    ],
+  },
+  {
+    id: "round",
+    label: "ACHTERBOUT",
+    name: "Round",
+    description:
+      "Magere, krachtige snede van de achterbout. Ideaal voor stoofschotels, rosbief en dunne plakken.",
+    chef: "Chef's tip: marineer en gril snel op hoog vuur voor maximale malsheid.",
+    image: roundImg,
+    number: 7,
+    cx: 17,
+    cy: 58,
+    region: "M12,50 L22,50 L22,62 C21,64.5 18,66 15,65.5 C13.5,65.2 12.5,63 12,60 Z",
+    specs: [
+      { icon: "tender", label: "Malsheid", value: "Gemiddeld" },
+      { icon: "flavor", label: "Smaak", value: "Robuust" },
+      { icon: "prep", label: "Bereiding", value: "Roast, Stoof" },
+      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
+    ],
+  },
+  {
+    id: "flank",
+    label: "VANG",
+    name: "Flank",
+    description:
+      "Karakteristieke nerfstructuur. Voor flank steak, London broil en stir-fry.",
+    chef: "Chef's tip: snij altijd dwars op de vezel voor optimale malsheid.",
+    image: flankImg,
+    number: 8,
+    cx: 29,
+    cy: 58,
+    region: "M22,50 L37,50 L37,67.5 C33,68.5 28,68 24,67 C23,66.7 22,65 22,62 Z",
+    specs: [
+      { icon: "tender", label: "Malsheid", value: "Stevig" },
+      { icon: "flavor", label: "Smaak", value: "Krachtig" },
+      { icon: "prep", label: "Bereiding", value: "Grill, Wok" },
+      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
+    ],
+  },
+  {
+    id: "plate",
+    label: "NAVEL",
+    name: "Plate",
+    description:
+      "Rijk gemarmerde buikplaat. Bron van short ribs, skirt steak en stew.",
+    chef: "Chef's tip: low & slow BBQ voor authentieke smoke ring.",
+    image: plateImg,
+    number: 9,
+    cx: 45,
+    cy: 58,
+    region: "M37,50 L53,50 L53,66.5 C48,68 42,68 38,67.7 C37.3,67.6 37,67.5 37,67.5 Z",
+    specs: [
+      { icon: "tender", label: "Malsheid", value: "Slow cooked" },
+      { icon: "flavor", label: "Smaak", value: "Vet & rijk" },
+      { icon: "prep", label: "Bereiding", value: "BBQ, Slow" },
+      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
+    ],
+  },
+  {
     id: "brisket",
     label: "BORSTSTUK",
     name: "Brisket",
-    description: "Robuust en smaakvol. De favoriet voor langzaam garen en authentieke gerechten.",
+    description:
+      "Robuust en smaakvol. De favoriet voor pulled beef, corned beef en BBQ.",
+    chef: "Chef's tip: 12 uur smoken op 110C tot 96C kerntemperatuur.",
     image: brisketImg,
-    tier: "standard",
-    x: 63,
-    y: 74,
+    number: 10,
+    cx: 64,
+    cy: 57,
+    region: "M53,50 L70,50 C71,53 70.5,57 68,60 C64,63 58,65 53,66.5 Z",
     specs: [
       { icon: "tender", label: "Malsheid", value: "Slow cooked" },
       { icon: "flavor", label: "Smaak", value: "Diep & rokerig" },
@@ -116,7 +232,62 @@ const CUTS: Cut[] = [
       { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
     ],
   },
+  {
+    id: "tenderloin",
+    label: "OSSENHAAS",
+    name: "Tenderloin",
+    description:
+      "Zeer malse premium snede. Ideaal voor tournedos, medaillons en verfijnde bereidingen.",
+    chef: "Chef's tip: kort en heet bakken, daarna ruim laten rusten.",
+    image: tenderloinImg,
+    number: 11,
+    cx: 38,
+    cy: 53,
+    labelSize: 1.45,
+    region: "M31,50 L43,50 L42,57 L32,57 Z",
+    specs: [
+      { icon: "tender", label: "Malsheid", value: "Botermals" },
+      { icon: "flavor", label: "Smaak", value: "Elegant" },
+      { icon: "prep", label: "Bereiding", value: "Pan, Oven" },
+      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
+    ],
+  },
+  {
+    id: "shank",
+    label: "SCHENKEL",
+    name: "Shank",
+    description:
+      "Krachtige onderpoot met veel collageen. Uitstekend voor osso buco en diepe bouillons.",
+    chef: "Chef's tip: langzaam garen tot het vlees vanzelf loskomt.",
+    image: shankImg,
+    number: 12,
+    cx: 63,
+    cy: 69,
+    labelSize: 1.3,
+    region: "M61,60 L66,60 L66,75 L61,75 Z",
+    specs: [
+      { icon: "tender", label: "Malsheid", value: "Slow cooked" },
+      { icon: "flavor", label: "Smaak", value: "Krachtig" },
+      { icon: "prep", label: "Bereiding", value: "Stoof, Fond" },
+      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
+    ],
+  },
 ];
+
+const PREMIUM_IDS = new Set(["ribeye", "sirloin", "shortloin", "rump"]);
+
+const specIcon = (k: string) => {
+  switch (k) {
+    case "tender":
+      return Sparkles;
+    case "flavor":
+      return Flame;
+    case "prep":
+      return UtensilsCrossed;
+    default:
+      return CalendarDays;
+  }
+};
 
 const TRUST = [
   {
@@ -143,353 +314,251 @@ const TRUST = [
     title: "Van boer tot klant",
     desc: "Volledige controle over kwaliteit, herkomst en verwerking.",
   },
-] as const;
+];
 
-function specIcon(k: CutSpecIconKey) {
-  switch (k) {
-    case "tender":
-      return Sparkles;
-    case "flavor":
-      return Flame;
-    case "prep":
-      return UtensilsCrossed;
-    default:
-      return CalendarDays;
-  }
-}
-
-function clamp(n: number, min: number, max: number) {
-  return Math.min(max, Math.max(min, n));
-}
-
-export const PremiumMeatShowcase = memo(function PremiumMeatShowcase() {
-  const reduceMotion = useReducedMotion();
-  const [activeId, setActiveId] = useState<string>(CUTS[0]?.id ?? "ribeye");
-  const active = useMemo(() => CUTS.find((c) => c.id === activeId) ?? CUTS[0], [activeId]);
+export function PremiumMeatShowcase() {
+  const [activeId, setActiveId] = useState<string>("ribeye");
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const active = CUTS.find((c) => c.id === activeId)!;
+  const focusedId = hoveredId ?? activeId;
 
   return (
-    <section className="relative overflow-hidden border-y border-white/5 bg-background py-20 grain sm:py-24 lg:py-28">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(1200px_720px_at_45%_0%,rgba(226,192,141,0.10)_0%,transparent_62%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(900px_620px_at_15%_55%,rgba(177,18,23,0.14)_0%,transparent_62%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(1200px_820px_at_60%_60%,rgba(0,0,0,0)_0%,rgba(0,0,0,0)_55%,rgba(0,0,0,0.82)_100%)]" />
-      </div>
+    <section className="relative overflow-hidden bg-cinematic">
+      <div className="pointer-events-none absolute inset-0 bg-grain opacity-60" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,oklch(0.55_0.22_28/0.08),transparent_60%)]" />
+      <div className="pointer-events-none absolute -top-40 left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,oklch(0.82_0.13_78/0.08),transparent_70%)] blur-3xl" />
 
-      <div className="relative mx-auto max-w-[1480px] px-5 sm:px-8 lg:px-12">
+      <div className="relative mx-auto max-w-[1400px] px-6 py-24 md:py-32 lg:px-10">
         <motion.div
-          initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-120px" }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-[720px]"
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
+          className="max-w-2xl"
         >
-          <div className="flex items-center gap-3">
-            <span className="h-px w-10 bg-[rgba(177,18,23,0.70)]" />
-            <span className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#B11217]">
-              Premium rund showcase
+          <div className="mb-6 flex items-center gap-3">
+            <span className="h-px w-10 bg-blood/70" />
+            <span className="text-xs font-medium uppercase tracking-[0.32em] text-blood">
+              Ons vlees. Onze kwaliteit.
             </span>
           </div>
-          <h2 className="mt-7 text-balance font-display text-[clamp(2.4rem,3.6vw,4.2rem)] font-medium leading-[1.02] tracking-[-0.03em] text-foreground">
-            Ontdek onze{" "}
-            <span className="italic text-[rgba(226,192,141,0.92)]">premium snijstukken</span>
+          <h2 className="font-display text-5xl leading-[1.05] text-foreground md:text-7xl">
+            Ontdek ons <span className="italic text-gold">rundvlees</span>
           </h2>
-          <p className="mt-6 text-pretty text-sm leading-relaxed text-[rgba(245,241,235,0.70)] sm:text-[15px]">
-            Klik op een hotspot om details te zien over malsheid, smaak en ideale bereiding.
-            Ontworpen als een luxe, interactieve ervaring — volledig native in het Ipekçi systeem.
+          <p className="mt-6 max-w-lg text-base leading-relaxed text-muted-foreground md:text-lg">
+            Klik op een deel van het rund om meer te ontdekken over onze premium halal
+            rundvlees snijstukken.
           </p>
         </motion.div>
 
-        <div className="mt-12 grid grid-cols-1 gap-8 lg:mt-16 lg:grid-cols-12 lg:items-stretch lg:gap-10">
+        <div className="mt-14 grid grid-cols-1 gap-10 lg:mt-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
           <motion.div
-            initial={
-              reduceMotion
-                ? { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }
-                : { opacity: 0, x: -56, y: 12, scale: 0.99, filter: "blur(10px)" }
-            }
-            whileInView={
-              reduceMotion
-                ? { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }
-                : { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }
-            }
-            viewport={{ once: true, margin: "-120px" }}
-            transition={{
-              duration: 1.65,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="relative lg:col-span-7"
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: [0.2, 0.8, 0.2, 1] }}
+            className="relative"
           >
-            {!reduceMotion && (
-              <motion.div
-                aria-hidden
-                initial={{ x: "-130%", opacity: 0 }}
-                whileInView={{ x: "130%", opacity: [0, 0.25, 0] }}
-                viewport={{ once: true, margin: "-120px" }}
-                transition={{ duration: 1.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-                className="pointer-events-none absolute inset-0 z-10"
-                style={{
-                  mixBlendMode: "screen",
-                  background:
-                    "linear-gradient(110deg, transparent 0%, rgba(226,192,141,0.10) 40%, rgba(226,192,141,0.22) 50%, rgba(226,192,141,0.10) 60%, transparent 100%)",
-                }}
-              />
-            )}
-            <div className="relative aspect-[5/4] w-full overflow-hidden rounded-[28px] border border-white/10 bg-black/40 shadow-[0_60px_160px_-120px_rgba(0,0,0,0.95)]">
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_620px_at_30%_35%,rgba(255,255,255,0.08)_0%,transparent_62%)]" />
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(720px_520px_at_65%_50%,rgba(226,192,141,0.12)_0%,transparent_62%)]" />
+            <div className="relative aspect-[5/4] w-full overflow-hidden rounded-2xl">
+              <div className="absolute left-1/2 top-1/2 h-[80%] w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,oklch(0.78_0.12_75/0.12),transparent_65%)] blur-2xl" />
               <img
                 src={cowImg}
                 alt="Premium rund visualisatie"
                 className="absolute inset-0 h-full w-full object-cover opacity-95"
-                loading="eager"
-                decoding="async"
+                loading="lazy"
                 width={1024}
-                height={820}
+                height={1024}
               />
+              <div className="pointer-events-none absolute inset-0 bg-charcoal-2/30 transition-opacity duration-700" />
 
               <svg
-                viewBox="0 0 100 80"
+                viewBox="0 0 100 100"
                 preserveAspectRatio="none"
-                className="pointer-events-none absolute inset-0 h-full w-full"
+                className="absolute inset-0 h-full w-full"
               >
                 <defs>
-                  <pattern id="ipekciDots" width="0.9" height="0.9" patternUnits="userSpaceOnUse">
-                    <circle cx="0.45" cy="0.45" r="0.07" fill="rgba(226,192,141,0.22)" />
-                  </pattern>
-                  <filter id="ipekciGoldGlow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feGaussianBlur stdDeviation="0.6" result="b" />
+                  <filter id="goldGlow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="0.4" result="b" />
                     <feMerge>
                       <feMergeNode in="b" />
                       <feMergeNode in="SourceGraphic" />
                     </feMerge>
                   </filter>
                 </defs>
-                {(() => {
-                  const regions: Record<string, string> = {
-                    sirloin:
-                      "M 24 36 C 28 33.5, 32 33, 36 34 L 36 50 C 32 51, 26 51, 22 50 C 21 45, 22 40, 24 36 Z",
-                    ribeye: "M 48 33.2 C 52 32.8, 56 33, 60 34.5 L 60 50 L 48 50 Z",
-                    chuck: "M 60 34.5 C 64 36, 68 39, 70 43 C 70 48, 69 51, 68 53 L 60 50 Z",
-                    tenderloin: "M 36 50 L 48 50 L 48 58 C 44 60, 38 59, 36 57 Z",
-                    brisket: "M 56 56 C 60 55, 64 55, 68 55 L 69 63 C 65 65, 59 65, 56 63 Z",
-                  };
+
+                {CUTS.map((c) => {
+                  const isFocus = c.id === focusedId;
+                  const dim = focusedId && !isFocus;
                   return (
-                    <g
+                    <path
+                      key={`fill-${c.id}`}
+                      d={c.region}
+                      fill={isFocus ? "oklch(1 0 0 / 0.10)" : "oklch(1 0 0 / 0.02)"}
+                      stroke="oklch(0.96 0.02 80 / 0.85)"
+                      strokeWidth={isFocus ? 0.45 : 0.22}
                       strokeLinejoin="round"
                       strokeLinecap="round"
-                      style={{ mixBlendMode: "screen" }}
-                    >
-                      {Object.entries(regions).map(([id, d]) => {
-                        const isActive = id === activeId;
-                        return (
-                          <path
-                            key={id}
-                            d={d}
-                            fill={isActive ? "rgba(226,192,141,0.16)" : "url(#ipekciDots)"}
-                            stroke={isActive ? "rgba(226,192,141,0.92)" : "rgba(226,192,141,0.38)"}
-                            strokeWidth={isActive ? 0.22 : 0.13}
-                            filter={isActive ? "url(#ipekciGoldGlow)" : undefined}
-                            style={{
-                              transition:
-                                "stroke 420ms ease, stroke-width 420ms ease, fill 420ms ease",
-                            }}
-                          />
-                        );
-                      })}
-                    </g>
+                      filter={isFocus ? "url(#goldGlow)" : undefined}
+                      style={{
+                        opacity: dim ? 0.45 : 1,
+                        transition:
+                          "opacity 500ms ease, stroke-width 500ms ease, fill 500ms ease, filter 500ms ease",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => setActiveId(c.id)}
+                      onMouseEnter={() => setHoveredId(c.id)}
+                      onMouseLeave={() => setHoveredId(null)}
+                    />
                   );
-                })()}
+                })}
+
+                {CUTS.map((c) => (
+                  <text
+                    key={`label-${c.id}`}
+                    x={c.cx}
+                    y={c.cy + 0.6}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fontSize={c.labelSize ?? 1.9}
+                    fontFamily="Inter, sans-serif"
+                    fontWeight={600}
+                    fill="oklch(0.97 0.01 80 / 0.92)"
+                    style={{
+                      pointerEvents: "none",
+                      letterSpacing: "0.14em",
+                      textTransform: "uppercase",
+                      paintOrder: "stroke",
+                      stroke: "oklch(0 0 0 / 0.55)",
+                      strokeWidth: 0.18,
+                    }}
+                  >
+                    {c.name}
+                  </text>
+                ))}
               </svg>
 
               {CUTS.map((c) => {
                 const isActive = c.id === activeId;
-                const isSignature = c.tier === "signature";
-                const size = isSignature ? 18 : 14;
-                const hit = isSignature ? 44 : 40;
-                const ring = isSignature ? 34 : 28;
+                const isHover = c.id === hoveredId;
+                const isPremium = PREMIUM_IDS.has(c.id);
+                const lifted = isActive || isHover;
 
                 return (
                   <button
                     key={c.id}
                     onClick={() => setActiveId(c.id)}
-                    onPointerEnter={() => {
-                      if (window.matchMedia?.("(hover: hover)").matches) setActiveId(c.id);
-                    }}
+                    onMouseEnter={() => setHoveredId(c.id)}
+                    onMouseLeave={() => setHoveredId(null)}
+                    style={{ left: `${c.cx}%`, top: `${c.cy}%` }}
+                    className="group absolute -translate-x-1/2 -translate-y-1/2"
                     aria-label={c.name}
-                    style={{ left: `${c.x}%`, top: `${c.y}%` }}
-                    className="group absolute -translate-x-1/2 -translate-y-1/2 rounded-full focus:outline-none"
                   >
-                    <span className="sr-only">{c.label}</span>
-                    <span
-                      aria-hidden
-                      style={{ width: hit, height: hit }}
-                      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+                    <div
+                      className={`absolute inset-0 rounded-full blur-lg transition-all duration-500 ${
+                        isActive || isHover ? "scale-150 opacity-100" : "opacity-60"
+                      } ${isPremium ? "bg-blood/40" : "bg-blood/30"}`}
                     />
-                    <span
-                      aria-hidden
-                      style={{ width: ring, height: ring }}
-                      className={`pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border transition-all duration-500 ${
-                        isActive
-                          ? "border-[rgba(226,192,141,0.95)] opacity-100"
-                          : "border-[rgba(226,192,141,0.40)] opacity-80 group-hover:opacity-100"
-                      }`}
-                    />
-                    {isActive && !reduceMotion && (
-                      <>
-                        <span className="pointer-events-none absolute left-1/2 top-1/2 h-9 w-9 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[rgba(226,192,141,0.70)] animate-ping motion-reduce:animate-none" />
-                        <span className="pointer-events-none absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[rgba(226,192,141,0.25)] animate-ping [animation-delay:280ms] motion-reduce:animate-none" />
-                      </>
-                    )}
-                    <span
-                      aria-hidden
-                      style={{ width: size, height: size }}
-                      className={`relative block rounded-full border transition-transform duration-300 ${
-                        isSignature
-                          ? "border-[rgba(226,192,141,0.90)]"
-                          : "border-[rgba(226,192,141,0.70)]"
+                    <div
+                      className={`relative grid place-items-center rounded-full border text-[10px] font-bold transition-all duration-500 ${
+                        isPremium ? "h-8 w-8" : "h-7 w-7"
                       } ${
-                        isActive
-                          ? "scale-125 bg-[radial-gradient(circle_at_30%_30%,rgba(177,18,23,0.98),rgba(177,18,23,0.56)_60%,rgba(0,0,0,0.92))] shadow-[0_0_0_1px_rgba(226,192,141,0.30),0_0_34px_-10px_rgba(177,18,23,0.70)]"
-                          : "bg-[radial-gradient(circle_at_30%_30%,rgba(177,18,23,0.70),rgba(177,18,23,0.36)_60%,rgba(0,0,0,0.92))] shadow-[0_0_0_1px_rgba(226,192,141,0.20),0_0_28px_-12px_rgba(177,18,23,0.55)] group-hover:scale-125"
+                        lifted
+                          ? "scale-110 border-gold bg-charcoal-2 text-gold shadow-glow-gold"
+                          : "border-gold/70 bg-charcoal-2/80 text-gold animate-pulse-glow"
                       }`}
                     >
-                      <span className="pointer-events-none absolute left-[22%] top-[18%] h-[35%] w-[35%] rounded-full bg-white/55 blur-[1px]" />
-                    </span>
-                    <span
-                      className={`pointer-events-none absolute left-1/2 top-full mt-3 -translate-x-1/2 whitespace-nowrap rounded-full border border-[rgba(226,192,141,0.26)] bg-black/75 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-[rgba(226,192,141,0.92)] shadow-[0_20px_70px_-50px_rgba(0,0,0,0.9)] transition-all duration-300 ${
-                        isActive
-                          ? "translate-y-0 opacity-100"
-                          : "-translate-y-1 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
-                      }`}
-                    >
-                      {c.label}
-                    </span>
-                    <span className="pointer-events-none absolute inset-0 rounded-full ring-2 ring-transparent focus-visible:ring-[rgba(226,192,141,0.55)]" />
+                      {c.number}
+                      {lifted && <div className="absolute -inset-1 rounded-full border border-gold/60" />}
+                    </div>
                   </button>
                 );
               })}
-
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.82))]" />
             </div>
 
-            <div className="mt-6 flex items-center justify-center gap-2 text-[10px] font-semibold uppercase tracking-[0.34em] text-[rgba(226,192,141,0.78)]">
-              <span className="hidden sm:inline">Hover of klik op een snijstuk</span>
-              <span className="sm:hidden">Tik op een snijstuk</span>
-              <span className="inline-flex h-1.5 w-1.5 rounded-full bg-[rgba(177,18,23,0.80)]" />
+            <div className="mt-6 flex items-center gap-3 text-[11px] uppercase tracking-[0.32em] text-muted-foreground">
+              <MousePointerClick className="h-4 w-4 text-gold" />
+              <span>Klik op een snijstuk</span>
             </div>
           </motion.div>
 
           <motion.div
-            initial={
-              reduceMotion
-                ? { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }
-                : { opacity: 0, x: 56, y: 12, scale: 0.992, filter: "blur(10px)" }
-            }
-            whileInView={
-              reduceMotion
-                ? { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }
-                : { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }
-            }
-            viewport={{ once: true, margin: "-120px" }}
-            transition={{
-              duration: 1.55,
-              delay: 0.12,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="relative lg:col-span-5"
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, delay: 0.15, ease: [0.2, 0.8, 0.2, 1] }}
+            className="relative"
           >
-            {!reduceMotion && (
-              <motion.div
-                aria-hidden
-                initial={{ x: "130%", opacity: 0 }}
-                whileInView={{ x: "-130%", opacity: [0, 0.22, 0] }}
-                viewport={{ once: true, margin: "-120px" }}
-                transition={{ duration: 1.55, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                className="pointer-events-none absolute inset-0 z-10"
-                style={{
-                  mixBlendMode: "screen",
-                  background:
-                    "linear-gradient(250deg, transparent 0%, rgba(177,18,23,0.10) 42%, rgba(226,192,141,0.16) 50%, rgba(177,18,23,0.10) 58%, transparent 100%)",
-                }}
-              />
-            )}
-            <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[color-mix(in_oklab,var(--background)_72%,transparent)] shadow-[0_90px_190px_-140px_rgba(0,0,0,0.96)] backdrop-blur-[18px]">
-              <div className="pointer-events-none absolute inset-0 border border-white/[0.03]" />
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_700px_at_25%_0%,rgba(255,255,255,0.06)_0%,transparent_62%)]" />
-              <div className="pointer-events-none absolute -right-28 -top-28 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(226,192,141,0.16),transparent_70%)] blur-2xl" />
+            <div className="glass-panel relative overflow-hidden rounded-2xl shadow-luxury">
+              <div className="pointer-events-none absolute -right-20 -top-20 z-10 h-60 w-60 rounded-full bg-[radial-gradient(circle,oklch(0.82_0.13_78/0.18),transparent_70%)] blur-2xl" />
 
               <AnimatePresence mode="wait">
                 <motion.div
                   key={active.id}
-                  initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
-                  transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
-                  className="relative"
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.55, ease: [0.2, 0.8, 0.2, 1] }}
                 >
-                  <div className="relative overflow-hidden">
-                    <div className="relative aspect-[16/11] overflow-hidden sm:aspect-[16/10]">
-                      <img
-                        src={active.image}
-                        alt={active.name}
-                        className="h-full w-full object-cover"
-                        loading="lazy"
-                        decoding="async"
-                        width={1100}
-                        height={820}
-                      />
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/10" />
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent" />
-                      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(620px_340px_at_18%_18%,rgba(226,192,141,0.14)_0%,transparent_62%)]" />
-                      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(680px_380px_at_75%_35%,rgba(177,18,23,0.16)_0%,transparent_62%)]" />
-
-                      <div className="absolute inset-x-0 bottom-10 px-5 sm:bottom-12 sm:px-7 md:bottom-14 md:px-8">
-                        <div className="max-w-[520px] drop-shadow-[0_22px_80px_rgba(0,0,0,0.65)]">
-                          <div className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#B11217]">
-                            {active.label}
-                          </div>
-                          <h3 className="mt-3 text-balance font-display text-[clamp(2.0rem,5.6vw,3.0rem)] font-medium leading-[1.05] tracking-[-0.03em] text-foreground">
-                            {active.name}
-                          </h3>
-                          <p className="mt-4 max-w-[42ch] text-pretty text-sm leading-relaxed text-[rgba(245,241,235,0.74)] sm:text-[15px]">
-                            {active.description}
-                          </p>
-                        </div>
-                      </div>
+                  <div className="relative aspect-[16/10] w-full overflow-hidden">
+                    <motion.img
+                      key={active.image}
+                      src={active.image}
+                      alt={active.name}
+                      initial={{ scale: 1.06 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 1.2, ease: [0.2, 0.8, 0.2, 1] }}
+                      className="absolute inset-0 h-full w-full object-cover"
+                      loading="lazy"
+                      width={1024}
+                      height={640}
+                    />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-charcoal-2 via-charcoal-2/40 to-transparent" />
+                    <div className="absolute left-6 top-6 flex items-center gap-3 md:left-8 md:top-8">
+                      <span className="grid h-9 w-9 place-items-center rounded-full border border-gold/50 bg-charcoal-2/70 text-gold backdrop-blur">
+                        <Beef className="h-4 w-4" />
+                      </span>
+                      <span className="rounded-full border border-gold/30 bg-charcoal-2/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.32em] text-blood backdrop-blur">
+                        {active.label}
+                      </span>
                     </div>
                   </div>
 
-                  <div className="mx-6 mt-7 h-px bg-gradient-to-r from-transparent via-[rgba(226,192,141,0.26)] to-transparent sm:mx-8 md:mx-10" />
+                  <div className="p-8 md:p-10">
+                    <h3 className="font-display text-4xl text-foreground md:text-5xl">
+                      {active.name}
+                    </h3>
+                    <p className="mt-5 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base">
+                      {active.description}
+                    </p>
 
-                  <div className="mx-auto grid w-full max-w-[640px] grid-cols-2 justify-items-center gap-6 px-6 pt-7 sm:px-8 md:max-w-none md:grid-cols-4 md:gap-8 md:px-10">
-                    {active.specs.map((s) => {
-                      const Icon = specIcon(s.icon);
-                      return (
-                        <div
-                          key={`${active.id}-${s.label}`}
-                          className="flex min-w-0 flex-col items-center text-center"
-                        >
-                          <div className="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/[0.03] text-[rgba(226,192,141,0.92)]">
-                            <Icon className="h-4 w-4" />
-                          </div>
-                          <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground/90">
-                            {s.label}
-                          </div>
-                          <div className="mt-1 max-w-[11.5rem] text-pretty text-[11px] leading-snug text-foreground/60">
-                            {s.value}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
+                    <div className="mt-5 flex items-start gap-3 rounded-xl border border-gold/20 bg-blood/5 p-4">
+                      <UtensilsCrossed className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+                      <p className="text-xs italic leading-relaxed text-foreground/80 md:text-sm">
+                        {active.chef}
+                      </p>
+                    </div>
 
-                  <div className="px-6 pb-8 pt-8 sm:px-8 md:px-10 md:pb-10">
-                    <a
-                      href="/assortiment#rundvlees"
-                      className="group inline-flex w-full items-center justify-center gap-3 rounded-2xl border border-[rgba(226,192,141,0.28)] bg-[linear-gradient(135deg,rgba(226,192,141,0.18),rgba(177,18,23,0.16))] px-6 py-4 text-[11px] font-semibold uppercase tracking-[0.24em] text-[rgba(245,241,235,0.92)] shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_18px_70px_-40px_rgba(226,192,141,0.26),0_40px_140px_-110px_rgba(0,0,0,0.95)] transition-all duration-500 hover:border-[rgba(226,192,141,0.55)] hover:bg-[linear-gradient(135deg,rgba(226,192,141,0.24),rgba(177,18,23,0.20))] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.16),0_0_64px_-24px_rgba(226,192,141,0.22),0_40px_150px_-110px_rgba(0,0,0,0.95)] active:translate-y-px"
-                    >
+                    <div className="my-8 h-px w-full bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+
+                    <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
+                      {active.specs.map((s) => {
+                        const Icon = specIcon(s.icon);
+                        return (
+                          <div key={s.label} className="text-center">
+                            <div className="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-full border border-gold/30 text-gold transition-colors">
+                              <Icon className="h-4 w-4" />
+                            </div>
+                            <div className="text-xs font-medium text-foreground/90">{s.label}</div>
+                            <div className="mt-1 text-[11px] text-muted-foreground">{s.value}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <button className="group mt-9 flex w-full items-center justify-center gap-3 rounded-full border border-gold/40 bg-transparent py-4 text-sm font-medium uppercase tracking-[0.22em] text-gold transition-all duration-500 hover:border-gold hover:bg-gold/5 hover:shadow-glow-gold">
                       Bekijk producten
-                      <ArrowUpRight className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </a>
+                      <ArrowRight className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" />
+                    </button>
                   </div>
                 </motion.div>
               </AnimatePresence>
@@ -497,70 +566,31 @@ export const PremiumMeatShowcase = memo(function PremiumMeatShowcase() {
           </motion.div>
         </div>
 
-        <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:max-w-[720px]">
-          {CUTS.map((c) => {
-            const isActive = c.id === activeId;
+        <div className="mt-16 grid grid-cols-1 gap-5 md:grid-cols-2 lg:mt-20 lg:grid-cols-4">
+          {TRUST.map((t, i) => {
+            const Icon = t.icon;
             return (
-              <button
-                key={`quick-${c.id}`}
-                onClick={() => setActiveId(c.id)}
-                className={`group flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-left transition-all duration-300 ${
-                  isActive
-                    ? "border-[rgba(226,192,141,0.40)] bg-white/[0.03] shadow-[0_26px_90px_-70px_rgba(0,0,0,0.9)]"
-                    : "border-white/10 bg-black/30 hover:border-[rgba(226,192,141,0.24)] hover:bg-white/[0.02]"
-                }`}
+              <motion.div
+                key={t.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.08 }}
+                className="glass-panel group rounded-xl p-6 transition-all duration-500 hover:-translate-y-1 hover:border-gold/40 hover:shadow-glow-gold"
               >
-                <div className="min-w-0">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[rgba(226,192,141,0.80)]">
-                    {c.label}
-                  </div>
-                  <div className="mt-1 truncate text-xs font-semibold text-foreground/85">
-                    {c.name}
-                  </div>
+                <div className="mb-4 grid h-11 w-11 place-items-center rounded-full border border-gold/30 bg-blood/5 text-gold transition-colors group-hover:border-gold/60">
+                  <Icon className="h-5 w-5" />
                 </div>
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[0.02] text-foreground/55 transition-colors group-hover:text-foreground/80">
-                  <span
-                    className="h-2 w-2 rounded-full"
-                    style={{
-                      backgroundColor: `rgba(177,18,23,${clamp(c.tier === "signature" ? 0.88 : 0.65, 0, 1)})`,
-                      boxShadow: `0 0 0 1px rgba(226,192,141,0.22), 0 0 22px -10px rgba(177,18,23,0.7)`,
-                    }}
-                  />
-                </span>
-              </button>
+                <div className="text-[10px] font-semibold uppercase tracking-[0.28em] text-blood">
+                  {t.label}
+                </div>
+                <h4 className="mt-2 font-display text-xl text-foreground">{t.title}</h4>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t.desc}</p>
+              </motion.div>
             );
           })}
-        </div>
-
-        <div className="relative mt-8 overflow-hidden rounded-[28px] border border-white/10 bg-[color-mix(in_oklab,var(--background)_70%,transparent)] shadow-[0_70px_160px_-130px_rgba(0,0,0,0.95)] backdrop-blur-[18px] sm:mt-10">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(1100px_520px_at_25%_0%,rgba(226,192,141,0.08)_0%,transparent_62%)]" />
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_520px_at_85%_35%,rgba(177,18,23,0.10)_0%,transparent_62%)]" />
-          <div className="grid divide-y divide-white/10 lg:grid-cols-4 lg:divide-x lg:divide-y-0">
-            {TRUST.map((t) => {
-              const Icon = t.icon;
-              return (
-                <div
-                  key={t.title}
-                  className="group relative flex min-w-0 items-start gap-4 px-6 py-6 transition-colors duration-500 hover:bg-white/[0.02] sm:px-7 sm:py-7"
-                >
-                  <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-white/10 bg-white/[0.03] text-[rgba(226,192,141,0.92)] shadow-[0_0_0_1px_rgba(226,192,141,0.10),0_0_34px_-18px_rgba(226,192,141,0.18)] transition-colors duration-500 group-hover:border-[rgba(226,192,141,0.26)]">
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#B11217]">
-                      {t.label}
-                    </div>
-                    <div className="mt-2 font-display text-[18px] font-medium leading-[1.05] tracking-[-0.02em] text-foreground">
-                      {t.title}
-                    </div>
-                    <div className="mt-3 text-sm leading-relaxed text-foreground/65">{t.desc}</div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
         </div>
       </div>
     </section>
   );
-});
+}

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   AnimatePresence,
+  animate,
   motion,
   type MotionValue,
   type Variants,
@@ -23,7 +24,7 @@ import {
   Store,
   Truck,
 } from "lucide-react";
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { SectionHeader } from "@/components/SectionHeader";
 import { MagneticButton } from "@/components/MagneticButton";
@@ -971,26 +972,128 @@ const heroTrust = [
   },
 ] as const;
 
-const process = [
+type ProcessStep = {
+  index: string;
+  num: string;
+  kicker: string;
+  navLabel: string;
+  title: string;
+  titleAccent: string;
+  body: string;
+  bullets: string[];
+  meta: { k: string; v: string }[];
+  icon: ReactNode;
+  proof: string;
+};
+
+const processSteps: ProcessStep[] = [
   {
-    step: "Stap 1",
-    title: "Het halalslachtproces",
-    text: "Controle op gezondheid en welzijn, slacht door gecertificeerde medewerkers, keuring en weging.",
-    icon: ShieldCheck,
+    index: "01",
+    num: "I",
+    kicker: "Eerste fase, herkomst",
+    navLabel: "Herkomst",
+    title: "Halal slacht,",
+    titleAccent: "onder toezicht.",
+    body:
+      "Met de hand uitgevoerd in EU-gecertificeerde slachthuizen door ervaren moslimslachters. Elk dier wordt gevolgd, gezegend en volgens de rite verwerkt, zorgvuldig geregistreerd en bevestigd.",
+    bullets: [
+      "Traceerbaarheids-ID per dier",
+      "Veterinaire controle op locatie",
+      "Ondertekend certificaat per batch",
+    ],
+    meta: [
+      { k: "Certificering", v: "AVS, HFA, EU 1099/2009" },
+      { k: "Traceerbaarheid", v: "100% per individueel dier" },
+      { k: "Auditcyclus", v: "Per kwartaal, onafhankelijk" },
+    ],
+    proof:
+      "Elke karkas verlaat de vloer met een verzegeld dossier, inclusief herkomstbedrijf, naam van de getuige en tijdstip van slacht.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6">
+        <path
+          d="M4 13c4-7 12-7 16 0M7 13c2.5-3.5 7.5-3.5 10 0M12 13v7M9 20h6"
+          stroke="currentColor"
+          strokeWidth="1.2"
+          strokeLinecap="round"
+        />
+      </svg>
+    ),
   },
   {
-    step: "Stap 2",
-    title: "Voorbereiding op de bestelling",
-    text: "Karkassen worden gekoeld en op maat versneden of voorbereid als eindproduct, afgestemd op uw vraag.",
-    icon: Package,
+    index: "02",
+    num: "II",
+    kicker: "Tweede fase, atelier",
+    navLabel: "Atelier",
+    title: "Meesterlijke bereiding,",
+    titleAccent: "met de hand versneden.",
+    body:
+      "Gerijpt aan het bot en volledig met de hand uitgebeend in ateliers met gecontroleerde temperatuur. Onze meester-slagers werken onder strikte HACCP-discipline, elke snede gewogen en elke afwerking verantwoord.",
+    bullets: [
+      "21 tot 35 dagen dry-aged aan het bot",
+      "Met de hand versneden door meester-slagers",
+      "Dagelijks gecontroleerde en afgetekende opbrengst",
+    ],
+    meta: [
+      { k: "Atelierklimaat", v: "+2 °C, 78% RV" },
+      { k: "Rijpingsvenster", v: "21 tot 35 dagen" },
+      { k: "Opbrengstcontrole", v: "Dagelijks, mede ondertekend" },
+    ],
+    proof:
+      "Geen machinale uitsnijding. Elke deelstuk wordt geopend, afgewerkt en geportioneerd door een slager die met naam geregistreerd staat.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6">
+        <path
+          d="M4 17l10-10 3 3-10 10H4v-3zM14 7l3 3M5 21h14"
+          stroke="currentColor"
+          strokeWidth="1.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
   },
   {
-    step: "Stap 3",
-    title: "Eigen koeltransport",
-    text: "Gekoelde levering met eigen chauffeurs en vaste routes, afgestemd op uw afspraken en planning.",
-    icon: Truck,
+    index: "03",
+    num: "III",
+    kicker: "Derde fase, levering",
+    navLabel: "Levering",
+    title: "Ononderbroken koelketen,",
+    titleAccent: "tot aan uw deur.",
+    body:
+      "Vacuüm verpakt, digitaal geregistreerd en verzonden via ons eigen gekoelde transport. Van atelier tot keuken blijft de keten intact en elk moment is controleerbaar.",
+    bullets: [
+      "Live temperatuurlogging per pallet",
+      "Eigen gekoelde vloot, zonder derde partij",
+      "Maximaal 18 uur van deur tot deur in EU-hoofdsteden",
+    ],
+    meta: [
+      { k: "Transittijd", v: "Tot 18 uur naar hoofdsteden" },
+      { k: "Telemetrie", v: "Live, per pallet" },
+      { k: "Verzegeling", v: "Genummerd en gefotografeerd" },
+    ],
+    proof:
+      "Open elke levering met een QR-scan en het volledige temperatuurverloop verschijnt binnen enkele seconden.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6">
+        <path
+          d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"
+          stroke="currentColor"
+          strokeWidth="1.1"
+          strokeLinecap="round"
+        />
+      </svg>
+    ),
   },
 ];
+
+const processTrust = [
+  { v: "100", suffix: "%", k: "Traceerbaarheid per dier" },
+  { v: "18", suffix: "u", k: "Maximale transittijd binnen EU-hoofdsteden" },
+  { v: "47", suffix: "", k: "Huizen discreet beleverd" },
+  { v: "0", suffix: "", k: "Onderbrekingen in de koelketen in 24 maanden" },
+] as const;
+
+const processCerts = ["AVS", "HFA", "EU 1099/2009", "HACCP", "IFS Food"] as const;
 
 function getSegmentsMaxScrollLeft(el: HTMLElement) {
   return Math.max(0, el.scrollWidth - el.clientWidth);
@@ -2247,7 +2350,7 @@ function HomePage() {
           <motion.div className="absolute inset-0 bg-[radial-gradient(1200px_760px_at_50%_60%,rgba(0,0,0,0)_0%,rgba(0,0,0,0)_50%,rgba(0,0,0,0.88)_100%)]" />
         </div>
 
-        <div className="relative mx-auto max-w-[1480px]">
+        <div className="relative mx-auto w-full max-w-[1320px]">
           <div className="relative z-0 grid gap-10 lg:grid-cols-12 lg:items-stretch lg:gap-6">
             <motion.div
               initial={{ opacity: 0, y: 22, filter: "blur(10px)" }}
@@ -2816,51 +2919,7 @@ function HomePage() {
       </div>
       </section>
 
-      <section id="quality" className="relative bg-background px-6 py-32 lg:px-10 lg:py-40">
-        <div className="absolute inset-0 opacity-35">
-          <div className="absolute left-1/2 top-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[220px]" />
-        </div>
-        <div className="relative mx-auto max-w-[1480px]">
-          <SectionHeader
-            eyebrow="Kwaliteit & halal"
-            title="Transparant proces. Consistente kwaliteit."
-            description="Slacht, verwerking en levering volgens halalrichtlijnen — met focus op hygiëne, controle en vakmanschap."
-          />
-
-          <div className="mt-20 grid gap-4 lg:grid-cols-3">
-            {process.map((p, idx) => (
-              <ProcessTile key={p.title} {...p} index={idx} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="relative overflow-hidden bg-background px-6 py-24 lg:px-10">
-        <div className="mx-auto max-w-[1480px] overflow-hidden rounded-sm border border-primary/30 bg-gradient-to-br from-surface via-surface to-background">
-          <div className="relative grid items-center gap-10 p-10 md:grid-cols-2 md:p-16 lg:p-24">
-            <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-primary/18 blur-[140px]" />
-            <div className="absolute -left-32 -bottom-32 h-96 w-96 rounded-full bg-[color-mix(in_oklab,var(--accent)_18%,transparent)] blur-[140px]" />
-            <div className="relative">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-primary">
-                Ook klant worden?
-              </p>
-              <h2 className="mt-5 text-balance font-display text-4xl text-foreground md:text-6xl">
-                Word klant bij Ipekçi.
-              </h2>
-            </div>
-            <div className="relative flex flex-col items-start gap-6 md:items-end">
-              <p className="max-w-md text-base leading-relaxed text-muted-foreground md:text-right">
-                Betrouwbare halal partner met premium Nederlandse kwaliteit, hygiënische verwerking
-                en gekoelde levering via eigen transport.
-              </p>
-              <MagneticButton href="/contact">
-                Word klant bij Ipekci
-                <ArrowUpRight size={14} />
-              </MagneticButton>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ProcessQualitySection />
     </SiteLayout>
   );
 }
@@ -3663,39 +3722,607 @@ function HalalStamp() {
   );
 }
 
-function ProcessTile({
-  step,
-  title,
-  text,
-  icon: Icon,
-  index,
-}: {
-  step: string;
-  title: string;
-  text: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
-  index: number;
-}) {
+function Counter({ to, suffix }: { to: string; suffix?: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-20% 0px" });
+  const mv = useMotionValue(0);
+  const target = parseInt(to, 10);
+  const rounded = useTransform(mv, (v) => Math.round(v).toString());
+  const [val, setVal] = useState("0");
+
+  useEffect(() => {
+    if (!inView) return;
+    const controls = animate(mv, target, { duration: 1.8, ease: [0.16, 0.84, 0.24, 1] });
+    const unsub = rounded.on("change", (v) => setVal(v));
+    return () => {
+      controls.stop();
+      unsub();
+    };
+  }, [inView, mv, rounded, target]);
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.85, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative flex h-full flex-col justify-between overflow-hidden rounded-sm border border-white/5 bg-surface p-8 transition-all duration-500 hover:border-primary/40 hover:bg-surface-elevated"
+    <span ref={ref} className="mc-tabular">
+      {val}
+      {suffix ? <span className="ml-0.5 align-top text-[0.7em]">{suffix}</span> : null}
+    </span>
+  );
+}
+
+function ProcessQualitySection() {
+  const reduce = useReducedMotion();
+  const initial = reduce ? "show" : "hidden";
+  const [active, setActive] = useState(0);
+  const step = processSteps[active];
+  useEffect(() => {
+    if (reduce) return;
+
+    const interval = window.setInterval(() => {
+      setActive((current) => (current + 1) % processSteps.length);
+    }, 3500);
+
+    return () => window.clearInterval(interval);
+  }, [reduce]);
+  const processContainer: Variants = {
+    hidden: {},
+    show: { transition: { staggerChildren: 0.14, delayChildren: 0.08 } },
+  };
+  const rise: Variants = {
+    hidden: { opacity: 0, y: 42, scale: 0.985, filter: "blur(14px)" },
+    show: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      filter: "blur(0px)",
+      transition: { duration: 1.15, ease: [0.16, 0.84, 0.24, 1] },
+    },
+  };
+  const fade: Variants = {
+    hidden: { opacity: 0, y: 18, scale: 0.99 },
+    show: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 0.9, ease: [0.16, 0.84, 0.24, 1] },
+    },
+  };
+
+  return (
+    <section
+      id="quality"
+      aria-labelledby="process-heading"
+      className="mc-grain mc-paper-tex relative isolate overflow-hidden"
+      style={{
+        background:
+          "radial-gradient(120% 80% at 50% 0%, #ffffff 0%, var(--mc-paper) 55%, var(--mc-paper-2) 100%)",
+        color: "var(--mc-ink)",
+      }}
     >
-      <div className="flex items-start justify-between">
-        <div className="text-primary">
-          <Icon size={24} />
-        </div>
-        <div className="text-[10px] font-semibold uppercase tracking-[0.25em] text-foreground/55">
-          {step}
-        </div>
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div
+          className="mc-drift mc-float-soft absolute -left-[8%] top-[12%] h-[36rem] w-[36rem] rounded-full blur-[120px]"
+          style={{ background: "radial-gradient(closest-side, rgba(184,137,58,0.18), transparent 70%)" }}
+        />
+        <div
+          className="mc-drift mc-orbit absolute right-[-10%] bottom-[8%] h-[34rem] w-[34rem] rounded-full blur-[140px]"
+          style={{
+            background: "radial-gradient(closest-side, rgba(163,36,24,0.10), transparent 70%)",
+            animationDelay: "-6s",
+          }}
+        />
       </div>
-      <div className="mt-8">
-        <h3 className="font-display text-2xl text-foreground">{title}</h3>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{text}</p>
+
+      <div className="relative mx-auto w-full max-w-[1320px] px-6 py-24 md:px-10 md:py-32 lg:py-40">
+        <motion.header
+          initial={initial}
+          whileInView="show"
+          viewport={{ once: true, margin: "-15% 0px" }}
+          variants={processContainer}
+          className="relative grid gap-10 md:grid-cols-12"
+        >
+          <div className="md:col-span-5">
+            <motion.div variants={fade}>
+              <span
+                className="mc-eyebrow inline-flex items-center rounded-full px-4 py-2"
+                style={{
+                  color: "var(--mc-gold-deep)",
+                  background: "rgba(255,255,255,0.72)",
+                  border: "1px solid rgba(184,137,58,0.24)",
+                  boxShadow: "0 10px 30px -22px rgba(184,137,58,0.45)",
+                }}
+              >
+                Onze werkwijze, editie 03
+              </span>
+            </motion.div>
+            <motion.p
+              variants={fade}
+              className="mc-sans mt-8 max-w-sm text-[13.5px] leading-relaxed"
+              style={{ color: "var(--mc-ink-dim)" }}
+            >
+              Drie zorgvuldige fasen. Een bewaakte keten van begin tot eind, van de halal
+              slacht tot het openen van de levering in uw keuken.
+            </motion.p>
+
+            <motion.div variants={fade} className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-3">
+              <span className="mc-eyebrow text-[10px]" style={{ color: "var(--mc-ink-dim)" }}>
+                Gecertificeerd door
+              </span>
+              {processCerts.map((cert) => (
+                <span
+                  key={cert}
+                  className="mc-sans rounded-full px-3 py-1.5 text-[11px] uppercase tracking-[0.18em]"
+                  style={{
+                    color: "var(--mc-ink)",
+                    border: "1px solid rgba(184,137,58,0.2)",
+                    background: "rgba(255,255,255,0.72)",
+                  }}
+                >
+                  {cert}
+                </span>
+              ))}
+            </motion.div>
+          </div>
+
+          <div className="md:col-span-7">
+            <motion.h2
+              id="process-heading"
+              variants={rise}
+              className="mc-serif text-[13vw] font-light leading-[0.95] tracking-[-0.02em] md:text-[80px] lg:text-[96px]"
+              style={{ color: "var(--mc-ink)" }}
+            >
+              Een ambacht dat{" "}
+              <span className="italic" style={{ color: "var(--mc-gold-deep)" }}>
+                in stilte
+              </span>
+              <br />
+              wordt bewaakt,
+              <br />
+              een norm die{" "}
+              <span className="italic" style={{ color: "var(--mc-gold-deep)" }}>
+                altijd standhoudt.
+              </span>
+            </motion.h2>
+            <motion.div
+              variants={fade}
+              className="mt-10 h-2 w-full max-w-md overflow-hidden rounded-full"
+              style={{ background: "rgba(184,137,58,0.12)" }}
+            >
+              <div className="mc-shimmer h-full w-full opacity-90" />
+            </motion.div>
+          </div>
+        </motion.header>
+
+        <motion.div
+          initial={initial}
+          whileInView="show"
+          viewport={{ once: true, margin: "-10% 0px" }}
+          variants={processContainer}
+          className="relative mt-20 md:mt-28"
+        >
+          <motion.div variants={fade} className="relative">
+            <div
+              className="absolute left-0 right-0 top-1/2 hidden h-[6px] -translate-y-1/2 overflow-hidden rounded-full md:block"
+              style={{ background: "rgba(184,137,58,0.08)" }}
+            />
+            <div
+              className="absolute left-0 top-1/2 hidden h-[6px] -translate-y-1/2 rounded-full transition-all duration-700 ease-[cubic-bezier(.16,.84,.24,1)] md:block"
+              style={{
+                width: `${((active + 1) / processSteps.length) * 100}%`,
+                background: "linear-gradient(90deg, rgba(138,102,32,0.85), rgba(184,137,58,0.95))",
+                boxShadow: "0 0 18px rgba(184,137,58,0.25)",
+              }}
+            />
+            <ol className="relative grid grid-cols-1 gap-3 md:grid-cols-3">
+              {processSteps.map((item, idx) => {
+                const isActive = idx === active;
+                return (
+                  <li key={item.index}>
+                    <motion.button
+                      type="button"
+                      onClick={() => setActive(idx)}
+                      whileHover={reduce ? undefined : { y: -3, scale: 1.01 }}
+                      whileTap={reduce ? undefined : { scale: 0.985 }}
+                      className="group/tab relative flex w-full items-center gap-4 rounded-[20px] px-4 py-5 text-left transition-[transform,background-color,box-shadow] duration-500 md:px-5"
+                      aria-pressed={isActive}
+                      style={{
+                        background: isActive ? "rgba(255,255,255,0.86)" : "rgba(255,255,255,0.5)",
+                        border: `1px solid ${isActive ? "rgba(184,137,58,0.24)" : "rgba(220,210,189,0.75)"}`,
+                        boxShadow: isActive
+                          ? "0 18px 36px -24px rgba(13,11,8,0.18), 0 8px 24px -18px rgba(184,137,58,0.55)"
+                          : "0 8px 20px -22px rgba(13,11,8,0.14)",
+                      }}
+                    >
+                      <span
+                        aria-hidden
+                        className="pointer-events-none absolute inset-0 rounded-[20px] opacity-0 transition-opacity duration-500 group-hover/tab:opacity-100"
+                        style={{
+                          background:
+                            "radial-gradient(circle at 12% 50%, rgba(184,137,58,0.14), transparent 42%)",
+                        }}
+                      />
+                      <span
+                        className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-all duration-500"
+                        style={{
+                          background: isActive
+                            ? "linear-gradient(160deg, var(--mc-ink), #2a221a)"
+                            : "rgba(255,255,255,0.8)",
+                          border: `1px solid ${isActive ? "var(--mc-gold)" : "var(--mc-line)"}`,
+                          color: isActive ? "var(--mc-gold-soft)" : "var(--mc-ink-dim)",
+                          boxShadow: isActive
+                            ? "0 0 0 4px var(--mc-paper), 0 8px 24px -8px rgba(184,137,58,0.6)"
+                            : "0 0 0 4px var(--mc-paper)",
+                        }}
+                      >
+                        <span className="mc-serif text-[14px] italic">{item.num}</span>
+                      </span>
+                      <span className="flex flex-col">
+                        <span
+                          className="mc-eyebrow text-[10px]"
+                          style={{ color: isActive ? "var(--mc-gold-deep)" : "var(--mc-ink-dim)" }}
+                        >
+                          {item.index}
+                        </span>
+                        <span
+                          className="mc-sans mt-1 text-[13px] font-medium leading-tight transition-colors md:text-[14px]"
+                          style={{ color: isActive ? "var(--mc-ink)" : "var(--mc-ink-dim)" }}
+                        >
+                          {item.navLabel}
+                        </span>
+                      </span>
+                    </motion.button>
+                  </li>
+                );
+              })}
+            </ol>
+          </motion.div>
+
+          <motion.div
+            variants={rise}
+            className="relative mt-10 overflow-hidden rounded-[28px]"
+            style={{
+              background: "linear-gradient(180deg, #ffffff 0%, var(--mc-paper) 100%)",
+              border: "1px solid var(--mc-line)",
+              boxShadow:
+                "0 1px 0 rgba(255,255,255,0.9) inset, 0 40px 80px -40px rgba(13,11,8,0.25), 0 8px 24px -12px rgba(184,137,58,0.18)",
+            }}
+          >
+            <div
+              aria-hidden
+              className="absolute inset-x-8 top-0 h-px"
+              style={{ background: "linear-gradient(90deg, transparent, var(--mc-gold), transparent)" }}
+            />
+
+            <div className="grid gap-0 md:grid-cols-12">
+              <div
+                className="relative overflow-hidden p-10 md:col-span-5 md:p-14"
+                style={{
+                  background: "linear-gradient(160deg, #1a1612 0%, #0d0b08 100%)",
+                  color: "var(--mc-paper)",
+                }}
+              >
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -left-20 -top-20 h-80 w-80 rounded-full blur-3xl"
+                  style={{ background: "radial-gradient(closest-side, rgba(163,36,24,0.45), transparent 70%)" }}
+                />
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -bottom-16 -right-16 h-72 w-72 rounded-full blur-3xl"
+                  style={{ background: "radial-gradient(closest-side, rgba(184,137,58,0.35), transparent 70%)" }}
+                />
+
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={step.index}
+                    initial={{ opacity: 0, y: 24, scale: 0.985, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, y: -12, scale: 0.992, filter: "blur(6px)" }}
+                    transition={{ duration: 0.8, ease: [0.16, 0.84, 0.24, 1] }}
+                    className="relative"
+                  >
+                    <div
+                      className="inline-flex h-14 w-14 items-center justify-center rounded-full"
+                      style={{
+                        background: "linear-gradient(160deg, rgba(50,38,28,1), rgba(20,16,12,1))",
+                        border: "1px solid rgba(217,184,120,0.4)",
+                        color: "var(--mc-gold-soft)",
+                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1), 0 0 28px rgba(184,137,58,0.25)",
+                      }}
+                    >
+                      {step.icon}
+                    </div>
+
+                    <div
+                      className="mc-serif mt-12 text-[220px] font-light italic leading-[0.8] transition-transform duration-700 group-hover/tab:scale-[1.02]"
+                      style={{
+                        color: "transparent",
+                        WebkitTextStroke: "1px rgba(217,184,120,0.7)",
+                      }}
+                    >
+                      {step.num}
+                    </div>
+
+                    <div className="mt-10 h-px w-16" style={{ background: "var(--mc-gold-soft)" }} />
+                    <p
+                      className="mc-sans mt-6 max-w-xs text-[12.5px] leading-[1.7]"
+                      style={{ color: "rgba(243,237,225,0.75)" }}
+                    >
+                      {step.proof}
+                    </p>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              <div className="p-10 md:col-span-7 md:p-14">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={step.index}
+                    initial={{ opacity: 0, x: 18, y: 14, scale: 0.992, filter: "blur(8px)" }}
+                    animate={{ opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, x: -10, y: -8, scale: 0.995, filter: "blur(4px)" }}
+                    transition={{ duration: 0.72, ease: [0.16, 0.84, 0.24, 1] }}
+                  >
+                    <span className="mc-eyebrow" style={{ color: "var(--mc-gold-deep)" }}>
+                      {step.kicker}
+                    </span>
+                    <h3
+                      className="mc-serif mt-5 text-[44px] font-light leading-[0.98] tracking-[-0.01em] md:text-[60px]"
+                      style={{ color: "var(--mc-ink)" }}
+                    >
+                      {step.title}
+                      <br />
+                      <span className="italic" style={{ color: "var(--mc-gold-deep)" }}>
+                        {step.titleAccent}
+                      </span>
+                    </h3>
+                    <p
+                      className="mc-sans mt-7 max-w-xl text-[15px] leading-[1.75]"
+                      style={{ color: "var(--mc-ink-dim)" }}
+                    >
+                      {step.body}
+                    </p>
+
+                    <ul className="mt-8 grid gap-3">
+                      {step.bullets.map((bullet, idx) => (
+                        <motion.li
+                          key={bullet}
+                          initial={{ opacity: 0, x: -14, filter: "blur(4px)" }}
+                          animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                          transition={{ delay: 0.18 + idx * 0.1, duration: 0.56 }}
+                          className="mc-sans flex items-start gap-3 text-[14px]"
+                          style={{ color: "var(--mc-ink)" }}
+                        >
+                          <span
+                            aria-hidden
+                            className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full"
+                            style={{
+                              background: "linear-gradient(160deg, var(--mc-gold-soft), var(--mc-gold-deep))",
+                              boxShadow: "0 0 0 3px rgba(184,137,58,0.12)",
+                            }}
+                          >
+                            <svg
+                              viewBox="0 0 12 12"
+                              className="h-2.5 w-2.5"
+                              fill="none"
+                              stroke="#fff"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path d="M2 6.5l2.8 2.8L10 3" />
+                            </svg>
+                          </span>
+                          {bullet}
+                        </motion.li>
+                      ))}
+                    </ul>
+
+                    <div
+                      className="mt-10 grid gap-4 border-t pt-8 sm:grid-cols-3"
+                      style={{ borderColor: "var(--mc-line)" }}
+                    >
+                      {step.meta.map((meta) => (
+                        <div key={meta.k} className="flex flex-col gap-1">
+                          <dt className="mc-eyebrow text-[9.5px]" style={{ color: "var(--mc-ink-dim)" }}>
+                            {meta.k}
+                          </dt>
+                          <dd
+                            className="mc-sans mc-tabular text-[13px] leading-snug"
+                            style={{ color: "var(--mc-ink)" }}
+                          >
+                            {meta.v}
+                          </dd>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+
+            <div
+              className="relative flex flex-wrap items-center justify-between gap-3 px-10 py-5 text-[11px] md:px-14"
+              style={{ borderTop: "1px solid var(--mc-line)", background: "rgba(255,255,255,0.6)" }}
+            >
+              <span className="mc-eyebrow" style={{ color: "var(--mc-ink-dim)" }}>
+                Stap {active + 1} van {processSteps.length}
+              </span>
+              <div className="flex items-center gap-2">
+                <motion.button
+                  type="button"
+                  onClick={() => setActive((a) => Math.max(0, a - 1))}
+                  disabled={active === 0}
+                  whileHover={reduce || active === 0 ? undefined : { y: -1.5 }}
+                  whileTap={reduce || active === 0 ? undefined : { scale: 0.98 }}
+                  className="mc-sans rounded-[14px] border px-4 py-2 text-[10.5px] uppercase tracking-[0.2em] transition-opacity hover:opacity-80 disabled:opacity-30"
+                  style={{
+                    color: "var(--mc-ember)",
+                    borderColor: "rgba(163,36,24,0.24)",
+                    background: "rgba(163,36,24,0.06)",
+                  }}
+                >
+                  ← Vorige
+                </motion.button>
+                <motion.button
+                  type="button"
+                  onClick={() => setActive((a) => Math.min(processSteps.length - 1, a + 1))}
+                  disabled={active === processSteps.length - 1}
+                  whileHover={reduce || active === processSteps.length - 1 ? undefined : { y: -1.5 }}
+                  whileTap={reduce || active === processSteps.length - 1 ? undefined : { scale: 0.98 }}
+                  className="mc-sans rounded-[14px] px-4 py-2 text-[10.5px] uppercase tracking-[0.2em] transition-opacity hover:opacity-95 disabled:opacity-30"
+                  style={{
+                    color: "var(--mc-paper)",
+                    background: "linear-gradient(180deg, #c33a2d 0%, var(--mc-ember) 100%)",
+                    border: "1px solid rgba(163,36,24,0.35)",
+                    boxShadow: "0 16px 28px -20px rgba(163,36,24,0.42)",
+                  }}
+                >
+                  Volgende →
+                </motion.button>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          initial={initial}
+          whileInView="show"
+          viewport={{ once: true, margin: "-10% 0px" }}
+          variants={processContainer}
+          className="relative mt-20 grid grid-cols-2 gap-px overflow-hidden rounded-[26px] md:mt-28 md:grid-cols-4"
+          style={{ background: "var(--mc-line)", border: "1px solid var(--mc-line)" }}
+        >
+          {processTrust.map((item) => (
+            <motion.div
+              key={item.k}
+              variants={fade}
+              className="flex flex-col gap-2 p-8 md:p-10"
+              style={{ background: "var(--mc-paper)" }}
+            >
+              <span
+                className="mc-serif text-[56px] font-light leading-none tracking-[-0.02em] md:text-[68px]"
+                style={{ color: "var(--mc-ink)" }}
+              >
+                <Counter to={item.v} suffix={item.suffix} />
+              </span>
+              <span
+                className="mc-sans mt-2 max-w-[180px] text-[12px] leading-snug"
+                style={{ color: "var(--mc-ink-dim)" }}
+              >
+                {item.k}
+              </span>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        <motion.div
+          initial={initial}
+          whileInView="show"
+          viewport={{ once: true, margin: "-10% 0px" }}
+          variants={processContainer}
+          className="relative mt-20 md:mt-28"
+        >
+          <div
+            className="relative overflow-hidden rounded-[30px]"
+            style={{
+              background: "linear-gradient(180deg, #ffffff 0%, var(--mc-paper-2) 100%)",
+              border: "1px solid var(--mc-line)",
+              boxShadow: "0 1px 0 rgba(255,255,255,0.9) inset, 0 30px 80px -30px rgba(184,137,58,0.25)",
+            }}
+          >
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -left-24 -top-24 h-80 w-80 rounded-full blur-3xl"
+              style={{ background: "radial-gradient(closest-side, rgba(184,137,58,0.22), transparent 70%)" }}
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -bottom-20 -right-20 h-72 w-72 rounded-full blur-3xl"
+              style={{ background: "radial-gradient(closest-side, rgba(163,36,24,0.12), transparent 70%)" }}
+            />
+
+            <div className="relative grid items-end gap-12 px-8 py-14 md:grid-cols-12 md:px-14 md:py-20">
+              <div className="md:col-span-7">
+                <motion.div variants={fade}>
+                  <span
+                    className="mc-eyebrow inline-flex rounded-full px-4 py-2"
+                    style={{
+                      color: "var(--mc-gold-deep)",
+                      background: "rgba(255,255,255,0.72)",
+                      border: "1px solid rgba(184,137,58,0.22)",
+                    }}
+                  >
+                    Op uitnodiging
+                  </span>
+                </motion.div>
+                <motion.h3
+                  variants={rise}
+                  className="mc-serif mt-6 text-4xl font-light leading-[1.02] tracking-[-0.01em] md:text-6xl"
+                  style={{ color: "var(--mc-ink)" }}
+                >
+                  We bedienen slechts een{" "}
+                  <span className="italic" style={{ color: "var(--mc-gold-deep)" }}>
+                    select
+                  </span>{" "}
+                  aantal huizen.
+                  <br />
+                  Het uwe kan daar deel van uitmaken.
+                </motion.h3>
+                <motion.p
+                  variants={fade}
+                  className="mc-sans mt-6 max-w-xl text-[14.5px] leading-relaxed"
+                  style={{ color: "var(--mc-ink-dim)" }}
+                >
+                  Nieuwe samenwerkingen worden per kwartaal beoordeeld. Vraag discreet ons
+                  private dossier aan met certificeringen, een atelierpresentatie en het
+                  actuele assortiment.
+                </motion.p>
+              </div>
+
+              <motion.div variants={fade} className="md:col-span-5 md:justify-self-end">
+                <a
+                  href="#contact"
+                  className="group/btn relative inline-flex items-center gap-5 overflow-hidden rounded-[20px] px-8 py-5 transition-[transform,box-shadow] duration-500 hover:-translate-y-0.5"
+                  style={{
+                    background: "linear-gradient(180deg, #cf4334 0%, var(--mc-ember) 100%)",
+                    color: "var(--mc-paper)",
+                    border: "1px solid rgba(163,36,24,0.38)",
+                    boxShadow: "0 24px 44px -18px rgba(163,36,24,0.4), 0 0 0 1px rgba(184,137,58,0.14)",
+                  }}
+                >
+                  <span className="mc-sweep" />
+                  <span className="mc-eyebrow">Vraag het dossier aan</span>
+                  <span
+                    aria-hidden
+                    className="relative flex h-9 w-9 items-center justify-center rounded-full transition-transform duration-500 group-hover/btn:translate-x-1"
+                    style={{
+                      background:
+                        "radial-gradient(circle at 30% 30%, #e7c887, #b78a3c 60%, #6e4f1f 100%)",
+                      boxShadow: "0 0 24px rgba(184,137,58,0.35), inset 0 1px 0 rgba(255,255,255,0.5)",
+                    }}
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="h-4 w-4"
+                      fill="none"
+                      stroke="#0d0b08"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                    >
+                      <path d="M5 12h14M13 6l6 6-6 6" />
+                    </svg>
+                  </span>
+                </a>
+                <p
+                  className="mc-sans mt-4 text-right text-[11px] uppercase tracking-[0.18em]"
+                  style={{ color: "var(--mc-ink-dim)" }}
+                >
+                  Discreet, per correspondentie
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
       </div>
-    </motion.div>
+    </section>
   );
 }

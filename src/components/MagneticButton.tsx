@@ -57,14 +57,14 @@ export function MagneticButton({
       {href ? (
         <a
           href={href}
-          className={`group inline-flex items-center justify-center rounded-sm px-7 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition-all duration-300 ${baseCls}`}
+          className={`group inline-flex items-center justify-center rounded-[18px] px-7 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition-all duration-300 ${baseCls}`}
         >
           {inner}
         </a>
       ) : (
         <button
           onClick={onClick}
-          className={`group inline-flex items-center justify-center rounded-sm px-7 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition-all duration-300 ${baseCls}`}
+          className={`group inline-flex items-center justify-center rounded-[18px] px-7 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition-all duration-300 ${baseCls}`}
         >
           {inner}
         </button>

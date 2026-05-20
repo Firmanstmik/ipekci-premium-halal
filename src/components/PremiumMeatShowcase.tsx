@@ -341,6 +341,10 @@ export function PremiumMeatShowcase() {
   const focusedId = hoveredId ?? activeId;
   const isTopCallout = active.number <= 6;
   const isRightLegCallout = active.id === "brisket" || active.id === "shank";
+  const mobileCalloutWidth = Math.max(
+    92,
+    Math.min(116, Math.round((active.callout.width ?? 196) * 0.7)),
+  );
   const calloutAnchorX = active.callout.align === "left" ? active.callout.x - 1.4 : active.callout.x + 1.4;
   const calloutDirection = active.callout.align === "left" ? 1 : -1;
   const calloutShoulderX = calloutAnchorX - calloutDirection * (isRightLegCallout ? 5 : 6.5);
@@ -348,7 +352,7 @@ export function PremiumMeatShowcase() {
   const calloutCurveY = active.cy + calloutVerticalLift;
   const calloutPath =
     active.id === "brisket"
-      ? `M ${active.cx} ${active.cy} C ${active.cx + 1.2} ${active.cy + 3.8}, ${calloutAnchorX - 1.8} ${active.cy + 4.8}, ${calloutAnchorX - 1.8} ${active.callout.y - 2.2} L ${calloutAnchorX} ${active.callout.y}`
+      ? `M ${active.cx} ${active.cy} C ${active.cx + 2.2} ${active.cy + 4.2}, ${calloutAnchorX - 0.6} ${active.cy + 5.2}, ${calloutAnchorX - 0.6} ${active.callout.y - 2.4} L ${calloutAnchorX} ${active.callout.y}`
       : `M ${active.cx} ${active.cy} C ${active.cx} ${calloutCurveY}, ${calloutShoulderX} ${calloutCurveY}, ${calloutShoulderX} ${active.callout.y} L ${calloutAnchorX} ${active.callout.y}`;
 
   return (
@@ -601,6 +605,58 @@ export function PremiumMeatShowcase() {
                 </div>
               </AnimatePresence>
 
+              <AnimatePresence mode="wait">
+                <div
+                  style={{
+                    left: `${active.callout.x}%`,
+                    top: `${active.callout.y}%`,
+                    width: `${mobileCalloutWidth}px`,
+                    transform: active.callout.align === "left" ? "translate(0, -50%)" : "translate(-100%, -50%)",
+                  }}
+                  className="pointer-events-none absolute z-20 md:hidden"
+                >
+                  <motion.div
+                    key={`mobile-callout-${active.id}`}
+                    initial={{
+                      opacity: 0,
+                      x: active.callout.align === "left" ? -10 : 10,
+                      y: 6,
+                      scale: 0.94,
+                      rotate: active.callout.align === "left" ? -1.4 : 1.4,
+                      filter: "blur(8px)",
+                    }}
+                    animate={{ opacity: 1, x: 0, y: 0, scale: 1, rotate: 0, filter: "blur(0px)" }}
+                    exit={{
+                      opacity: 0,
+                      x: active.callout.align === "left" ? -8 : 8,
+                      y: -4,
+                      scale: 0.98,
+                      rotate: active.callout.align === "left" ? -1 : 1,
+                      filter: "blur(5px)",
+                    }}
+                    transition={{ duration: 0.4, ease: [0.16, 0.84, 0.24, 1] }}
+                    className="relative overflow-hidden rounded-[15px] border border-gold/24 bg-[linear-gradient(145deg,rgba(12,12,12,0.9),rgba(28,18,14,0.82))] px-2.5 py-2 shadow-[0_14px_28px_-20px_rgba(0,0,0,0.75),0_0_0_1px_rgba(200,164,107,0.08)] backdrop-blur-xl"
+                  >
+                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(200,164,107,0.15),transparent_42%),radial-gradient(circle_at_bottom_right,rgba(179,18,23,0.1),transparent_44%)]" />
+                    <div className="relative min-w-0">
+                      <div className="text-[5px] font-semibold uppercase tracking-[0.22em] text-blood/90">
+                        Premium selectie
+                      </div>
+                      <div
+                        className="mt-0.5 font-display text-[13px] leading-[0.9] text-foreground"
+                        style={{ textWrap: "balance" }}
+                      >
+                        {active.label}
+                      </div>
+                      <div className="mt-1 flex items-center gap-1.5 text-[5.5px] uppercase tracking-[0.18em] text-gold/80">
+                        <span className="h-px w-3 bg-gold/45" />
+                        <span className="truncate">{active.name}</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </AnimatePresence>
+
               {CUTS.map((c) => {
                 const isActive = c.id === activeId;
                 const isHover = c.id === hoveredId;
@@ -633,8 +689,8 @@ export function PremiumMeatShowcase() {
                       />
                     ) : null}
                     <div
-                      className={`relative grid place-items-center rounded-full border text-[10px] font-bold transition-all duration-500 ${
-                        isPremium ? "h-8 w-8" : "h-7 w-7"
+                      className={`relative grid place-items-center rounded-full border text-[7.5px] font-bold transition-all duration-500 md:text-[9px] ${
+                        isPremium ? "h-6.5 w-6.5 md:h-7 md:w-7" : "h-5.5 w-5.5 md:h-6 md:w-6"
                       } ${
                         lifted
                           ? "scale-110 border-gold bg-charcoal-2 text-gold shadow-glow-gold"

@@ -240,7 +240,7 @@ const CUTS: Cut[] = [
     cx: 64,
     cy: 57,
     region: "M53,50 L70,50 C71,53 70.5,57 68,60 C64,63 58,65 53,66.5 Z",
-    callout: { x: 72, y: 78, align: "left", width: 150 },
+    callout: { x: 69, y: 74, align: "left", width: 142 },
     specs: [
       { icon: "tender", label: "Malsheid", value: "Slow cooked" },
       { icon: "flavor", label: "Smaak", value: "Diep & rokerig" },
@@ -282,7 +282,7 @@ const CUTS: Cut[] = [
     cy: 69,
     labelSize: 1.3,
     region: "M61,60 L66,60 L66,75 L61,75 Z",
-    callout: { x: 92, y: 82, align: "right", width: 146 },
+    callout: { x: 70, y: 82, align: "left", width: 144 },
     specs: [
       { icon: "tender", label: "Malsheid", value: "Slow cooked" },
       { icon: "flavor", label: "Smaak", value: "Krachtig" },
@@ -340,13 +340,16 @@ export function PremiumMeatShowcase() {
   const active = CUTS.find((c) => c.id === activeId)!;
   const focusedId = hoveredId ?? activeId;
   const isTopCallout = active.number <= 6;
-  const calloutAnchorX = active.callout.x;
+  const isRightLegCallout = active.id === "brisket" || active.id === "shank";
+  const calloutAnchorX = active.callout.align === "left" ? active.callout.x - 1.4 : active.callout.x + 1.4;
   const calloutDirection = active.callout.align === "left" ? 1 : -1;
-  const calloutShoulderX = calloutAnchorX - calloutDirection * 6.5;
-  const calloutVerticalLift = isTopCallout ? -9.5 : 10.5;
-  const calloutCurveX = active.cx + (calloutAnchorX - active.cx) * 0.28;
+  const calloutShoulderX = calloutAnchorX - calloutDirection * (isRightLegCallout ? 5 : 6.5);
+  const calloutVerticalLift = isTopCallout ? -9.5 : isRightLegCallout ? 7.5 : 10.5;
   const calloutCurveY = active.cy + calloutVerticalLift;
-  const calloutPath = `M ${active.cx} ${active.cy} C ${active.cx} ${calloutCurveY}, ${calloutShoulderX} ${calloutCurveY}, ${calloutShoulderX} ${active.callout.y} L ${calloutAnchorX} ${active.callout.y}`;
+  const calloutPath =
+    active.id === "brisket"
+      ? `M ${active.cx} ${active.cy} C ${active.cx + 1.2} ${active.cy + 3.8}, ${calloutAnchorX - 1.8} ${active.cy + 4.8}, ${calloutAnchorX - 1.8} ${active.callout.y - 2.2} L ${calloutAnchorX} ${active.callout.y}`
+      : `M ${active.cx} ${active.cy} C ${active.cx} ${calloutCurveY}, ${calloutShoulderX} ${calloutCurveY}, ${calloutShoulderX} ${active.callout.y} L ${calloutAnchorX} ${active.callout.y}`;
 
   return (
     <section className="relative overflow-hidden bg-cinematic">
@@ -475,8 +478,8 @@ export function PremiumMeatShowcase() {
                       key={`callout-line-glow-${active.id}`}
                       d={calloutPath}
                       fill="none"
-                      stroke="oklch(0.82 0.13 78 / 0.22)"
-                      strokeWidth="1.15"
+                      stroke="oklch(0.82 0.13 78 / 0.18)"
+                      strokeWidth="0.92"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       initial={{ opacity: 0, pathLength: 0 }}
@@ -490,7 +493,7 @@ export function PremiumMeatShowcase() {
                       d={calloutPath}
                       fill="none"
                       stroke="url(#calloutStroke)"
-                      strokeWidth="0.28"
+                      strokeWidth="0.22"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       markerEnd="url(#calloutArrow)"
@@ -504,7 +507,7 @@ export function PremiumMeatShowcase() {
                       key={`callout-node-${active.id}`}
                       cx={active.cx}
                       cy={active.cy}
-                      r="0.95"
+                      r="0.8"
                       fill="url(#calloutNode)"
                       initial={{ opacity: 0, scale: 0.4 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -546,30 +549,53 @@ export function PremiumMeatShowcase() {
                       filter: "blur(6px)",
                     }}
                     transition={{ duration: 0.62, ease: [0.16, 0.84, 0.24, 1] }}
-                    className="relative overflow-hidden rounded-[20px] border border-gold/28 bg-[linear-gradient(145deg,rgba(16,16,16,0.92),rgba(28,20,16,0.82))] px-3.5 py-3 shadow-[0_18px_40px_-20px_rgba(0,0,0,0.75),0_0_0_1px_rgba(200,164,107,0.12)] backdrop-blur-xl"
+                    className="group/callout relative overflow-hidden rounded-[20px] border border-gold/28 bg-[linear-gradient(145deg,rgba(16,16,16,0.92),rgba(28,20,16,0.82))] px-3.5 py-3 shadow-[0_18px_40px_-20px_rgba(0,0,0,0.75),0_0_0_1px_rgba(200,164,107,0.12)] backdrop-blur-xl"
                   >
                     <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(200,164,107,0.18),transparent_42%),radial-gradient(circle_at_bottom_right,rgba(179,18,23,0.12),transparent_46%)]" />
-                    <div className="relative flex items-start gap-2.5">
+                    <motion.div
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.34, delay: 0.1 }}
+                      className="pointer-events-none absolute inset-x-5 top-0 h-px origin-left scale-x-70 bg-gradient-to-r from-gold/0 via-gold/65 to-gold/0 transition-transform duration-700 group-hover/callout:scale-x-100"
+                    />
+                    <div className="relative min-w-0">
                       <motion.div
-                        initial={{ scale: 0.7, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 0.8, opacity: 0 }}
-                        transition={{ duration: 0.34, delay: 0.12 }}
-                        className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-gold/35 bg-blood/10 text-[9px] font-semibold tracking-[0.12em] text-gold shadow-[0_0_18px_rgba(200,164,107,0.16)]"
+                        initial={{ opacity: 0, y: 7 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        transition={{ duration: 0.34, delay: 0.08 }}
+                        className="text-[6.5px] font-semibold uppercase tracking-[0.24em] text-blood/90"
                       >
-                        {active.number}
+                        Premium selectie
                       </motion.div>
-                      <div className="min-w-0">
-                        <div className="text-[7px] font-semibold uppercase tracking-[0.28em] text-blood/90">
-                          Premium selectie
-                        </div>
-                        <div className="mt-1 font-display text-[18px] leading-[0.95] text-foreground">
-                          {active.label}
-                        </div>
-                        <div className="mt-1 text-[7.5px] uppercase tracking-[0.22em] text-gold/80">
-                          {active.name}
-                        </div>
-                      </div>
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        transition={{ duration: 0.42, delay: 0.12 }}
+                        className="mt-1 font-display text-[17px] leading-[0.92] text-foreground"
+                        style={{ textWrap: "balance" }}
+                      >
+                        {active.label}
+                      </motion.div>
+                      <motion.div
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        transition={{ duration: 0.36, delay: 0.16 }}
+                        className="mt-1.5 flex items-center gap-2 text-[7px] uppercase tracking-[0.2em] text-gold/80"
+                      >
+                        <span className="h-px w-4 bg-gold/45" />
+                        <span className="truncate">{active.name}</span>
+                      </motion.div>
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: [0.1, 0.28, 0.12] }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 1.2, delay: 0.14 }}
+                        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_35%,rgba(200,164,107,0.08),transparent_42%)]"
+                      />
                     </div>
                   </motion.div>
                 </div>

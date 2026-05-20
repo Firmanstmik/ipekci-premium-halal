@@ -409,8 +409,8 @@ function AssortimentProductCard({
       whileInView={{ opacity: 1, x: 0, scale: 1, rotateY: 0, filter: "blur(0px)" }}
       viewport={{ once: true, margin: "-120px" }}
       transition={{
-        duration: 1.35,
-        delay: reduceMotion ? 0 : 0.16 + index * 0.18,
+        duration: 1.95,
+        delay: reduceMotion ? 0 : 0.28 + index * 0.26,
         ease: [0.16, 1, 0.3, 1],
       }}
       whileHover={reduceMotion ? undefined : { y: -8 }}
@@ -496,8 +496,8 @@ function AssortimentProductCard({
             }
             viewport={{ once: true, margin: "-120px" }}
             transition={{
-              duration: 1.65,
-              delay: reduceMotion ? 0 : 0.34 + index * 0.18,
+              duration: 2.2,
+              delay: reduceMotion ? 0 : 0.54 + index * 0.26,
               ease: [0.22, 1, 0.36, 1],
             }}
           />

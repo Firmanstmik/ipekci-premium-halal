@@ -2738,20 +2738,24 @@ function HomePage() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              initial={reduceMotion ? { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" } : { opacity: 0, y: 34, scale: 0.97, filter: "blur(18px)" }}
+              whileInView={
+                reduceMotion
+                  ? { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }
+                  : { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }
+              }
               viewport={{ once: true, margin: "-140px" }}
-              transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1], delay: 0.06 }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.06 }}
               className="relative min-w-0 lg:col-span-8"
               ref={eindproductenShowcaseRef}
             >
-              <div className="relative min-w-0 overflow-hidden rounded-[36px] border border-[rgba(226,192,141,0.14)] bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_70px_180px_-120px_rgba(0,0,0,0.98)]">
+              <div className="relative min-w-0 overflow-hidden rounded-[30px] sm:rounded-[34px]">
                 <div className="pointer-events-none absolute inset-0">
-                  <div className="absolute inset-0 bg-[radial-gradient(980px_640px_at_16%_18%,rgba(255,255,255,0.12)_0%,transparent_62%)]" />
-                  <div className="absolute inset-0 bg-[radial-gradient(980px_760px_at_76%_72%,rgba(179,18,23,0.36)_0%,transparent_58%)]" />
-                  <div className="absolute inset-0 bg-[radial-gradient(900px_660px_at_88%_24%,rgba(226,192,141,0.16)_0%,transparent_62%)]" />
-                  <div className="absolute inset-0 bg-[radial-gradient(1200px_860px_at_50%_60%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.28)_42%,rgba(0,0,0,0.94)_100%)]" />
-                  <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.56)_0%,rgba(0,0,0,0.12)_34%,rgba(0,0,0,0.48)_100%)]" />
+                  <div className="absolute inset-0 bg-[radial-gradient(980px_640px_at_16%_18%,rgba(255,255,255,0.08)_0%,transparent_62%)]" />
+                  <div className="absolute inset-0 bg-[radial-gradient(980px_760px_at_76%_72%,rgba(179,18,23,0.28)_0%,transparent_58%)]" />
+                  <div className="absolute inset-0 bg-[radial-gradient(900px_660px_at_88%_24%,rgba(226,192,141,0.12)_0%,transparent_62%)]" />
+                  <div className="absolute inset-0 bg-[radial-gradient(1200px_860px_at_50%_60%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.18)_42%,rgba(0,0,0,0.82)_100%)]" />
+                  <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.38)_0%,rgba(0,0,0,0.08)_34%,rgba(0,0,0,0.34)_100%)]" />
                   <img
                     src={productenImage}
                     alt=""
@@ -2762,14 +2766,14 @@ function HomePage() {
 
                 <motion.div
                   aria-hidden
-                  className="pointer-events-none absolute left-1/2 top-1/2 z-[1] h-[260px] w-[260px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+                  className="pointer-events-none absolute left-1/2 top-1/2 z-[1] h-[220px] w-[220px] -translate-x-1/2 -translate-y-1/2 rounded-full sm:h-[260px] sm:w-[260px]"
                   initial={reduceMotion ? { opacity: 0.18, scale: 1 } : { opacity: 0, scale: 0.72, filter: "blur(32px)" }}
                   animate={
                     reduceMotion || !eindproductenShowcaseInView
                       ? { opacity: 0.18, scale: 1, filter: "blur(30px)" }
                       : eindproductenIntroComplete
-                        ? { opacity: 0.16, scale: 1.08, filter: "blur(30px)" }
-                        : { opacity: 0.46, scale: 1, filter: "blur(18px)" }
+                        ? { opacity: 0.14, scale: 1.1, filter: "blur(30px)" }
+                        : { opacity: 0.42, scale: 1, filter: "blur(18px)" }
                   }
                   transition={{ duration: 1.8, ease: EINDPRODUCTEN_REVEAL_EASE }}
                   style={{
@@ -2819,11 +2823,11 @@ function HomePage() {
                     eindproductenAutoPausedRef.current = false;
                   }}
                 >
-                  <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-center justify-between px-6 py-5 sm:px-8">
-                    <div className="rounded-full border border-white/8 bg-black/18 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-[rgba(245,242,237,0.56)] backdrop-blur-md">
+                  <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-center justify-between px-3 py-3 sm:px-6 sm:py-5 lg:px-8">
+                    <div className="rounded-full border border-white/8 bg-black/14 px-3 py-1.5 text-[8px] font-semibold uppercase tracking-[0.22em] text-[rgba(245,242,237,0.52)] backdrop-blur-md sm:px-4 sm:py-2 sm:text-[10px]">
                       Collection 01
                     </div>
-                    <div className="hidden rounded-full border border-white/8 bg-black/18 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-[rgba(245,242,237,0.48)] backdrop-blur-md sm:block">
+                    <div className="hidden rounded-full border border-white/8 bg-black/14 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-[rgba(245,242,237,0.44)] backdrop-blur-md sm:block">
                       Premium halal finished products
                     </div>
                   </div>
@@ -2835,18 +2839,18 @@ function HomePage() {
                     onPointerUp={handleEindproductenPointerUp}
                     onPointerCancel={handleEindproductenPointerUp}
                     data-dragging={eindproductenDragging ? "true" : "false"}
-                    className={`relative flex w-full min-w-0 snap-x snap-proximity gap-5 overflow-x-auto px-5 pb-11 pt-16 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden sm:gap-7 sm:px-7 sm:pb-12 sm:pt-18 lg:px-8 lg:pb-14 lg:pt-20 ${
+                    className={`relative flex w-full min-w-0 snap-x snap-proximity gap-4 overflow-x-auto px-3 pb-9 pt-13 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden sm:gap-6 sm:px-5 sm:pb-11 sm:pt-16 lg:px-6 lg:pb-14 lg:pt-20 ${
                       eindproductenDragging ? "cursor-grabbing" : "cursor-grab"
                     }`}
                     style={{
-                      scrollPaddingLeft: "24px",
-                      scrollPaddingRight: "26px",
+                      scrollPaddingLeft: "16px",
+                      scrollPaddingRight: "18px",
                       WebkitOverflowScrolling: "touch",
                       touchAction: "pan-y",
                       maskImage:
-                        "linear-gradient(90deg, transparent 0%, black 5%, black 95%, transparent 100%)",
+                        "linear-gradient(90deg, transparent 0%, black 3%, black 97%, transparent 100%)",
                       WebkitMaskImage:
-                        "linear-gradient(90deg, transparent 0%, black 5%, black 95%, transparent 100%)",
+                        "linear-gradient(90deg, transparent 0%, black 3%, black 97%, transparent 100%)",
                     }}
                   >
                     {EINDPRODUCTEN_PRODUCTS.map((p, idx) => (
@@ -2860,12 +2864,12 @@ function HomePage() {
                       />
                     ))}
 
-                    <div className="w-8 shrink-0 sm:w-12" />
+                    <div className="w-4 shrink-0 sm:w-8 lg:w-10" />
                   </motion.div>
                 </div>
 
               <div className="pointer-events-none absolute inset-0 z-10">
-                <div className="absolute left-2 top-1/2 -translate-y-1/2">
+                <div className="absolute left-1 top-1/2 hidden -translate-y-1/2 sm:block">
                   {eindproductenCanScrollLeft ? (
                     <button
                       type="button"
@@ -2874,7 +2878,7 @@ function HomePage() {
                         markEindproductenUserInteract();
                         scrollToSnapItem(eindproductenScrollerRef, "left");
                       }}
-                      className="pointer-events-auto group grid h-10 w-10 place-items-center rounded-2xl border border-[rgba(226,192,141,0.30)] bg-black/35 shadow-[0_0_0_1px_rgba(255,255,255,0.04),0_30px_110px_-78px_rgba(0,0,0,0.92)] backdrop-blur-xl transition-all duration-500 hover:border-[rgba(226,192,141,0.55)] hover:bg-black/45 hover:shadow-[0_0_0_1px_rgba(226,192,141,0.18),0_0_46px_-20px_rgba(179,18,23,0.60),0_30px_110px_-78px_rgba(0,0,0,0.92)] active:scale-[0.98] sm:h-11 sm:w-11 lg:h-12 lg:w-12"
+                      className="pointer-events-auto group grid h-10 w-10 place-items-center rounded-2xl border border-[rgba(226,192,141,0.26)] bg-black/26 shadow-[0_0_0_1px_rgba(255,255,255,0.04),0_30px_110px_-78px_rgba(0,0,0,0.92)] backdrop-blur-xl transition-all duration-500 hover:border-[rgba(226,192,141,0.48)] hover:bg-black/38 hover:shadow-[0_0_0_1px_rgba(226,192,141,0.16),0_0_42px_-20px_rgba(179,18,23,0.54),0_30px_110px_-78px_rgba(0,0,0,0.92)] active:scale-[0.98] lg:h-11 lg:w-11"
                     >
                       <ArrowRight
                         size={16}
@@ -2883,7 +2887,7 @@ function HomePage() {
                     </button>
                   ) : null}
                 </div>
-                <div className="absolute right-2 top-1/2 -translate-y-1/2">
+                <div className="absolute right-1 top-1/2 hidden -translate-y-1/2 sm:block">
                   {eindproductenCanScrollRight ? (
                     <button
                       type="button"
@@ -2892,7 +2896,7 @@ function HomePage() {
                         markEindproductenUserInteract();
                         scrollToSnapItem(eindproductenScrollerRef, "right");
                       }}
-                      className="pointer-events-auto group grid h-10 w-10 place-items-center rounded-2xl border border-[rgba(226,192,141,0.30)] bg-black/35 shadow-[0_0_0_1px_rgba(255,255,255,0.04),0_30px_110px_-78px_rgba(0,0,0,0.92)] backdrop-blur-xl transition-all duration-500 hover:border-[rgba(226,192,141,0.55)] hover:bg-black/45 hover:shadow-[0_0_0_1px_rgba(226,192,141,0.18),0_0_46px_-20px_rgba(179,18,23,0.60),0_30px_110px_-78px_rgba(0,0,0,0.92)] active:scale-[0.98] sm:h-11 sm:w-11 lg:h-12 lg:w-12"
+                      className="pointer-events-auto group grid h-10 w-10 place-items-center rounded-2xl border border-[rgba(226,192,141,0.26)] bg-black/26 shadow-[0_0_0_1px_rgba(255,255,255,0.04),0_30px_110px_-78px_rgba(0,0,0,0.92)] backdrop-blur-xl transition-all duration-500 hover:border-[rgba(226,192,141,0.48)] hover:bg-black/38 hover:shadow-[0_0_0_1px_rgba(226,192,141,0.16),0_0_42px_-20px_rgba(179,18,23,0.54),0_30px_110px_-78px_rgba(0,0,0,0.92)] active:scale-[0.98] lg:h-11 lg:w-11"
                     >
                       <ArrowRight
                         size={16}
@@ -3169,29 +3173,33 @@ function EindproductenShowcaseCard({
           ? { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }
           : {
               opacity: 0,
-              x: revealOffset * -42,
-              y: 24,
-              scale: 0.9,
-              filter: "blur(14px)",
+              x: revealOffset * -52,
+              y: 38,
+              scale: 0.88,
+              rotateX: 10,
+              rotateY: revealOffset * -6,
+              filter: "blur(18px)",
             }
       }
       animate={
         reduceMotion || isRevealed
-          ? { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }
+          ? { opacity: 1, x: 0, y: 0, scale: 1, rotateX: 0, rotateY: 0, filter: "blur(0px)" }
           : undefined
       }
       transition={{
-        duration: 1.1,
+        duration: 1.2,
         ease: EINDPRODUCTEN_REVEAL_EASE,
-        delay: reduceMotion ? 0 : 0.22 + Math.abs(revealOffset) * 0.14,
+        delay: reduceMotion ? 0 : 0.18 + Math.abs(revealOffset) * 0.12,
       }}
       whileHover={
         reduceMotion
           ? undefined
           : {
-              y: -10,
-              scale: 1.008,
-              transition: { type: "spring", stiffness: 280, damping: 30 },
+              y: -12,
+              scale: 1.012,
+              rotateX: -2.5,
+              rotateY: revealOffset > 0 ? -1.8 : 1.8,
+              transition: { type: "spring", stiffness: 260, damping: 28 },
             }
       }
       style={
@@ -3205,7 +3213,7 @@ function EindproductenShowcaseCard({
               transformStyle: "preserve-3d",
             }
       }
-      className="group relative w-[82vw] max-w-[400px] shrink-0 snap-center overflow-hidden rounded-[34px] border border-[rgba(226,192,141,0.16)] bg-[#110c0a] shadow-[0_44px_160px_-92px_rgba(0,0,0,0.9)] transition-[border-color,box-shadow,transform] duration-700 hover:border-[rgba(226,192,141,0.34)] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.08),0_0_90px_-36px_rgba(179,18,23,0.24),0_64px_180px_-96px_rgba(0,0,0,0.96)] sm:w-[372px] lg:w-[388px]"
+      className="group relative w-[76vw] max-w-[322px] shrink-0 snap-center overflow-hidden rounded-[30px] border border-[rgba(226,192,141,0.14)] bg-[#110c0a] shadow-[0_36px_132px_-92px_rgba(0,0,0,0.9)] transition-[border-color,box-shadow,transform] duration-700 hover:border-[rgba(226,192,141,0.28)] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.06),0_0_78px_-40px_rgba(179,18,23,0.22),0_56px_148px_-96px_rgba(0,0,0,0.96)] sm:w-[304px] lg:w-[316px]"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <img
@@ -3222,12 +3230,12 @@ function EindproductenShowcaseCard({
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,248,239,0.18),rgba(35,28,23,0.06)_24%,rgba(15,11,9,0.18)_54%,rgba(8,7,7,0.42)_100%)]" />
         <div className="absolute inset-y-0 right-0 w-[56%] bg-[radial-gradient(540px_480px_at_100%_18%,rgba(255,255,255,0.30)_0%,rgba(255,255,255,0.08)_34%,transparent_72%)]" />
         <div className="absolute inset-x-0 bottom-0 h-[40%] bg-[linear-gradient(180deg,rgba(8,7,7,0),rgba(8,7,7,0.20)_42%,rgba(8,7,7,0.54)_100%)]" />
-        <div className="absolute right-[-16%] top-[10%] h-[68%] w-[66%] rounded-[46%] border border-[rgba(206,176,123,0.10)] bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.03))] opacity-70 backdrop-blur-[2px]" />
+        <div className="absolute right-[-16%] top-[10%] h-[64%] w-[62%] rounded-[46%] border border-[rgba(206,176,123,0.10)] bg-[linear-gradient(180deg,rgba(255,255,255,0.12),rgba(255,255,255,0.03))] opacity-70 backdrop-blur-[2px]" />
         <div className="absolute left-[-8%] bottom-[-12%] h-[52%] w-[52%] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.14)_0%,rgba(255,255,255,0)_70%)] opacity-70" />
         <div className="absolute inset-0 bg-[radial-gradient(1100px_720px_at_50%_18%,rgba(255,255,255,0.16)_0%,transparent_58%)] mix-blend-screen" />
         <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.62),transparent)]" />
         <div className="absolute inset-y-0 left-0 w-px bg-[linear-gradient(180deg,transparent,rgba(198,160,98,0.38),transparent)]" />
-        <div className="absolute inset-0 rounded-[34px] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_-120px_140px_-76px_rgba(0,0,0,0.52)]" />
+        <div className="absolute inset-0 rounded-[30px] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_-112px_132px_-76px_rgba(0,0,0,0.52)]" />
         <div className="absolute inset-0 -translate-x-[120%] bg-[linear-gradient(108deg,transparent,rgba(255,255,255,0.16),transparent)] opacity-0 transition-[transform,opacity] duration-[1600ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-[120%] group-hover:opacity-100" />
       </div>
 
@@ -3237,13 +3245,13 @@ function EindproductenShowcaseCard({
         style={reduceMotion ? undefined : { background: glowBg }}
       />
 
-      <div className="relative flex h-full min-h-[572px] flex-col p-6 pb-6 text-[rgba(24,18,13,0.92)] sm:min-h-[590px] sm:p-7 sm:pb-7">
+      <div className="relative flex h-full min-h-[492px] flex-col p-5 pb-5 text-[rgba(24,18,13,0.92)] sm:min-h-[512px] sm:p-5.5 sm:pb-5.5">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-[54%] bg-[linear-gradient(180deg,rgba(255,255,255,0.42),rgba(255,255,255,0.16)_52%,rgba(255,255,255,0)_100%)]"
         />
-        <div className="flex items-start justify-between gap-4">
-          <div className="space-y-4">
+        <div className="flex items-start justify-between gap-3">
+          <div className="space-y-3">
             <div className="flex items-center gap-3">
               <img
                 src={product.stickerSrc}
@@ -3254,71 +3262,71 @@ function EindproductenShowcaseCard({
                 decoding="async"
                 style={{ filter: STICKER_GOLD_FILTER }}
               />
-              <div className="flex items-center gap-2.5">
-                <div className="text-[9px] font-medium uppercase tracking-[0.36em] text-[rgba(62,44,24,0.86)] sm:text-[10px]">
+              <div className="flex items-center gap-2">
+                <div className="text-[8px] font-medium uppercase tracking-[0.3em] text-[rgba(92,64,28,0.82)] sm:text-[8.5px]">
                   {product.category}
                 </div>
-                <span className="h-px w-10 bg-[linear-gradient(90deg,rgba(186,150,94,0.58),rgba(186,150,94,0.0))]" />
+                <span className="h-px w-8 bg-[linear-gradient(90deg,rgba(186,150,94,0.58),rgba(186,150,94,0.0))]" />
               </div>
             </div>
-            <div className="max-w-[16rem] text-[9px] font-medium uppercase tracking-[0.34em] text-[rgba(92,64,28,0.84)] sm:text-[10px]">
+            <div className="max-w-[14rem] text-[7.5px] font-medium uppercase tracking-[0.3em] text-[rgba(120,92,54,0.74)] sm:text-[8px]">
               {product.eyebrow}
             </div>
           </div>
 
-          <div className="rounded-full border border-[rgba(226,192,141,0.26)] bg-black/28 px-3.5 py-1.5 text-[9px] font-medium uppercase tracking-[0.28em] text-[rgba(245,242,237,0.92)] shadow-[0_18px_40px_-28px_rgba(0,0,0,0.28)] backdrop-blur-md sm:text-[10px]">
+          <div className="rounded-full border border-[rgba(226,192,141,0.22)] bg-black/24 px-3 py-1.5 text-[7.5px] font-medium uppercase tracking-[0.24em] text-[rgba(245,242,237,0.84)] shadow-[0_16px_36px_-28px_rgba(0,0,0,0.28)] backdrop-blur-md sm:text-[8px]">
             100% halal
           </div>
         </div>
 
-        <div className="mt-6 flex items-start justify-between gap-5">
+        <div className="mt-4 flex items-start justify-between gap-3">
           <div className="flex-1">
-            <div className="text-[9px] font-medium uppercase tracking-[0.38em] text-[rgba(45,32,18,0.66)] sm:text-[10px]">
+            <div className="text-[7.5px] font-medium uppercase tracking-[0.3em] text-[rgba(92,64,28,0.64)] sm:text-[8px]">
               Collection {String(index + 1).padStart(2, "0")}
             </div>
-            <div className="mt-3 max-w-[12ch] text-balance font-display text-[clamp(2rem,3vw,2.45rem)] leading-[0.94] tracking-[-0.05em] text-[rgba(24,18,13,0.94)]">
+            <div className="mt-2 max-w-[10ch] text-balance font-display text-[clamp(1.95rem,2.6vw,2.55rem)] font-medium leading-[0.88] tracking-[-0.06em] text-[rgba(18,13,9,0.98)] [text-shadow:0_10px_22px_rgba(255,255,255,0.12)]">
               {product.title}
             </div>
           </div>
-          <div className="hidden h-[62px] w-px bg-[linear-gradient(180deg,rgba(184,147,89,0.0),rgba(184,147,89,0.56),rgba(184,147,89,0.0))] sm:block" />
+          <div className="hidden h-[48px] w-px bg-[linear-gradient(180deg,rgba(184,147,89,0.0),rgba(184,147,89,0.46),rgba(184,147,89,0.0))] sm:block" />
         </div>
 
-        <p className="mt-4 max-w-[32ch] text-[13px] leading-[1.86] tracking-[0.01em] text-[rgba(40,30,20,0.80)] sm:text-[14px]">
+        <p className="mt-3 max-w-[29ch] text-[11.5px] leading-[1.68] tracking-[0.005em] text-[rgba(58,43,28,0.74)] sm:text-[12px]">
           {product.blurb}
         </p>
 
-        <div className="mt-5 flex flex-wrap gap-2.5">
+        <div className="mt-4 flex flex-wrap gap-2">
           {product.traits.map((trait) => (
             <div
               key={trait}
-              className="rounded-full border border-[rgba(180,146,95,0.22)] bg-[linear-gradient(180deg,rgba(255,255,255,0.40),rgba(255,255,255,0.18))] px-3.5 py-1.5 text-[8px] font-medium uppercase tracking-[0.28em] text-[rgba(34,25,16,0.86)] shadow-[inset_0_1px_0_rgba(255,255,255,0.38),0_16px_28px_-22px_rgba(0,0,0,0.22)] backdrop-blur-sm transition-all duration-500 group-hover:-translate-y-[2px] group-hover:border-[rgba(180,146,95,0.34)] group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.52),0_20px_40px_-24px_rgba(0,0,0,0.26)] sm:text-[9px]"
+              className="rounded-full border border-[rgba(180,146,95,0.2)] bg-[linear-gradient(180deg,rgba(255,255,255,0.36),rgba(255,255,255,0.14))] px-3 py-1.5 text-[7px] font-medium uppercase tracking-[0.22em] text-[rgba(50,36,22,0.84)] shadow-[inset_0_1px_0_rgba(255,255,255,0.34),0_14px_24px_-22px_rgba(0,0,0,0.2)] backdrop-blur-sm transition-all duration-500 group-hover:-translate-y-[2px] group-hover:border-[rgba(180,146,95,0.3)] group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.48),0_18px_34px_-24px_rgba(0,0,0,0.24)] sm:text-[7.5px]"
             >
               {trait}
             </div>
           ))}
         </div>
 
-        <div className="relative mt-6 flex flex-1 items-end justify-center overflow-hidden rounded-[28px] border border-[rgba(171,137,84,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.20),rgba(255,255,255,0.06))] px-4 pb-4 pt-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.34),inset_0_-80px_120px_-90px_rgba(0,0,0,0.26)]">
-          <div className="pointer-events-none absolute inset-x-[14%] bottom-2 h-14 rounded-full bg-[radial-gradient(closest-side,rgba(0,0,0,0.24),rgba(0,0,0,0.0))] blur-lg" />
-          <div className="pointer-events-none absolute left-1/2 top-5 h-20 w-52 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.60),rgba(255,255,255,0)_72%)] blur-2xl opacity-70 transition-opacity duration-700 group-hover:opacity-100" />
-          <div className="pointer-events-none absolute inset-x-4 bottom-4 top-4 rounded-[26px] border border-white/18 opacity-60" />
+        <div className="relative mt-4 flex flex-1 items-end justify-center px-1 pb-1 pt-2">
+          <div className="pointer-events-none absolute inset-x-[18%] bottom-2 h-10 rounded-full bg-[radial-gradient(closest-side,rgba(0,0,0,0.18),rgba(0,0,0,0.0))] blur-lg" />
+          <div className="pointer-events-none absolute left-1/2 top-3 h-14 w-40 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.50),rgba(255,255,255,0)_72%)] blur-2xl opacity-65 transition-opacity duration-700 group-hover:opacity-95" />
+          <div className="pointer-events-none absolute inset-x-[10%] bottom-0 top-6 rounded-[28px] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.16)_0%,rgba(255,255,255,0.03)_48%,rgba(255,255,255,0)_78%)] opacity-80" />
           <motion.img
             src={product.image}
             alt={product.title}
             loading="lazy"
             decoding="async"
-            className="relative z-10 mx-auto h-[210px] w-full object-contain sm:h-[236px]"
+            className="relative z-10 mx-auto h-[178px] w-full object-contain sm:h-[194px]"
             style={
               reduceMotion
                 ? {
                     filter:
-                      "drop-shadow(0 18px 34px rgba(255,255,255,0.22)) drop-shadow(0 26px 42px rgba(0,0,0,0.20)) drop-shadow(0 8px 18px rgba(0,0,0,0.10))",
+                      "drop-shadow(0 14px 28px rgba(255,255,255,0.16)) drop-shadow(0 24px 42px rgba(0,0,0,0.18)) drop-shadow(0 8px 18px rgba(0,0,0,0.1))",
                   }
                 : {
                     x: imageX,
                     y: imageY,
                     filter:
-                      "drop-shadow(0 18px 34px rgba(255,255,255,0.22)) drop-shadow(0 26px 42px rgba(0,0,0,0.20)) drop-shadow(0 8px 18px rgba(0,0,0,0.10))",
+                      "drop-shadow(0 14px 28px rgba(255,255,255,0.16)) drop-shadow(0 24px 42px rgba(0,0,0,0.18)) drop-shadow(0 8px 18px rgba(0,0,0,0.10))",
                   }
             }
             animate={
@@ -3332,16 +3340,16 @@ function EindproductenShowcaseCard({
           />
         </div>
 
-        <div className="mt-6 flex items-center justify-between gap-4">
-          <div className="text-[9px] font-medium uppercase tracking-[0.34em] text-[rgba(34,25,16,0.68)] sm:text-[10px]">
-            International product line
+        <div className="mt-3.5 flex items-center justify-between gap-3">
+          <div className="text-[7.5px] font-medium uppercase tracking-[0.26em] text-[rgba(92,64,28,0.68)] sm:text-[8px]">
+            Signature selectie
           </div>
           <a
             href="/assortiment#eindproducten"
-            className="group/cta inline-flex items-center gap-3 rounded-[18px] border border-[rgba(150,32,35,0.26)] bg-[linear-gradient(135deg,rgba(147,24,28,0.92),rgba(78,13,15,0.96))] px-[18px] py-3 text-[9px] font-semibold uppercase tracking-[0.3em] text-[rgba(250,241,230,0.96)] shadow-[0_18px_44px_-26px_rgba(0,0,0,0.32)] transition-all duration-500 hover:-translate-y-px hover:border-[rgba(196,158,101,0.42)] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.12),0_0_48px_-22px_rgba(179,18,23,0.36),0_22px_60px_-28px_rgba(0,0,0,0.38)] sm:text-[10px]"
+            className="group/cta inline-flex items-center gap-2.5 rounded-[16px] border border-[rgba(150,32,35,0.22)] bg-[linear-gradient(135deg,rgba(147,24,28,0.92),rgba(78,13,15,0.96))] px-4 py-2.5 text-[8px] font-semibold uppercase tracking-[0.22em] text-[rgba(250,241,230,0.96)] shadow-[0_16px_40px_-28px_rgba(0,0,0,0.32)] transition-all duration-500 hover:-translate-y-px hover:border-[rgba(196,158,101,0.38)] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.12),0_0_44px_-24px_rgba(179,18,23,0.34),0_20px_54px_-30px_rgba(0,0,0,0.38)] sm:text-[8.5px]"
           >
             <span className="relative">
-              Explore
+              Bekijk
               <span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-[rgba(245,219,186,0.8)] transition-transform duration-500 group-hover/cta:scale-x-100" />
             </span>
             <ArrowUpRight

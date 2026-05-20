@@ -5,7 +5,7 @@ export function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false);
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
-  
+
   const springConfig = { damping: 25, stiffness: 600 };
   const cursorXSpring = useSpring(cursorX, springConfig);
   const cursorYSpring = useSpring(cursorY, springConfig);
@@ -20,16 +20,16 @@ export function CustomCursor() {
     const handleMouseLeave = () => setIsHovering(false);
 
     window.addEventListener("mousemove", moveCursor);
-    
+
     const interactiveElements = document.querySelectorAll("a, button, [role='button'], .group");
-    interactiveElements.forEach(el => {
+    interactiveElements.forEach((el) => {
       el.addEventListener("mouseenter", handleMouseEnter);
       el.addEventListener("mouseleave", handleMouseLeave);
     });
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
-      interactiveElements.forEach(el => {
+      interactiveElements.forEach((el) => {
         el.removeEventListener("mouseenter", handleMouseEnter);
         el.removeEventListener("mouseleave", handleMouseLeave);
       });
@@ -48,14 +48,14 @@ export function CustomCursor() {
       >
         <motion.div
           initial={{ scale: 0, opacity: 0 }}
-          animate={{ 
-            scale: isHovering ? 1.25 : 1, 
+          animate={{
+            scale: isHovering ? 1.25 : 1,
             opacity: 1,
           }}
-          transition={{ 
-            type: "spring", 
-            stiffness: 400, 
-            damping: 20 
+          transition={{
+            type: "spring",
+            stiffness: 400,
+            damping: 20,
           }}
           className="relative"
         >
@@ -107,7 +107,7 @@ export function CustomCursor() {
           )}
         </motion.div>
       </motion.div>
-      
+
       {/* Hide default cursor */}
       <style>{`
         @media (hover: hover) and (pointer: fine) {

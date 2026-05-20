@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Clock, Mail, MapPin, Phone } from "lucide-react";
 
-const IPEKCI_LOGO_URL = "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/logo_footer.webp";
+const IPEKCI_LOGO_URL =
+  "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/logo_footer.webp";
 const HALAL_BADGE_URL =
   "https://www.ipekcislachterij.nl/wp-content/uploads/2026/03/Halal-Logo-e1774341202273.webp";
 
@@ -28,8 +29,8 @@ export function Footer() {
             </div>
 
             <p className="mt-6 max-w-md text-sm leading-relaxed text-foreground/70">
-              Premium Nederlands halalvlees en eindproducten — geproduceerd met zorg, hygiëne en respect
-              voor halal slachtprincipes.
+              Premium Nederlands halalvlees en eindproducten — geproduceerd met zorg, hygiëne en
+              respect voor halal slachtprincipes.
             </p>
 
             <Link

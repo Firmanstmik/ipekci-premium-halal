@@ -26,11 +26,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
-const STICKER_LAMS = "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_lamsvlees.svg";
-const STICKER_RUND = "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_rundvlees.svg";
-const STICKER_KIP = "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_gevogelte.svg";
+const STICKER_LAMS =
+  "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_lamsvlees.svg";
+const STICKER_RUND =
+  "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_rundvlees.svg";
+const STICKER_KIP =
+  "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_gevogelte.svg";
 const HERO_WIDE_IMAGE =
   "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Ook-klant-worden.webp";
 
@@ -51,13 +59,7 @@ const segments = [
 /* ─────────────────────────────────────────────────────────────────
    PhoneCTA  — magnetic shimmer button
    ─────────────────────────────────────────────────────────────── */
-function PhoneCTA({
-  onClick,
-  className = "",
-}: {
-  onClick?: () => void;
-  className?: string;
-}) {
+function PhoneCTA({ onClick, className = "" }: { onClick?: () => void; className?: string }) {
   const ref = useRef<HTMLAnchorElement>(null);
 
   /* magnetic tracking */
@@ -93,7 +95,8 @@ function PhoneCTA({
   /* glow color based on motion */
   const glowOpacity = useTransform(
     [x, y],
-    ([lx, ly]) => Math.min(Math.sqrt((lx as number) ** 2 + (ly as number) ** 2) / 12, 1) * 0.7 + 0.3,
+    ([lx, ly]) =>
+      Math.min(Math.sqrt((lx as number) ** 2 + (ly as number) ** 2) / 12, 1) * 0.7 + 0.3,
   );
 
   return (
@@ -143,7 +146,10 @@ function PhoneCTA({
       />
 
       {/* ── top edge highlight ── */}
-      <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" aria-hidden />
+      <span
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"
+        aria-hidden
+      />
 
       {/* ── content ── */}
       <Phone size={14} className="relative z-10" />
@@ -164,7 +170,7 @@ function MainCTA({ onClick, className = "" }: { onClick?: () => void; className?
     <Link
       to="/contact"
       onClick={onClick}
-      className={`group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-full bg-gradient-to-b from-[#B11217] to-[#7E080C] px-6 py-3 text-[12px] font-semibold tracking-[0.06em] text-[#F5F1EB] transition-[filter,transform] duration-300 hover:brightness-105 active:brightness-95 active:scale-[0.99] ${className}`}
+      className={`group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-2xl bg-gradient-to-b from-[#B11217] to-[#7E080C] px-6 py-3 text-[12px] font-semibold tracking-[0.06em] text-[#F5F1EB] transition-[filter,transform] duration-300 hover:brightness-105 active:brightness-95 active:scale-[0.99] ${className}`}
     >
       <span className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(520px_240px_at_30%_20%,rgba(245,241,235,0.18)_0%,transparent_62%)]" />
       <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/35 to-transparent" />
@@ -217,7 +223,10 @@ function TopInfoBar({ visible, shown }: { visible?: boolean; shown?: boolean }) 
               >
                 info@ipekcislachterij.nl
               </a>
-              <span className="h-1 w-1 rounded-full bg-[rgba(226,192,141,0.35)]" aria-hidden="true" />
+              <span
+                className="h-1 w-1 rounded-full bg-[rgba(226,192,141,0.35)]"
+                aria-hidden="true"
+              />
             </div>
 
             <a
@@ -275,7 +284,11 @@ export function Navbar() {
             label="Ons verhaal"
             active={location.pathname.startsWith("/ons-verhaal")}
           />
-          <NavLink to="/contact" label="Contact" active={location.pathname.startsWith("/contact")} />
+          <NavLink
+            to="/contact"
+            label="Contact"
+            active={location.pathname.startsWith("/contact")}
+          />
         </div>
 
         {/* Right CTA */}
@@ -292,10 +305,7 @@ export function Navbar() {
           />
         </MobileNavHeader>
 
-        <MobileNavMenu
-          isOpen={isMobileMenuOpen}
-          onClose={() => setIsMobileMenuOpen(false)}
-        >
+        <MobileNavMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)}>
           <nav className="flex w-full flex-col">
             <div className="mb-6">
               <div className="text-[12px] font-medium tracking-[0.10em] text-[rgba(226,192,141,0.75)]">
@@ -308,7 +318,7 @@ export function Navbar() {
 
             <Accordion type="multiple" className="w-full">
               <AccordionItem value="assortiment" className="border-white/[0.05]">
-                  <AccordionTrigger className="px-0 text-base font-medium tracking-[0.06em] text-white/85 hover:no-underline">
+                <AccordionTrigger className="px-0 text-base font-medium tracking-[0.06em] text-white/85 hover:no-underline">
                   Assortiment
                 </AccordionTrigger>
                 <AccordionContent className="px-0">
@@ -330,7 +340,7 @@ export function Navbar() {
               </AccordionItem>
 
               <AccordionItem value="voorwie" className="border-white/[0.05]">
-                  <AccordionTrigger className="px-0 text-base font-medium tracking-[0.06em] text-white/85 hover:no-underline">
+                <AccordionTrigger className="px-0 text-base font-medium tracking-[0.06em] text-white/85 hover:no-underline">
                   Voor wie
                 </AccordionTrigger>
                 <AccordionContent className="px-0">
@@ -368,7 +378,9 @@ export function Navbar() {
                   style={{ animationDelay: `${i * 40}ms` }}
                 >
                   <span>{l.label}</span>
-                  {isActive && <span className="h-1.5 w-1.5 rounded-full bg-[rgba(226,192,141,0.85)]" />}
+                  {isActive && (
+                    <span className="h-1.5 w-1.5 rounded-full bg-[rgba(226,192,141,0.85)]" />
+                  )}
                 </Link>
               );
             })}
@@ -379,7 +391,7 @@ export function Navbar() {
             <MainCTA className="w-full" onClick={() => setIsMobileMenuOpen(false)} />
             <a
               href="tel:+31627273763"
-              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-6 py-3 text-[12px] font-medium tracking-[0.06em] text-white/75 transition-colors hover:bg-white/[0.06] hover:text-white/90"
+              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-6 py-3 text-[12px] font-medium tracking-[0.06em] text-white/75 transition-colors hover:bg-white/[0.06] hover:text-white/90"
             >
               <Phone size={14} className="text-[rgba(226,192,141,0.90)]" />
               <span>Bel direct</span>
@@ -436,20 +448,23 @@ function NavDropdown({
       if (item.label === "Rundvlees") {
         return {
           ...item,
-          description: "Nederlands rundvlees van vaste partners. Altijd halalgeslacht en constant geleverd.",
+          description:
+            "Nederlands rundvlees van vaste partners. Altijd halalgeslacht en constant geleverd.",
           iconSrc: STICKER_RUND,
         };
       }
       if (item.label === "Kip") {
         return {
           ...item,
-          description: "Op aanvraag leveren wij ook halalgeslachte kip uit Nederland, in standaarddelen.",
+          description:
+            "Op aanvraag leveren wij ook halalgeslachte kip uit Nederland, in standaarddelen.",
           iconSrc: STICKER_KIP,
         };
       }
       return {
         ...item,
-        description: "Eindproducten gemaakt van ons eigen halalvlees — premium kwaliteit voor verkoop en bereiding.",
+        description:
+          "Eindproducten gemaakt van ons eigen halalvlees — premium kwaliteit voor verkoop en bereiding.",
         iconSrc: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_rundvlees.svg",
       };
     }
@@ -534,7 +549,7 @@ function NavDropdown({
                     >
                       <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[0.03] shadow-[0_18px_50px_-30px_rgba(0,0,0,0.9)]">
                         <img
-                          src={(item as typeof richItems[number]).iconSrc}
+                          src={(item as (typeof richItems)[number]).iconSrc}
                           alt=""
                           aria-hidden
                           className="h-5 w-5 opacity-90"
@@ -558,7 +573,7 @@ function NavDropdown({
                           />
                         </span>
                         <span className="mt-1 block text-xs leading-relaxed text-foreground/55">
-                          {(item as typeof richItems[number]).description}
+                          {(item as (typeof richItems)[number]).description}
                         </span>
                       </span>
                     </a>
@@ -595,7 +610,7 @@ function NavDropdown({
                     <div className="mt-4 flex flex-wrap gap-3">
                       <a
                         href={isAssortiment ? "/assortiment" : "/contact"}
-                        className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/35 px-4 py-2 text-[12px] font-medium tracking-[0.06em] text-foreground/85 transition-colors hover:border-white/25 hover:bg-black/55"
+                        className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-black/35 px-4 py-2 text-[12px] font-medium tracking-[0.06em] text-foreground/85 transition-colors hover:border-white/25 hover:bg-black/55"
                       >
                         {isAssortiment ? "Alle producten" : "Word klant"}
                         <ArrowUpRight size={14} className="text-primary" />

@@ -183,7 +183,12 @@
   }
 
   .text-gradient-orange {
-    background: linear-gradient(135deg, var(--gold-champagne) 0%, var(--gold-primary) 40%, var(--gold-bronze) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--gold-champagne) 0%,
+      var(--gold-primary) 40%,
+      var(--gold-bronze) 100%
+    );
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;

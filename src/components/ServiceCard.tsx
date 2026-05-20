@@ -74,9 +74,7 @@ export function ServiceCard({ number, title, description, image, index }: Props)
         <div className="absolute left-6 top-6 font-display text-xs font-medium tracking-[0.3em] text-primary">
           {number}
         </div>
-        <motion.div
-          className="absolute right-6 top-6 grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-background/40 backdrop-blur transition-all duration-500 group-hover:bg-primary group-hover:border-primary"
-        >
+        <motion.div className="absolute right-6 top-6 grid h-10 w-10 place-items-center rounded-2xl border border-white/15 bg-background/40 backdrop-blur transition-all duration-500 group-hover:bg-primary group-hover:border-primary">
           <ArrowUpRight
             size={16}
             className="text-foreground transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary-foreground"

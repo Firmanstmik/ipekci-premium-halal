@@ -183,8 +183,8 @@ function AssortmentPage() {
             </div>
             <div className="md:col-span-6 md:flex md:items-end md:justify-end">
               <p className="max-w-md text-base leading-relaxed text-muted-foreground">
-                Ons assortiment is gebouwd voor B2B: consistente kwaliteit, heldere afspraken en gekoelde
-                levering via eigen transport.
+                Ons assortiment is gebouwd voor B2B: consistente kwaliteit, heldere afspraken en
+                gekoelde levering via eigen transport.
               </p>
             </div>
           </motion.div>
@@ -267,7 +267,9 @@ function AssortmentPage() {
                   <div className="flex items-end justify-between gap-6">
                     <div>
                       <h2 className="font-display text-3xl text-foreground">{s.title}</h2>
-                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{s.description}</p>
+                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                        {s.description}
+                      </p>
                     </div>
                     <a
                       href={`#${s.id}`}

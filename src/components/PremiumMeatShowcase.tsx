@@ -194,8 +194,8 @@ export const PremiumMeatShowcase = memo(function PremiumMeatShowcase() {
             <span className="italic text-[rgba(226,192,141,0.92)]">premium snijstukken</span>
           </h2>
           <p className="mt-6 text-pretty text-sm leading-relaxed text-[rgba(245,241,235,0.70)] sm:text-[15px]">
-            Klik op een hotspot om details te zien over malsheid, smaak en ideale bereiding. Ontworpen als een
-            luxe, interactieve ervaring — volledig native in het Ipekçi systeem.
+            Klik op een hotspot om details te zien over malsheid, smaak en ideale bereiding.
+            Ontworpen als een luxe, interactieve ervaring — volledig native in het Ipekçi systeem.
           </p>
         </motion.div>
 
@@ -273,7 +273,11 @@ export const PremiumMeatShowcase = memo(function PremiumMeatShowcase() {
                     brisket: "M 56 56 C 60 55, 64 55, 68 55 L 69 63 C 65 65, 59 65, 56 63 Z",
                   };
                   return (
-                    <g strokeLinejoin="round" strokeLinecap="round" style={{ mixBlendMode: "screen" }}>
+                    <g
+                      strokeLinejoin="round"
+                      strokeLinecap="round"
+                      style={{ mixBlendMode: "screen" }}
+                    >
                       {Object.entries(regions).map(([id, d]) => {
                         const isActive = id === activeId;
                         return (
@@ -285,7 +289,8 @@ export const PremiumMeatShowcase = memo(function PremiumMeatShowcase() {
                             strokeWidth={isActive ? 0.22 : 0.13}
                             filter={isActive ? "url(#ipekciGoldGlow)" : undefined}
                             style={{
-                              transition: "stroke 420ms ease, stroke-width 420ms ease, fill 420ms ease",
+                              transition:
+                                "stroke 420ms ease, stroke-width 420ms ease, fill 420ms ease",
                             }}
                           />
                         );
@@ -338,7 +343,9 @@ export const PremiumMeatShowcase = memo(function PremiumMeatShowcase() {
                       aria-hidden
                       style={{ width: size, height: size }}
                       className={`relative block rounded-full border transition-transform duration-300 ${
-                        isSignature ? "border-[rgba(226,192,141,0.90)]" : "border-[rgba(226,192,141,0.70)]"
+                        isSignature
+                          ? "border-[rgba(226,192,141,0.90)]"
+                          : "border-[rgba(226,192,141,0.70)]"
                       } ${
                         isActive
                           ? "scale-125 bg-[radial-gradient(circle_at_30%_30%,rgba(177,18,23,0.98),rgba(177,18,23,0.56)_60%,rgba(0,0,0,0.92))] shadow-[0_0_0_1px_rgba(226,192,141,0.30),0_0_34px_-10px_rgba(177,18,23,0.70)]"
@@ -457,7 +464,10 @@ export const PremiumMeatShowcase = memo(function PremiumMeatShowcase() {
                     {active.specs.map((s) => {
                       const Icon = specIcon(s.icon);
                       return (
-                        <div key={`${active.id}-${s.label}`} className="flex min-w-0 flex-col items-center text-center">
+                        <div
+                          key={`${active.id}-${s.label}`}
+                          className="flex min-w-0 flex-col items-center text-center"
+                        >
                           <div className="mx-auto mb-3 grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/[0.03] text-[rgba(226,192,141,0.92)]">
                             <Icon className="h-4 w-4" />
                           </div>
@@ -475,7 +485,7 @@ export const PremiumMeatShowcase = memo(function PremiumMeatShowcase() {
                   <div className="px-6 pb-8 pt-8 sm:px-8 md:px-10 md:pb-10">
                     <a
                       href="/assortiment#rundvlees"
-                      className="group inline-flex w-full items-center justify-center gap-2 rounded-full border border-[rgba(226,192,141,0.35)] bg-transparent py-4 text-[11px] font-semibold uppercase tracking-[0.24em] text-[rgba(226,192,141,0.92)] shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_30px_110px_-80px_rgba(0,0,0,0.95)] transition-all duration-500 hover:border-[rgba(226,192,141,0.70)] hover:bg-white/[0.02] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.20),0_0_64px_-26px_rgba(226,192,141,0.32),0_30px_120px_-80px_rgba(0,0,0,0.95)] active:translate-y-px"
+                      className="group inline-flex w-full items-center justify-center gap-3 rounded-2xl border border-[rgba(226,192,141,0.28)] bg-[linear-gradient(135deg,rgba(226,192,141,0.18),rgba(177,18,23,0.16))] px-6 py-4 text-[11px] font-semibold uppercase tracking-[0.24em] text-[rgba(245,241,235,0.92)] shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_18px_70px_-40px_rgba(226,192,141,0.26),0_40px_140px_-110px_rgba(0,0,0,0.95)] transition-all duration-500 hover:border-[rgba(226,192,141,0.55)] hover:bg-[linear-gradient(135deg,rgba(226,192,141,0.24),rgba(177,18,23,0.20))] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.16),0_0_64px_-24px_rgba(226,192,141,0.22),0_40px_150px_-110px_rgba(0,0,0,0.95)] active:translate-y-px"
                     >
                       Bekijk producten
                       <ArrowUpRight className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -504,7 +514,9 @@ export const PremiumMeatShowcase = memo(function PremiumMeatShowcase() {
                   <div className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[rgba(226,192,141,0.80)]">
                     {c.label}
                   </div>
-                  <div className="mt-1 truncate text-xs font-semibold text-foreground/85">{c.name}</div>
+                  <div className="mt-1 truncate text-xs font-semibold text-foreground/85">
+                    {c.name}
+                  </div>
                 </div>
                 <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[0.02] text-foreground/55 transition-colors group-hover:text-foreground/80">
                   <span

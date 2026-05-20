@@ -7,11 +7,7 @@ interface Props {
   delay?: number;
 }
 
-export function KineticHeading({
-  lines,
-  className = "",
-  delay = 0.5,
-}: Props) {
+export function KineticHeading({ lines, className = "", delay = 0.5 }: Props) {
   const ref = useRef<HTMLHeadingElement>(null);
 
   const isInView = useInView(ref, {
@@ -107,10 +103,7 @@ export function KineticHeading({
                   </motion.span>
 
                   {wi < line.text.split(" ").length - 1 && (
-                    <span
-                      aria-hidden
-                      className="inline-block w-[0.2em]"
-                    />
+                    <span aria-hidden className="inline-block w-[0.2em]" />
                   )}
                 </span>
               );

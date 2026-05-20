@@ -17,7 +17,7 @@ export function RollingCounter({ value, suffix = "", decimals = 0, duration = 2.
     latest.toLocaleString("nl-NL", {
       minimumFractionDigits: decimals,
       maximumFractionDigits: decimals,
-    })
+    }),
   );
   const [text, setText] = useState("0");
 

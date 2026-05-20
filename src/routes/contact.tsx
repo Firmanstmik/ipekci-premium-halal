@@ -118,7 +118,9 @@ function ContactDevelopPage() {
             transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1] }}
             className="mx-auto max-w-[860px] text-center"
           >
-            <div className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#B31217]">Contact</div>
+            <div className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#B31217]">
+              Contact
+            </div>
             <h1 className="mt-7 font-display text-[clamp(2.4rem,4.2vw,3.8rem)] font-medium leading-[1.02] tracking-[-0.03em] text-[#F5F2ED]">
               Sedang develop
             </h1>
@@ -130,8 +132,8 @@ function ContactDevelopPage() {
             </div>
 
             <p className="mx-auto mt-9 max-w-[720px] text-sm leading-relaxed text-[#B9B9B9] sm:text-base">
-              Halaman contact sedang kami upgrade jadi lebih interaktif dan premium. Untuk sementara, isi email
-              untuk dapat update saat sudah live.
+              Halaman contact sedang kami upgrade jadi lebih interaktif dan premium. Untuk
+              sementara, isi email untuk dapat update saat sudah live.
             </p>
           </motion.div>
 
@@ -264,13 +266,22 @@ function HalalSeal() {
     <div className="relative hidden h-[170px] w-[170px] shrink-0 lg:block">
       <svg viewBox="0 0 180 180" className="absolute inset-0 h-full w-full">
         <defs>
-          <path
-            id="seal-circle"
-            d="M 90,90 m -62,0 a 62,62 0 1,1 124,0 a 62,62 0 1,1 -124,0"
-          />
+          <path id="seal-circle" d="M 90,90 m -62,0 a 62,62 0 1,1 124,0 a 62,62 0 1,1 -124,0" />
         </defs>
-        <circle cx="90" cy="90" r="62" fill="none" stroke="rgba(168,125,66,0.3)" strokeWidth="1.2" />
-        <text fill="rgba(168,125,66,0.78)" fontSize="10" letterSpacing="5" fontFamily="General Sans, sans-serif">
+        <circle
+          cx="90"
+          cy="90"
+          r="62"
+          fill="none"
+          stroke="rgba(168,125,66,0.3)"
+          strokeWidth="1.2"
+        />
+        <text
+          fill="rgba(168,125,66,0.78)"
+          fontSize="10"
+          letterSpacing="5"
+          fontFamily="General Sans, sans-serif"
+        >
           <textPath href="#seal-circle" startOffset="50%" textAnchor="middle">
             PREMIUM HALAL PREMIUM HALAL PREMIUM HALAL
           </textPath>
@@ -283,8 +294,7 @@ function HalalSeal() {
           aria-hidden
           className="absolute inset-0 m-auto h-12 w-12 opacity-60"
           style={{
-            filter:
-              "sepia(1) saturate(180%) hue-rotate(350deg) brightness(0.82) contrast(1.08)",
+            filter: "sepia(1) saturate(180%) hue-rotate(350deg) brightness(0.82) contrast(1.08)",
           }}
         />
       </div>
@@ -341,7 +351,11 @@ function ContactInfoCard({
           return (
             <div
               key={`${label}-${line}`}
-              className={valueHighlight.has(line) ? "text-[14px] text-[#c59857]" : "text-[14px] text-white/62"}
+              className={
+                valueHighlight.has(line)
+                  ? "text-[14px] text-[#c59857]"
+                  : "text-[14px] text-white/62"
+              }
             >
               {content}
             </div>
@@ -427,8 +441,8 @@ function ContactLivePage() {
                   </h1>
 
                   <p className="mt-6 max-w-[520px] text-[16px] leading-8 text-white/68">
-                    Wij staan klaar om uw vragen te beantwoorden, advies te geven en samen te werken aan
-                    de beste halal oplossingen.
+                    Wij staan klaar om uw vragen te beantwoorden, advies te geven en samen te werken
+                    aan de beste halal oplossingen.
                   </p>
                 </div>
               </div>
@@ -479,7 +493,11 @@ function ContactLivePage() {
                       icon={Mail}
                       type="email"
                     />
-                    <ContactField label="Bedrijf" placeholder="Naam van uw bedrijf" icon={Building2} />
+                    <ContactField
+                      label="Bedrijf"
+                      placeholder="Naam van uw bedrijf"
+                      icon={Building2}
+                    />
                     <ContactField
                       label="Telefoonnummer"
                       placeholder="Uw telefoonnummer"
@@ -502,7 +520,9 @@ function ContactLivePage() {
 
                     <div className="flex items-start gap-3 text-[12px] leading-6 text-white/48">
                       <LockKeyhole size={14} className="mt-1 shrink-0 text-[#c59857]" />
-                      <span>Uw gegevens worden vertrouwelijk behandeld en niet gedeeld met derden.</span>
+                      <span>
+                        Uw gegevens worden vertrouwelijk behandeld en niet gedeeld met derden.
+                      </span>
                     </div>
                   </form>
                 </div>
@@ -527,7 +547,9 @@ function ContactLivePage() {
                   </div>
                   <div>
                     <div className="text-[15px] text-white">{item.title}</div>
-                    <p className="mt-1 max-w-[220px] text-[13px] leading-6 text-white/56">{item.description}</p>
+                    <p className="mt-1 max-w-[220px] text-[13px] leading-6 text-white/56">
+                      {item.description}
+                    </p>
                   </div>
                 </div>
               );

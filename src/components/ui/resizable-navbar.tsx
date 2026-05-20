@@ -2,15 +2,11 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { IconMenu2, IconX } from "@tabler/icons-react";
-import {
-  AnimatePresence,
-  motion,
-  useMotionValueEvent,
-  useScroll,
-} from "framer-motion";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-const IPEKCI_LOGO_URL = "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/logo_footer.webp";
+const IPEKCI_LOGO_URL =
+  "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/logo_footer.webp";
 
 /* ─────────────────── interfaces ─────────────────── */
 
@@ -80,10 +76,7 @@ export const Navbar = ({ children, className }: NavbarProps) => {
   });
 
   return (
-    <motion.div
-      ref={ref}
-      className={cn("fixed inset-x-0 top-0 z-50 w-full", className)}
-    >
+    <motion.div ref={ref} className={cn("fixed inset-x-0 top-0 z-50 w-full", className)}>
       {React.Children.map(children, (child) =>
         React.isValidElement(child)
           ? React.cloneElement(
@@ -169,17 +162,9 @@ export const MobileNav = ({ children, className, visible, shown }: MobileNavProp
 
 /* ─────────────────── MobileNavHeader ─────────────────── */
 
-export const MobileNavHeader = ({
-  children,
-  className,
-}: MobileNavHeaderProps) => {
+export const MobileNavHeader = ({ children, className }: MobileNavHeaderProps) => {
   return (
-    <div
-      className={cn(
-        "flex w-full flex-row items-center justify-between",
-        className,
-      )}
-    >
+    <div className={cn("flex w-full flex-row items-center justify-between", className)}>
       {children}
     </div>
   );
@@ -187,12 +172,7 @@ export const MobileNavHeader = ({
 
 /* ─────────────────── MobileNavMenu ─────────────────── */
 
-export const MobileNavMenu = ({
-  children,
-  className,
-  isOpen,
-  onClose,
-}: MobileNavMenuProps) => {
+export const MobileNavMenu = ({ children, className, isOpen, onClose }: MobileNavMenuProps) => {
   useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -210,10 +190,7 @@ export const MobileNavMenu = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.22, ease: "easeOut" }}
-          className={cn(
-            "fixed inset-0 z-[80] flex w-full flex-col lg:hidden",
-            className,
-          )}
+          className={cn("fixed inset-0 z-[80] flex w-full flex-col lg:hidden", className)}
         >
           <div
             className="absolute inset-0 bg-[#050505]/80 backdrop-blur-2xl"
@@ -248,7 +225,7 @@ export const MobileNavMenu = ({
               <button
                 onClick={onClose}
                 aria-label="Sluit menu"
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-white/[0.04] text-foreground transition-colors hover:bg-white/[0.06]"
+                className="grid h-10 w-10 place-items-center rounded-2xl border border-white/10 bg-white/[0.04] text-foreground transition-colors hover:bg-white/[0.06]"
               >
                 <IconX size={18} className="text-foreground" />
               </button>
@@ -263,13 +240,7 @@ export const MobileNavMenu = ({
 
 /* ─────────────────── MobileNavToggle ─────────────────── */
 
-export const MobileNavToggle = ({
-  isOpen,
-  onClick,
-}: {
-  isOpen: boolean;
-  onClick: () => void;
-}) => {
+export const MobileNavToggle = ({ isOpen, onClick }: { isOpen: boolean; onClick: () => void }) => {
   return (
     <button
       onClick={onClick}
@@ -342,29 +313,21 @@ export const NavbarButton = ({
   children: React.ReactNode;
   className?: string;
   variant?: "primary" | "secondary" | "dark" | "gradient";
-} & (
-  | React.ComponentPropsWithoutRef<"a">
-  | React.ComponentPropsWithoutRef<"button">
-)) => {
+} & (React.ComponentPropsWithoutRef<"a"> | React.ComponentPropsWithoutRef<"button">)) => {
   const base =
     "inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-sm px-3 py-1.5 text-center text-[10px] font-semibold tracking-[0.08em] transition-all duration-200 hover:-translate-y-px active:scale-[0.97] sm:px-4 sm:py-2 sm:text-[11px]";
 
   const variants = {
     primary:
       "bg-primary text-primary-foreground shadow-[0_0_24px_-4px_color-mix(in_oklab,var(--primary)_50%,transparent)] hover:bg-primary/90 hover:shadow-[0_0_32px_-4px_color-mix(in_oklab,var(--primary)_70%,transparent)]",
-    secondary:
-      "bg-transparent text-foreground/80 hover:text-foreground hover:bg-white/[0.06]",
+    secondary: "bg-transparent text-foreground/80 hover:text-foreground hover:bg-white/[0.06]",
     dark: "border border-white/[0.08] bg-background/60 text-foreground hover:bg-background/80",
     gradient:
       "bg-gradient-to-b from-primary to-[color-mix(in_oklab,var(--primary)_75%,black)] text-primary-foreground",
   };
 
   return (
-    <Tag
-      href={href ?? undefined}
-      className={cn(base, variants[variant], className)}
-      {...props}
-    >
+    <Tag href={href ?? undefined} className={cn(base, variants[variant], className)} {...props}>
       {children}
     </Tag>
   );

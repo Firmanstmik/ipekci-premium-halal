@@ -63,8 +63,9 @@ function OnsVerhaalDevelopPage() {
             </div>
 
             <p className="mx-auto mt-9 max-w-[720px] text-sm leading-relaxed text-[#B9B9B9] sm:text-base">
-              Halaman ini sedang kami siapkan dengan tampilan yang lebih interaktif dan premium. Untuk sementara,
-              kamu bisa tinggalkan email untuk mendapatkan update saat fitur ini aktif.
+              Halaman ini sedang kami siapkan dengan tampilan yang lebih interaktif dan premium.
+              Untuk sementara, kamu bisa tinggalkan email untuk mendapatkan update saat fitur ini
+              aktif.
             </p>
           </motion.div>
 
@@ -225,8 +226,8 @@ function OnsVerhaalLivePage() {
             transition={{ delay: 0.5, duration: 1, ease: [0.22, 1, 0.36, 1] }}
             className="mt-6 max-w-5xl font-display text-5xl text-foreground md:text-7xl lg:text-8xl text-balance"
           >
-            Een familiebedrijf met een{" "}
-            <span className="text-gradient-orange">premium halal</span> standaard.
+            Een familiebedrijf met een <span className="text-gradient-orange">premium halal</span>{" "}
+            standaard.
           </motion.h1>
         </div>
       </section>
@@ -249,10 +250,10 @@ function OnsVerhaalLivePage() {
                 transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                 className="max-w-2xl text-sm leading-relaxed text-muted-foreground lg:ml-auto"
               >
-                Ipekçi is een echt familiebedrijf, gebouwd op generaties kennis en betrokkenheid binnen de
-                halalvleessector. We werken volgens islamitische richtlijnen en leveren met dezelfde
-                toewijding waarmee dit vak is begonnen: persoonlijke aandacht, korte lijnen en consistente
-                kwaliteit.
+                Ipekçi is een echt familiebedrijf, gebouwd op generaties kennis en betrokkenheid
+                binnen de halalvleessector. We werken volgens islamitische richtlijnen en leveren
+                met dezelfde toewijding waarmee dit vak is begonnen: persoonlijke aandacht, korte
+                lijnen en consistente kwaliteit.
               </motion.p>
             </div>
           </div>
@@ -296,10 +297,10 @@ function OnsVerhaalLivePage() {
               />
               <div className="mt-10 rounded-sm border border-white/5 bg-surface p-10">
                 <p className="text-sm leading-relaxed text-muted-foreground">
-                  Ipekçi Slachterij opereert als een door de Nederlandse Voedsel- en Warenautoriteit (NVWA)
-                  erkend slachthuis en waarborgt naleving van geldende hygiëne-, kwaliteits- en
-                  controlevoorschriften. Halal is voor ons geen formaliteit, maar een verantwoordelijkheid
-                  in elke stap van het proces.
+                  Ipekçi Slachterij opereert als een door de Nederlandse Voedsel- en Warenautoriteit
+                  (NVWA) erkend slachthuis en waarborgt naleving van geldende hygiëne-, kwaliteits-
+                  en controlevoorschriften. Halal is voor ons geen formaliteit, maar een
+                  verantwoordelijkheid in elke stap van het proces.
                 </p>
                 <div className="mt-10 flex flex-wrap items-center gap-3 text-[10px] font-medium uppercase tracking-[0.3em] text-foreground/60">
                   {["NVWA", "Halalrichtlijnen", "Hygiëne & controle"].map((t) => (
@@ -359,15 +360,15 @@ function OnsVerhaalLivePage() {
                 className="rounded-sm border border-white/5 bg-background p-10"
               >
                 <p className="text-sm leading-relaxed text-muted-foreground">
-                  De basis van Ipekçi ligt in de kennis en ervaring van een islamitische familie die al
-                  generaties lang actief is in de vleessector. Oprichter Mehmet groeide op in Turkije en
-                  leerde het slachtvak van jongs af aan binnen de familie.
+                  De basis van Ipekçi ligt in de kennis en ervaring van een islamitische familie die
+                  al generaties lang actief is in de vleessector. Oprichter Mehmet groeide op in
+                  Turkije en leerde het slachtvak van jongs af aan binnen de familie.
                 </p>
                 <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
                   Na zijn komst naar Nederland deed hij jarenlang ervaring op binnen de Nederlandse
-                  vleessector, waarbij hij het slachtproces, kwaliteitsnormen en regelgeving volledig
-                  eigen maakte. Samen met zijn zoon Abdulrahim en neef Ridvan richtte hij een eigen
-                  halalslachthuis op in Harderwijk.
+                  vleessector, waarbij hij het slachtproces, kwaliteitsnormen en regelgeving
+                  volledig eigen maakte. Samen met zijn zoon Abdulrahim en neef Ridvan richtte hij
+                  een eigen halalslachthuis op in Harderwijk.
                 </p>
                 <div className="mt-10 flex flex-wrap items-center gap-3 text-[10px] font-medium uppercase tracking-[0.3em] text-foreground/60">
                   {["Familiebedrijf", "Sinds 2012", "Harderwijk"].map((t) => (
@@ -397,8 +398,8 @@ function OnsVerhaalLivePage() {
             </div>
             <div className="relative flex flex-col items-start gap-6 md:items-end">
               <p className="max-w-md text-base leading-relaxed text-muted-foreground md:text-right">
-                Kies voor premium Nederlands halalvlees met duidelijke afspraken, korte lijnen en gekoelde
-                levering.
+                Kies voor premium Nederlands halalvlees met duidelijke afspraken, korte lijnen en
+                gekoelde levering.
               </p>
               <MagneticButton href="/contact">
                 Word klant

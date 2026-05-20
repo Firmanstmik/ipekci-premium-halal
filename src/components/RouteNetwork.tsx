@@ -19,10 +19,20 @@ const hubs = [
 ];
 
 const routes: [string, string][] = [
-  ["rtm", "ham"], ["rtm", "ant"], ["rtm", "ams"], ["rtm", "lon"],
-  ["rtm", "par"], ["rtm", "dus"], ["dus", "ber"], ["ber", "war"],
-  ["ham", "sto"], ["par", "mad"], ["dus", "mil"], ["ber", "vie"],
-  ["ant", "par"], ["ham", "ber"],
+  ["rtm", "ham"],
+  ["rtm", "ant"],
+  ["rtm", "ams"],
+  ["rtm", "lon"],
+  ["rtm", "par"],
+  ["rtm", "dus"],
+  ["dus", "ber"],
+  ["ber", "war"],
+  ["ham", "sto"],
+  ["par", "mad"],
+  ["dus", "mil"],
+  ["ber", "vie"],
+  ["ant", "par"],
+  ["ham", "ber"],
 ];
 
 const find = (id: string) => hubs.find((h) => h.id === id)!;
@@ -59,10 +69,26 @@ export function RouteNetwork() {
       {/* Grid */}
       <g opacity="0.06">
         {Array.from({ length: 20 }).map((_, i) => (
-          <line key={`v${i}`} x1={i * 50} y1="0" x2={i * 50} y2="600" stroke="white" strokeWidth="0.5" />
+          <line
+            key={`v${i}`}
+            x1={i * 50}
+            y1="0"
+            x2={i * 50}
+            y2="600"
+            stroke="white"
+            strokeWidth="0.5"
+          />
         ))}
         {Array.from({ length: 12 }).map((_, i) => (
-          <line key={`h${i}`} x1="0" y1={i * 50} x2="1000" y2={i * 50} stroke="white" strokeWidth="0.5" />
+          <line
+            key={`h${i}`}
+            x1="0"
+            y1={i * 50}
+            x2="1000"
+            y2={i * 50}
+            stroke="white"
+            strokeWidth="0.5"
+          />
         ))}
       </g>
 
@@ -137,7 +163,14 @@ export function RouteNetwork() {
             r={h.primary ? 5 : 3}
             fill={h.primary ? "oklch(0.85 0.18 50)" : "oklch(0.97 0.005 80)"}
           />
-          <circle cx={h.x} cy={h.y} r={h.primary ? 5 : 3} fill="none" stroke="white" strokeOpacity="0.3" />
+          <circle
+            cx={h.x}
+            cy={h.y}
+            r={h.primary ? 5 : 3}
+            fill="none"
+            stroke="white"
+            strokeOpacity="0.3"
+          />
           <text
             x={h.x + 9}
             y={h.y + 4}

@@ -54,17 +54,6 @@ const HERO_STICKERS = {
 const IPEKCI_HERO_IMAGE =
   "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Ook-klant-worden.webp";
 
-const marquee = [
-  "Premium halalvlees",
-  "Nederlands lamsvlees",
-  "Rundvlees",
-  "Kip (op aanvraag)",
-  "Eindproducten",
-  "Eigen halalslachthuis",
-  "Eigen koeltransport",
-  "Persoonlijke service",
-];
-
 const customerTypes = ["Slagerijen", "Groothandels", "Supermarkten", "Restaurants"] as const;
 
 const segments = [
@@ -2037,19 +2026,6 @@ function HomePage() {
       </section>
 
       <PremiumMeatShowcase />
-
-      <section className="relative overflow-hidden border-y border-white/5 bg-background py-8">
-        <div className="flex w-max marquee gap-14 whitespace-nowrap px-8">
-          {[...marquee, ...marquee, ...marquee].map((t, i) => (
-            <span
-              key={`${t}-${i}`}
-              className="font-display text-2xl font-semibold tracking-[0.15em] text-foreground/25 transition-colors hover:text-foreground/70 md:text-4xl"
-            >
-              {t}
-            </span>
-          ))}
-        </div>
-      </section>
 
       <section className="relative overflow-hidden bg-[#F5F1EB] px-6 py-24 text-[#111111] grain md:px-10 md:py-28 lg:px-[80px] lg:py-[120px]">
         <div className="pointer-events-none absolute inset-0">

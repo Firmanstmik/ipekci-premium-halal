@@ -248,6 +248,7 @@ function TopInfoBar({ visible, shown }: { visible?: boolean; shown?: boolean }) 
    ─────────────────────────────────────────────────────────────── */
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -273,22 +274,18 @@ export function Navbar() {
             label="Assortiment"
             items={assortment}
             active={location.pathname.startsWith("/assortiment")}
+            open={openDropdown === "Assortiment"}
+            onOpenChange={(open) => setOpenDropdown(open ? "Assortiment" : null)}
           />
           <NavDropdown
             label="Voor wie"
             items={segments}
             active={location.hash?.length ? location.hash !== "" : false}
+            open={openDropdown === "Voor wie"}
+            onOpenChange={(open) => setOpenDropdown(open ? "Voor wie" : null)}
           />
-          <NavLink
-            to="/ons-verhaal"
-            label="Ons verhaal"
-            active={location.pathname.startsWith("/ons-verhaal")}
-          />
-          <NavLink
-            to="/contact"
-            label="Contact"
-            active={location.pathname.startsWith("/contact")}
-          />
+          <NavLink to="/ons-verhaal" label="Ons verhaal" active={false} disabled />
+          <NavLink to="/contact" label="Contact" active={false} disabled />
         </div>
 
         {/* Right CTA */}
@@ -366,22 +363,16 @@ export function Navbar() {
               { to: "/ons-verhaal", label: "Ons verhaal" },
               { to: "/contact", label: "Contact" },
             ].map((l, i) => {
-              const isActive = location.pathname.startsWith(l.to);
               return (
-                <Link
+                <button
                   key={l.to}
-                  to={l.to}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`flex items-center justify-between border-b border-white/[0.08] py-5 text-[15px] font-medium tracking-[0.04em] last:border-0 transition-colors duration-200 ${
-                    isActive ? "text-[rgba(226,192,141,0.95)]" : "text-white/70 hover:text-white"
-                  }`}
+                  type="button"
+                  aria-disabled="true"
+                  className="flex cursor-default items-center justify-between border-b border-white/[0.08] py-5 text-[15px] font-medium tracking-[0.04em] text-white/35 last:border-0"
                   style={{ animationDelay: `${i * 40}ms` }}
                 >
                   <span>{l.label}</span>
-                  {isActive && (
-                    <span className="h-1.5 w-1.5 rounded-full bg-[rgba(226,192,141,0.85)]" />
-                  )}
-                </Link>
+                </button>
               );
             })}
           </nav>
@@ -403,7 +394,29 @@ export function Navbar() {
   );
 }
 
-function NavLink({ to, label, active }: { to: string; label: string; active: boolean }) {
+function NavLink({
+  to,
+  label,
+  active,
+  disabled = false,
+}: {
+  to: string;
+  label: string;
+  active: boolean;
+  disabled?: boolean;
+}) {
+  if (disabled) {
+    return (
+      <button
+        type="button"
+        aria-disabled="true"
+        className="group relative cursor-default px-5 py-3 text-[12px] font-medium tracking-[0.08em] text-white/38"
+      >
+        <span className="relative z-10">{label}</span>
+      </button>
+    );
+  }
+
   return (
     <Link
       to={to}
@@ -427,10 +440,14 @@ function NavDropdown({
   label,
   items,
   active,
+  open,
+  onOpenChange,
 }: {
   label: string;
   items: readonly { to: string; label: string }[];
   active: boolean;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }) {
   const isAssortiment = label === "Assortiment";
   const isVoorWie = label === "Voor wie";
@@ -502,11 +519,12 @@ function NavDropdown({
   });
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={onOpenChange} modal={false}>
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          className={`group relative inline-flex items-center gap-2 px-5 py-3 text-[12px] font-medium tracking-[0.08em] outline-none transition-colors duration-200 focus:outline-none focus-visible:ring-1 focus-visible:ring-white/20 data-[state=open]:text-white ${
+          onMouseEnter={() => onOpenChange(true)}
+          className={`group relative inline-flex items-center gap-2 bg-transparent px-5 py-3 text-[12px] font-medium tracking-[0.08em] outline-none transition-colors duration-200 focus:outline-none focus-visible:ring-0 data-[state=open]:text-white ${
             active ? "text-white" : "text-white/90 hover:text-white"
           }`}
         >
@@ -521,6 +539,8 @@ function NavDropdown({
       <DropdownMenuContent
         align="center"
         sideOffset={14}
+        onMouseEnter={() => onOpenChange(true)}
+        onMouseLeave={() => onOpenChange(false)}
         className={`mt-3 overflow-hidden rounded-2xl border border-white/10 bg-background/70 p-0 text-foreground shadow-[0_30px_90px_-40px_rgba(0,0,0,0.85)] backdrop-blur-2xl ${
           isAssortiment || isVoorWie ? "w-[860px]" : "w-56 p-2 rounded-sm"
         }`}

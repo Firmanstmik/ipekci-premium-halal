@@ -1446,7 +1446,7 @@ function HomePage() {
           const distanceToEdge =
             eindproductenAutoDirRef.current > 0 ? maxScrollLeft - el.scrollLeft : el.scrollLeft;
           const edgeFactor = Math.max(0.42, Math.min(1, distanceToEdge / 260));
-          const speed = (0.0105 + 0.013 * edgeFactor) * dt;
+          const speed = (0.024 + 0.02 * edgeFactor) * dt;
           let next = el.scrollLeft + eindproductenAutoDirRef.current * speed;
 
           if (next >= maxScrollLeft) {
@@ -2528,7 +2528,7 @@ function HomePage() {
               className="lg:col-span-4"
             >
               <div className="relative">
-                <div className="relative inline-flex items-center gap-3 rounded-full border border-[rgba(226,192,141,0.18)] bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-4 py-2.5 text-[10px] font-medium uppercase tracking-[0.34em] text-[rgba(239,225,203,0.78)] shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_28px_90px_-70px_rgba(0,0,0,0.92)] backdrop-blur-xl">
+                <div className="relative inline-flex items-center gap-3 rounded-full border border-[rgba(226,192,141,0.18)] bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-4 py-2.5 text-[9px] font-medium uppercase tracking-[0.4em] text-[rgba(239,225,203,0.78)] shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_28px_90px_-70px_rgba(0,0,0,0.92)] backdrop-blur-xl sm:text-[10px]">
                   <span className="relative inline-flex h-2 w-2 shrink-0 rounded-full bg-[#B31217] shadow-[0_0_0_6px_rgba(179,18,23,0.10),0_0_18px_rgba(179,18,23,0.72)]">
                     <span className="absolute inset-[-4px] rounded-full border border-[rgba(226,192,141,0.28)] opacity-70" />
                   </span>
@@ -2538,26 +2538,28 @@ function HomePage() {
                     <span className="h-px w-10 bg-[linear-gradient(90deg,rgba(226,192,141,0.72),rgba(226,192,141,0.0))]" />
                   </span>
                 </div>
-                <div className="mt-7 font-display text-[clamp(2.7rem,4vw,4.4rem)] font-medium leading-[0.98] tracking-[-0.04em] text-[#F5F2ED]">
+                <div className="mt-7 max-w-[15ch] font-display text-[clamp(2.55rem,3.5vw,4.15rem)] font-medium leading-[0.95] tracking-[-0.05em] text-[#F5F2ED]">
                   Premium
-                  <span className="mt-2 block italic text-[rgba(226,192,141,0.96)]">Eindproducten</span>
+                  <span className="mt-2 block italic text-[clamp(2.3rem,3.2vw,3.85rem)] text-[rgba(226,192,141,0.96)]">
+                    Finished Products
+                  </span>
                 </div>
 
                 <div className="relative mt-8 h-px w-32 bg-[linear-gradient(90deg,rgba(226,192,141,0.0),rgba(226,192,141,0.82),rgba(226,192,141,0.0))]">
                   <div className="absolute left-10 top-1/2 h-2.5 w-2.5 -translate-y-1/2 rotate-45 bg-[#B31217] shadow-[0_0_0_6px_rgba(179,18,23,0.10),0_0_34px_rgba(179,18,23,0.58)]" />
                 </div>
 
-                <p className="mt-8 max-w-[470px] text-[15px] leading-[1.78] text-[rgba(245,242,237,0.70)]">
-                  Een luxe collectie van premium halal eindproducten voor retail, slagerijen,
-                  horeca en moderne foodconcepten. Van shoarma en kebab tot burgers en verpakte
-                  halal specialiteiten, ontwikkeld om direct onderscheidend aan te voelen.
+                <p className="mt-8 max-w-[45ch] text-[14px] leading-[1.9] tracking-[0.01em] text-[rgba(245,242,237,0.72)] sm:text-[15px]">
+                  A curated halal product collection for retail, butcher counters, horeca and
+                  modern food concepts. From shoarma and kebab to burgers and packaged specialties,
+                  designed for premium presentation, consistency and scale.
                 </p>
 
                 <div className="mt-7 flex flex-wrap gap-2.5">
                   {["Shoarma", "Burgers", "Kebab", "Packaged halal"].map((item) => (
                     <div
                       key={item}
-                      className="rounded-full border border-[rgba(226,192,141,0.16)] bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-4 py-2 text-[10px] font-medium uppercase tracking-[0.24em] text-[rgba(245,242,237,0.68)] transition-all duration-500 hover:-translate-y-px hover:border-[rgba(226,192,141,0.28)] hover:text-[rgba(245,242,237,0.84)]"
+                    className="rounded-full border border-[rgba(226,192,141,0.16)] bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-4 py-2 text-[9px] font-medium uppercase tracking-[0.28em] text-[rgba(245,242,237,0.68)] transition-all duration-500 hover:-translate-y-px hover:border-[rgba(226,192,141,0.28)] hover:text-[rgba(245,242,237,0.84)] sm:text-[10px]"
                     >
                       {item}
                     </div>
@@ -2576,8 +2578,8 @@ function HomePage() {
                     className="transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-1"
                   />
                 </a>
-                <div className="text-[11px] uppercase tracking-[0.24em] text-[rgba(245,242,237,0.42)]">
-                  Drag or swipe to explore
+                <div className="text-[10px] uppercase tracking-[0.3em] text-[rgba(245,242,237,0.48)] sm:text-[11px]">
+                  Auto-scrolling curated selection
                 </div>
               </div>
             </motion.div>
@@ -2680,7 +2682,7 @@ function HomePage() {
                     onPointerUp={handleEindproductenPointerUp}
                     onPointerCancel={handleEindproductenPointerUp}
                     data-dragging={eindproductenDragging ? "true" : "false"}
-                    className={`relative flex w-full min-w-0 snap-x snap-proximity gap-5 overflow-x-auto px-5 pt-20 pb-14 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden sm:gap-7 sm:px-7 sm:pt-24 sm:pb-16 lg:px-8 ${
+                    className={`relative flex w-full min-w-0 snap-x snap-proximity gap-5 overflow-x-auto px-5 pb-11 pt-16 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden sm:gap-7 sm:px-7 sm:pb-12 sm:pt-18 lg:px-8 lg:pb-14 lg:pt-20 ${
                       eindproductenDragging ? "cursor-grabbing" : "cursor-grab"
                     }`}
                     style={{
@@ -2705,7 +2707,7 @@ function HomePage() {
                       />
                     ))}
 
-                    <div className="w-10 shrink-0 sm:w-16" />
+                    <div className="w-8 shrink-0 sm:w-12" />
                   </motion.div>
                 </div>
 
@@ -3094,7 +3096,7 @@ function EindproductenShowcaseCard({
               transformStyle: "preserve-3d",
             }
       }
-      className="group relative w-[84vw] max-w-[430px] shrink-0 snap-center overflow-hidden rounded-[36px] border border-[rgba(226,192,141,0.16)] bg-[#110c0a] shadow-[0_44px_160px_-92px_rgba(0,0,0,0.9)] transition-[border-color,box-shadow,transform] duration-700 hover:border-[rgba(226,192,141,0.34)] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.08),0_0_90px_-36px_rgba(179,18,23,0.24),0_64px_180px_-96px_rgba(0,0,0,0.96)] sm:w-[390px] lg:w-[408px]"
+      className="group relative w-[82vw] max-w-[400px] shrink-0 snap-center overflow-hidden rounded-[34px] border border-[rgba(226,192,141,0.16)] bg-[#110c0a] shadow-[0_44px_160px_-92px_rgba(0,0,0,0.9)] transition-[border-color,box-shadow,transform] duration-700 hover:border-[rgba(226,192,141,0.34)] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.08),0_0_90px_-36px_rgba(179,18,23,0.24),0_64px_180px_-96px_rgba(0,0,0,0.96)] sm:w-[372px] lg:w-[388px]"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <img
@@ -3116,7 +3118,7 @@ function EindproductenShowcaseCard({
         <div className="absolute inset-0 bg-[radial-gradient(1100px_720px_at_50%_18%,rgba(255,255,255,0.16)_0%,transparent_58%)] mix-blend-screen" />
         <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.62),transparent)]" />
         <div className="absolute inset-y-0 left-0 w-px bg-[linear-gradient(180deg,transparent,rgba(198,160,98,0.38),transparent)]" />
-        <div className="absolute inset-0 rounded-[36px] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_-120px_140px_-76px_rgba(0,0,0,0.52)]" />
+        <div className="absolute inset-0 rounded-[34px] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05),inset_0_-120px_140px_-76px_rgba(0,0,0,0.52)]" />
         <div className="absolute inset-0 -translate-x-[120%] bg-[linear-gradient(108deg,transparent,rgba(255,255,255,0.16),transparent)] opacity-0 transition-[transform,opacity] duration-[1600ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-[120%] group-hover:opacity-100" />
       </div>
 
@@ -3126,7 +3128,7 @@ function EindproductenShowcaseCard({
         style={reduceMotion ? undefined : { background: glowBg }}
       />
 
-      <div className="relative flex h-full min-h-[640px] flex-col p-7 pb-7 text-[rgba(24,18,13,0.92)] sm:p-8 sm:pb-8">
+      <div className="relative flex h-full min-h-[572px] flex-col p-6 pb-6 text-[rgba(24,18,13,0.92)] sm:min-h-[590px] sm:p-7 sm:pb-7">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-[54%] bg-[linear-gradient(180deg,rgba(255,255,255,0.42),rgba(255,255,255,0.16)_52%,rgba(255,255,255,0)_100%)]"
@@ -3144,50 +3146,50 @@ function EindproductenShowcaseCard({
                 style={{ filter: STICKER_GOLD_FILTER }}
               />
               <div className="flex items-center gap-2.5">
-                <div className="text-[10px] font-medium uppercase tracking-[0.34em] text-[rgba(62,44,24,0.86)]">
+                <div className="text-[9px] font-medium uppercase tracking-[0.36em] text-[rgba(62,44,24,0.86)] sm:text-[10px]">
                   {product.category}
                 </div>
                 <span className="h-px w-10 bg-[linear-gradient(90deg,rgba(186,150,94,0.58),rgba(186,150,94,0.0))]" />
               </div>
             </div>
-            <div className="max-w-[16rem] text-[10px] font-medium uppercase tracking-[0.32em] text-[rgba(92,64,28,0.84)]">
+            <div className="max-w-[16rem] text-[9px] font-medium uppercase tracking-[0.34em] text-[rgba(92,64,28,0.84)] sm:text-[10px]">
               {product.eyebrow}
             </div>
           </div>
 
-          <div className="rounded-full border border-[rgba(226,192,141,0.26)] bg-black/28 px-3.5 py-1.5 text-[10px] font-medium uppercase tracking-[0.24em] text-[rgba(245,242,237,0.92)] shadow-[0_18px_40px_-28px_rgba(0,0,0,0.28)] backdrop-blur-md">
+          <div className="rounded-full border border-[rgba(226,192,141,0.26)] bg-black/28 px-3.5 py-1.5 text-[9px] font-medium uppercase tracking-[0.28em] text-[rgba(245,242,237,0.92)] shadow-[0_18px_40px_-28px_rgba(0,0,0,0.28)] backdrop-blur-md sm:text-[10px]">
             100% halal
           </div>
         </div>
 
-        <div className="mt-8 flex items-start justify-between gap-5">
+        <div className="mt-6 flex items-start justify-between gap-5">
           <div className="flex-1">
-            <div className="text-[10px] font-medium uppercase tracking-[0.34em] text-[rgba(45,32,18,0.66)]">
+            <div className="text-[9px] font-medium uppercase tracking-[0.38em] text-[rgba(45,32,18,0.66)] sm:text-[10px]">
               Collection {String(index + 1).padStart(2, "0")}
             </div>
-            <div className="mt-3 text-balance font-display text-[36px] leading-[0.94] tracking-[-0.045em] text-[rgba(24,18,13,0.94)] sm:text-[40px]">
+            <div className="mt-3 max-w-[12ch] text-balance font-display text-[clamp(2rem,3vw,2.45rem)] leading-[0.94] tracking-[-0.05em] text-[rgba(24,18,13,0.94)]">
               {product.title}
             </div>
           </div>
-          <div className="hidden h-[72px] w-px bg-[linear-gradient(180deg,rgba(184,147,89,0.0),rgba(184,147,89,0.56),rgba(184,147,89,0.0))] sm:block" />
+          <div className="hidden h-[62px] w-px bg-[linear-gradient(180deg,rgba(184,147,89,0.0),rgba(184,147,89,0.56),rgba(184,147,89,0.0))] sm:block" />
         </div>
 
-        <p className="mt-5 max-w-[31ch] text-[14px] leading-[1.82] text-[rgba(40,30,20,0.78)] sm:text-[15px]">
+        <p className="mt-4 max-w-[32ch] text-[13px] leading-[1.86] tracking-[0.01em] text-[rgba(40,30,20,0.80)] sm:text-[14px]">
           {product.blurb}
         </p>
 
-        <div className="mt-6 flex flex-wrap gap-2.5">
+        <div className="mt-5 flex flex-wrap gap-2.5">
           {product.traits.map((trait) => (
             <div
               key={trait}
-              className="rounded-full border border-[rgba(180,146,95,0.22)] bg-[linear-gradient(180deg,rgba(255,255,255,0.40),rgba(255,255,255,0.18))] px-3.5 py-1.5 text-[9px] font-medium uppercase tracking-[0.24em] text-[rgba(34,25,16,0.86)] shadow-[inset_0_1px_0_rgba(255,255,255,0.38),0_16px_28px_-22px_rgba(0,0,0,0.22)] backdrop-blur-sm transition-all duration-500 group-hover:-translate-y-[2px] group-hover:border-[rgba(180,146,95,0.34)] group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.52),0_20px_40px_-24px_rgba(0,0,0,0.26)]"
+              className="rounded-full border border-[rgba(180,146,95,0.22)] bg-[linear-gradient(180deg,rgba(255,255,255,0.40),rgba(255,255,255,0.18))] px-3.5 py-1.5 text-[8px] font-medium uppercase tracking-[0.28em] text-[rgba(34,25,16,0.86)] shadow-[inset_0_1px_0_rgba(255,255,255,0.38),0_16px_28px_-22px_rgba(0,0,0,0.22)] backdrop-blur-sm transition-all duration-500 group-hover:-translate-y-[2px] group-hover:border-[rgba(180,146,95,0.34)] group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.52),0_20px_40px_-24px_rgba(0,0,0,0.26)] sm:text-[9px]"
             >
               {trait}
             </div>
           ))}
         </div>
 
-        <div className="relative mt-8 flex flex-1 items-end justify-center overflow-hidden rounded-[30px] border border-[rgba(171,137,84,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.20),rgba(255,255,255,0.06))] px-4 pb-4 pt-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.34),inset_0_-80px_120px_-90px_rgba(0,0,0,0.26)]">
+        <div className="relative mt-6 flex flex-1 items-end justify-center overflow-hidden rounded-[28px] border border-[rgba(171,137,84,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.20),rgba(255,255,255,0.06))] px-4 pb-4 pt-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.34),inset_0_-80px_120px_-90px_rgba(0,0,0,0.26)]">
           <div className="pointer-events-none absolute inset-x-[14%] bottom-2 h-14 rounded-full bg-[radial-gradient(closest-side,rgba(0,0,0,0.24),rgba(0,0,0,0.0))] blur-lg" />
           <div className="pointer-events-none absolute left-1/2 top-5 h-20 w-52 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.60),rgba(255,255,255,0)_72%)] blur-2xl opacity-70 transition-opacity duration-700 group-hover:opacity-100" />
           <div className="pointer-events-none absolute inset-x-4 bottom-4 top-4 rounded-[26px] border border-white/18 opacity-60" />
@@ -3196,7 +3198,7 @@ function EindproductenShowcaseCard({
             alt={product.title}
             loading="lazy"
             decoding="async"
-            className="relative z-10 mx-auto h-[250px] w-full object-contain sm:h-[290px]"
+            className="relative z-10 mx-auto h-[210px] w-full object-contain sm:h-[236px]"
             style={
               reduceMotion
                 ? {
@@ -3221,13 +3223,13 @@ function EindproductenShowcaseCard({
           />
         </div>
 
-        <div className="mt-7 flex items-center justify-between gap-4">
-          <div className="text-[10px] font-medium uppercase tracking-[0.32em] text-[rgba(34,25,16,0.68)]">
-            Premium collection
+        <div className="mt-6 flex items-center justify-between gap-4">
+          <div className="text-[9px] font-medium uppercase tracking-[0.34em] text-[rgba(34,25,16,0.68)] sm:text-[10px]">
+            International product line
           </div>
           <a
             href="/assortiment#eindproducten"
-            className="group/cta inline-flex items-center gap-3 rounded-[18px] border border-[rgba(150,32,35,0.26)] bg-[linear-gradient(135deg,rgba(147,24,28,0.92),rgba(78,13,15,0.96))] px-[18px] py-3 text-[10px] font-semibold uppercase tracking-[0.28em] text-[rgba(250,241,230,0.96)] shadow-[0_18px_44px_-26px_rgba(0,0,0,0.32)] transition-all duration-500 hover:-translate-y-px hover:border-[rgba(196,158,101,0.42)] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.12),0_0_48px_-22px_rgba(179,18,23,0.36),0_22px_60px_-28px_rgba(0,0,0,0.38)]"
+            className="group/cta inline-flex items-center gap-3 rounded-[18px] border border-[rgba(150,32,35,0.26)] bg-[linear-gradient(135deg,rgba(147,24,28,0.92),rgba(78,13,15,0.96))] px-[18px] py-3 text-[9px] font-semibold uppercase tracking-[0.3em] text-[rgba(250,241,230,0.96)] shadow-[0_18px_44px_-26px_rgba(0,0,0,0.32)] transition-all duration-500 hover:-translate-y-px hover:border-[rgba(196,158,101,0.42)] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.12),0_0_48px_-22px_rgba(179,18,23,0.36),0_22px_60px_-28px_rgba(0,0,0,0.38)] sm:text-[10px]"
           >
             <span className="relative">
               Explore

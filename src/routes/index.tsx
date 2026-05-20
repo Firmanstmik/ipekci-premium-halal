@@ -400,92 +400,138 @@ function AssortimentProductCard({
   }
 
   return (
-    <motion.a
-      ref={ref}
-      href={href}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      onHoverStart={() => setHovered(true)}
-      onHoverEnd={() => setHovered(false)}
-      initial={{ opacity: 0, y: 28, filter: "blur(12px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+    <motion.div
+      initial={
+        reduceMotion
+          ? { opacity: 1, x: 0, scale: 1, rotateY: 0, filter: "blur(0px)" }
+          : { opacity: 0, x: 86, scale: 0.985, rotateY: -14, filter: "blur(18px)" }
+      }
+      whileInView={{ opacity: 1, x: 0, scale: 1, rotateY: 0, filter: "blur(0px)" }}
       viewport={{ once: true, margin: "-120px" }}
       transition={{
-        duration: 1.05,
-        delay: reduceMotion ? 0 : 0.18 + index * 0.12,
-        ease: [0.22, 1, 0.36, 1],
+        duration: 1.35,
+        delay: reduceMotion ? 0 : 0.16 + index * 0.18,
+        ease: [0.16, 1, 0.3, 1],
       }}
-      style={reduceMotion ? undefined : { rotateX: rx, rotateY: ry, transformStyle: "preserve-3d" }}
-      className="group relative flex h-[340px] flex-col overflow-hidden rounded-[24px] border border-[rgba(226,192,141,0.14)] bg-[#080808] shadow-[0_40px_120px_-88px_rgba(0,0,0,0.98)] transition-[border-color,box-shadow] duration-700 hover:border-[rgba(226,192,141,0.38)] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.22),0_0_56px_-18px_rgba(226,192,141,0.22),0_52px_150px_-96px_rgba(0,0,0,0.98)] lg:h-[400px]"
+      whileHover={reduceMotion ? undefined : { y: -8 }}
+      style={
+        reduceMotion
+          ? undefined
+          : { transformPerspective: 1400, transformStyle: "preserve-3d", willChange: "transform" }
+      }
+      className="transform-gpu"
     >
-      <motion.img
-        src={image}
-        alt=""
-        aria-hidden
-        loading="lazy"
-        decoding="async"
-        className="absolute inset-0 h-full w-full object-cover"
-        style={{
-          objectPosition: imagePosition,
-          filter: "brightness(0.88) contrast(1.14) saturate(1.06)",
-          willChange: "transform",
-        }}
-        initial={false}
-        animate={
+      <motion.a
+        ref={ref}
+        href={href}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        onHoverStart={() => setHovered(true)}
+        onHoverEnd={() => setHovered(false)}
+        style={
           reduceMotion
             ? undefined
             : {
-                scale: hovered ? 1.14 : 1.07,
-                x: hovered ? -8 : 0,
-                y: hovered ? -6 : 0,
-                rotate: hovered ? -0.9 : -0.15,
+                rotateX: rx,
+                rotateY: ry,
+                transformStyle: "preserve-3d",
+                willChange: "transform",
+                backfaceVisibility: "hidden",
               }
         }
-        transition={reduceMotion ? undefined : { duration: 1.35, ease: [0.22, 1, 0.36, 1] }}
-      />
-
-      <div className="pointer-events-none absolute inset-0">
-        <motion.div
+        className="group relative flex h-[340px] flex-col overflow-hidden rounded-[24px] border border-[rgba(226,192,141,0.14)] bg-[#080808] shadow-[0_40px_120px_-88px_rgba(0,0,0,0.98)] transition-[border-color,box-shadow] duration-700 hover:border-[rgba(226,192,141,0.38)] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.22),0_0_56px_-18px_rgba(226,192,141,0.22),0_52px_150px_-96px_rgba(0,0,0,0.98)] lg:h-[400px] transform-gpu"
+      >
+        <motion.img
+          src={image}
+          alt=""
           aria-hidden
-          className="absolute inset-0 opacity-[0.55] mix-blend-soft-light"
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover"
           style={{
-            backgroundImage:
-              "radial-gradient(ellipse 80% 50% at 50% 100%, rgba(255,255,255,0.12) 0%, transparent 70%), radial-gradient(ellipse 60% 40% at 20% 20%, rgba(255,255,255,0.06) 0%, transparent 55%)",
+            objectPosition: imagePosition,
+            filter: "brightness(0.88) contrast(1.14) saturate(1.06)",
+            willChange: "transform",
           }}
-          animate={reduceMotion ? undefined : { opacity: hovered ? 0.72 : 0.55 }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          initial={false}
+          animate={
+            reduceMotion
+              ? undefined
+              : {
+                  scale: hovered ? 1.14 : 1.07,
+                  x: hovered ? -8 : 0,
+                  y: hovered ? -6 : 0,
+                  rotate: hovered ? -0.9 : -0.15,
+                }
+          }
+          transition={reduceMotion ? undefined : { duration: 1.35, ease: [0.22, 1, 0.36, 1] }}
         />
-        <div className="absolute inset-0 bg-[radial-gradient(620px_400px_at_28%_12%,rgba(245,241,235,0.10)_0%,transparent_58%)]" />
+
+        <div className="pointer-events-none absolute inset-0">
+          <motion.div
+            aria-hidden
+            className="absolute inset-0 opacity-[0.55] mix-blend-soft-light"
+            style={{
+              backgroundImage:
+                "radial-gradient(ellipse 80% 50% at 50% 100%, rgba(255,255,255,0.12) 0%, transparent 70%), radial-gradient(ellipse 60% 40% at 20% 20%, rgba(255,255,255,0.06) 0%, transparent 55%)",
+            }}
+            animate={reduceMotion ? undefined : { opacity: hovered ? 0.72 : 0.55 }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          />
+          <motion.div
+            aria-hidden
+            className="absolute -left-1/2 top-0 h-[130%] w-[60%] rotate-[14deg] opacity-0 mix-blend-screen"
+            style={{
+              background:
+                "linear-gradient(90deg, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.20) 46%, rgba(255,255,255,0.0) 86%)",
+              filter: "blur(10px)",
+            }}
+            whileInView={
+              reduceMotion
+                ? undefined
+                : {
+                    x: ["-120%", "120%"],
+                    opacity: [0, 0.28, 0],
+                  }
+            }
+            viewport={{ once: true, margin: "-120px" }}
+            transition={{
+              duration: 1.65,
+              delay: reduceMotion ? 0 : 0.34 + index * 0.18,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+          />
+          <div className="absolute inset-0 bg-[radial-gradient(620px_400px_at_28%_12%,rgba(245,241,235,0.10)_0%,transparent_58%)]" />
+          <motion.div
+            aria-hidden
+            className="absolute inset-0 bg-[radial-gradient(760px_480px_at_82%_42%,rgba(139,14,17,0.22)_0%,transparent_62%)]"
+            animate={reduceMotion ? undefined : { opacity: hovered ? 1 : 0.75 }}
+            transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+          />
+          <div className="absolute inset-0 bg-[radial-gradient(900px_580px_at_50%_88%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.35)_48%,rgba(0,0,0,0.94)_100%)]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/92 via-black/38 to-black/10" />
+          <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/55 to-transparent" />
+        </div>
+
         <motion.div
           aria-hidden
-          className="absolute inset-0 bg-[radial-gradient(760px_480px_at_82%_42%,rgba(139,14,17,0.22)_0%,transparent_62%)]"
-          animate={reduceMotion ? undefined : { opacity: hovered ? 1 : 0.75 }}
-          transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
+          style={reduceMotion ? undefined : { background: glowBg }}
         />
-        <div className="absolute inset-0 bg-[radial-gradient(900px_580px_at_50%_88%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.35)_48%,rgba(0,0,0,0.94)_100%)]" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/92 via-black/38 to-black/10" />
-        <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/55 to-transparent" />
-      </div>
 
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-        style={reduceMotion ? undefined : { background: glowBg }}
-      />
-
-      <div className="relative flex h-full flex-col">
-        <div className="flex items-center gap-2 px-6 pt-6 text-[10px] font-semibold uppercase tracking-[0.34em] text-[rgba(226,192,141,0.82)]">
-          <img
-            src={stickerSrc}
-            alt=""
-            aria-hidden
-            className="h-6 w-6 select-none opacity-95"
-            loading="lazy"
-            decoding="async"
-            style={{ filter: STICKER_GOLD_FILTER }}
-          />
-          <span>{label}</span>
-        </div>
+        <div className="relative flex h-full flex-col">
+          <div className="flex items-center gap-2 px-6 pt-6 text-[10px] font-semibold uppercase tracking-[0.34em] text-[rgba(226,192,141,0.82)]">
+            <img
+              src={stickerSrc}
+              alt=""
+              aria-hidden
+              className="h-6 w-6 select-none opacity-95"
+              loading="lazy"
+              decoding="async"
+              style={{ filter: STICKER_GOLD_FILTER }}
+            />
+            <span>{label}</span>
+          </div>
 
         <div className="flex-1" />
 
@@ -529,8 +575,9 @@ function AssortimentProductCard({
             </motion.div>
           </div>
         </div>
-      </div>
-    </motion.a>
+        </div>
+      </motion.a>
+    </motion.div>
   );
 }
 

@@ -38,6 +38,12 @@ type Cut = {
   region: string;
   number: number;
   labelSize?: number;
+  callout: {
+    x: number;
+    y: number;
+    align: "left" | "right";
+    width?: number;
+  };
   specs: { icon: string; label: string; value: string }[];
 };
 
@@ -54,6 +60,7 @@ const CUTS: Cut[] = [
     cx: 70,
     cy: 44,
     region: "M62,37.5 C65,38 67,39 69,41 C71,43 73,42 75,39 L75,50 L62,50 Z",
+    callout: { x: 90, y: 16, align: "right", width: 150 },
     specs: [
       { icon: "tender", label: "Malsheid", value: "Slow cooked" },
       { icon: "flavor", label: "Smaak", value: "Diep" },
@@ -73,6 +80,7 @@ const CUTS: Cut[] = [
     cx: 57,
     cy: 43,
     region: "M52,37 C55,36.8 58,37 62,37.5 L62,50 L52,50 Z",
+    callout: { x: 66, y: 16, align: "left", width: 150 },
     specs: [
       { icon: "tender", label: "Malsheid", value: "Goed" },
       { icon: "flavor", label: "Smaak", value: "Intens" },
@@ -92,6 +100,7 @@ const CUTS: Cut[] = [
     cx: 47,
     cy: 43,
     region: "M42,37.5 C44,37 47,37 49,37 C50.5,37 52,37 52,37 L52,50 L42,50 Z",
+    callout: { x: 50, y: 14, align: "left", width: 146 },
     specs: [
       { icon: "tender", label: "Malsheid", value: "Uitstekend" },
       { icon: "flavor", label: "Smaak", value: "Rijk & vol" },
@@ -111,6 +120,7 @@ const CUTS: Cut[] = [
     cx: 37,
     cy: 43,
     region: "M32,37.5 C34,37.3 37,37.3 40,37.3 C41,37.3 42,37.4 42,37.5 L42,50 L32,50 Z",
+    callout: { x: 33, y: 16, align: "left", width: 150 },
     specs: [
       { icon: "tender", label: "Malsheid", value: "Uitstekend" },
       { icon: "flavor", label: "Smaak", value: "Verfijnd & vol" },
@@ -130,6 +140,7 @@ const CUTS: Cut[] = [
     cx: 27,
     cy: 43,
     region: "M22,37 C24,37 27,37 30,37.2 C31,37.3 32,37.4 32,37.5 L32,50 L22,50 Z",
+    callout: { x: 20, y: 16, align: "left", width: 150 },
     specs: [
       { icon: "tender", label: "Malsheid", value: "Zeer goed" },
       { icon: "flavor", label: "Smaak", value: "Vol & krachtig" },
@@ -149,6 +160,7 @@ const CUTS: Cut[] = [
     cx: 17,
     cy: 43,
     region: "M12,40 C13,38.5 15,37.5 18,37 C20,36.8 22,37 22,37 L22,50 L12,50 Z",
+    callout: { x: 8, y: 16, align: "left", width: 146 },
     specs: [
       { icon: "tender", label: "Malsheid", value: "Goed" },
       { icon: "flavor", label: "Smaak", value: "Vol" },
@@ -168,6 +180,7 @@ const CUTS: Cut[] = [
     cx: 17,
     cy: 58,
     region: "M12,50 L22,50 L22,62 C21,64.5 18,66 15,65.5 C13.5,65.2 12.5,63 12,60 Z",
+    callout: { x: 8, y: 78, align: "left", width: 146 },
     specs: [
       { icon: "tender", label: "Malsheid", value: "Gemiddeld" },
       { icon: "flavor", label: "Smaak", value: "Robuust" },
@@ -187,6 +200,7 @@ const CUTS: Cut[] = [
     cx: 29,
     cy: 58,
     region: "M22,50 L37,50 L37,67.5 C33,68.5 28,68 24,67 C23,66.7 22,65 22,62 Z",
+    callout: { x: 22, y: 79, align: "left", width: 150 },
     specs: [
       { icon: "tender", label: "Malsheid", value: "Stevig" },
       { icon: "flavor", label: "Smaak", value: "Krachtig" },
@@ -206,6 +220,7 @@ const CUTS: Cut[] = [
     cx: 45,
     cy: 58,
     region: "M37,50 L53,50 L53,66.5 C48,68 42,68 38,67.7 C37.3,67.6 37,67.5 37,67.5 Z",
+    callout: { x: 42, y: 79, align: "left", width: 150 },
     specs: [
       { icon: "tender", label: "Malsheid", value: "Slow cooked" },
       { icon: "flavor", label: "Smaak", value: "Vet & rijk" },
@@ -225,6 +240,7 @@ const CUTS: Cut[] = [
     cx: 64,
     cy: 57,
     region: "M53,50 L70,50 C71,53 70.5,57 68,60 C64,63 58,65 53,66.5 Z",
+    callout: { x: 72, y: 78, align: "left", width: 150 },
     specs: [
       { icon: "tender", label: "Malsheid", value: "Slow cooked" },
       { icon: "flavor", label: "Smaak", value: "Diep & rokerig" },
@@ -245,6 +261,7 @@ const CUTS: Cut[] = [
     cy: 53,
     labelSize: 1.45,
     region: "M31,50 L43,50 L42,57 L32,57 Z",
+    callout: { x: 52, y: 73, align: "left", width: 156 },
     specs: [
       { icon: "tender", label: "Malsheid", value: "Botermals" },
       { icon: "flavor", label: "Smaak", value: "Elegant" },
@@ -265,6 +282,7 @@ const CUTS: Cut[] = [
     cy: 69,
     labelSize: 1.3,
     region: "M61,60 L66,60 L66,75 L61,75 Z",
+    callout: { x: 92, y: 82, align: "right", width: 146 },
     specs: [
       { icon: "tender", label: "Malsheid", value: "Slow cooked" },
       { icon: "flavor", label: "Smaak", value: "Krachtig" },
@@ -321,6 +339,14 @@ export function PremiumMeatShowcase() {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const active = CUTS.find((c) => c.id === activeId)!;
   const focusedId = hoveredId ?? activeId;
+  const isTopCallout = active.number <= 6;
+  const calloutAnchorX = active.callout.x;
+  const calloutDirection = active.callout.align === "left" ? 1 : -1;
+  const calloutShoulderX = calloutAnchorX - calloutDirection * 6.5;
+  const calloutVerticalLift = isTopCallout ? -9.5 : 10.5;
+  const calloutCurveX = active.cx + (calloutAnchorX - active.cx) * 0.28;
+  const calloutCurveY = active.cy + calloutVerticalLift;
+  const calloutPath = `M ${active.cx} ${active.cy} C ${active.cx} ${calloutCurveY}, ${calloutShoulderX} ${calloutCurveY}, ${calloutShoulderX} ${active.callout.y} L ${calloutAnchorX} ${active.callout.y}`;
 
   return (
     <section className="relative overflow-hidden bg-cinematic">
@@ -384,6 +410,23 @@ export function PremiumMeatShowcase() {
                       <feMergeNode in="SourceGraphic" />
                     </feMerge>
                   </filter>
+                  <linearGradient id="calloutStroke" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="oklch(0.82 0.13 78 / 0.18)" />
+                    <stop offset="38%" stopColor="oklch(0.82 0.13 78 / 0.55)" />
+                    <stop offset="100%" stopColor="oklch(0.82 0.13 78 / 0.98)" />
+                  </linearGradient>
+                  <filter id="calloutLineGlow" x="-80%" y="-80%" width="260%" height="260%">
+                    <feGaussianBlur stdDeviation="0.75" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                  <radialGradient id="calloutNode" cx="50%" cy="50%" r="65%">
+                    <stop offset="0%" stopColor="oklch(0.98 0.02 80 / 1)" />
+                    <stop offset="55%" stopColor="oklch(0.82 0.13 78 / 0.98)" />
+                    <stop offset="100%" stopColor="oklch(0.55 0.22 28 / 0.85)" />
+                  </radialGradient>
                 </defs>
 
                 {CUTS.map((c) => {
@@ -412,30 +455,125 @@ export function PremiumMeatShowcase() {
                   );
                 })}
 
-                {CUTS.map((c) => (
-                  <text
-                    key={`label-${c.id}`}
-                    x={c.cx}
-                    y={c.cy + 0.6}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    fontSize={c.labelSize ?? 1.9}
-                    fontFamily="Inter, sans-serif"
-                    fontWeight={600}
-                    fill="oklch(0.97 0.01 80 / 0.92)"
-                    style={{
-                      pointerEvents: "none",
-                      letterSpacing: "0.14em",
-                      textTransform: "uppercase",
-                      paintOrder: "stroke",
-                      stroke: "oklch(0 0 0 / 0.55)",
-                      strokeWidth: 0.18,
-                    }}
+                <defs>
+                  <marker
+                    id="calloutArrow"
+                    markerWidth="8"
+                    markerHeight="8"
+                    refX="6.4"
+                    refY="4"
+                    orient="auto"
+                    markerUnits="strokeWidth"
                   >
-                    {c.name}
-                  </text>
-                ))}
+                    <path d="M0,0 L8,4 L0,8 z" fill="oklch(0.82 0.13 78 / 0.96)" />
+                  </marker>
+                </defs>
+
+                <AnimatePresence mode="wait">
+                  <>
+                    <motion.path
+                      key={`callout-line-glow-${active.id}`}
+                      d={calloutPath}
+                      fill="none"
+                      stroke="oklch(0.82 0.13 78 / 0.22)"
+                      strokeWidth="1.15"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      initial={{ opacity: 0, pathLength: 0 }}
+                      animate={{ opacity: 1, pathLength: 1 }}
+                      exit={{ opacity: 0, pathLength: 0 }}
+                      transition={{ duration: 0.72, ease: [0.2, 0.8, 0.2, 1] }}
+                      style={{ pointerEvents: "none", filter: "url(#calloutLineGlow)" }}
+                    />
+                    <motion.path
+                      key={`callout-line-${active.id}`}
+                      d={calloutPath}
+                      fill="none"
+                      stroke="url(#calloutStroke)"
+                      strokeWidth="0.28"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      markerEnd="url(#calloutArrow)"
+                      initial={{ opacity: 0, pathLength: 0 }}
+                      animate={{ opacity: 1, pathLength: 1 }}
+                      exit={{ opacity: 0, pathLength: 0 }}
+                      transition={{ duration: 0.72, delay: 0.04, ease: [0.2, 0.8, 0.2, 1] }}
+                      style={{ pointerEvents: "none" }}
+                    />
+                    <motion.circle
+                      key={`callout-node-${active.id}`}
+                      cx={active.cx}
+                      cy={active.cy}
+                      r="0.95"
+                      fill="url(#calloutNode)"
+                      initial={{ opacity: 0, scale: 0.4 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.4 }}
+                      transition={{ duration: 0.38, ease: [0.2, 0.8, 0.2, 1] }}
+                      style={{ transformOrigin: `${active.cx}px ${active.cy}px`, pointerEvents: "none" }}
+                    />
+                  </>
+                </AnimatePresence>
               </svg>
+
+              <AnimatePresence mode="wait">
+                <div
+                  style={{
+                    left: `${active.callout.x}%`,
+                    top: `${active.callout.y}%`,
+                    width: `${active.callout.width ?? 196}px`,
+                    transform: active.callout.align === "left" ? "translate(0, -50%)" : "translate(-100%, -50%)",
+                  }}
+                  className="pointer-events-none absolute z-20 hidden md:block"
+                >
+                  <motion.div
+                    key={`callout-box-${active.id}`}
+                    initial={{
+                      opacity: 0,
+                      x: active.callout.align === "left" ? -16 : 16,
+                      y: 8,
+                      scale: 0.94,
+                      rotate: active.callout.align === "left" ? -2.4 : 2.4,
+                      filter: "blur(10px)",
+                    }}
+                    animate={{ opacity: 1, x: 0, y: 0, scale: 1, rotate: 0, filter: "blur(0px)" }}
+                    exit={{
+                      opacity: 0,
+                      x: active.callout.align === "left" ? -10 : 10,
+                      y: -6,
+                      scale: 0.98,
+                      rotate: active.callout.align === "left" ? -1.5 : 1.5,
+                      filter: "blur(6px)",
+                    }}
+                    transition={{ duration: 0.62, ease: [0.16, 0.84, 0.24, 1] }}
+                    className="relative overflow-hidden rounded-[20px] border border-gold/28 bg-[linear-gradient(145deg,rgba(16,16,16,0.92),rgba(28,20,16,0.82))] px-3.5 py-3 shadow-[0_18px_40px_-20px_rgba(0,0,0,0.75),0_0_0_1px_rgba(200,164,107,0.12)] backdrop-blur-xl"
+                  >
+                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(200,164,107,0.18),transparent_42%),radial-gradient(circle_at_bottom_right,rgba(179,18,23,0.12),transparent_46%)]" />
+                    <div className="relative flex items-start gap-2.5">
+                      <motion.div
+                        initial={{ scale: 0.7, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.8, opacity: 0 }}
+                        transition={{ duration: 0.34, delay: 0.12 }}
+                        className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-gold/35 bg-blood/10 text-[9px] font-semibold tracking-[0.12em] text-gold shadow-[0_0_18px_rgba(200,164,107,0.16)]"
+                      >
+                        {active.number}
+                      </motion.div>
+                      <div className="min-w-0">
+                        <div className="text-[7px] font-semibold uppercase tracking-[0.28em] text-blood/90">
+                          Premium selectie
+                        </div>
+                        <div className="mt-1 font-display text-[18px] leading-[0.95] text-foreground">
+                          {active.label}
+                        </div>
+                        <div className="mt-1 text-[7.5px] uppercase tracking-[0.22em] text-gold/80">
+                          {active.name}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </AnimatePresence>
 
               {CUTS.map((c) => {
                 const isActive = c.id === activeId;
@@ -444,7 +582,7 @@ export function PremiumMeatShowcase() {
                 const lifted = isActive || isHover;
 
                 return (
-                  <button
+                  <motion.button
                     key={c.id}
                     onClick={() => setActiveId(c.id)}
                     onMouseEnter={() => setHoveredId(c.id)}
@@ -452,12 +590,22 @@ export function PremiumMeatShowcase() {
                     style={{ left: `${c.cx}%`, top: `${c.cy}%` }}
                     className="group absolute -translate-x-1/2 -translate-y-1/2"
                     aria-label={c.name}
+                    whileTap={{ scale: 0.92 }}
                   >
                     <div
                       className={`absolute inset-0 rounded-full blur-lg transition-all duration-500 ${
                         isActive || isHover ? "scale-150 opacity-100" : "opacity-60"
                       } ${isPremium ? "bg-blood/40" : "bg-blood/30"}`}
                     />
+                    {isActive ? (
+                      <motion.div
+                        key={`burst-${activeId}`}
+                        initial={{ scale: 0.6, opacity: 0 }}
+                        animate={{ scale: 1.95, opacity: [0, 0.6, 0] }}
+                        transition={{ duration: 0.72, ease: [0.16, 0.84, 0.24, 1] }}
+                        className="absolute inset-0 rounded-full border border-gold/55"
+                      />
+                    ) : null}
                     <div
                       className={`relative grid place-items-center rounded-full border text-[10px] font-bold transition-all duration-500 ${
                         isPremium ? "h-8 w-8" : "h-7 w-7"
@@ -470,7 +618,7 @@ export function PremiumMeatShowcase() {
                       {c.number}
                       {lifted && <div className="absolute -inset-1 rounded-full border border-gold/60" />}
                     </div>
-                  </button>
+                  </motion.button>
                 );
               })}
             </div>

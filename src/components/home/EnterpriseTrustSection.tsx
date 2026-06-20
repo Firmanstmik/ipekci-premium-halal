@@ -9,12 +9,12 @@ import {
 } from "framer-motion";
 import { ArrowUpRight, Instagram } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import ipekciMark from "@/assets/ipekci-mark.png";
 import { StoryItem, StoryReveal } from "@/components/HomeStorytelling";
 import { ImageFrameOverlay } from "@/components/ui/premium-frame";
 import { DS_EASE } from "@/lib/design-system";
 import {
   ENTERPRISE_AUTOPLAY_MS,
-  ENTERPRISE_TRUST_BADGES,
   ENTERPRISE_TRUST_PILLARS,
 } from "@/lib/enterprise-trust-content";
 
@@ -61,7 +61,7 @@ function TrustImageStage({
       onPointerMove={handleMove}
       onPointerLeave={reset}
       style={{ rotateX, rotateY, transformPerspective: 1600 }}
-      className="group/if group relative aspect-[4/5] w-full overflow-hidden rounded-[28px] bg-[#080808] shadow-[0_56px_140px_-72px_rgba(0,0,0,0.72)] ring-1 ring-black/[0.06] sm:aspect-[5/4] lg:min-h-[620px] lg:aspect-auto"
+      className="group/if group relative aspect-[4/5] w-full overflow-hidden rounded-[26px] bg-[#080808] shadow-[0_32px_90px_-40px_rgba(0,0,0,0.85)] ring-1 ring-black/[0.08] sm:aspect-[5/4] lg:min-h-[620px] lg:aspect-auto"
     >
         <AnimatePresence mode="wait">
           <motion.img
@@ -82,7 +82,7 @@ function TrustImageStage({
         </AnimatePresence>
 
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#050505]/88 via-[#050505]/22 to-[#050505]/08" />
-        <ImageFrameOverlay variant="aurora" className="rounded-[28px]" />
+        <ImageFrameOverlay variant="aurora" className="rounded-[26px]" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(130%_90%_at_50%_0%,rgba(226,192,141,0.12),transparent_58%)]" />
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.45]"
@@ -203,7 +203,7 @@ function PillarCard({
         aria-hidden
         className="absolute left-0 top-6 z-10 grid h-[27px] w-[27px] place-items-center rounded-full border bg-[#FAF8F5] shadow-[0_0_0_4px_rgba(250,248,245,1)]"
         animate={{
-          borderColor: isActive ? "rgba(226,192,141,0.9)" : "rgba(0,0,0,0.07)",
+          borderColor: isActive ? "rgba(179,18,23,0.85)" : "rgba(0,0,0,0.07)",
           scale: isActive ? 1.06 : 1,
         }}
         transition={{ duration: 0.4, ease: DS_EASE }}
@@ -229,7 +229,7 @@ function PillarCard({
         <span
           aria-hidden
           className={`pointer-events-none absolute -right-2 top-1/2 -translate-y-1/2 font-display text-[3.75rem] font-medium leading-none tracking-[-0.05em] transition-opacity duration-500 sm:text-[4.25rem] ${
-            isActive ? "text-white/[0.05]" : "text-[#141414]/[0.035] group-hover:text-[#141414]/[0.06]"
+            isActive ? "text-white/[0.08]" : "text-[#141414]/[0.04] group-hover:text-[#141414]/[0.07]"
           }`}
         >
           {String(index + 1).padStart(2, "0")}
@@ -239,7 +239,7 @@ function PillarCard({
           <>
             <motion.span
               layoutId="pillar-active-bg"
-              className="absolute inset-0 rounded-[20px] bg-[#101010]"
+              className="absolute inset-0 rounded-[20px] bg-[linear-gradient(145deg,#D0161B_0%,#B31217_38%,#8E0E12_72%,#6B0A0D_100%)] shadow-[0_22px_48px_-28px_rgba(179,18,23,0.55)]"
               transition={{ type: "spring", stiffness: 340, damping: 36 }}
               aria-hidden
             />
@@ -248,18 +248,18 @@ function PillarCard({
               className="pointer-events-none absolute inset-0 rounded-[20px]"
               style={{
                 background:
-                  "linear-gradient(135deg, rgba(226,192,141,0.12) 0%, transparent 48%, rgba(177,18,23,0.06) 100%)",
+                  "linear-gradient(135deg, rgba(255,255,255,0.14) 0%, transparent 42%, rgba(0,0,0,0.12) 100%)",
               }}
             />
             <span
               aria-hidden
-              className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(226,192,141,0.65)] to-transparent"
+              className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/45 to-transparent"
             />
           </>
         ) : (
           <span
             aria-hidden
-            className="absolute inset-0 rounded-[16px] border border-black/[0.05] bg-white/70 transition-all duration-500 group-hover:border-[rgba(200,164,107,0.24)] group-hover:bg-white/92 group-hover:shadow-[0_18px_40px_-32px_rgba(0,0,0,0.18)]"
+            className="absolute inset-0 rounded-[16px] border border-black/[0.07] bg-white/88 shadow-[0_16px_40px_-34px_rgba(0,0,0,0.14)] backdrop-blur-sm transition-all duration-500 group-hover:border-[rgba(179,18,23,0.18)] group-hover:bg-white group-hover:shadow-[0_20px_44px_-32px_rgba(179,18,23,0.12)]"
           />
         )}
 
@@ -271,15 +271,15 @@ function PillarCard({
           <span
             className={`relative grid shrink-0 place-items-center transition-all duration-500 ${
               isActive
-                ? "h-11 w-11 rounded-[14px] border border-[rgba(226,192,141,0.32)] bg-[rgba(226,192,141,0.1)]"
-                : "h-9 w-9 rounded-[12px] border border-black/[0.07] bg-white group-hover:border-[rgba(200,164,107,0.28)]"
+                ? "h-11 w-11 rounded-[14px] border border-white/28 bg-white/14 text-white"
+                : "h-9 w-9 rounded-[12px] border border-black/[0.08] bg-white group-hover:border-[rgba(179,18,23,0.22)]"
             }`}
           >
             <Icon
               size={isActive ? 17 : 15}
               strokeWidth={1.75}
               className={`transition-colors duration-500 ${
-                isActive ? "text-[rgba(226,192,141,0.95)]" : "text-[#141414]/38 group-hover:text-[#9A6B22]"
+                isActive ? "text-white" : "text-[#141414]/55 group-hover:text-[#B31217]"
               }`}
             />
           </span>
@@ -287,16 +287,16 @@ function PillarCard({
           <span className="min-w-0 flex-1 pt-0.5">
             <span
               className={`text-[9px] font-semibold uppercase tracking-[0.22em] transition-colors duration-500 ${
-                isActive ? "text-[rgba(226,192,141,0.78)]" : "text-[#141414]/32"
+                isActive ? "text-white/82" : "text-[#141414]/52"
               }`}
             >
               {pillar.kicker}
             </span>
             <span
-              className={`mt-1 block font-display font-medium leading-tight tracking-[-0.025em] transition-colors duration-500 ${
+              className={`mt-1 block font-display font-semibold leading-tight tracking-[-0.03em] transition-colors duration-500 ${
                 isActive
-                  ? "text-[1.15rem] text-white sm:text-[1.25rem]"
-                  : "text-[0.98rem] text-[#141414]/52 group-hover:text-[#141414] sm:text-[1.02rem]"
+                  ? "text-[1.15rem] text-white sm:text-[1.28rem]"
+                  : "text-[0.98rem] text-[#141414]/78 group-hover:text-[#141414] sm:text-[1.02rem]"
               }`}
             >
               {pillar.title}
@@ -309,7 +309,7 @@ function PillarCard({
                   animate={{ opacity: 1, height: "auto" }}
                   exit={reduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
                   transition={{ duration: 0.38, ease: DS_EASE }}
-                  className="mt-2.5 block overflow-hidden text-[13px] leading-[1.72] text-white/55"
+                  className="mt-2.5 block overflow-hidden text-[13px] leading-[1.72] text-white/84"
                 >
                   {pillar.text}
                 </motion.span>
@@ -321,8 +321,8 @@ function PillarCard({
             size={14}
             className={`mt-1 shrink-0 transition-all duration-500 ${
               isActive
-                ? "translate-x-0 translate-y-0 text-[rgba(226,192,141,0.88)] opacity-100"
-                : "translate-y-1 text-[#141414]/22 opacity-0 group-hover:translate-y-0 group-hover:opacity-60"
+                ? "translate-x-0 translate-y-0 text-white/92 opacity-100"
+                : "translate-y-1 text-[#141414]/30 opacity-0 group-hover:translate-y-0 group-hover:text-[#B31217] group-hover:opacity-70"
             }`}
           />
         </span>
@@ -331,7 +331,7 @@ function PillarCard({
           <motion.span
             key={`pillar-progress-${active}-${paused}`}
             aria-hidden
-            className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-[rgba(226,192,141,0.95)] via-[#B31217] to-transparent"
+            className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-white/85 via-white/45 to-transparent"
             initial={{ width: "0%" }}
             animate={{ width: "100%" }}
             transition={{ duration: ENTERPRISE_AUTOPLAY_MS / 1000, ease: "linear" }}
@@ -360,67 +360,57 @@ export function EnterpriseTrustSection() {
       aria-labelledby="enterprise-trust-heading"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
-      className="story-section relative overflow-hidden bg-[#FAF8F5] px-6 py-24 text-[#111111] grain md:px-10 lg:px-[72px] lg:py-36"
+      className="story-section relative overflow-hidden bg-[#FAF8F5] px-5 py-24 text-[#111111] grain sm:px-8 lg:px-10 lg:py-36 xl:px-12"
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute -left-40 top-8 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(226,192,141,0.11),transparent_70%)]" />
-        <div className="absolute -right-32 bottom-0 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(177,18,23,0.04),transparent_72%)]" />
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(200,164,107,0.32)] to-transparent" />
+        <div className="absolute -left-40 top-8 h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle,rgba(226,192,141,0.14),transparent_70%)]" />
+        <div className="absolute -right-32 bottom-0 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(179,18,23,0.07),transparent_72%)]" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(200,164,107,0.38)] to-transparent" />
       </div>
 
-      <div className="relative mx-auto max-w-[1440px]">
-        <StoryReveal className="grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-12">
-          <StoryItem className="lg:col-span-7">
-            <div className="inline-flex items-center gap-3 rounded-full border border-[rgba(177,18,23,0.12)] bg-white/70 px-4 py-2 backdrop-blur-sm">
-              <span className="h-2 w-2 rotate-45 bg-[#B31217]" aria-hidden />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[#9A6B22]">
-                Waarom Ipekçi
-              </span>
+      <div className="relative mx-auto max-w-[1520px]">
+        <StoryReveal className="max-w-3xl">
+          <StoryItem>
+            <div className="hero-origin-badge relative inline-flex">
+              <span className="hero-origin-badge__orbit opacity-40" aria-hidden />
+              <div className="relative flex items-center gap-3 overflow-hidden rounded-[11px] border border-[rgba(179,18,23,0.2)] bg-[linear-gradient(135deg,rgba(255,255,255,0.92)_0%,rgba(250,248,245,0.78)_100%)] px-3.5 py-2.5 shadow-[0_14px_40px_-28px_rgba(179,18,23,0.28)] backdrop-blur-md">
+                <span className="hero-origin-badge__sweep opacity-60" aria-hidden />
+                <span className="relative grid h-9 w-9 shrink-0 place-items-center rounded-[9px] border border-[rgba(179,18,23,0.28)] bg-[linear-gradient(145deg,rgba(179,18,23,0.12),rgba(255,255,255,0.9))]">
+                  <img src={ipekciMark} alt="" aria-hidden className="h-5 w-5 object-contain" />
+                </span>
+                <span className="relative min-w-0">
+                  <span className="flex items-center gap-2">
+                    <span className="h-px w-4 bg-gradient-to-r from-[var(--primary)] to-transparent" aria-hidden />
+                    <span className="ipek-heading-label text-[8px] tracking-[0.34em]">
+                      Vertrouwen & kwaliteit
+                    </span>
+                  </span>
+                  <span className="mt-1 block text-[10px] font-semibold uppercase tracking-[0.2em] text-[#141414]/88">
+                    Waarom Ipekçi
+                  </span>
+                </span>
+              </div>
             </div>
             <h2
               id="enterprise-trust-heading"
-              className="mt-7 font-display text-[clamp(2.35rem,4.5vw,3.85rem)] font-medium leading-[1.02] tracking-[-0.035em] text-[#141414]"
+              className="mt-5 font-display text-[clamp(2.4rem,5vw,4rem)] font-semibold leading-[0.98] tracking-[-0.04em] text-[#141414]"
             >
               De betrouwbaarheid van een
-              <span className="mt-1 block bg-gradient-to-r from-[#8B6914] via-[#C6A062] to-[#8B6914] bg-clip-text text-transparent">
+              <span className="mt-1 block ipek-heading-accent">
                 enterprise halalpartner.
               </span>
             </h2>
           </StoryItem>
-
-          <StoryItem className="lg:col-span-5">
-            <div className="relative overflow-hidden rounded-[26px] border border-black/[0.06] bg-white/75 p-6 shadow-[0_28px_80px_-56px_rgba(0,0,0,0.28)] backdrop-blur-md lg:ml-auto lg:max-w-[400px]">
-              <div
-                className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-[radial-gradient(circle,rgba(226,192,141,0.18),transparent_70%)]"
-                aria-hidden
-              />
-              <p className="relative text-[15px] leading-[1.78] text-[#141414]/70">
-                Van eigen slachterij tot gekoelde levering: elke schakel is gecertificeerd, herleidbaar
-                en met vakmanschap beheerd.
-              </p>
-              <div className="relative mt-5 flex flex-wrap gap-2">
-                {ENTERPRISE_TRUST_BADGES.map((badge) => (
-                  <span
-                    key={badge}
-                    className="inline-flex items-center gap-2 rounded-full border border-[rgba(200,164,107,0.24)] bg-[#FAF8F5]/90 px-3.5 py-1.5 text-[9px] font-semibold uppercase tracking-[0.15em] text-[#9A6B22]"
-                  >
-                    <span className="h-1 w-1 rounded-full bg-[#B31217]" />
-                    {badge}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </StoryItem>
         </StoryReveal>
 
-        <StoryReveal className="mt-16 grid gap-12 lg:mt-24 lg:grid-cols-12 lg:items-start lg:gap-14">
+        <StoryReveal className="mt-16 grid gap-12 lg:mt-24 lg:grid-cols-12 lg:items-start lg:gap-14 xl:gap-16">
           <StoryItem className="lg:col-span-7 lg:sticky lg:top-28">
             <TrustImageStage active={active} paused={paused} reduceMotion={reduceMotion} />
             <a
               href="https://www.instagram.com/ipekciharderwijk/"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-5 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-[#141414]/38 transition-colors hover:text-[#9A6B22]"
+              className="mt-5 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-[#141414]/58 transition-colors hover:text-[#B31217]"
             >
               <Instagram size={13} strokeWidth={1.75} />
               Foto&apos;s via @ipekciharderwijk
@@ -430,16 +420,16 @@ export function EnterpriseTrustSection() {
 
           <StoryItem className="lg:col-span-5">
             <div className="flex h-full flex-col">
-              <div className="mb-7 flex items-end justify-between gap-4 border-b border-black/[0.06] pb-5">
+              <div className="mb-7 flex items-end justify-between gap-4 border-b border-black/[0.08] pb-5">
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-[#141414]/38">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-[#141414]/58">
                     Zes pijlers van vertrouwen
                   </p>
-                  <p className="mt-2 max-w-xs text-[13px] leading-[1.65] text-[#141414]/48">
+                  <p className="mt-2 max-w-xs font-display text-[14px] leading-[1.65] text-[#141414]/72">
                     Klik of hover om elk onderdeel van onze keten te ontdekken.
                   </p>
                 </div>
-                <span className="shrink-0 rounded-full border border-[rgba(200,164,107,0.22)] bg-white/70 px-3 py-1.5 font-display text-[11px] tabular-nums tracking-[0.18em] text-[#9A6B22]/75">
+                <span className="shrink-0 rounded-full border border-[rgba(179,18,23,0.2)] bg-white/85 px-3 py-1.5 font-display text-[11px] tabular-nums tracking-[0.18em] text-[#B31217]">
                   {String(active + 1).padStart(2, "0")} / {String(ENTERPRISE_TRUST_PILLARS.length).padStart(2, "0")}
                 </span>
               </div>

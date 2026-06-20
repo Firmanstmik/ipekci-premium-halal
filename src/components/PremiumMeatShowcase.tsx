@@ -522,16 +522,16 @@ export function PremiumMeatShowcase() {
         >
           <div className="mb-6 flex items-center gap-3">
             <span className="h-2 w-2 rotate-45 bg-[#B31217]" aria-hidden />
-            <span className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[#9A6B22]">
+            <span className="text-[10px] font-semibold uppercase tracking-[0.32em] ipek-heading-label">
               Ons vlees. Onze kwaliteit.
             </span>
           </div>
           <h2
             id="meat-explorer-heading"
-            className="font-display text-[clamp(2.4rem,5vw,4rem)] leading-[1.02] text-[#141414]"
+            className="font-display text-[clamp(2.4rem,5vw,4rem)] font-semibold leading-[0.98] tracking-[-0.04em] text-[#141414]"
           >
             Ontdek ons{" "}
-            <span className="bg-gradient-to-r from-[#9A6B22] via-[#C6A062] to-[#9A6B22] bg-clip-text italic text-transparent">
+            <span className="ipek-heading-accent">
               rundvlees
             </span>
           </h2>
@@ -977,7 +977,7 @@ export function PremiumMeatShowcase() {
                     <span className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[#9A6B22]">
                       {active.label}
                     </span>
-                    <h3 className="mt-2 font-display text-[1.75rem] font-medium leading-tight tracking-[-0.02em] text-[#141414] md:text-[2rem]">
+                    <h3 className="mt-2 font-display text-[1.75rem] font-semibold leading-[0.98] tracking-[-0.04em] text-[#141414] md:text-[2rem]">
                       {active.name}
                     </h3>
                     <p className="mt-2 text-[13px] leading-relaxed text-[#141414]/62">
@@ -1028,7 +1028,7 @@ export function PremiumMeatShowcase() {
                   >
                     <div className="flex items-center gap-2">
                       <span className="h-px w-5 bg-[#9A6B22]/40" />
-                      <span className="font-display text-sm italic text-[#9A6B22]">
+                      <span className="font-display text-sm ipek-heading-accent">
                         {isPremiumCut ? "Chef's Selection" : "Chef Recommendation"}
                       </span>
                     </div>

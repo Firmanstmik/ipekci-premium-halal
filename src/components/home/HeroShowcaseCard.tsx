@@ -67,7 +67,7 @@ export function HeroShowcaseCard({
       initial={reduceMotion ? false : { opacity: 0, y: 24, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ delay: 0.48, duration: 1, ease: DS_EASE }}
-      className="relative mx-auto w-full max-w-[440px] lg:max-w-[460px] xl:max-w-[480px]"
+      className="relative mx-auto w-full max-w-[460px] lg:max-w-[520px] xl:max-w-[540px]"
     >
       <div
         className="pointer-events-none absolute -inset-4 rounded-[28px] bg-[radial-gradient(circle,rgba(179,18,23,0.1),transparent_72%)]"
@@ -94,19 +94,19 @@ export function HeroShowcaseCard({
           />
         ) : null}
 
-        <div className="relative px-4 pb-3 pt-4 sm:px-5 sm:pt-4.5">
-          <p className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.24em] text-[var(--gold-champagne)]">
-            <Verify size={12} variant="Bold" color="currentColor" />
+        <div className="relative px-4 pb-3.5 pt-4 sm:px-5 sm:pt-5">
+          <p className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.24em] text-[var(--primary)] sm:text-[10.5px]">
+            <Verify size={13} variant="Bold" color="currentColor" />
             Assortiment Ipekçi
           </p>
-          <p className="mt-1.5 font-display text-[1.05rem] font-medium leading-[1.2] tracking-[-0.02em] text-white/95 sm:text-[1.12rem]">
+          <p className="mt-1.5 font-display text-[1.1rem] font-medium leading-[1.2] tracking-[-0.02em] text-white/95 sm:text-[1.18rem]">
             Premium halalvlees van Nederlandse bodem
           </p>
         </div>
 
         <div className="relative mx-3.5 mb-3 sm:mx-4 sm:mb-3.5">
           <div className="relative overflow-visible rounded-[16px] border border-white/[0.09] bg-black/40 p-1">
-            <div className="group/if relative h-[172px] rounded-[12px] sm:h-[186px]">
+            <div className="group/if relative h-[188px] rounded-[12px] sm:h-[204px]">
               <div className="absolute inset-0 overflow-hidden rounded-[12px]">
                 <AnimatePresence mode="wait">
                   <motion.img
@@ -142,7 +142,7 @@ export function HeroShowcaseCard({
                       <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[rgba(226,192,141,0.92)]">
                         {slide.label}
                       </p>
-                      <p className="mt-0.5 font-display text-[15px] font-medium leading-tight text-white sm:text-[16px]">
+                      <p className="mt-0.5 font-display text-[16px] font-medium leading-tight text-white sm:text-[17px]">
                         {slide.title}
                       </p>
                     </motion.div>

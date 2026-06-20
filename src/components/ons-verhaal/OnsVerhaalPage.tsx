@@ -147,7 +147,7 @@ function HighlightCard({
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[rgba(226,192,141,0.45)] to-transparent" />
       </div>
       <div className="p-6">
-        <h3 className="font-display text-xl text-white transition-colors group-hover:text-[rgba(226,192,141,0.95)]">
+        <h3 className="font-display text-xl text-white transition-colors group-hover:text-[var(--primary)]">
           {item.title}
         </h3>
         <p className="mt-3 text-[13px] leading-relaxed text-white/52">{item.description}</p>
@@ -267,7 +267,7 @@ export function OnsVerhaalPage() {
             aria-hidden
           />
 
-          <p className="mt-8 text-[10px] font-semibold uppercase tracking-[0.32em] text-[rgba(226,192,141,0.85)]">
+          <p className="mt-8 ipek-label ipek-heading-label text-[10px] tracking-[0.32em]">
             Sinds 2012 · Harderwijk
           </p>
 
@@ -306,7 +306,7 @@ export function OnsVerhaalPage() {
             transition={{ duration: 0.9, ease: DS_EASE }}
             className="max-w-2xl"
           >
-            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[rgba(226,192,141,0.85)]">
+            <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.28em]">
               Waarom Ipekçi
             </p>
             <h2 className="mt-4 font-display text-[clamp(2rem,3.5vw,3rem)] text-white">
@@ -332,7 +332,7 @@ export function OnsVerhaalPage() {
               transition={{ duration: 1, ease: DS_EASE_REVEAL }}
               className="lg:col-span-5"
             >
-              <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[rgba(226,192,141,0.85)]">
+              <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.28em]">
                 {ONS_VERHAAL_HALAL.eyebrow}
               </p>
               <h2 className="mt-5 font-display text-[clamp(2.2rem,3.5vw,3.2rem)] text-white">
@@ -403,7 +403,7 @@ export function OnsVerhaalPage() {
               transition={{ duration: 1, ease: DS_EASE_REVEAL }}
               className="lg:col-span-6 lg:sticky lg:top-32 lg:order-1"
             >
-              <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[rgba(226,192,141,0.85)]">
+              <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.28em]">
                 {ONS_VERHAAL_HISTORY.eyebrow}
               </p>
               <h2 className="mt-5 font-display text-[clamp(2.2rem,3.5vw,3.2rem)] text-white">
@@ -440,7 +440,7 @@ export function OnsVerhaalPage() {
             transition={{ duration: 0.9, ease: DS_EASE }}
             className="max-w-3xl"
           >
-            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[rgba(226,192,141,0.85)]">
+            <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.28em]">
               {ONS_VERHAAL_WORKFLOW.eyebrow}
             </p>
             <h2 className="mt-4 font-display text-[clamp(2rem,3.5vw,3rem)] text-white">
@@ -500,7 +500,7 @@ export function OnsVerhaalPage() {
         <div className="relative mx-auto max-w-[1480px]">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[rgba(226,192,141,0.85)]">
+              <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.28em]">
                 Ons assortiment
               </p>
               <h2 className="mt-4 font-display text-[clamp(2rem,3.5vw,3rem)] text-white">
@@ -560,7 +560,7 @@ export function OnsVerhaalPage() {
 
           <div className="mt-20 flex flex-wrap items-end justify-between gap-6">
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[rgba(226,192,141,0.85)]">
+              <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.28em]">
                 Eindproducten
               </p>
               <h2 className="mt-4 font-display text-[clamp(2rem,3.5vw,3rem)] text-white">
@@ -598,7 +598,7 @@ export function OnsVerhaalPage() {
               transition={{ duration: 1, ease: DS_EASE_REVEAL }}
               className="lg:col-span-5"
             >
-              <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[rgba(226,192,141,0.85)]">
+              <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.28em]">
                 {ONS_VERHAAL_CAREERS.eyebrow}
               </p>
               <h2 className="mt-5 font-display text-[clamp(2rem,3.5vw,3rem)] text-white">

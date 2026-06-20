@@ -125,7 +125,7 @@ function SegmentDetailShowcase({ segment }: { segment: VoorWieSegment }) {
           transition={{ duration: 1, ease: DS_EASE_REVEAL }}
           className="lg:col-span-5 lg:sticky lg:top-32"
         >
-          <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[rgba(226,192,141,0.85)]">
+          <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.32em]">
             {segment.eyebrow}
           </p>
           <h2 className="mt-5 font-display text-[clamp(2.4rem,4vw,3.5rem)] leading-[1.02] text-white">
@@ -281,7 +281,7 @@ function SegmentDetailShowcase({ segment }: { segment: VoorWieSegment }) {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/30 to-transparent" />
               </div>
               <div className="p-5">
-                <p className="font-display text-xl text-white transition-colors group-hover:text-[rgba(226,192,141,0.95)]">
+                <p className="font-display text-xl text-white transition-colors group-hover:text-[var(--primary)]">
                   {other.label}
                 </p>
                 <span className="mt-3 inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40 transition-colors group-hover:text-[rgba(226,192,141,0.85)]">
@@ -352,7 +352,7 @@ function SegmentCard({ segment }: { segment: VoorWieSegment }) {
       <div className="relative border-t border-white/8 p-6 sm:p-7">
         <div className="flex items-start justify-between gap-4">
           <h3 className="font-display text-3xl text-white">{segment.label}</h3>
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[0.04] text-white/50 transition-all duration-300 group-hover:border-[rgba(226,192,141,0.35)] group-hover:text-[rgba(226,192,141,0.95)]">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[0.04] text-white/50 transition-all duration-300 group-hover:border-[rgba(226,192,141,0.35)] group-hover:text-[var(--primary)]">
             <ArrowUpRight
               size={16}
               className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
@@ -503,7 +503,7 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
               initial={{ opacity: 0, letterSpacing: "0.5em" }}
               animate={{ opacity: 1, letterSpacing: "0.34em" }}
               transition={{ duration: 1, delay: 0.2, ease: DS_EASE }}
-              className="text-[10px] font-semibold uppercase text-[rgba(226,192,141,0.9)]"
+              className="ipek-label ipek-heading-label text-[10px]"
             >
               {activeSegment === "all"
                 ? VOOR_WIE_MEGA_MENU.pageEyebrow
@@ -583,7 +583,7 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
               <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-white/42">
                 {s.eyebrow}
               </p>
-              <p className="mt-2 font-display text-2xl text-white transition-colors group-hover:text-[rgba(226,192,141,0.95)]">
+              <p className="mt-2 font-display text-2xl text-white transition-colors group-hover:text-[var(--primary)]">
                 {s.label}
               </p>
             </motion.a>
@@ -628,7 +628,7 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
             transition={{ duration: 0.85, delay: 0.1, ease: DS_EASE }}
             className="mt-14"
           >
-            <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[rgba(226,192,141,0.8)]">
+            <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.32em]">
               Klantgroepen
             </p>
             <h2 className="mt-4 font-display text-3xl text-white md:text-4xl">

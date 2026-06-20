@@ -7,13 +7,13 @@ import {
 import {
   Award,
   Buildings,
-  MagicStar,
   ShieldTick,
   TruckTick,
 } from "iconsax-react";
 import { useEffect, useRef, useState } from "react";
 import { HeroCtaButton } from "@/components/home/HeroCtaButton";
 import { HeroMeatScrollCue } from "@/components/home/HeroMeatScrollCue";
+import { HeroOriginBadge } from "@/components/home/HeroOriginBadge";
 import { HeroShowcaseCard } from "@/components/home/HeroShowcaseCard";
 import { DS_DURATION, DS_EASE } from "@/lib/design-system";
 import {
@@ -134,7 +134,7 @@ export function HomeHeroSection() {
           alt=""
           aria-hidden
           className="absolute inset-0 h-full w-full object-cover"
-          style={{ filter: "brightness(0.48) contrast(1.1) saturate(0.92)" }}
+          style={{ filter: "brightness(0.78) contrast(1.06) saturate(1.02)" }}
           initial={false}
           animate={{
             opacity: heroVideoActive ? 0 : 1,
@@ -164,38 +164,30 @@ export function HomeHeroSection() {
             initial={false}
             animate={{ scale: heroVideoActive ? 1 : 1.035 }}
             transition={{ duration: 1.85, ease: DS_EASE }}
-            style={{ filter: "brightness(0.88) contrast(1.04) saturate(1.04)" }}
+            style={{ filter: "brightness(1.02) contrast(1.02) saturate(1.06)" }}
           />
         </motion.div>
 
-        <div className="absolute inset-0 bg-gradient-to-b from-background/58 via-background/14 to-background/65" />
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-black/80 via-black/28 to-transparent" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(6,6,6,0.94)_0%,rgba(6,6,6,0.58)_44%,rgba(6,6,6,0.14)_72%,transparent_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(720px_480px_at_18%_8%,rgba(226,192,141,0.06)_0%,transparent_70%)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/28 via-background/06 to-background/38" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-black/42 via-black/10 to-transparent" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(6,6,6,0.62)_0%,rgba(6,6,6,0.28)_42%,rgba(6,6,6,0.06)_68%,transparent_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(720px_480px_at_18%_8%,rgba(226,192,141,0.05)_0%,transparent_70%)]" />
       </motion.div>
 
       <motion.div
         style={{ opacity: heroOpacity }}
-        className="relative z-10 mx-auto flex h-[100svh] max-h-[100svh] min-h-0 max-w-[1380px] flex-col px-5 pb-4 pt-[8.5rem] sm:px-8 sm:pt-[9rem] lg:px-12 lg:pb-5 lg:pt-[10rem] xl:pt-[10.25rem]"
+        className="relative z-10 mx-auto flex h-[100svh] max-h-[100svh] min-h-0 max-w-[1520px] flex-col px-5 pb-4 pt-[8.5rem] sm:px-8 sm:pt-[9rem] lg:px-10 lg:pb-5 lg:pt-[10rem] xl:px-12 xl:pt-[10.25rem]"
       >
-        <div className="grid min-h-0 flex-1 items-center gap-6 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:gap-10 xl:gap-12">
+        <div className="grid min-h-0 flex-1 items-center gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.06fr)] lg:gap-10 xl:gap-14">
           <div className="relative z-20 min-w-0 lg:pr-4">
             <span
               className="pointer-events-none absolute -left-3 top-2 hidden h-24 w-px bg-gradient-to-b from-transparent via-[rgba(226,192,141,0.45)] to-transparent lg:block"
               aria-hidden
             />
 
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.08, duration: 0.65 }}
-              className="inline-flex items-center gap-2 rounded-full border border-[color-mix(in_oklab,var(--gold-champagne)_32%,transparent)] bg-black/35 px-3.5 py-1.5 backdrop-blur-md"
-            >
-              <MagicStar size={12} variant="Bold" color="var(--gold-champagne)" />
-              <p className="text-gradient-orange ipek-label text-[10px]">Premium halalvlees uit Nederland</p>
-            </motion.div>
+            <HeroOriginBadge reduceMotion={reduceMotion} />
 
-            <motion.h1 className="mt-3.5 font-display text-[clamp(2.15rem,4.6vw,3.75rem)] font-semibold leading-[0.99] tracking-[-0.04em] text-foreground">
+            <motion.h1 className="mt-4 font-display text-[clamp(2.4rem,5.1vw,4.15rem)] font-semibold leading-[0.98] tracking-[-0.04em] text-foreground">
               <motion.span
                 initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -208,7 +200,7 @@ export function HomeHeroSection() {
                 initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.32, duration: 0.88, ease: DS_EASE }}
-                className="mt-0.5 block bg-gradient-to-r from-[var(--gold-champagne)] via-[var(--gold-primary)] to-[var(--gold-champagne)] bg-clip-text italic text-transparent"
+                className="mt-0.5 block ipek-heading-accent"
               >
                 halalvlees
               </motion.span>
@@ -252,7 +244,7 @@ export function HomeHeroSection() {
                     key={item.title}
                     className="flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-black/30 px-2.5 py-1 backdrop-blur-sm"
                   >
-                    <Icon size={12} variant="Linear" color="var(--gold-champagne)" />
+                    <Icon size={12} variant="Linear" color="var(--primary)" />
                     <span className="text-[8px] font-semibold uppercase tracking-[0.1em] text-foreground/68">
                       {item.title}
                     </span>
@@ -280,7 +272,7 @@ export function HomeHeroSection() {
       </motion.div>
 
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-20 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/35 to-transparent"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-16 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/22 to-transparent"
         aria-hidden
       />
     </section>

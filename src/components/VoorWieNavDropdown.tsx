@@ -22,10 +22,12 @@ export function VoorWieNavDropdown({
   active,
   open,
   onOpenChange,
+  scrolled = false,
 }: {
   active: boolean;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  scrolled?: boolean;
 }) {
   const [hovered, setHovered] = useState<VoorWieSegment>(VOOR_WIE_SEGMENTS[0]);
 
@@ -40,7 +42,13 @@ export function VoorWieNavDropdown({
           type="button"
           onMouseEnter={() => onOpenChange(true)}
           className={`group relative inline-flex items-center gap-1.5 bg-transparent px-7 py-4 text-[13px] font-medium tracking-[0.08em] outline-none transition-colors duration-200 focus:outline-none focus-visible:ring-0 ${
-            open || active ? "text-white" : "text-white/82 hover:text-white"
+            scrolled
+              ? open || active
+                ? "text-[#141414]"
+                : "text-[#141414]/72 hover:text-[#141414]"
+              : open || active
+                ? "text-white"
+                : "text-white/82 hover:text-white"
           }`}
         >
           <span className="relative z-10">Voor wie</span>
@@ -49,7 +57,10 @@ export function VoorWieNavDropdown({
             animate={{ rotate: open ? 180 : 0 }}
             transition={{ duration: 0.26, ease: DS_EASE }}
           >
-            <ChevronDown size={13} className="text-white/50" />
+            <ChevronDown
+              size={13}
+              className={scrolled ? "text-[#141414]/45" : "text-white/50"}
+            />
           </motion.span>
           <span
             className={`absolute inset-x-7 -bottom-px h-px transition-transform duration-[360ms] ease-[cubic-bezier(.22,1,.36,1)] ${
@@ -57,7 +68,7 @@ export function VoorWieNavDropdown({
                 ? "scale-x-100"
                 : "origin-left scale-x-0 group-hover:scale-x-100"
             }`}
-            style={{ background: `${GOLD}0.72)` }}
+            style={{ background: scrolled ? "rgba(179,18,23,0.72)" : `${GOLD}0.72)` }}
             aria-hidden
           />
         </button>

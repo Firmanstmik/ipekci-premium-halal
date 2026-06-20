@@ -328,7 +328,7 @@ export function AssortimentCatalogPage({
               initial={{ opacity: 0, letterSpacing: "0.5em" }}
               animate={{ opacity: 1, letterSpacing: "0.34em" }}
               transition={{ duration: 1, delay: 0.2, ease: DS_EASE }}
-              className="text-[10px] font-semibold uppercase text-[rgba(226,192,141,0.9)]"
+              className="ipek-label ipek-heading-label text-[10px]"
             >
               {activeCategory === "all" ? "Assortiment" : (categoryMeta?.eyebrow ?? "Categorie")}
             </motion.p>
@@ -430,7 +430,7 @@ export function AssortimentCatalogPage({
               <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-white/42">
                 {stat.label}
               </p>
-              <p className="mt-2 font-display text-3xl text-[rgba(226,192,141,0.95)]">{stat.value}</p>
+              <p className="mt-2 font-display text-3xl text-[var(--primary)]">{stat.value}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -479,7 +479,7 @@ export function AssortimentCatalogPage({
               className="mt-10 flex flex-wrap items-end justify-between gap-6"
             >
               <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[rgba(226,192,141,0.8)]">
+                <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.32em]">
                   Productoverzicht
                 </p>
                 <h2 className="mt-4 font-display text-3xl text-white md:text-4xl">

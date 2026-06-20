@@ -89,7 +89,7 @@ function TopInfoBar({ visible }: { visible: boolean }) {
     <div className="relative hidden lg:block">
       {/* One unified group — trust indicators + contact flow continuously,
           anchored to the right half (justify-end begins the group at ~55–60%) */}
-      <div className="mx-auto flex h-[38px] max-w-[1400px] items-center justify-end px-8">
+      <div className="mx-auto flex h-[38px] max-w-[1520px] items-center justify-end px-5 sm:px-8 lg:px-10 xl:px-12">
         <div className="flex items-center text-[13px] font-[500] tracking-[0.05em] text-white/62">
 
           {/* Trust indicators */}
@@ -180,29 +180,41 @@ function NavLink({
   to,
   label,
   active,
+  scrolled = false,
 }: {
   to: string;
   label: string;
   active: boolean;
+  scrolled?: boolean;
 }) {
   return (
     <Link
       to={to}
       className={`group relative inline-flex items-center px-7 py-4 text-[13px] font-medium tracking-[0.08em] transition-colors duration-200 ${
-        active ? "text-white" : "text-white/82 hover:text-white"
+        scrolled
+          ? active
+            ? "text-[#141414]"
+            : "text-[#141414]/72 hover:text-[#141414]"
+          : active
+            ? "text-white"
+            : "text-white/82 hover:text-white"
       }`}
     >
       <span className="relative z-10">{label}</span>
       {active ? (
         <span
           className="absolute inset-x-7 -bottom-px h-px"
-          style={{ background: `linear-gradient(90deg, transparent, ${GOLD}0.85), transparent)` }}
+          style={{
+            background: scrolled
+              ? "linear-gradient(90deg, transparent, rgba(179,18,23,0.85), transparent)"
+              : `linear-gradient(90deg, transparent, ${GOLD}0.85), transparent)`,
+          }}
           aria-hidden
         />
       ) : (
         <span
           className="absolute inset-x-7 -bottom-px h-px origin-left scale-x-0 transition-transform duration-[360ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-x-100"
-          style={{ background: `${GOLD}0.72)` }}
+          style={{ background: scrolled ? "rgba(179,18,23,0.72)" : `${GOLD}0.72)` }}
           aria-hidden
         />
       )}
@@ -392,12 +404,24 @@ function NavDropdown({
 
 /* ── Mobile toggle ──────────────────────────────────────────── */
 
-function MobileToggle({ isOpen, onClick }: { isOpen: boolean; onClick: () => void }) {
+function MobileToggle({
+  isOpen,
+  onClick,
+  scrolled = false,
+}: {
+  isOpen: boolean;
+  onClick: () => void;
+  scrolled?: boolean;
+}) {
   return (
     <button
       onClick={onClick}
       aria-label={isOpen ? "Sluit menu" : "Open menu"}
-      className="relative grid h-9 w-9 place-items-center text-foreground/88 transition-colors hover:text-foreground"
+      className={`relative grid h-9 w-9 place-items-center transition-colors ${
+        scrolled
+          ? "text-[#141414]/88 hover:text-[#141414]"
+          : "text-foreground/88 hover:text-foreground"
+      }`}
     >
       <AnimatePresence mode="wait" initial={false}>
         {isOpen ? (
@@ -631,22 +655,21 @@ export function Navbar() {
       {/* Main navbar */}
       <motion.div
         animate={{
-          backgroundColor: scrolled ? "rgba(8,8,8,0.95)" : "rgba(0,0,0,0)",
+          backgroundColor: scrolled ? "#ffffff" : "rgba(0,0,0,0)",
         }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         className="relative"
         style={{
           borderBottomWidth: "1px",
           borderBottomStyle: "solid",
-          borderBottomColor: scrolled ? "rgba(226,192,141,0.10)" : "rgba(226,192,141,0)",
-          backdropFilter: scrolled ? "blur(8px) saturate(115%)" : undefined,
-          WebkitBackdropFilter: scrolled ? "blur(8px) saturate(115%)" : undefined,
+          borderBottomColor: scrolled ? "rgba(0,0,0,0.08)" : "rgba(226,192,141,0)",
+          boxShadow: scrolled ? "0 8px 32px -12px rgba(0,0,0,0.10)" : "none",
           transition:
-            "background-color 0.5s cubic-bezier(0.16,1,0.3,1), border-color 0.5s cubic-bezier(0.16,1,0.3,1)",
+            "background-color 0.5s cubic-bezier(0.16,1,0.3,1), border-color 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s cubic-bezier(0.16,1,0.3,1)",
         }}
       >
         {/* Desktop — logo left, nav + CTA grouped right */}
-        <div className="mx-auto hidden h-[88px] max-w-[1440px] items-center justify-between gap-6 px-8 lg:flex lg:px-12">
+        <div className="mx-auto hidden h-[88px] max-w-[1520px] items-center justify-between gap-6 px-5 sm:px-8 lg:flex lg:px-10 xl:px-12">
           <NavLogo />
 
           <div className="flex items-center gap-0.5 xl:gap-1">
@@ -654,15 +677,17 @@ export function Navbar() {
               active={isActive("/assortiment")}
               open={openDropdown === "Assortiment"}
               onOpenChange={(v) => setOpenDropdown(v ? "Assortiment" : null)}
+              scrolled={scrolled}
             />
             <VoorWieNavDropdown
               active={isActive("/voor-wie")}
               open={openDropdown === "Voor wie"}
               onOpenChange={(v) => setOpenDropdown(v ? "Voor wie" : null)}
+              scrolled={scrolled}
             />
-            <NavLink to="/ons-verhaal" label="Ons verhaal" active={isActive("/ons-verhaal")} />
-            <NavLink to="/contact" label="Contact" active={isActive("/contact")} />
-            <div className="ml-3 pl-3 xl:ml-4 xl:pl-4 border-l border-white/10">
+            <NavLink to="/ons-verhaal" label="Ons verhaal" active={isActive("/ons-verhaal")} scrolled={scrolled} />
+            <NavLink to="/contact" label="Contact" active={isActive("/contact")} scrolled={scrolled} />
+            <div className={`ml-3 pl-3 xl:ml-4 xl:pl-4 border-l ${scrolled ? "border-black/10" : "border-white/10"}`}>
               <MainCTA />
             </div>
           </div>
@@ -671,7 +696,7 @@ export function Navbar() {
         {/* Mobile header */}
         <div className="flex items-center justify-between px-5 py-4 sm:px-8 lg:hidden">
           <NavLogo />
-          <MobileToggle isOpen={mobileOpen} onClick={() => setMobileOpen((v) => !v)} />
+          <MobileToggle isOpen={mobileOpen} onClick={() => setMobileOpen((v) => !v)} scrolled={scrolled} />
         </div>
       </motion.div>
 

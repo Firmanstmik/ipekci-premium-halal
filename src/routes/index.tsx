@@ -226,7 +226,7 @@ function EindproductenBanner({
 
       <div className="relative grid min-h-[520px] gap-8 px-7 py-10 sm:px-10 sm:py-12 lg:grid-cols-12 lg:items-stretch lg:px-14 lg:py-14">
         <div className="relative z-10 flex flex-col justify-center lg:col-span-5">
-          <div className="ipek-label text-[rgba(226,192,141,0.85)]">
+          <div className="ipek-label ipek-heading-label">
             PREMIUM KWALITEIT
           </div>
           <h3 className="ipek-h2 mt-6 text-[#F5F1EB]">
@@ -672,7 +672,7 @@ function AssortimentUnifiedCard({
 
         <div className="relative flex min-h-[460px] flex-col justify-end p-7 sm:min-h-[520px]">
           <div className="h-px w-10 bg-[#B31217] transition-all duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:w-16 group-hover:bg-[rgba(198,160,98,0.85)]" />
-          <h3 className="mt-6 font-display text-3xl font-medium leading-[1.03] tracking-[-0.03em] text-[#F5F2ED] transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform group-hover:-translate-y-1">
+          <h3 className="mt-6 font-display text-3xl font-semibold leading-[0.98] tracking-[-0.04em] text-[#F5F2ED] transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform group-hover:-translate-y-1">
             {title}
           </h3>
           <p className="mt-4 max-w-sm text-[13px] leading-[1.7] text-[rgba(245,242,237,0.6)]">{description}</p>
@@ -2054,16 +2054,16 @@ function HomePage() {
             >
               <div className="flex items-center gap-3">
                 <span className="h-2 w-2 rotate-45 bg-[#B31217]" aria-hidden />
-                <span className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[#9A6B22]">
+                <span className="ipek-heading-label text-[10px] font-semibold uppercase tracking-[0.32em]">
                   Premium kwaliteit
                 </span>
               </div>
               <h2
                 id="assortiment-heading"
-                className="mt-6 font-display text-[clamp(2rem,3.5vw,3rem)] font-medium leading-[1.02] tracking-[-0.03em] text-[#141414]"
+                className="mt-6 font-display text-[clamp(2rem,3.5vw,3rem)] font-semibold leading-[0.98] tracking-[-0.04em] text-[#141414]"
               >
                 Vlees van topkwaliteit,
-                <span className="mt-2 block bg-gradient-to-r from-[#9A6B22] via-[#C6A062] to-[#9A6B22] bg-clip-text italic text-transparent">
+                <span className="mt-2 block ipek-heading-accent">
                   voor elke behoefte
                 </span>
               </h2>
@@ -2312,7 +2312,7 @@ function HomePage() {
         <div className="relative mx-auto max-w-[1480px]">
           <StoryReveal className="text-center">
             <StoryItem>
-              <div className="ipek-label text-[rgba(226,192,141,0.85)]">
+              <div className="ipek-label ipek-heading-label">
                 ONS ASSORTIMENT
               </div>
               <h2
@@ -2378,10 +2378,10 @@ function HomePage() {
               transition={{ duration: DS_DURATION.section, ease: DS_EASE_REVEAL }}
               className="lg:col-span-4 lg:sticky lg:top-28 lg:self-start"
             >
-              <div className="ipek-label text-[rgba(226,192,141,0.85)]">Eindproducten</div>
+              <div className="ipek-label ipek-heading-label">Eindproducten</div>
               <h3 className="ipek-h2-lg mt-5 text-[#F5F2ED]">
                 Premium
-                <span className="mt-1 block italic text-[rgba(226,192,141,0.94)]">
+                <span className="mt-1 block ipek-heading-accent">
                   Finished Products
                 </span>
               </h3>
@@ -2918,7 +2918,7 @@ function EindproductenShowcaseCard({
           <div className="text-[7.5px] font-medium uppercase tracking-[0.28em] text-[rgba(226,192,141,0.55)]">
             {product.eyebrow}
           </div>
-          <h3 className="mt-2 font-display text-[1.75rem] font-medium leading-[0.95] tracking-[-0.04em] text-[#F5F2ED] sm:text-[1.85rem]">
+          <h3 className="mt-2 font-display text-[1.75rem] font-semibold leading-[0.98] tracking-[-0.04em] text-[#F5F2ED] sm:text-[1.85rem]">
             {product.title}
           </h3>
           <p className="mt-2.5 text-[12px] leading-[1.65] text-[rgba(245,242,237,0.58)]">
@@ -3484,7 +3484,7 @@ function ProcessQualitySection() {
             <motion.h2
               id="process-heading"
               variants={rise}
-              className="mc-serif relative text-[clamp(2.25rem,9.5vw,6rem)] font-light leading-[0.96] tracking-[-0.02em] text-balance"
+              className="mc-serif relative text-[clamp(2.25rem,9.5vw,6rem)] font-semibold leading-[0.98] tracking-[-0.04em] text-balance"
               style={{ color: "var(--mc-ink)" }}
             >
               Een ambacht dat{" "}
@@ -3786,7 +3786,7 @@ function ProcessQualitySection() {
                       initial={{ opacity: 0, y: 12 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={reveal(0.08)}
-                      className="mc-serif mt-4 text-[clamp(1.85rem,6vw,3.75rem)] font-light leading-[0.98] tracking-[-0.01em] md:mt-5"
+                      className="mc-serif mt-4 text-[clamp(1.85rem,6vw,3.75rem)] font-semibold leading-[0.98] tracking-[-0.04em] md:mt-5"
                       style={{ color: "var(--mc-ink)" }}
                     >
                       {step.title}
@@ -3985,7 +3985,7 @@ function ProcessQualitySection() {
                 </motion.div>
                 <motion.h3
                   variants={rise}
-                  className="mc-serif mt-6 text-4xl font-light leading-[1.02] tracking-[-0.01em] md:text-6xl"
+                  className="mc-serif mt-6 text-4xl font-semibold leading-[0.98] tracking-[-0.04em] md:text-6xl"
                   style={{ color: "var(--mc-ink)" }}
                 >
                   We bedienen slechts een{" "}

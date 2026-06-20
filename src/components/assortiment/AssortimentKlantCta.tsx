@@ -97,7 +97,7 @@ export function AssortimentKlantCta() {
             <p className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#B11217]">
               Ook klant worden?
             </p>
-            <h2 className="mt-5 font-display text-4xl leading-[1.05] text-[#141414] md:text-5xl lg:text-[3.25rem]">
+            <h2 className="mt-5 font-display text-4xl font-semibold leading-[0.98] tracking-[-0.04em] text-[#141414] md:text-5xl lg:text-[3.25rem]">
               Ipekçi Slachterij
             </h2>
             <p className="mt-6 max-w-xl text-base leading-[1.8] text-[#141414]/68 md:text-[17px]">

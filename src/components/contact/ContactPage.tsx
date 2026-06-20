@@ -121,7 +121,7 @@ function DetailCard({ item, index }: { item: ContactDetail; index: number }) {
         <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/38">
           {item.label}
         </p>
-        <p className="mt-2 font-display text-lg text-white transition-colors group-hover:text-[rgba(226,192,141,0.95)]">
+        <p className="mt-2 font-display text-lg text-white transition-colors group-hover:text-[var(--primary)]">
           {item.primary}
         </p>
         {item.secondary ? (
@@ -272,7 +272,7 @@ function ContactFormPanel() {
           />
 
           <div className="relative">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[rgba(226,192,141,0.85)]">
+            <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.28em]">
               Stuur ons een bericht
             </p>
             <h2 className="mt-3 font-display text-[clamp(1.8rem,2.5vw,2.4rem)] text-white">
@@ -475,7 +475,7 @@ export function ContactPage() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.05, ease: DS_EASE }}
-                className="text-[10px] font-semibold uppercase tracking-[0.32em] text-[rgba(226,192,141,0.85)]"
+                className="ipek-label ipek-heading-label text-[10px] tracking-[0.32em]"
               >
                 Contact
               </motion.p>
@@ -487,7 +487,7 @@ export function ContactPage() {
                     initial={{ opacity: 0, y: reduceMotion ? 0 : 36, filter: "blur(6px)" }}
                     animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                     transition={{ duration: 0.85, delay: 0.12 + i * 0.06, ease: DS_EASE_REVEAL }}
-                    className={`mr-[0.2em] inline-block ${word === "ons" ? "italic text-[rgba(226,192,141,0.95)]" : ""}`}
+                    className={`mr-[0.2em] inline-block ${word === "ons" ? "italic text-[var(--primary)]" : ""}`}
                   >
                     {word}
                   </motion.span>

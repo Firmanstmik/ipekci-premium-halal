@@ -9,6 +9,7 @@ import {
   useMotionValue,
   useReducedMotion,
   useInView,
+  useMotionValueEvent,
   useScroll,
   useSpring,
   useTransform,
@@ -26,7 +27,7 @@ import {
   Store,
   Truck,
 } from "lucide-react";
-import { useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { SectionHeader } from "@/components/SectionHeader";
 import { MagneticButton } from "@/components/MagneticButton";
@@ -50,6 +51,7 @@ import assortmentRundvleesImage from "@/assets/Ons assortiment - sapi.avif";
 import assortmentKipImage from "@/assets/Ons assortiment - ayam.avif";
 import productenImage from "@/assets/producten.avif";
 import cardProductenImage from "@/assets/card-producten.avif";
+import backgroundBlack1 from "@/assets/background-black1.webp";
 import assortimentLamsvleesHeroImage from "@/assets/assortiment-lamsvlees.webp";
 import assortimentRundvleesHeroImage from "@/assets/Assortiment-rundvlees.webp";
 import assortimentKipHeroImage from "@/assets/assortiment-Kip.webp";
@@ -1224,9 +1226,9 @@ const EINDPRODUCTEN_LOOP_PRODUCTS = [...EINDPRODUCTEN_PRODUCTS, ...EINDPRODUCTEN
 
 const EINDPRODUCTEN_REVEAL_EASE = [0.22, 1, 0.36, 1] as const;
 
-/* Warm drop-shadow that grounds the product PNG on the dark display case. */
+/* Drop-shadow that lifts product PNG on the bright display case. */
 const EINDPRODUCTEN_PRODUCT_SHADOW =
-  "drop-shadow(0 24px 36px rgba(0,0,0,0.62)) drop-shadow(0 6px 14px rgba(0,0,0,0.45)) drop-shadow(0 0 26px rgba(226,192,141,0.14))";
+  "drop-shadow(0 20px 32px rgba(0,0,0,0.18)) drop-shadow(0 8px 16px rgba(0,0,0,0.12)) drop-shadow(0 0 24px rgba(179,18,23,0.08))";
 
 function PremiumTypewriter({
   text,
@@ -1311,7 +1313,8 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   const reduceMotion = useReducedMotion();
   const segmentsScrollerRef = useRef<HTMLDivElement>(null);
-  const eindproductenScrollerRef = useRef<HTMLDivElement>(null);
+  const eindproductenTrackRef = useRef<HTMLDivElement>(null);
+  const eindproductenX = useMotionValue(0);
   const eindproductenShowcaseRef = useRef<HTMLDivElement>(null);
   const [segmentsCanScrollLeft, setSegmentsCanScrollLeft] = useState(false);
   const [segmentsCanScrollRight, setSegmentsCanScrollRight] = useState(false);
@@ -1356,7 +1359,7 @@ function HomePage() {
 
   const eindproductenPointerIdRef = useRef<number | null>(null);
   const eindproductenDragStartXRef = useRef(0);
-  const eindproductenDragStartLeftRef = useRef(0);
+  const eindproductenDragStartOffsetRef = useRef(0);
   const eindproductenLastXRef = useRef(0);
   const eindproductenLastTRef = useRef(0);
   const eindproductenVelocityRef = useRef(0);
@@ -1382,52 +1385,48 @@ function HomePage() {
     return () => window.clearTimeout(timer);
   }, [eindproductenShowcaseInView, reduceMotion]);
 
-  useEffect(() => {
-    const el = eindproductenScrollerRef.current;
-    if (!el) return;
-
-    let raf = 0;
-    const update = () => {
-      const nextEl = eindproductenScrollerRef.current;
-      if (!nextEl) return;
-      const items = nextEl.querySelectorAll<HTMLElement>("[data-snap-item]");
-      if (items.length >= 2) {
-        const half = Math.floor(items.length / 2);
-        eindproductenLoopWidthRef.current = items[half]?.offsetLeft ?? nextEl.scrollWidth / 2;
-      }
-      const loopWidth = eindproductenLoopWidthRef.current;
-      const maxScrollLeft =
-        loopWidth > 0 ? loopWidth : Math.max(0, nextEl.scrollWidth - nextEl.clientWidth);
-      const epsilon = 2;
-      setEindproductenCanScrollLeft(nextEl.scrollLeft > epsilon);
-      setEindproductenCanScrollRight(
-        loopWidth > 0 ? true : nextEl.scrollLeft < maxScrollLeft - epsilon,
-      );
-      const progressBase = maxScrollLeft > 0 ? nextEl.scrollLeft % maxScrollLeft : 0;
-      const nextProgress = maxScrollLeft > 0 ? progressBase / maxScrollLeft : 0;
-      setEindproductenProgress((prev) =>
-        Math.abs(prev - nextProgress) < 0.003 ? prev : Math.max(0, Math.min(1, nextProgress)),
-      );
-    };
-
-    const schedule = () => {
-      if (raf) cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(update);
-    };
-
-    schedule();
-    el.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
-    const ro = new ResizeObserver(schedule);
-    ro.observe(el);
-
-    return () => {
-      el.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
-      ro.disconnect();
-      if (raf) cancelAnimationFrame(raf);
-    };
+  const measureEindproductenLoop = useCallback(() => {
+    const track = eindproductenTrackRef.current;
+    if (!track) return;
+    const items = track.querySelectorAll<HTMLElement>("[data-snap-item]");
+    if (items.length >= 2) {
+      const half = Math.floor(items.length / 2);
+      eindproductenLoopWidthRef.current = items[half]?.offsetLeft ?? track.scrollWidth / 2;
+    }
   }, []);
+
+  const normalizeEindproductenX = useCallback((value: number) => {
+    const loop = eindproductenLoopWidthRef.current;
+    if (loop <= 0) return value;
+    let next = value;
+    while (next <= -loop) next += loop;
+    while (next > 0) next -= loop;
+    return next;
+  }, []);
+
+  useLayoutEffect(() => {
+    measureEindproductenLoop();
+    const track = eindproductenTrackRef.current;
+    if (!track) return;
+    const ro = new ResizeObserver(() => measureEindproductenLoop());
+    ro.observe(track);
+    window.addEventListener("resize", measureEindproductenLoop);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measureEindproductenLoop);
+    };
+  }, [measureEindproductenLoop]);
+
+  useMotionValueEvent(eindproductenX, "change", (latest) => {
+    const loop = eindproductenLoopWidthRef.current;
+    if (loop <= 0) return;
+    const progress = ((-latest % loop) + loop) % loop / loop;
+    setEindproductenProgress((prev) =>
+      Math.abs(prev - progress) < 0.003 ? prev : Math.max(0, Math.min(1, progress)),
+    );
+    setEindproductenCanScrollLeft(true);
+    setEindproductenCanScrollRight(true);
+  });
 
   useEffect(() => {
     const el = segmentsScrollerRef.current;
@@ -1471,38 +1470,15 @@ function HomePage() {
     eindproductenDraggingRef.current = eindproductenDragging;
   }, [eindproductenDragging]);
 
-  const wrapEindproductenScroll = (el: HTMLDivElement) => {
-    const loopWidth = eindproductenLoopWidthRef.current;
-    if (loopWidth <= 0) return;
-    while (el.scrollLeft >= loopWidth) el.scrollLeft -= loopWidth;
-    while (el.scrollLeft < 0) el.scrollLeft += loopWidth;
-  };
-
   useEffect(() => {
     if (reduceMotion || !eindproductenShowcaseInView || !eindproductenIntroComplete) return;
 
     let cancelled = false;
     let lastTime = performance.now();
-    const speedPxPerMs = 0.055;
-
-    const measureLoop = () => {
-      const el = eindproductenScrollerRef.current;
-      if (!el) return 0;
-      const items = el.querySelectorAll<HTMLElement>("[data-snap-item]");
-      if (items.length < 2) return Math.max(0, el.scrollWidth / 2);
-      const half = Math.floor(items.length / 2);
-      const loopWidth = items[half]?.offsetLeft ?? el.scrollWidth / 2;
-      eindproductenLoopWidthRef.current = loopWidth;
-      return loopWidth;
-    };
+    const speedPxPerMs = 0.038;
 
     const tick = (now: number) => {
       if (cancelled) return;
-      const el = eindproductenScrollerRef.current;
-      if (!el) {
-        eindproductenAutoRafRef.current = requestAnimationFrame(tick);
-        return;
-      }
 
       const paused =
         eindproductenAutoPausedRef.current ||
@@ -1510,33 +1486,36 @@ function HomePage() {
         performance.now() < eindproductenAutoHoldUntilRef.current ||
         document.hidden;
 
-      const dt = Math.min(48, now - lastTime);
+      const dt = Math.min(32, now - lastTime);
       lastTime = now;
 
       if (!paused) {
-        const loopWidth = eindproductenLoopWidthRef.current || measureLoop();
+        const loopWidth = eindproductenLoopWidthRef.current;
         if (loopWidth > 0) {
-          el.scrollLeft += speedPxPerMs * dt;
-          wrapEindproductenScroll(el);
-          eindproductenTiltRaw.set(0.06);
+          const next = normalizeEindproductenX(eindproductenX.get() - speedPxPerMs * dt);
+          eindproductenX.set(next);
         }
-      } else {
-        eindproductenTiltRaw.set(0);
       }
 
       eindproductenAutoRafRef.current = requestAnimationFrame(tick);
     };
 
-    measureLoop();
+    measureEindproductenLoop();
     eindproductenAutoRafRef.current = requestAnimationFrame(tick);
 
     return () => {
       cancelled = true;
       if (eindproductenAutoRafRef.current) cancelAnimationFrame(eindproductenAutoRafRef.current);
       eindproductenAutoRafRef.current = null;
-      eindproductenTiltRaw.set(0);
     };
-  }, [reduceMotion, eindproductenIntroComplete, eindproductenShowcaseInView, eindproductenTiltRaw]);
+  }, [
+    reduceMotion,
+    eindproductenIntroComplete,
+    eindproductenShowcaseInView,
+    eindproductenX,
+    measureEindproductenLoop,
+    normalizeEindproductenX,
+  ]);
 
   useEffect(() => {
     segmentsDraggingRef.current = segmentsDragging;
@@ -1788,46 +1767,20 @@ function HomePage() {
     eindproductenInertiaRafRef.current = null;
   };
 
-  const disableEindproductenSnap = () => {
-    const el = eindproductenScrollerRef.current;
-    if (!el) return;
-    el.style.setProperty("scroll-snap-type", "none", "important");
-  };
-
-  const restoreEindproductenSnap = () => {
-    const el = eindproductenScrollerRef.current;
-    if (!el) return;
-    window.setTimeout(() => {
-      const nextEl = eindproductenScrollerRef.current;
-      if (!nextEl) return;
-      nextEl.style.removeProperty("scroll-snap-type");
-    }, 80);
-  };
-
   const startEindproductenInertia = (velocityPxPerMs: number) => {
     if (reduceMotion) return;
-    const el = eindproductenScrollerRef.current;
-    if (!el) return;
     stopEindproductenInertia();
     let v = velocityPxPerMs;
     let lastT = performance.now();
 
     const tick = (t: number) => {
-      const nextEl = eindproductenScrollerRef.current;
-      if (!nextEl) return;
       const dt = Math.max(0, t - lastT);
       lastT = t;
 
-      const nextLeft = nextEl.scrollLeft + v * dt;
-      nextEl.scrollLeft = nextLeft;
-      wrapEindproductenScroll(nextEl);
+      const next = normalizeEindproductenX(eindproductenX.get() + v * dt);
+      eindproductenX.set(next);
 
-      const loopWidth = eindproductenLoopWidthRef.current;
-      const maxScrollLeft =
-        loopWidth > 0 ? loopWidth : Math.max(0, nextEl.scrollWidth - nextEl.clientWidth);
-      const atEdge = nextEl.scrollLeft <= 0.5 || nextEl.scrollLeft >= maxScrollLeft - 0.5;
-      const decay = atEdge ? 0.86 : 0.93;
-      v *= Math.pow(decay, dt / 16);
+      v *= Math.pow(0.93, dt / 16);
 
       const tilt = Math.max(-1.1, Math.min(1.1, v * 0.09));
       eindproductenTiltRaw.set(tilt);
@@ -1844,20 +1797,28 @@ function HomePage() {
     eindproductenInertiaRafRef.current = requestAnimationFrame(tick);
   };
 
+  const nudgeEindproducten = (direction: "left" | "right") => {
+    markEindproductenUserInteract();
+    const step = 318;
+    const current = eindproductenX.get();
+    const target = normalizeEindproductenX(direction === "right" ? current - step : current + step);
+    animate(eindproductenX, target, {
+      duration: 0.65,
+      ease: EINDPRODUCTEN_REVEAL_EASE,
+    });
+  };
+
   const markEindproductenUserInteract = (holdMs = 3200) => {
     eindproductenAutoHoldUntilRef.current = performance.now() + holdMs;
   };
 
   const handleEindproductenPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (e.pointerType !== "mouse") return;
-    const el = eindproductenScrollerRef.current;
-    if (!el) return;
     markEindproductenUserInteract(4200);
     stopEindproductenInertia();
-    disableEindproductenSnap();
     eindproductenPointerIdRef.current = e.pointerId;
     eindproductenDragStartXRef.current = e.clientX;
-    eindproductenDragStartLeftRef.current = el.scrollLeft;
+    eindproductenDragStartOffsetRef.current = eindproductenX.get();
     eindproductenLastXRef.current = e.clientX;
     eindproductenLastTRef.current = performance.now();
     eindproductenVelocityRef.current = 0;
@@ -1869,12 +1830,10 @@ function HomePage() {
   const handleEindproductenPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (e.pointerType !== "mouse") return;
     if (eindproductenPointerIdRef.current !== e.pointerId) return;
-    const el = eindproductenScrollerRef.current;
-    if (!el) return;
     e.preventDefault();
+
     const dx = e.clientX - eindproductenDragStartXRef.current;
-    el.scrollLeft = eindproductenDragStartLeftRef.current - dx;
-    wrapEindproductenScroll(el);
+    eindproductenX.set(normalizeEindproductenX(eindproductenDragStartOffsetRef.current + dx));
 
     const now = performance.now();
     const dt = Math.max(1, now - eindproductenLastTRef.current);
@@ -1883,8 +1842,7 @@ function HomePage() {
     eindproductenLastTRef.current = now;
     eindproductenVelocityRef.current = eindproductenVelocityRef.current * 0.82 + vx * 0.18;
 
-    const scrollV = -eindproductenVelocityRef.current;
-    const tilt = Math.max(-1.1, Math.min(1.1, scrollV * 1.4));
+    const tilt = Math.max(-0.75, Math.min(0.75, eindproductenVelocityRef.current * 0.08));
     eindproductenTiltRaw.set(tilt);
   };
 
@@ -1894,14 +1852,11 @@ function HomePage() {
     eindproductenPointerIdRef.current = null;
     setEindproductenDragging(false);
     markEindproductenUserInteract(4200);
-    restoreEindproductenSnap();
     try {
       e.currentTarget.releasePointerCapture(e.pointerId);
     } catch {}
 
-    wrapEindproductenScroll(el);
-    const scrollV = -eindproductenVelocityRef.current;
-    startEindproductenInertia(scrollV * 28);
+    startEindproductenInertia(eindproductenVelocityRef.current * 28);
     window.setTimeout(() => eindproductenTiltRaw.set(0), 0);
   };
 
@@ -2322,15 +2277,23 @@ function HomePage() {
         id="products"
         data-story-chapter="finished-products"
         aria-labelledby="products-heading"
-        className="story-surface-dark relative overflow-hidden px-6 py-28 grain lg:px-10 lg:py-36"
+        className="relative isolate overflow-hidden px-6 py-28 text-[#F5F2ED] grain lg:px-10 lg:py-36"
       >
-        <div className="pointer-events-none absolute inset-0">
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          <img
+            src={backgroundBlack1}
+            alt=""
+            className="h-full w-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,8,8,0.52)_0%,rgba(12,10,9,0.68)_48%,rgba(6,6,6,0.82)_100%)]" />
           <div className="absolute left-0 right-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.32),transparent)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(1200px_760px_at_50%_0%,rgba(255,255,255,0.05)_0%,transparent_62%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(900px_640px_at_82%_72%,rgba(226,192,141,0.06)_0%,transparent_58%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(1200px_760px_at_50%_0%,rgba(255,255,255,0.06)_0%,transparent_62%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(900px_640px_at_82%_72%,rgba(179,18,23,0.08)_0%,transparent_58%)]" />
         </div>
 
-        <div className="relative mx-auto max-w-[1480px]">
+        <div className="relative z-10 mx-auto max-w-[1480px]">
           <StoryReveal className="text-center">
             <StoryItem>
               <div className="ipek-label ipek-heading-label">
@@ -2469,23 +2432,23 @@ function HomePage() {
                   eindproductenAutoPausedRef.current = false;
                 }}
               >
-                <motion.div
-                  ref={eindproductenScrollerRef}
-                  onPointerDown={handleEindproductenPointerDown}
-                  onPointerMove={handleEindproductenPointerMove}
-                  onPointerUp={handleEindproductenPointerUp}
-                  onPointerCancel={handleEindproductenPointerUp}
-                  data-dragging={eindproductenDragging ? "true" : "false"}
-                  className={`relative flex w-full min-w-0 gap-5 overflow-x-auto pb-2 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden sm:gap-6 lg:gap-7 ${
-                    eindproductenDragging ? "cursor-grabbing" : "cursor-grab"
-                  }`}
-                  style={{
-                    scrollPaddingLeft: "4px",
-                    scrollPaddingRight: "4px",
-                    WebkitOverflowScrolling: "touch",
-                    touchAction: "pan-y",
-                  }}
-                >
+                <div className="overflow-hidden pb-2 pt-1">
+                  <motion.div
+                    ref={eindproductenTrackRef}
+                    onPointerDown={handleEindproductenPointerDown}
+                    onPointerMove={handleEindproductenPointerMove}
+                    onPointerUp={handleEindproductenPointerUp}
+                    onPointerCancel={handleEindproductenPointerUp}
+                    data-dragging={eindproductenDragging ? "true" : "false"}
+                    className={`relative flex w-max gap-5 sm:gap-6 lg:gap-7 ${
+                      eindproductenDragging ? "cursor-grabbing" : "cursor-grab"
+                    }`}
+                    style={{
+                      x: eindproductenX,
+                      willChange: "transform",
+                      touchAction: "pan-y",
+                    }}
+                  >
                   {EINDPRODUCTEN_LOOP_PRODUCTS.map((p, idx) => (
                     <EindproductenShowcaseCard
                       key={`eind-${p.title}-${idx}`}
@@ -2499,7 +2462,8 @@ function HomePage() {
                   ))}
 
                   <div className="w-2 shrink-0 sm:w-4" />
-                </motion.div>
+                  </motion.div>
+                </div>
               </div>
 
               <div className="pointer-events-none absolute inset-y-0 left-0 right-0 z-10 hidden sm:block">
@@ -2510,7 +2474,7 @@ function HomePage() {
                       aria-label="Vorige"
                       onClick={() => {
                         markEindproductenUserInteract();
-                        scrollToSnapItem(eindproductenScrollerRef, "left");
+                        nudgeEindproducten("left");
                       }}
                       className="pointer-events-auto group grid h-10 w-10 place-items-center rounded-full border border-[rgba(226,192,141,0.22)] bg-[rgba(18,17,16,0.88)] shadow-[0_12px_40px_-20px_rgba(0,0,0,0.8)] transition-all duration-400 hover:border-[rgba(226,192,141,0.42)] hover:bg-[rgba(24,22,20,0.95)] active:scale-[0.98] lg:h-11 lg:w-11"
                     >
@@ -2528,7 +2492,7 @@ function HomePage() {
                       aria-label="Volgende"
                       onClick={() => {
                         markEindproductenUserInteract();
-                        scrollToSnapItem(eindproductenScrollerRef, "right");
+                        nudgeEindproducten("right");
                       }}
                       className="pointer-events-auto group grid h-10 w-10 place-items-center rounded-full border border-[rgba(226,192,141,0.22)] bg-[rgba(18,17,16,0.88)] shadow-[0_12px_40px_-20px_rgba(0,0,0,0.8)] transition-all duration-400 hover:border-[rgba(226,192,141,0.42)] hover:bg-[rgba(24,22,20,0.95)] active:scale-[0.98] lg:h-11 lg:w-11"
                     >
@@ -2779,7 +2743,7 @@ function EindproductenShowcaseCard({
   const imageY = useSpring(useTransform(my, [0, 1], [-8, 8]), { stiffness: 120, damping: 22 });
   const glowX = useTransform(mx, (v) => `${v * 100}%`);
   const glowY = useTransform(my, (v) => `${v * 100}%`);
-  const glowBg = useMotionTemplate`radial-gradient(460px circle at ${glowX} ${glowY}, rgba(226,192,141,0.20), transparent 60%)`;
+  const glowBg = useMotionTemplate`radial-gradient(460px circle at ${glowX} ${glowY}, rgba(179,18,23,0.10), transparent 60%)`;
 
   function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
     if (!ref.current) return;
@@ -2846,36 +2810,31 @@ function EindproductenShowcaseCard({
               transformStyle: "preserve-3d",
             }
       }
-      className="group relative w-[272px] shrink-0 overflow-hidden rounded-[24px] border border-[rgba(226,192,141,0.16)] shadow-[0_28px_70px_-32px_rgba(0,0,0,0.85),0_0_0_1px_rgba(255,255,255,0.03)] transition-[border-color,box-shadow,transform] duration-500 hover:border-[rgba(226,192,141,0.30)] hover:shadow-[0_36px_90px_-36px_rgba(0,0,0,0.9),0_0_0_1px_rgba(226,192,141,0.10)] sm:w-[288px] lg:w-[296px]"
+      className="group relative w-[272px] shrink-0 overflow-hidden rounded-[24px] border border-white/80 bg-[#FAF8F5] shadow-[0_28px_70px_-32px_rgba(0,0,0,0.45),0_0_0_1px_rgba(255,255,255,0.65)] transition-[border-color,box-shadow,transform] duration-500 hover:border-white hover:shadow-[0_36px_90px_-30px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.9),0_0_48px_-16px_rgba(179,18,23,0.18)] sm:w-[288px] lg:w-[296px]"
     >
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-        <img
-          src={cardProductenImage}
-          alt=""
-          loading="lazy"
-          decoding="async"
-          className="absolute inset-0 h-full w-full object-cover"
-          style={{
-            objectPosition: "center 40%",
-            filter: "brightness(0.82) contrast(1.08) saturate(1.05)",
-          }}
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,7,6,0.42)_0%,rgba(8,7,6,0.58)_45%,rgba(8,7,6,0.82)_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_30%,rgba(226,192,141,0.08),transparent_55%)]" />
-        <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(226,192,141,0.45),transparent)]" />
-      </div>
-
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        className="pointer-events-none absolute inset-0 z-[1] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
         style={reduceMotion ? undefined : { background: glowBg }}
       />
 
       <div className="relative flex h-full min-h-[468px] flex-col">
-        <div className="relative flex flex-1 flex-col">
+        <div className="relative flex flex-1 flex-col overflow-hidden bg-[linear-gradient(180deg,#FFFFFF_0%,#F5F0E8_52%,#EDE6DC_100%)]">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.35]"
+            style={{
+              backgroundImage: `url(${cardProductenImage})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center 40%",
+            }}
+          />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_70%_at_50%_38%,rgba(255,255,255,0.95)_0%,rgba(247,241,232,0.55)_52%,rgba(237,230,220,0.2)_100%)]" />
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(179,18,23,0.18),transparent)]" />
+
           <span
             aria-hidden
-            className="pointer-events-none absolute right-4 top-3 select-none font-display text-[3.5rem] font-semibold leading-none tracking-[-0.06em] text-[rgba(226,192,141,0.07)]"
+            className="pointer-events-none absolute right-4 top-3 z-10 select-none font-display text-[3.5rem] font-semibold leading-none tracking-[-0.06em] text-[rgba(179,18,23,0.07)]"
           >
             {String(index + 1).padStart(2, "0")}
           </span>
@@ -2891,11 +2850,11 @@ function EindproductenShowcaseCard({
                 className="h-4 w-4 select-none opacity-90"
                 style={{ filter: STICKER_GOLD_FILTER }}
               />
-              <span className="text-[8px] font-medium uppercase tracking-[0.28em] text-[rgba(226,192,141,0.78)]">
+              <span className="text-[8px] font-semibold uppercase tracking-[0.28em] text-[#B31217]/80">
                 {product.category}
               </span>
             </div>
-            <span className="rounded-full border border-[rgba(226,192,141,0.22)] bg-black/30 px-2.5 py-1 text-[7px] font-semibold uppercase tracking-[0.2em] text-[rgba(245,242,237,0.72)]">
+            <span className="rounded-full border border-[rgba(179,18,23,0.18)] bg-white/90 px-2.5 py-1 text-[7px] font-semibold uppercase tracking-[0.2em] text-[#141414]/72 shadow-sm">
               Halal
             </span>
           </div>
@@ -2903,15 +2862,15 @@ function EindproductenShowcaseCard({
           <div className="relative flex flex-1 items-center justify-center px-5 py-4">
             <div
               aria-hidden
-              className="pointer-events-none absolute left-1/2 top-1/2 h-[170px] w-[170px] -translate-x-1/2 -translate-y-[54%] rounded-full border border-[rgba(226,192,141,0.12)] sm:h-[182px] sm:w-[182px]"
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[170px] w-[170px] -translate-x-1/2 -translate-y-[54%] rounded-full border border-[rgba(179,18,23,0.1)] sm:h-[182px] sm:w-[182px]"
             />
             <div
               aria-hidden
-              className="pointer-events-none absolute left-1/2 top-1/2 h-[120px] w-[120px] -translate-x-1/2 -translate-y-[54%] rounded-full bg-[radial-gradient(circle,rgba(226,192,141,0.22),transparent_68%)]"
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[132px] w-[132px] -translate-x-1/2 -translate-y-[54%] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.95)_0%,rgba(245,238,226,0.45)_58%,transparent_72%)]"
             />
             <div
               aria-hidden
-              className="pointer-events-none absolute bottom-2 left-1/2 h-5 w-[50%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(closest-side,rgba(0,0,0,0.45),transparent)]"
+              className="pointer-events-none absolute bottom-2 left-1/2 h-5 w-[50%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(closest-side,rgba(0,0,0,0.14),transparent)]"
             />
             <motion.img
               src={product.image}
@@ -2936,14 +2895,14 @@ function EindproductenShowcaseCard({
           </div>
         </div>
 
-        <div className="relative border-t border-[rgba(226,192,141,0.12)] bg-[rgba(8,7,6,0.72)] px-5 pb-5 pt-4">
-          <div className="text-[7.5px] font-medium uppercase tracking-[0.28em] text-[rgba(226,192,141,0.55)]">
+        <div className="relative border-t border-black/[0.06] bg-white px-5 pb-5 pt-4">
+          <div className="text-[7.5px] font-semibold uppercase tracking-[0.28em] text-[#B31217]/70">
             {product.eyebrow}
           </div>
-          <h3 className="mt-2 font-display text-[1.75rem] font-semibold leading-[0.98] tracking-[-0.04em] text-[#F5F2ED] sm:text-[1.85rem]">
+          <h3 className="mt-2 font-display text-[1.75rem] font-semibold leading-[0.98] tracking-[-0.04em] text-[#141414] sm:text-[1.85rem]">
             {product.title}
           </h3>
-          <p className="mt-2.5 text-[12px] leading-[1.65] text-[rgba(245,242,237,0.58)]">
+          <p className="mt-2.5 text-[12px] leading-[1.65] text-[#141414]/62">
             {product.blurb}
           </p>
 
@@ -2951,15 +2910,15 @@ function EindproductenShowcaseCard({
             {product.traits.map((trait) => (
               <span
                 key={trait}
-                className="rounded-full border border-[rgba(226,192,141,0.14)] bg-white/[0.03] px-2.5 py-1 text-[6.5px] font-medium uppercase tracking-[0.18em] text-[rgba(245,242,237,0.55)] sm:text-[7px]"
+                className="rounded-full border border-black/[0.08] bg-[#FAF8F5] px-2.5 py-1 text-[6.5px] font-medium uppercase tracking-[0.18em] text-[#141414]/58 sm:text-[7px]"
               >
                 {trait}
               </span>
             ))}
           </div>
 
-          <div className="mt-4 flex items-center justify-between gap-3 border-t border-white/[0.05] pt-3.5">
-            <span className="text-[7px] font-medium uppercase tracking-[0.24em] text-[rgba(245,242,237,0.35)] sm:text-[7.5px]">
+          <div className="mt-4 flex items-center justify-between gap-3 border-t border-black/[0.06] pt-3.5">
+            <span className="text-[7px] font-medium uppercase tracking-[0.24em] text-[#141414]/42 sm:text-[7.5px]">
               Signature selectie
             </span>
             <a

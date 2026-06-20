@@ -58,24 +58,38 @@ const STICKER_FILTER = "sepia(1) saturate(520%) hue-rotate(352deg) brightness(0.
 
 /* ── Logo ───────────────────────────────────────────────────── */
 
-function NavLogo() {
+const OFFICIAL_LOGO_URL = "/ipekci-official-logo.svg";
+
+function NavLogo({ scrolled = false }: { scrolled?: boolean }) {
   return (
     <Link
       to="/"
       aria-label="Ipekçi Slachterij"
       className="relative z-20 flex shrink-0 items-center py-1 transition-opacity duration-200 hover:opacity-85"
     >
-      <img
-        src={LOGO_URL}
-        alt="Ipekçi Slachterij"
-        className="h-[44px] w-auto select-none sm:h-[58px]"
-        loading="eager"
-        decoding="async"
-        style={{
-          filter:
-            "drop-shadow(0 8px 24px rgba(0,0,0,0.28)) drop-shadow(0 0 12px rgba(179,18,23,0.10))",
-        }}
-      />
+      {scrolled ? (
+        <img
+          src={OFFICIAL_LOGO_URL}
+          alt="Ipekçi Slachterij"
+          className="h-[36px] w-auto select-none sm:h-[48px]"
+          width={226}
+          height={70}
+          loading="eager"
+          decoding="async"
+        />
+      ) : (
+        <img
+          src={LOGO_URL}
+          alt="Ipekçi Slachterij"
+          className="h-[44px] w-auto select-none sm:h-[58px]"
+          loading="eager"
+          decoding="async"
+          style={{
+            filter:
+              "drop-shadow(0 8px 24px rgba(0,0,0,0.28)) drop-shadow(0 0 12px rgba(179,18,23,0.10))",
+          }}
+        />
+      )}
     </Link>
   );
 }
@@ -670,7 +684,7 @@ export function Navbar() {
       >
         {/* Desktop — logo left, nav + CTA grouped right */}
         <div className="mx-auto hidden h-[88px] max-w-[1520px] items-center justify-between gap-6 px-5 sm:px-8 lg:flex lg:px-10 xl:px-12">
-          <NavLogo />
+          <NavLogo scrolled={scrolled} />
 
           <div className="flex items-center gap-0.5 xl:gap-1">
             <AssortimentNavDropdown
@@ -695,7 +709,7 @@ export function Navbar() {
 
         {/* Mobile header */}
         <div className="flex items-center justify-between px-5 py-4 sm:px-8 lg:hidden">
-          <NavLogo />
+          <NavLogo scrolled={scrolled} />
           <MobileToggle isOpen={mobileOpen} onClick={() => setMobileOpen((v) => !v)} scrolled={scrolled} />
         </div>
       </motion.div>

@@ -1220,7 +1220,9 @@ const EINDPRODUCTEN_PRODUCTS = [
   },
 ] as const;
 
-const EINDPRODUCTEN_REVEAL_EASE = [0.16, 1, 0.3, 1] as const;
+const EINDPRODUCTEN_LOOP_PRODUCTS = [...EINDPRODUCTEN_PRODUCTS, ...EINDPRODUCTEN_PRODUCTS];
+
+const EINDPRODUCTEN_REVEAL_EASE = [0.22, 1, 0.36, 1] as const;
 
 /* Warm drop-shadow that grounds the product PNG on the dark display case. */
 const EINDPRODUCTEN_PRODUCT_SHADOW =
@@ -1360,7 +1362,7 @@ function HomePage() {
   const eindproductenVelocityRef = useRef(0);
   const eindproductenInertiaRafRef = useRef<number | null>(null);
   const eindproductenAutoRafRef = useRef<number | null>(null);
-  const eindproductenAutoDirRef = useRef<1 | -1>(1);
+  const eindproductenLoopWidthRef = useRef(0);
   const eindproductenAutoHoldUntilRef = useRef(0);
   const eindproductenAutoPausedRef = useRef(false);
   const eindproductenDraggingRef = useRef(false);
@@ -1388,11 +1390,21 @@ function HomePage() {
     const update = () => {
       const nextEl = eindproductenScrollerRef.current;
       if (!nextEl) return;
-      const maxScrollLeft = Math.max(0, nextEl.scrollWidth - nextEl.clientWidth);
+      const items = nextEl.querySelectorAll<HTMLElement>("[data-snap-item]");
+      if (items.length >= 2) {
+        const half = Math.floor(items.length / 2);
+        eindproductenLoopWidthRef.current = items[half]?.offsetLeft ?? nextEl.scrollWidth / 2;
+      }
+      const loopWidth = eindproductenLoopWidthRef.current;
+      const maxScrollLeft =
+        loopWidth > 0 ? loopWidth : Math.max(0, nextEl.scrollWidth - nextEl.clientWidth);
       const epsilon = 2;
       setEindproductenCanScrollLeft(nextEl.scrollLeft > epsilon);
-      setEindproductenCanScrollRight(nextEl.scrollLeft < maxScrollLeft - epsilon);
-      const nextProgress = maxScrollLeft > 0 ? nextEl.scrollLeft / maxScrollLeft : 0;
+      setEindproductenCanScrollRight(
+        loopWidth > 0 ? true : nextEl.scrollLeft < maxScrollLeft - epsilon,
+      );
+      const progressBase = maxScrollLeft > 0 ? nextEl.scrollLeft % maxScrollLeft : 0;
+      const nextProgress = maxScrollLeft > 0 ? progressBase / maxScrollLeft : 0;
       setEindproductenProgress((prev) =>
         Math.abs(prev - nextProgress) < 0.003 ? prev : Math.max(0, Math.min(1, nextProgress)),
       );
@@ -1459,23 +1471,36 @@ function HomePage() {
     eindproductenDraggingRef.current = eindproductenDragging;
   }, [eindproductenDragging]);
 
+  const wrapEindproductenScroll = (el: HTMLDivElement) => {
+    const loopWidth = eindproductenLoopWidthRef.current;
+    if (loopWidth <= 0) return;
+    while (el.scrollLeft >= loopWidth) el.scrollLeft -= loopWidth;
+    while (el.scrollLeft < 0) el.scrollLeft += loopWidth;
+  };
+
   useEffect(() => {
     if (reduceMotion || !eindproductenShowcaseInView || !eindproductenIntroComplete) return;
 
     let cancelled = false;
-    let timeoutId = 0;
-    eindproductenAutoDirRef.current = 1;
+    let lastTime = performance.now();
+    const speedPxPerMs = 0.055;
 
-    const scheduleNext = (delayMs = 2800) => {
-      window.clearTimeout(timeoutId);
-      timeoutId = window.setTimeout(step, delayMs);
+    const measureLoop = () => {
+      const el = eindproductenScrollerRef.current;
+      if (!el) return 0;
+      const items = el.querySelectorAll<HTMLElement>("[data-snap-item]");
+      if (items.length < 2) return Math.max(0, el.scrollWidth / 2);
+      const half = Math.floor(items.length / 2);
+      const loopWidth = items[half]?.offsetLeft ?? el.scrollWidth / 2;
+      eindproductenLoopWidthRef.current = loopWidth;
+      return loopWidth;
     };
 
-    const step = () => {
+    const tick = (now: number) => {
       if (cancelled) return;
       const el = eindproductenScrollerRef.current;
       if (!el) {
-        scheduleNext(1200);
+        eindproductenAutoRafRef.current = requestAnimationFrame(tick);
         return;
       }
 
@@ -1485,39 +1510,30 @@ function HomePage() {
         performance.now() < eindproductenAutoHoldUntilRef.current ||
         document.hidden;
 
-      if (paused) {
+      const dt = Math.min(48, now - lastTime);
+      lastTime = now;
+
+      if (!paused) {
+        const loopWidth = eindproductenLoopWidthRef.current || measureLoop();
+        if (loopWidth > 0) {
+          el.scrollLeft += speedPxPerMs * dt;
+          wrapEindproductenScroll(el);
+          eindproductenTiltRaw.set(0.06);
+        }
+      } else {
         eindproductenTiltRaw.set(0);
-        scheduleNext(1200);
-        return;
       }
 
-      const maxScrollLeft = Math.max(0, el.scrollWidth - el.clientWidth);
-      if (maxScrollLeft <= 0) {
-        eindproductenTiltRaw.set(0);
-        scheduleNext(1600);
-        return;
-      }
-
-      if (el.scrollLeft >= maxScrollLeft - 40) {
-        eindproductenAutoDirRef.current = 1;
-        eindproductenTiltRaw.set(-0.12);
-        el.scrollTo({ left: 0, behavior: "smooth" });
-        window.setTimeout(() => eindproductenTiltRaw.set(0), 850);
-        scheduleNext(3200);
-        return;
-      }
-
-      eindproductenAutoDirRef.current = 1;
-      eindproductenTiltRaw.set(0.18);
-      scrollToSnapItem(eindproductenScrollerRef, "right");
-      window.setTimeout(() => eindproductenTiltRaw.set(0), 850);
-      scheduleNext(2800);
+      eindproductenAutoRafRef.current = requestAnimationFrame(tick);
     };
 
-    scheduleNext(1400);
+    measureLoop();
+    eindproductenAutoRafRef.current = requestAnimationFrame(tick);
+
     return () => {
       cancelled = true;
-      window.clearTimeout(timeoutId);
+      if (eindproductenAutoRafRef.current) cancelAnimationFrame(eindproductenAutoRafRef.current);
+      eindproductenAutoRafRef.current = null;
       eindproductenTiltRaw.set(0);
     };
   }, [reduceMotion, eindproductenIntroComplete, eindproductenShowcaseInView, eindproductenTiltRaw]);
@@ -1802,10 +1818,13 @@ function HomePage() {
       const dt = Math.max(0, t - lastT);
       lastT = t;
 
-      const maxScrollLeft = Math.max(0, nextEl.scrollWidth - nextEl.clientWidth);
       const nextLeft = nextEl.scrollLeft + v * dt;
-      nextEl.scrollLeft = Math.min(maxScrollLeft, Math.max(0, nextLeft));
+      nextEl.scrollLeft = nextLeft;
+      wrapEindproductenScroll(nextEl);
 
+      const loopWidth = eindproductenLoopWidthRef.current;
+      const maxScrollLeft =
+        loopWidth > 0 ? loopWidth : Math.max(0, nextEl.scrollWidth - nextEl.clientWidth);
       const atEdge = nextEl.scrollLeft <= 0.5 || nextEl.scrollLeft >= maxScrollLeft - 0.5;
       const decay = atEdge ? 0.86 : 0.93;
       v *= Math.pow(decay, dt / 16);
@@ -1855,6 +1874,7 @@ function HomePage() {
     e.preventDefault();
     const dx = e.clientX - eindproductenDragStartXRef.current;
     el.scrollLeft = eindproductenDragStartLeftRef.current - dx;
+    wrapEindproductenScroll(el);
 
     const now = performance.now();
     const dt = Math.max(1, now - eindproductenLastTRef.current);
@@ -1879,6 +1899,7 @@ function HomePage() {
       e.currentTarget.releasePointerCapture(e.pointerId);
     } catch {}
 
+    wrapEindproductenScroll(el);
     const scrollV = -eindproductenVelocityRef.current;
     startEindproductenInertia(scrollV * 28);
     window.setTimeout(() => eindproductenTiltRaw.set(0), 0);
@@ -2425,10 +2446,10 @@ function HomePage() {
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: 88 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-140px" }}
-              transition={{ duration: 1.1, ease: DS_EASE, delay: 0.08 }}
+              transition={{ duration: 1.15, ease: EINDPRODUCTEN_REVEAL_EASE, delay: 0.06 }}
               className="relative min-w-0 lg:col-span-8"
               ref={eindproductenShowcaseRef}
             >
@@ -2455,7 +2476,7 @@ function HomePage() {
                   onPointerUp={handleEindproductenPointerUp}
                   onPointerCancel={handleEindproductenPointerUp}
                   data-dragging={eindproductenDragging ? "true" : "false"}
-                  className={`relative flex w-full min-w-0 snap-x snap-proximity gap-5 overflow-x-auto pb-2 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden sm:gap-6 lg:gap-7 ${
+                  className={`relative flex w-full min-w-0 gap-5 overflow-x-auto pb-2 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden sm:gap-6 lg:gap-7 ${
                     eindproductenDragging ? "cursor-grabbing" : "cursor-grab"
                   }`}
                   style={{
@@ -2465,11 +2486,12 @@ function HomePage() {
                     touchAction: "pan-y",
                   }}
                 >
-                  {EINDPRODUCTEN_PRODUCTS.map((p, idx) => (
+                  {EINDPRODUCTEN_LOOP_PRODUCTS.map((p, idx) => (
                     <EindproductenShowcaseCard
-                      key={`${p.title}-${idx}`}
+                      key={`eind-${p.title}-${idx}`}
                       product={p}
-                      index={idx}
+                      index={idx % EINDPRODUCTEN_PRODUCTS.length}
+                      skipReveal={idx >= EINDPRODUCTEN_PRODUCTS.length}
                       tilt={eindproductenTilt}
                       total={EINDPRODUCTEN_PRODUCTS.length}
                       isRevealed={eindproductenShowcaseInView}
@@ -2724,12 +2746,14 @@ function SegmentCard({
 function EindproductenShowcaseCard({
   product,
   index,
+  skipReveal = false,
   tilt,
   total,
   isRevealed,
 }: {
   product: (typeof EINDPRODUCTEN_PRODUCTS)[number];
   index: number;
+  skipReveal?: boolean;
   tilt: MotionValue<number>;
   total: number;
   isRevealed: boolean;
@@ -2781,26 +2805,24 @@ function EindproductenShowcaseCard({
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       initial={
-        reduceMotion
+        reduceMotion || skipReveal
           ? { opacity: 1, x: 0, y: 0, scale: 1 }
           : {
               opacity: 0,
-              x: revealOffset * -40,
-              y: 28,
-              scale: 0.94,
-              rotateX: 6,
-              rotateY: revealOffset * -4,
+              x: 108,
+              y: 0,
+              scale: 0.98,
             }
       }
       animate={
-        reduceMotion || isRevealed
+        reduceMotion || skipReveal || isRevealed
           ? { opacity: 1, x: 0, y: 0, scale: 1, rotateX: 0, rotateY: 0 }
           : undefined
       }
       transition={{
-        duration: 1.2,
+        duration: 1.05,
         ease: EINDPRODUCTEN_REVEAL_EASE,
-        delay: reduceMotion ? 0 : 0.18 + Math.abs(revealOffset) * 0.12,
+        delay: reduceMotion || skipReveal ? 0 : 0.14 + index * 0.065,
       }}
       whileHover={
         reduceMotion
@@ -2824,7 +2846,7 @@ function EindproductenShowcaseCard({
               transformStyle: "preserve-3d",
             }
       }
-      className="group relative w-[272px] shrink-0 snap-center overflow-hidden rounded-[24px] border border-[rgba(226,192,141,0.16)] shadow-[0_28px_70px_-32px_rgba(0,0,0,0.85),0_0_0_1px_rgba(255,255,255,0.03)] transition-[border-color,box-shadow,transform] duration-500 hover:border-[rgba(226,192,141,0.30)] hover:shadow-[0_36px_90px_-36px_rgba(0,0,0,0.9),0_0_0_1px_rgba(226,192,141,0.10)] sm:w-[288px] lg:w-[296px]"
+      className="group relative w-[272px] shrink-0 overflow-hidden rounded-[24px] border border-[rgba(226,192,141,0.16)] shadow-[0_28px_70px_-32px_rgba(0,0,0,0.85),0_0_0_1px_rgba(255,255,255,0.03)] transition-[border-color,box-shadow,transform] duration-500 hover:border-[rgba(226,192,141,0.30)] hover:shadow-[0_36px_90px_-36px_rgba(0,0,0,0.9),0_0_0_1px_rgba(226,192,141,0.10)] sm:w-[288px] lg:w-[296px]"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
         <img

@@ -1,6 +1,13 @@
 import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { useRef } from "react";
+import {
+  DS_DURATION,
+  DS_EASE,
+  DS_REVEAL_Y,
+  DS_VIEWPORT,
+  dsRevealTransition,
+} from "@/lib/design-system";
 
 interface Props {
   number: string;
@@ -14,8 +21,8 @@ export function ServiceCard({ number, title, description, image, index }: Props)
   const ref = useRef<HTMLElement>(null);
   const mx = useMotionValue(0.5);
   const my = useMotionValue(0.5);
-  const rx = useSpring(useTransform(my, [0, 1], [6, -6]), { stiffness: 150, damping: 20 });
-  const ry = useSpring(useTransform(mx, [0, 1], [-6, 6]), { stiffness: 150, damping: 20 });
+  const rx = useSpring(useTransform(my, [0, 1], [4, -4]), { stiffness: 150, damping: 20 });
+  const ry = useSpring(useTransform(mx, [0, 1], [-4, 4]), { stiffness: 150, damping: 20 });
   const glowX = useTransform(mx, (v) => `${v * 100}%`);
   const glowY = useTransform(my, (v) => `${v * 100}%`);
   const glowBg = useMotionTemplate`radial-gradient(380px circle at ${glowX} ${glowY}, color-mix(in oklab, var(--primary) 35%, transparent), transparent 60%)`;
@@ -36,22 +43,24 @@ export function ServiceCard({ number, title, description, image, index }: Props)
       ref={ref}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
-      initial={{ opacity: 0, y: 80, rotateX: -12 }}
-      whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
+      initial={{ opacity: 0, y: DS_REVEAL_Y }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={DS_VIEWPORT}
       transition={{
-        duration: 1.1,
-        delay: index * 0.15,
-        ease: [0.22, 1, 0.36, 1],
+        ...dsRevealTransition(index * 0.09),
+        duration: DS_DURATION.reveal,
       }}
       style={{ rotateX: rx, rotateY: ry, transformPerspective: 1200 }}
-      className="group relative overflow-hidden rounded-sm border border-white/5 bg-surface will-change-transform"
+      className="ipek-card group will-change-transform"
     >
-      {/* Cursor-tracked glow */}
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute inset-0 z-20 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-        style={{ background: glowBg, mixBlendMode: "screen" }}
+        className="pointer-events-none absolute inset-0 z-20 opacity-0 transition-opacity group-hover:opacity-100"
+        style={{
+          background: glowBg,
+          mixBlendMode: "screen",
+          transitionDuration: `${DS_DURATION.ui}s`,
+        }}
       />
 
       <div className="relative aspect-[4/5] overflow-hidden">
@@ -60,33 +69,28 @@ export function ServiceCard({ number, title, description, image, index }: Props)
           alt={title}
           loading="lazy"
           className="h-full w-full object-cover"
-          initial={{ scale: 1.15 }}
+          initial={{ scale: 1.06 }}
           whileInView={{ scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: DS_DURATION.slow, ease: DS_EASE }}
           style={{ transformOrigin: "center" }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent transition-opacity duration-700 group-hover:from-background/95" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent transition-opacity group-hover:from-background/95" style={{ transitionDuration: `${DS_DURATION.ui}s` }} />
 
-        {/* Lighting sweep */}
-        <div className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
+        <div
+          className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform group-hover:translate-x-full"
+          style={{ transitionDuration: `${DS_DURATION.slow}s`, transitionTimingFunction: "var(--ipek-ease)" }}
+        />
 
-        <div className="absolute left-6 top-6 font-display text-xs font-medium tracking-[0.3em] text-primary">
-          {number}
-        </div>
-        <motion.div className="absolute right-6 top-6 grid h-10 w-10 place-items-center rounded-2xl border border-white/15 bg-background/40 backdrop-blur transition-all duration-500 group-hover:bg-primary group-hover:border-primary">
-          <ArrowUpRight
-            size={16}
-            className="text-foreground transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary-foreground"
-          />
+        <div className="ipek-label absolute left-6 top-6 text-primary">{number}</div>
+        <motion.div className="absolute right-6 top-6 grid h-10 w-10 place-items-center rounded-2xl border border-white/15 bg-background/40 backdrop-blur transition-all group-hover:border-primary group-hover:bg-primary" style={{ transitionDuration: `${DS_DURATION.ui}s` }}>
+          <ArrowUpRight size={16} className="ipek-btn-icon text-foreground group-hover:text-primary-foreground" />
         </motion.div>
         <div className="absolute inset-x-0 bottom-0 p-7">
-          <h3 className="font-display text-2xl text-foreground transition-transform duration-700 group-hover:-translate-y-1 md:text-3xl">
+          <h3 className="ipek-h3 text-foreground transition-transform group-hover:-translate-y-1" style={{ transitionDuration: `${DS_DURATION.ui}s` }}>
             {title}
           </h3>
-          <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
-            {description}
-          </p>
+          <p className="ipek-body-sm mt-3 max-w-xs text-muted-foreground">{description}</p>
         </div>
       </div>
     </motion.article>

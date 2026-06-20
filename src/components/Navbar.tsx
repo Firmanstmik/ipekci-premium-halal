@@ -1,5 +1,11 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from "framer-motion";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -10,16 +16,7 @@ import {
   ShieldCheck,
   Truck,
 } from "lucide-react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import {
-  Navbar as NavbarRoot,
-  NavBody,
-  MobileNav,
-  NavbarLogo,
-  MobileNavHeader,
-  MobileNavToggle,
-  MobileNavMenu,
-} from "@/components/ui/resizable-navbar";
+import { IconMenu2, IconX } from "@tabler/icons-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,148 +29,142 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { DS_EASE } from "@/lib/design-system";
+import { AssortimentMobileLinks } from "@/components/AssortimentMegaMenu";
+import { AssortimentNavDropdown } from "@/components/AssortimentNavDropdown";
+import { VoorWieMobileLinks } from "@/components/VoorWieMobileLinks";
+import { VoorWieNavDropdown } from "@/components/VoorWieNavDropdown";
 
-const STICKER_LAMS =
-  "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_lamsvlees.svg";
-const STICKER_RUND =
-  "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_rundvlees.svg";
-const STICKER_KIP =
-  "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_gevogelte.svg";
-const HERO_WIDE_IMAGE =
-  "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Ook-klant-worden.webp";
+/* ── Constants ─────────────────────────────────────────────── */
 
-const assortment = [
-  { to: "/assortiment#lamsvlees", label: "Lamsvlees" },
-  { to: "/assortiment#rundvlees", label: "Rundvlees" },
-  { to: "/assortiment#kip", label: "Kip" },
-  { to: "/assortiment#eindproducten", label: "Eindproducten" },
+const LOGO_URL = "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/logo_footer.webp";
+const HERO_WIDE = "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Ook-klant-worden.webp";
+const STICKER_LAMS = "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_lamsvlees.svg";
+const STICKER_RUND = "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_rundvlees.svg";
+const STICKER_KIP = "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_gevogelte.svg";
+const GOLD = "rgba(226,192,141,";
+
+/* ── Original info items (unchanged) ───────────────────────── */
+
+const infoItems = [
+  { label: "Halal gecertificeerd", Icon: ShieldCheck },
+  { label: "Premium Nederlandse kwaliteit", Icon: Gem },
+  { label: "Snelle levering", Icon: Truck },
 ] as const;
 
-const segments = [
-  { to: "/#slagerijen", label: "Slagerijen" },
-  { to: "/#groothandels", label: "Groothandels" },
-  { to: "/#supermarkten", label: "Supermarkten" },
-  { to: "/#restaurants", label: "Restaurants" },
-] as const;
+/* ── Sticker filter ─────────────────────────────────────────── */
 
-/* ─────────────────────────────────────────────────────────────────
-   PhoneCTA  — magnetic shimmer button
-   ─────────────────────────────────────────────────────────────── */
-function PhoneCTA({ onClick, className = "" }: { onClick?: () => void; className?: string }) {
-  const ref = useRef<HTMLAnchorElement>(null);
+const STICKER_FILTER = "sepia(1) saturate(520%) hue-rotate(352deg) brightness(0.66) contrast(1.12)";
 
-  /* magnetic tracking */
-  const rawX = useMotionValue(0);
-  const rawY = useMotionValue(0);
-  const x = useSpring(rawX, { stiffness: 400, damping: 28 });
-  const y = useSpring(rawY, { stiffness: 400, damping: 28 });
+/* ── Logo ───────────────────────────────────────────────────── */
 
-  /* shimmer position */
-  const shimmerX = useMotionValue(-100);
-  const shimmerOpacity = useMotionValue(0);
-
-  function handleMouseMove(e: React.MouseEvent<HTMLAnchorElement>) {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const cx = e.clientX - rect.left - rect.width / 2;
-    const cy = e.clientY - rect.top - rect.height / 2;
-    rawX.set(cx * 0.18);
-    rawY.set(cy * 0.18);
-    shimmerX.set(((e.clientX - rect.left) / rect.width) * 100 - 50);
-  }
-
-  function handleMouseEnter() {
-    shimmerOpacity.set(1);
-  }
-
-  function handleMouseLeave() {
-    rawX.set(0);
-    rawY.set(0);
-    shimmerOpacity.set(0);
-  }
-
-  /* glow color based on motion */
-  const glowOpacity = useTransform(
-    [x, y],
-    ([lx, ly]) =>
-      Math.min(Math.sqrt((lx as number) ** 2 + (ly as number) ** 2) / 12, 1) * 0.7 + 0.3,
-  );
-
+function NavLogo() {
   return (
-    <motion.a
-      ref={ref as React.RefObject<HTMLAnchorElement>}
-      style={{ x, y }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onClick={onClick}
-      href="tel:+31627273763"
-      className={`group relative inline-flex cursor-pointer select-none items-center gap-2 overflow-hidden rounded-sm bg-primary px-4 py-1.5 text-[11px] font-semibold tracking-[0.06em] text-primary-foreground no-underline sm:px-5 sm:py-2 sm:text-[12px] ${className}`}
-      whileTap={{ scale: 0.96 }}
+    <Link
+      to="/"
+      aria-label="Ipekçi Slachterij"
+      className="relative z-20 flex shrink-0 items-center py-1 transition-opacity duration-200 hover:opacity-85"
     >
-      {/* ── ambient glow layer ── */}
-      <motion.span
-        style={{ opacity: glowOpacity }}
-        className="pointer-events-none absolute -inset-1 rounded-sm bg-primary blur-xl"
-        aria-hidden
+      <img
+        src={LOGO_URL}
+        alt="Ipekçi Slachterij"
+        className="h-[44px] w-auto select-none sm:h-[58px]"
+        loading="eager"
+        decoding="async"
+        style={{
+          filter:
+            "drop-shadow(0 8px 24px rgba(0,0,0,0.28)) drop-shadow(0 0 12px rgba(179,18,23,0.10))",
+        }}
       />
-
-      {/* ── border shimmer trace ── */}
-      <motion.span
-        style={{ opacity: shimmerOpacity }}
-        className="pointer-events-none absolute inset-0 rounded-sm"
-        aria-hidden
-      >
-        <span
-          className="absolute inset-0 rounded-sm"
-          style={{
-            background:
-              "linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.18) 50%, transparent 80%)",
-            backgroundSize: "200% 100%",
-            animation: "none",
-          }}
-        />
-      </motion.span>
-
-      {/* ── diagonal shimmer sweep ── */}
-      <motion.span
-        className="pointer-events-none absolute inset-0 -skew-x-[20deg] translate-x-[-120%] bg-gradient-to-r from-transparent via-white/25 to-transparent transition-none"
-        style={{ opacity: shimmerOpacity }}
-        variants={{}}
-        whileHover={{ translateX: "220%" }}
-        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        aria-hidden
-      />
-
-      {/* ── top edge highlight ── */}
-      <span
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"
-        aria-hidden
-      />
-
-      {/* ── content ── */}
-      <Phone size={14} className="relative z-10" />
-      <span className="relative z-10">06 - 272 737 63</span>
-      <motion.span
-        className="relative z-10"
-        whileHover={{ x: 2, y: -2 }}
-        transition={{ type: "spring", stiffness: 400, damping: 20 }}
-      >
-        <ArrowUpRight size={13} strokeWidth={2.5} />
-      </motion.span>
-    </motion.a>
+    </Link>
   );
 }
+
+/* ── Top info bar ───────────────────────────────────────────── */
+
+function TopInfoBar({ visible }: { visible: boolean }) {
+  if (!visible) return null;
+
+  return (
+    <div className="relative hidden lg:block">
+      {/* One unified group — trust indicators + contact flow continuously,
+          anchored to the right half (justify-end begins the group at ~55–60%) */}
+      <div className="mx-auto flex h-[38px] max-w-[1400px] items-center justify-end px-8">
+        <div className="flex items-center text-[13px] font-[500] tracking-[0.05em] text-white/62">
+
+          {/* Trust indicators */}
+          {infoItems.map(({ label, Icon }, i) => (
+            <Fragment key={label}>
+              {i > 0 && (
+                <span
+                  className="mx-[15px] h-[14px] w-px shrink-0"
+                  style={{ background: `${GOLD}0.15)` }}
+                  aria-hidden
+                />
+              )}
+              <span className="flex items-center gap-2">
+                <Icon size={13} className="shrink-0" style={{ color: `${GOLD}0.82)` }} />
+                <span>{label}</span>
+              </span>
+            </Fragment>
+          ))}
+
+          {/* Wider separator before contact block */}
+          <span
+            className="mx-[19px] h-[14px] w-px shrink-0"
+            style={{ background: `${GOLD}0.18)` }}
+            aria-hidden
+          />
+
+          {/* Email */}
+          <a
+            href="mailto:info@ipekcislachterij.nl"
+            className="flex items-center gap-2 transition-colors duration-200 hover:text-white/88"
+          >
+            <Mail size={13} className="shrink-0" style={{ color: `${GOLD}0.78)` }} />
+            info@ipekcislachterij.nl
+          </a>
+
+          {/* Dot between email and phone */}
+          <span
+            className="mx-[11px] h-[5px] w-[5px] shrink-0 rounded-full"
+            style={{ background: `${GOLD}0.28)` }}
+            aria-hidden
+          />
+
+          {/* Phone */}
+          <a
+            href="tel:+31627273763"
+            className="flex items-center gap-2 transition-colors duration-200 hover:text-white/88"
+          >
+            <Phone size={13} className="shrink-0" style={{ color: `${GOLD}0.78)` }} />
+            +31 6 272 737 63
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── CTA — original text "Contact opnemen" ──────────────────── */
 
 function MainCTA({ onClick, className = "" }: { onClick?: () => void; className?: string }) {
   return (
     <Link
       to="/contact"
       onClick={onClick}
-      className={`group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-2xl bg-gradient-to-b from-[#B11217] to-[#7E080C] px-6 py-3 text-[12px] font-semibold tracking-[0.06em] text-[#F5F1EB] transition-[filter,transform] duration-300 hover:brightness-105 active:brightness-95 active:scale-[0.99] ${className}`}
+      className={`group relative inline-flex items-center gap-2.5 overflow-hidden rounded-2xl bg-gradient-to-b from-[#B11217] to-[#7E080C] px-7 py-[13px] text-[12px] font-semibold tracking-[0.06em] text-[#F5F1EB] transition-[filter,transform] duration-300 hover:brightness-105 hover:-translate-y-px active:brightness-95 active:scale-[0.99] ${className}`}
     >
-      <span className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(520px_240px_at_30%_20%,rgba(245,241,235,0.18)_0%,transparent_62%)]" />
-      <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/35 to-transparent" />
+      <span
+        className="pointer-events-none absolute inset-x-0 top-0 h-px"
+        style={{ background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.35),transparent)" }}
+        aria-hidden
+      />
+      <span
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        style={{ background: "radial-gradient(520px 240px at 30% 20%, rgba(245,241,235,0.18) 0%, transparent 62%)" }}
+        aria-hidden
+      />
       <span className="relative">Contact opnemen</span>
       <ArrowRight
         size={14}
@@ -183,258 +174,64 @@ function MainCTA({ onClick, className = "" }: { onClick?: () => void; className?
   );
 }
 
-function TopInfoBar({ visible, shown }: { visible?: boolean; shown?: boolean }) {
-  const infoItems = [
-    { label: "Halal gecertificeerd", Icon: ShieldCheck },
-    { label: "Premium Nederlandse kwaliteit", Icon: Gem },
-    { label: "Snelle levering", Icon: Truck },
-  ] as const;
-
-  return (
-    <motion.div
-      animate={{
-        opacity: shown === false ? 0 : 1,
-        y: shown === false ? -18 : 0,
-      }}
-      transition={{ type: "spring", stiffness: 260, damping: 40 }}
-      style={{ backdropFilter: "none", WebkitBackdropFilter: "none" }}
-      className="pointer-events-none hidden lg:block"
-    >
-      <div className="pointer-events-auto mx-auto mt-2 w-full max-w-[1480px] px-5 sm:px-8 lg:px-12">
-        <div className="flex h-10 items-center justify-end px-2 text-white/90">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-5">
-              {infoItems.map(({ label, Icon }) => (
-                <div
-                  key={label}
-                  className="group inline-flex items-center gap-2 text-[11px] font-medium tracking-[0.06em] text-white/85 transition-colors duration-300 hover:text-white"
-                >
-                  <Icon size={14} className="text-[rgba(226,192,141,0.92)]" />
-                  <span>{label}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex items-center gap-3 text-[11px] font-medium tracking-[0.06em] text-white/80">
-              <Mail size={14} className="text-[rgba(226,192,141,0.88)]" />
-              <a
-                href="mailto:info@ipekcislachterij.nl"
-                className="transition-colors duration-300 hover:text-white"
-              >
-                info@ipekcislachterij.nl
-              </a>
-              <span
-                className="h-1 w-1 rounded-full bg-[rgba(226,192,141,0.35)]"
-                aria-hidden="true"
-              />
-            </div>
-
-            <a
-              href="tel:+31627273763"
-              className="group inline-flex items-center gap-2 text-[11px] font-medium tracking-[0.06em] text-white/85 transition-colors duration-300 hover:text-white"
-            >
-              <Phone size={14} className="text-[rgba(226,192,141,0.90)]" />
-              <span>+31 6 272 737 63</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────────
-   Navbar
-   ─────────────────────────────────────────────────────────────── */
-export function Navbar() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const location = useLocation();
-
-  useEffect(() => {
-    if (!isMobileMenuOpen) return;
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [isMobileMenuOpen]);
-
-  return (
-    <NavbarRoot>
-      <TopInfoBar />
-      {/* ── Desktop ────────────────────────────────── */}
-      <NavBody>
-        {/* Logo */}
-        <NavbarLogo />
-
-        {/* Center links */}
-        <div className="absolute inset-0 hidden flex-1 items-center justify-center gap-0.5 lg:flex">
-          <NavDropdown
-            label="Assortiment"
-            items={assortment}
-            active={location.pathname.startsWith("/assortiment")}
-            open={openDropdown === "Assortiment"}
-            onOpenChange={(open) => setOpenDropdown(open ? "Assortiment" : null)}
-          />
-          <NavDropdown
-            label="Voor wie"
-            items={segments}
-            active={location.hash?.length ? location.hash !== "" : false}
-            open={openDropdown === "Voor wie"}
-            onOpenChange={(open) => setOpenDropdown(open ? "Voor wie" : null)}
-          />
-          <NavLink to="/ons-verhaal" label="Ons verhaal" active={false} disabled />
-          <NavLink to="/contact" label="Contact" active={false} disabled />
-        </div>
-
-        {/* Right CTA */}
-        <MainCTA />
-      </NavBody>
-
-      {/* ── Mobile ─────────────────────────────────── */}
-      <MobileNav>
-        <MobileNavHeader>
-          <NavbarLogo />
-          <MobileNavToggle
-            isOpen={isMobileMenuOpen}
-            onClick={() => setIsMobileMenuOpen((v) => !v)}
-          />
-        </MobileNavHeader>
-
-        <MobileNavMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)}>
-          <nav className="flex w-full flex-col">
-            <div className="mb-6">
-              <div className="text-[12px] font-medium tracking-[0.10em] text-[rgba(226,192,141,0.75)]">
-                Ipekçi Slachterij
-              </div>
-              <div className="mt-3 text-2xl font-display tracking-[-0.03em] text-white">
-                Premium halalvlees voor B2B.
-              </div>
-            </div>
-
-            <Accordion type="multiple" className="w-full">
-              <AccordionItem value="assortiment" className="border-white/[0.05]">
-                <AccordionTrigger className="px-0 text-base font-medium tracking-[0.06em] text-white/85 hover:no-underline">
-                  Assortiment
-                </AccordionTrigger>
-                <AccordionContent className="px-0">
-                  <div className="flex flex-col">
-                    {assortment.map((l, i) => (
-                      <a
-                        key={l.to}
-                        href={l.to}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="flex items-center justify-between border-b border-white/[0.08] py-5 text-[15px] font-medium tracking-[0.04em] text-white/70 transition-colors duration-200 hover:text-white"
-                        style={{ animationDelay: `${i * 40}ms` }}
-                      >
-                        <span>{l.label}</span>
-                        <span className="h-1.5 w-1.5 rounded-full bg-[rgba(226,192,141,0.65)]" />
-                      </a>
-                    ))}
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="voorwie" className="border-white/[0.05]">
-                <AccordionTrigger className="px-0 text-base font-medium tracking-[0.06em] text-white/85 hover:no-underline">
-                  Voor wie
-                </AccordionTrigger>
-                <AccordionContent className="px-0">
-                  <div className="flex flex-col">
-                    {segments.map((l, i) => (
-                      <a
-                        key={l.to}
-                        href={l.to}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="flex items-center justify-between border-b border-white/[0.08] py-5 text-[15px] font-medium tracking-[0.04em] text-white/70 transition-colors duration-200 hover:text-white"
-                        style={{ animationDelay: `${i * 40}ms` }}
-                      >
-                        <span>{l.label}</span>
-                        <span className="h-1.5 w-1.5 rounded-full bg-[rgba(226,192,141,0.65)]" />
-                      </a>
-                    ))}
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-
-            {[
-              { to: "/ons-verhaal", label: "Ons verhaal" },
-              { to: "/contact", label: "Contact" },
-            ].map((l, i) => {
-              return (
-                <button
-                  key={l.to}
-                  type="button"
-                  aria-disabled="true"
-                  className="flex cursor-default items-center justify-between border-b border-white/[0.08] py-5 text-[15px] font-medium tracking-[0.04em] text-white/35 last:border-0"
-                  style={{ animationDelay: `${i * 40}ms` }}
-                >
-                  <span>{l.label}</span>
-                </button>
-              );
-            })}
-          </nav>
-
-          {/* Mobile CTA */}
-          <div className="mt-7 w-full">
-            <MainCTA className="w-full" onClick={() => setIsMobileMenuOpen(false)} />
-            <a
-              href="tel:+31627273763"
-              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-6 py-3 text-[12px] font-medium tracking-[0.06em] text-white/75 transition-colors hover:bg-white/[0.06] hover:text-white/90"
-            >
-              <Phone size={14} className="text-[rgba(226,192,141,0.90)]" />
-              <span>Bel direct</span>
-            </a>
-          </div>
-        </MobileNavMenu>
-      </MobileNav>
-    </NavbarRoot>
-  );
-}
+/* ── Desktop nav link ───────────────────────────────────────── */
 
 function NavLink({
   to,
   label,
   active,
-  disabled = false,
 }: {
   to: string;
   label: string;
   active: boolean;
-  disabled?: boolean;
 }) {
-  if (disabled) {
-    return (
-      <button
-        type="button"
-        aria-disabled="true"
-        className="group relative cursor-default px-5 py-3 text-[12px] font-medium tracking-[0.08em] text-white/38"
-      >
-        <span className="relative z-10">{label}</span>
-      </button>
-    );
-  }
-
   return (
     <Link
       to={to}
-      activeOptions={{ exact: to === "/" }}
-      className={`group relative px-5 py-3 text-[12px] font-medium tracking-[0.08em] transition-colors duration-200 ${
-        active ? "text-white" : "text-white/90 hover:text-white"
+      className={`group relative inline-flex items-center px-7 py-4 text-[13px] font-medium tracking-[0.08em] transition-colors duration-200 ${
+        active ? "text-white" : "text-white/82 hover:text-white"
       }`}
     >
-      {!active && (
-        <span className="absolute inset-x-5 -bottom-0.5 h-px origin-left scale-x-0 bg-[rgba(226,192,141,0.75)] transition-transform duration-300 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-x-100" />
-      )}
-      {active && (
-        <span className="absolute inset-x-0 -bottom-0.5 mx-auto h-0.5 w-10 rounded-full bg-[rgba(226,192,141,0.85)]" />
-      )}
       <span className="relative z-10">{label}</span>
+      {active ? (
+        <span
+          className="absolute inset-x-7 -bottom-px h-px"
+          style={{ background: `linear-gradient(90deg, transparent, ${GOLD}0.85), transparent)` }}
+          aria-hidden
+        />
+      ) : (
+        <span
+          className="absolute inset-x-7 -bottom-px h-px origin-left scale-x-0 transition-transform duration-[360ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-x-100"
+          style={{ background: `${GOLD}0.72)` }}
+          aria-hidden
+        />
+      )}
     </Link>
   );
 }
+
+/* ── Disabled nav link (original behavior) ──────────────────── */
+
+function NavLinkDisabled({ label }: { label: string }) {
+  return (
+    <button
+      type="button"
+      aria-disabled="true"
+      className="relative cursor-default px-7 py-4 text-[13px] font-medium tracking-[0.08em] text-white/38"
+    >
+      {label}
+    </button>
+  );
+}
+
+/* ── Desktop dropdown ───────────────────────────────────────── */
+
+type DropdownItem = {
+  to: string;
+  label: string;
+  description: string;
+  iconSrc: string;
+};
 
 function NavDropdown({
   label,
@@ -442,220 +239,444 @@ function NavDropdown({
   active,
   open,
   onOpenChange,
+  panelTitle,
+  panelSubtitle,
+  featuredText,
+  featuredCta,
+  featuredCtaHref,
 }: {
   label: string;
-  items: readonly { to: string; label: string }[];
+  items: readonly DropdownItem[];
   active: boolean;
   open: boolean;
-  onOpenChange: (open: boolean) => void;
+  onOpenChange: (v: boolean) => void;
+  panelTitle: string;
+  panelSubtitle: string;
+  featuredText: string;
+  featuredCta: string;
+  featuredCtaHref: string;
 }) {
-  const isAssortiment = label === "Assortiment";
-  const isVoorWie = label === "Voor wie";
-
-  const richItems = items.map((item) => {
-    if (isAssortiment) {
-      if (item.label === "Lamsvlees") {
-        return {
-          ...item,
-          description:
-            "Premium Nederlandse lammeren, onbedwelmd halalgeslacht in ons eigen slachthuis.",
-          iconSrc: STICKER_LAMS,
-        };
-      }
-      if (item.label === "Rundvlees") {
-        return {
-          ...item,
-          description:
-            "Nederlands rundvlees van vaste partners. Altijd halalgeslacht en constant geleverd.",
-          iconSrc: STICKER_RUND,
-        };
-      }
-      if (item.label === "Kip") {
-        return {
-          ...item,
-          description:
-            "Op aanvraag leveren wij ook halalgeslachte kip uit Nederland, in standaarddelen.",
-          iconSrc: STICKER_KIP,
-        };
-      }
-      return {
-        ...item,
-        description:
-          "Eindproducten gemaakt van ons eigen halalvlees — premium kwaliteit voor verkoop en bereiding.",
-        iconSrc: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_rundvlees.svg",
-      };
-    }
-
-    if (isVoorWie) {
-      if (item.label === "Slagerijen") {
-        return {
-          ...item,
-          description: "Dagelijks vers halalvlees van hoge Nederlandse kwaliteit, snel geleverd.",
-          iconSrc: STICKER_LAMS,
-        };
-      }
-      if (item.label === "Groothandels") {
-        return {
-          ...item,
-          description: "Stabiele aanvoer in grotere volumes, direct uit ons eigen slachthuis.",
-          iconSrc: STICKER_RUND,
-        };
-      }
-      if (item.label === "Supermarkten") {
-        return {
-          ...item,
-          description: "Halalvlees en eindproducten voor vers & diepvries, direct verkoopklaar.",
-          iconSrc: STICKER_RUND,
-        };
-      }
-      return {
-        ...item,
-        description: "Geselecteerde delen en grillproducten, afgestemd op menukaart en keuken.",
-        iconSrc: STICKER_KIP,
-      };
-    }
-
-    return { ...item, description: "", iconSrc: STICKER_RUND };
-  });
-
   return (
     <DropdownMenu open={open} onOpenChange={onOpenChange} modal={false}>
       <DropdownMenuTrigger asChild>
         <button
           type="button"
           onMouseEnter={() => onOpenChange(true)}
-          className={`group relative inline-flex items-center gap-2 bg-transparent px-5 py-3 text-[12px] font-medium tracking-[0.08em] outline-none transition-colors duration-200 focus:outline-none focus-visible:ring-0 data-[state=open]:text-white ${
-            active ? "text-white" : "text-white/90 hover:text-white"
+          className={`group relative inline-flex items-center gap-1.5 bg-transparent px-7 py-4 text-[13px] font-medium tracking-[0.08em] outline-none transition-colors duration-200 focus:outline-none focus-visible:ring-0 ${
+            open || active ? "text-white" : "text-white/82 hover:text-white"
           }`}
         >
           <span className="relative z-10">{label}</span>
-          <ChevronDown
-            size={14}
-            className="relative z-10 text-white/80 transition-transform duration-300 group-hover:text-white data-[state=open]:rotate-180 data-[state=open]:text-white"
+          <motion.span
+            className="relative z-10"
+            animate={{ rotate: open ? 180 : 0 }}
+            transition={{ duration: 0.26, ease: DS_EASE }}
+          >
+            <ChevronDown size={13} className="text-white/50" />
+          </motion.span>
+          <span
+            className={`absolute inset-x-7 -bottom-px h-px transition-transform duration-[360ms] ease-[cubic-bezier(.22,1,.36,1)] ${
+              open || active
+                ? "scale-x-100"
+                : "origin-left scale-x-0 group-hover:scale-x-100"
+            }`}
+            style={{ background: `${GOLD}0.72)` }}
+            aria-hidden
           />
-          <span className="absolute inset-x-5 -bottom-0.5 h-px origin-left scale-x-0 bg-[rgba(226,192,141,0.75)] transition-transform duration-300 ease-[cubic-bezier(.22,1,.36,1)] group-hover:scale-x-100" />
         </button>
       </DropdownMenuTrigger>
+
       <DropdownMenuContent
         align="center"
-        sideOffset={14}
+        sideOffset={12}
         onMouseEnter={() => onOpenChange(true)}
         onMouseLeave={() => onOpenChange(false)}
-        className={`mt-3 overflow-hidden rounded-2xl border border-white/10 bg-background/70 p-0 text-foreground shadow-[0_30px_90px_-40px_rgba(0,0,0,0.85)] backdrop-blur-2xl ${
-          isAssortiment || isVoorWie ? "w-[860px]" : "w-56 p-2 rounded-sm"
-        }`}
+        className="mt-2 w-[860px] overflow-hidden rounded-2xl border border-white/10 bg-background/70 p-0 text-foreground shadow-[0_30px_90px_-40px_rgba(0,0,0,0.85)] backdrop-blur-2xl"
       >
-        {isAssortiment || isVoorWie ? (
-          <div className="grid grid-cols-[1.1fr_0.9fr]">
-            <div className="p-6">
-              <div className="flex items-center justify-between gap-6">
-                <div>
-                  <div className="text-[12px] font-medium tracking-[0.10em] text-foreground/55">
-                    {isAssortiment ? "Assortiment" : "Voor wie"}
-                  </div>
-                  <div className="mt-2 font-display text-2xl text-foreground">
-                    {isAssortiment ? "Onze productcategorieën." : "Onze klanten."}
-                  </div>
+        <div className="grid grid-cols-[1.1fr_0.9fr]">
+          {/* Left panel */}
+          <div className="p-6">
+            <div className="flex items-center justify-between gap-6">
+              <div>
+                <div className="text-[12px] font-medium tracking-[0.10em] text-foreground/55">
+                  {panelTitle}
                 </div>
-                <div className="hidden h-px flex-1 bg-gradient-to-r from-white/0 via-white/10 to-white/0 lg:block" />
+                <div className="mt-2 font-display text-2xl text-foreground">
+                  {panelSubtitle}
+                </div>
               </div>
-
-              <div className="mt-6 grid gap-2">
-                {richItems.map((item) => (
-                  <DropdownMenuItem key={item.to} asChild className="p-0 focus:bg-transparent">
-                    <a
-                      href={item.to}
-                      className="group flex items-start gap-4 rounded-xl border border-transparent bg-transparent px-4 py-3 transition-all duration-300 hover:border-white/10 hover:bg-white/[0.04]"
-                    >
-                      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[0.03] shadow-[0_18px_50px_-30px_rgba(0,0,0,0.9)]">
-                        <img
-                          src={(item as (typeof richItems)[number]).iconSrc}
-                          alt=""
-                          aria-hidden
-                          className="h-5 w-5 opacity-90"
-                          loading="lazy"
-                          decoding="async"
-                          referrerPolicy="no-referrer"
-                          style={{
-                            filter:
-                              "sepia(1) saturate(520%) hue-rotate(352deg) brightness(0.66) contrast(1.12)",
-                          }}
-                        />
-                      </span>
-                      <span className="min-w-0 flex-1">
-                        <span className="flex items-center justify-between gap-4">
-                          <span className="text-[12px] font-medium tracking-[0.06em] text-foreground/85 transition-colors duration-300 group-hover:text-foreground">
-                            {item.label}
-                          </span>
-                          <ArrowUpRight
-                            size={14}
-                            className="shrink-0 text-foreground/45 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary"
-                          />
-                        </span>
-                        <span className="mt-1 block text-xs leading-relaxed text-foreground/55">
-                          {(item as (typeof richItems)[number]).description}
-                        </span>
-                      </span>
-                    </a>
-                  </DropdownMenuItem>
-                ))}
-              </div>
+              <div className="hidden h-px flex-1 bg-gradient-to-r from-white/0 via-white/10 to-white/0 lg:block" />
             </div>
 
-            <div className="relative border-l border-white/10 bg-white/[0.02] p-6">
-              <div className="text-[12px] font-medium tracking-[0.10em] text-foreground/55">
-                Uitgelicht
-              </div>
-              <div className="mt-3 overflow-hidden rounded-2xl border border-white/10 bg-black/20">
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <img
-                    src={HERO_WIDE_IMAGE}
-                    alt=""
-                    aria-hidden
-                    className="absolute inset-0 h-full w-full object-cover"
-                    loading="lazy"
-                    decoding="async"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/15 to-black/60" />
-                  <div className="absolute inset-x-0 bottom-0 p-5">
-                    <div className="text-[12px] font-medium tracking-[0.06em] text-foreground/85">
-                      Ipekçi Slachterij
-                    </div>
-                    <div className="mt-2 text-sm leading-relaxed text-foreground/65">
-                      {isAssortiment
-                        ? "Bekijk het complete assortiment: lamsvlees, rundvlees, kip (op aanvraag) en eindproducten."
-                        : "Levering op afspraak, vaste lijnen en constante kwaliteit voor uw bedrijf."}
-                    </div>
-                    <div className="mt-4 flex flex-wrap gap-3">
-                      <a
-                        href={isAssortiment ? "/assortiment" : "/contact"}
-                        className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-black/35 px-4 py-2 text-[12px] font-medium tracking-[0.06em] text-foreground/85 transition-colors hover:border-white/25 hover:bg-black/55"
-                      >
-                        {isAssortiment ? "Alle producten" : "Word klant"}
-                        <ArrowUpRight size={14} className="text-primary" />
-                      </a>
-                    </div>
+            <div className="mt-6 grid gap-2">
+              {items.map((item) => (
+                <DropdownMenuItem key={item.to} asChild className="p-0 focus:bg-transparent">
+                  <a
+                    href={item.to}
+                    className="group flex items-start gap-4 rounded-xl border border-transparent bg-transparent px-4 py-3 transition-all duration-300 hover:border-white/10 hover:bg-white/[0.04]"
+                  >
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[0.03] shadow-[0_18px_50px_-30px_rgba(0,0,0,0.9)]">
+                      <img
+                        src={item.iconSrc}
+                        alt=""
+                        aria-hidden
+                        className="h-5 w-5 opacity-90"
+                        loading="lazy"
+                        decoding="async"
+                        referrerPolicy="no-referrer"
+                        style={{ filter: STICKER_FILTER }}
+                      />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="flex items-center justify-between gap-4">
+                        <span className="text-[12px] font-medium tracking-[0.06em] text-foreground/85 transition-colors duration-300 group-hover:text-foreground">
+                          {item.label}
+                        </span>
+                        <ArrowUpRight
+                          size={14}
+                          className="shrink-0 text-foreground/45 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary"
+                        />
+                      </span>
+                      <span className="mt-1 block text-xs leading-relaxed text-foreground/55">
+                        {item.description}
+                      </span>
+                    </span>
+                  </a>
+                </DropdownMenuItem>
+              ))}
+            </div>
+          </div>
+
+          {/* Right featured image */}
+          <div className="relative border-l border-white/10 bg-white/[0.02] p-6">
+            <div className="text-[12px] font-medium tracking-[0.10em] text-foreground/55">
+              Uitgelicht
+            </div>
+            <div className="mt-3 overflow-hidden rounded-2xl border border-white/10 bg-black/20">
+              <div className="relative aspect-[4/3] overflow-hidden">
+                <img
+                  src={HERO_WIDE}
+                  alt=""
+                  aria-hidden
+                  className="absolute inset-0 h-full w-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/15 to-black/60" />
+                <div className="absolute inset-x-0 bottom-0 p-5">
+                  <div className="text-[12px] font-medium tracking-[0.06em] text-foreground/85">
+                    Ipekçi Slachterij
+                  </div>
+                  <div className="mt-2 text-sm leading-relaxed text-foreground/65">
+                    {featuredText}
+                  </div>
+                  <div className="mt-4">
+                    <a
+                      href={featuredCtaHref}
+                      className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-black/35 px-4 py-2 text-[12px] font-medium tracking-[0.06em] text-foreground/85 transition-colors hover:border-white/25 hover:bg-black/55"
+                    >
+                      {featuredCta}
+                      <ArrowUpRight size={14} className="text-primary" />
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        ) : (
-          items.map((item) => (
-            <DropdownMenuItem
-              key={item.to}
-              asChild
-              className="cursor-pointer rounded-sm px-3 py-2.5 text-[12px] font-medium tracking-[0.06em] text-foreground/85 focus:bg-white/[0.06] focus:text-foreground"
-            >
-              <a href={item.to} className="flex items-center justify-between">
-                <span>{item.label}</span>
-                <ArrowUpRight size={14} className="text-primary" />
-              </a>
-            </DropdownMenuItem>
-          ))
-        )}
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+}
+
+/* ── Mobile toggle ──────────────────────────────────────────── */
+
+function MobileToggle({ isOpen, onClick }: { isOpen: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label={isOpen ? "Sluit menu" : "Open menu"}
+      className="relative grid h-9 w-9 place-items-center text-foreground/88 transition-colors hover:text-foreground"
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        {isOpen ? (
+          <motion.span
+            key="close"
+            initial={{ rotate: -90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            exit={{ rotate: 90, opacity: 0 }}
+            transition={{ duration: 0.18 }}
+          >
+            <IconX size={20} />
+          </motion.span>
+        ) : (
+          <motion.span
+            key="open"
+            initial={{ rotate: 90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            exit={{ rotate: -90, opacity: 0 }}
+            transition={{ duration: 0.18 }}
+          >
+            <IconMenu2 size={20} />
+          </motion.span>
+        )}
+      </AnimatePresence>
+    </button>
+  );
+}
+
+/* ── Mobile drawer ──────────────────────────────────────────── */
+
+function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [isOpen, onClose]);
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.22, ease: "easeOut" }}
+          className="fixed inset-0 z-[80] flex w-full flex-col lg:hidden"
+        >
+          {/* backdrop */}
+          <div
+            className="absolute inset-0 bg-[#050505]/80 backdrop-blur-2xl"
+            onClick={onClose}
+            aria-hidden
+          />
+
+          {/* ambient light */}
+          <div className="pointer-events-none absolute inset-0" aria-hidden>
+            <div className="absolute -left-28 -top-28 h-[420px] w-[420px] rounded-full bg-[rgba(226,192,141,0.14)] blur-[140px]" />
+            <div className="absolute -right-28 top-40 h-[520px] w-[520px] rounded-full bg-[rgba(179,18,23,0.16)] blur-[170px]" />
+          </div>
+
+          {/* content */}
+          <motion.div
+            initial={{ y: 10, filter: "blur(10px)" }}
+            animate={{ y: 0, filter: "blur(0px)" }}
+            exit={{ y: 10, filter: "blur(10px)" }}
+            transition={{ type: "spring", stiffness: 260, damping: 32 }}
+            className="relative z-10 flex h-full w-full flex-col overflow-y-auto px-6 pb-10 pt-10 sm:px-8"
+          >
+            {/* header */}
+            <div className="flex items-center justify-between pb-8">
+              <Link to="/" onClick={onClose} aria-label="Ipekçi Slachterij">
+                <img
+                  src={LOGO_URL}
+                  alt="Ipekçi Slachterij"
+                  className="h-9 w-auto select-none"
+                  loading="eager"
+                  decoding="async"
+                />
+              </Link>
+              <button
+                onClick={onClose}
+                aria-label="Sluit menu"
+                className="grid h-10 w-10 place-items-center rounded-2xl border border-white/10 bg-white/[0.04] text-foreground transition-colors hover:bg-white/[0.06]"
+              >
+                <IconX size={18} />
+              </button>
+            </div>
+
+            {/* brand heading */}
+            <div className="mb-6">
+              <div className="text-[12px] font-medium tracking-[0.10em] text-[rgba(226,192,141,0.75)]">
+                Ipekçi Slachterij
+              </div>
+              <div className="mt-3 font-display text-2xl tracking-[-0.03em] text-white">
+                Premium halalvlees voor B2B.
+              </div>
+            </div>
+
+            {/* original accordion structure */}
+            <nav className="flex w-full flex-col">
+              <Accordion type="multiple" className="w-full">
+                <AccordionItem value="assortiment" className="border-white/[0.05]">
+                  <AccordionTrigger className="px-0 text-base font-medium tracking-[0.06em] text-white/85 hover:no-underline">
+                    Assortiment
+                  </AccordionTrigger>
+                  <AccordionContent className="px-0">
+                    <AssortimentMobileLinks onNavigate={onClose} />
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="voorwie" className="border-white/[0.05]">
+                  <AccordionTrigger className="px-0 text-base font-medium tracking-[0.06em] text-white/85 hover:no-underline">
+                    Voor wie
+                  </AccordionTrigger>
+                  <AccordionContent className="px-0">
+                    <VoorWieMobileLinks onNavigate={onClose} />
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+
+              {/* disabled links — original behavior */}
+              {[
+                { to: "/ons-verhaal", label: "Ons verhaal" },
+                { to: "/contact", label: "Contact" },
+              ].map((l) => (
+                <Link
+                  key={l.to}
+                  to={l.to}
+                  onClick={onClose}
+                  className="flex items-center justify-between border-b border-white/[0.08] py-5 text-[15px] font-medium tracking-[0.04em] text-white/85 transition-colors hover:text-white last:border-0"
+                >
+                  <span>{l.label}</span>
+                  <ArrowUpRight size={14} className="text-white/35" />
+                </Link>
+              ))}
+            </nav>
+
+            {/* bottom CTAs */}
+            <div className="mt-7 w-full">
+              <MainCTA className="w-full justify-center" onClick={onClose} />
+              <a
+                href="tel:+31627273763"
+                className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-6 py-3 text-[12px] font-medium tracking-[0.06em] text-white/75 transition-colors hover:bg-white/[0.06] hover:text-white/90"
+              >
+                <Phone size={14} style={{ color: `${GOLD}0.90)` }} />
+                <span>Bel direct</span>
+              </a>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+/* ── Main export ────────────────────────────────────────────── */
+
+export function Navbar() {
+  const { scrollY } = useScroll();
+  const [scrolled, setScrolled] = useState(false);
+  const [infoVisible, setInfoVisible] = useState(true);
+  const [navHidden, setNavHidden] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const location = useLocation();
+  const lastScrollY = useRef(0);
+
+  useMotionValueEvent(scrollY, "change", (current) => {
+    const prev = lastScrollY.current;
+    const delta = current - prev;
+
+    if (current < 100) {
+      setNavHidden(false);
+    } else if (delta > 6) {
+      setNavHidden(true);
+    } else if (delta < -6) {
+      setNavHidden(false);
+    }
+
+    lastScrollY.current = current;
+    setScrolled(current > 80);
+    setInfoVisible(current < 55);
+  });
+
+  useEffect(() => {
+    if (mobileOpen) setNavHidden(false);
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [mobileOpen]);
+
+  const isActive = (path: string) =>
+    path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
+
+  return (
+    <motion.div
+      className="fixed inset-x-0 top-0 z-50"
+      animate={{ y: navHidden && !mobileOpen ? "-100%" : "0%" }}
+      transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+    >
+      {/* Shared hero-integrated atmosphere — one continuous scrim behind BOTH the
+          top bar and the navbar, so they read as a single overlay (no band, no divider).
+          Fades out on scroll where the navbar takes over its own glass surface. */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 hidden h-[150px] lg:block"
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 42%, rgba(0,0,0,0.08) 75%, transparent 100%)",
+          opacity: scrolled ? 0 : 1,
+          transition: "opacity 0.5s cubic-bezier(0.16,1,0.3,1)",
+        }}
+        aria-hidden
+      />
+
+      {/* Top info bar — slides away on scroll */}
+      <TopInfoBar visible={infoVisible} />
+
+      {/* Main navbar */}
+      <motion.div
+        animate={{
+          backgroundColor: scrolled ? "rgba(8,8,8,0.95)" : "rgba(0,0,0,0)",
+        }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="relative"
+        style={{
+          borderBottomWidth: "1px",
+          borderBottomStyle: "solid",
+          borderBottomColor: scrolled ? "rgba(226,192,141,0.10)" : "rgba(226,192,141,0)",
+          backdropFilter: scrolled ? "blur(8px) saturate(115%)" : undefined,
+          WebkitBackdropFilter: scrolled ? "blur(8px) saturate(115%)" : undefined,
+          transition:
+            "background-color 0.5s cubic-bezier(0.16,1,0.3,1), border-color 0.5s cubic-bezier(0.16,1,0.3,1)",
+        }}
+      >
+        {/* Desktop — logo left, nav + CTA grouped right */}
+        <div className="mx-auto hidden h-[88px] max-w-[1440px] items-center justify-between gap-6 px-8 lg:flex lg:px-12">
+          <NavLogo />
+
+          <div className="flex items-center gap-0.5 xl:gap-1">
+            <AssortimentNavDropdown
+              active={isActive("/assortiment")}
+              open={openDropdown === "Assortiment"}
+              onOpenChange={(v) => setOpenDropdown(v ? "Assortiment" : null)}
+            />
+            <VoorWieNavDropdown
+              active={isActive("/voor-wie")}
+              open={openDropdown === "Voor wie"}
+              onOpenChange={(v) => setOpenDropdown(v ? "Voor wie" : null)}
+            />
+            <NavLink to="/ons-verhaal" label="Ons verhaal" active={isActive("/ons-verhaal")} />
+            <NavLink to="/contact" label="Contact" active={isActive("/contact")} />
+            <div className="ml-3 pl-3 xl:ml-4 xl:pl-4 border-l border-white/10">
+              <MainCTA />
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile header */}
+        <div className="flex items-center justify-between px-5 py-4 sm:px-8 lg:hidden">
+          <NavLogo />
+          <MobileToggle isOpen={mobileOpen} onClick={() => setMobileOpen((v) => !v)} />
+        </div>
+      </motion.div>
+
+      {/* Mobile drawer */}
+      <MobileDrawer isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
+    </motion.div>
   );
 }

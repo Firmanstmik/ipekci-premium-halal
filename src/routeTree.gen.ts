@@ -10,6 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as VoorWieRouteImport } from './routes/voor-wie'
+import { Route as VoorWieSegmentRouteImport } from './routes/voor-wie.$segment'
+import { Route as AssortimentCategoryRouteImport } from './routes/assortiment.$category'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -17,6 +20,21 @@ import { Route as IndexRouteImport } from './routes/index'
 const ServicesRoute = ServicesRouteImport.update({
   id: '/assortiment',
   path: '/assortiment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VoorWieRoute = VoorWieRouteImport.update({
+  id: '/voor-wie',
+  path: '/voor-wie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VoorWieSegmentRoute = VoorWieSegmentRouteImport.update({
+  id: '/voor-wie/$segment',
+  path: '/voor-wie/$segment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssortimentCategoryRoute = AssortimentCategoryRouteImport.update({
+  id: '/assortiment/$category',
+  path: '/assortiment/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -40,12 +58,18 @@ export interface FileRoutesByFullPath {
   '/ons-verhaal': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/assortiment': typeof ServicesRoute
+  '/assortiment/$category': typeof AssortimentCategoryRoute
+  '/voor-wie': typeof VoorWieRoute
+  '/voor-wie/$segment': typeof VoorWieSegmentRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ons-verhaal': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/assortiment': typeof ServicesRoute
+  '/assortiment/$category': typeof AssortimentCategoryRoute
+  '/voor-wie': typeof VoorWieRoute
+  '/voor-wie/$segment': typeof VoorWieSegmentRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +77,16 @@ export interface FileRoutesById {
   '/ons-verhaal': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/assortiment': typeof ServicesRoute
+  '/assortiment/$category': typeof AssortimentCategoryRoute
+  '/voor-wie': typeof VoorWieRoute
+  '/voor-wie/$segment': typeof VoorWieSegmentRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/ons-verhaal' | '/contact' | '/assortiment'
+  fullPaths: '/' | '/ons-verhaal' | '/contact' | '/assortiment' | '/assortiment/$category' | '/voor-wie' | '/voor-wie/$segment'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ons-verhaal' | '/contact' | '/assortiment'
-  id: '__root__' | '/' | '/ons-verhaal' | '/contact' | '/assortiment'
+  to: '/' | '/ons-verhaal' | '/contact' | '/assortiment' | '/assortiment/$category' | '/voor-wie' | '/voor-wie/$segment'
+  id: '__root__' | '/' | '/ons-verhaal' | '/contact' | '/assortiment' | '/assortiment/$category' | '/voor-wie' | '/voor-wie/$segment'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +94,9 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   ServicesRoute: typeof ServicesRoute
+  AssortimentCategoryRoute: typeof AssortimentCategoryRoute
+  VoorWieRoute: typeof VoorWieRoute
+  VoorWieSegmentRoute: typeof VoorWieSegmentRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -76,6 +106,27 @@ declare module '@tanstack/react-router' {
       path: '/assortiment'
       fullPath: '/assortiment'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assortiment/$category': {
+      id: '/assortiment/$category'
+      path: '/assortiment/$category'
+      fullPath: '/assortiment/$category'
+      preLoaderRoute: typeof AssortimentCategoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/voor-wie': {
+      id: '/voor-wie'
+      path: '/voor-wie'
+      fullPath: '/voor-wie'
+      preLoaderRoute: typeof VoorWieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/voor-wie/$segment': {
+      id: '/voor-wie/$segment'
+      path: '/voor-wie/$segment'
+      fullPath: '/voor-wie/$segment'
+      preLoaderRoute: typeof VoorWieSegmentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -107,6 +158,9 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   ServicesRoute: ServicesRoute,
+  AssortimentCategoryRoute: AssortimentCategoryRoute,
+  VoorWieRoute: VoorWieRoute,
+  VoorWieSegmentRoute: VoorWieSegmentRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -36,10 +36,7 @@ export function MagneticButton({
     y.set(0);
   };
 
-  const baseCls =
-    variant === "primary"
-      ? "bg-primary text-primary-foreground hover:shadow-[0_0_40px_-8px_color-mix(in_oklab,var(--primary)_70%,transparent)]"
-      : "border border-white/15 bg-white/[0.03] text-foreground hover:bg-white/[0.07]";
+  const variantCls = variant === "primary" ? "ipek-btn-primary" : "ipek-btn-ghost";
 
   const inner = (
     <motion.span style={{ x: sx, y: sy }} className="inline-flex items-center gap-2.5">
@@ -55,17 +52,11 @@ export function MagneticButton({
       className={`inline-block ${className}`}
     >
       {href ? (
-        <a
-          href={href}
-          className={`group inline-flex items-center justify-center rounded-[18px] px-7 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition-all duration-300 ${baseCls}`}
-        >
+        <a href={href} className={`ipek-btn group ${variantCls}`}>
           {inner}
         </a>
       ) : (
-        <button
-          onClick={onClick}
-          className={`group inline-flex items-center justify-center rounded-[18px] px-7 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition-all duration-300 ${baseCls}`}
-        >
+        <button type="button" onClick={onClick} className={`ipek-btn group ${variantCls}`}>
           {inner}
         </button>
       )}

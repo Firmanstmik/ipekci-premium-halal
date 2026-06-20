@@ -1902,7 +1902,7 @@ function HomePage() {
       <section
         data-story-chapter="heritage"
         aria-labelledby="story-heritage-heading"
-        className="story-section story-section--editorial relative overflow-hidden bg-[#F5F1EB] px-6 text-[#111111] grain md:px-10 lg:px-[80px]"
+        className="story-section story-section--editorial story-surface-light relative overflow-hidden px-6 grain md:px-10 lg:px-[80px]"
       >
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute left-1/3 top-1/4 h-[480px] w-[480px] rounded-full bg-[radial-gradient(circle,rgba(200,164,107,0.14),transparent_70%)]" />
@@ -2035,7 +2035,7 @@ function HomePage() {
         id="ons-assortiment"
         data-story-chapter="quality"
         aria-labelledby="assortiment-heading"
-        className="story-moment relative isolate overflow-hidden bg-white px-6 py-20 text-[#141414] grain lg:px-10 lg:py-28"
+        className="story-moment story-surface-light relative isolate overflow-hidden px-6 py-20 grain lg:px-10 lg:py-28"
       >
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -left-32 top-0 h-[480px] w-[480px] rounded-full bg-[radial-gradient(circle,rgba(226,192,141,0.14),transparent_68%)]" />
@@ -2137,7 +2137,7 @@ function HomePage() {
         id="segments"
         data-story-chapter="partnership"
         aria-labelledby="segments-heading"
-        className="story-section story-section--information relative overflow-hidden bg-[#F5F1EB] px-6 text-[#111111] grain lg:px-10"
+        className="story-section story-section--information story-surface-light relative overflow-hidden px-6 grain lg:px-10"
       >
         <div className="pointer-events-none absolute inset-0 opacity-70">
           <div className="absolute left-0 top-1/4 h-[460px] w-[460px] rounded-full bg-[radial-gradient(circle,rgba(200,164,107,0.14),transparent_70%)]" />
@@ -2301,7 +2301,7 @@ function HomePage() {
         id="products"
         data-story-chapter="finished-products"
         aria-labelledby="products-heading"
-        className="relative overflow-hidden bg-[#121110] px-6 py-28 text-white grain lg:px-10 lg:py-36"
+        className="story-surface-dark relative overflow-hidden px-6 py-28 grain lg:px-10 lg:py-36"
       >
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute left-0 right-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.32),transparent)]" />

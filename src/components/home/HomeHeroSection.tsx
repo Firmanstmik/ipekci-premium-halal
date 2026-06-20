@@ -200,7 +200,7 @@ export function HomeHeroSection() {
                 initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.32, duration: 0.88, ease: DS_EASE }}
-                className="mt-0.5 block ipek-heading-accent"
+                className="mt-0.5 block ipek-hero-halalvlees"
               >
                 halalvlees
               </motion.span>

@@ -499,7 +499,7 @@ export function PremiumMeatShowcase() {
       onMouseLeave={handleMouseLeave}
       onPointerDown={stopAutoMode}
       onKeyDown={stopAutoMode}
-      className="relative overflow-hidden bg-[#FAF8F5] text-[#141414]"
+      className="story-surface-light relative overflow-hidden"
     >
       <div className="pointer-events-none absolute inset-0 grain opacity-40" />
       <div
@@ -535,7 +535,7 @@ export function PremiumMeatShowcase() {
               rundvlees
             </span>
           </h2>
-          <p className="mt-6 max-w-lg text-[15px] leading-relaxed text-[#141414]/62 md:text-base">
+          <p className="mt-6 max-w-lg text-[15px] leading-relaxed text-[#141414]/78 md:text-base">
             Klik op een deel van het rund om meer te ontdekken over onze premium halal
             rundvlees snijstukken.
           </p>
@@ -775,7 +775,7 @@ export function PremiumMeatShowcase() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -3 }}
                         transition={{ duration: 0.25 }}
-                        className="text-[6px] font-semibold uppercase tracking-[0.25em] text-[#9A6B22]/70"
+                        className="text-[6px] font-semibold uppercase tracking-[0.25em] text-[#B31217]"
                       >
                         Geselecteerd
                       </motion.div>
@@ -784,7 +784,7 @@ export function PremiumMeatShowcase() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -4 }}
                         transition={{ duration: 0.3, delay: 0.04 }}
-                        className="mt-0.5 font-display text-[15px] font-medium leading-[0.95] text-[#141414]"
+                        className="mt-0.5 font-display text-[15px] font-semibold leading-[0.95] text-[#141414]"
                       >
                         {active.label}
                       </motion.div>
@@ -793,7 +793,7 @@ export function PremiumMeatShowcase() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -3 }}
                         transition={{ duration: 0.3, delay: 0.08 }}
-                        className="mt-1 flex items-center gap-1.5 text-[6.5px] uppercase tracking-[0.18em] text-[#9A6B22]"
+                        className="mt-1 flex items-center gap-1.5 text-[6.5px] font-semibold uppercase tracking-[0.18em] text-[#141414]/72"
                       >
                         <span className="h-px w-3 bg-gold/30" />
                         <span className="truncate">{active.name}</span>
@@ -833,13 +833,13 @@ export function PremiumMeatShowcase() {
                     className="relative overflow-hidden rounded-[10px] border border-[rgba(200,164,107,0.3)] bg-white/95 px-2.5 py-1.5 shadow-[0_10px_24px_-12px_rgba(0,0,0,0.12)] backdrop-blur-md"
                   >
                     <div className="relative min-w-0">
-                      <div className="text-[5px] font-semibold uppercase tracking-[0.2em] text-[#9A6B22]/70">
+                      <div className="text-[5px] font-semibold uppercase tracking-[0.2em] text-[#B31217]">
                         Geselecteerd
                       </div>
-                      <div className="mt-0.5 font-display text-[12px] font-medium leading-[0.9] text-[#141414]">
+                      <div className="mt-0.5 font-display text-[12px] font-semibold leading-[0.9] text-[#141414]">
                         {active.label}
                       </div>
-                      <div className="mt-0.5 flex items-center gap-1 text-[5px] uppercase tracking-[0.15em] text-[#9A6B22]">
+                      <div className="mt-0.5 flex items-center gap-1 text-[5px] font-semibold uppercase tracking-[0.15em] text-[#141414]/72">
                         <span className="h-px w-2 bg-gold/30" />
                         <span className="truncate">{active.name}</span>
                       </div>
@@ -888,7 +888,7 @@ export function PremiumMeatShowcase() {
                       <motion.div
                         className={`relative flex items-center justify-center rounded-full ${
                           isActive
-                            ? "h-8 w-8 md:h-9 md:w-9 border-2 border-[#9A6B22] bg-white shadow-[0_0_0_4px_rgba(226,192,141,0.2)]"
+                            ? "h-8 w-8 md:h-9 md:w-9 border-2 border-[#B31217] bg-white shadow-[0_0_0_4px_rgba(179,18,23,0.15)]"
                             : "h-6 w-6 md:h-7 md:w-7 border border-[rgba(200,164,107,0.45)] bg-white/90 shadow-sm backdrop-blur"
                         } ${isActive ? "hotspot-active-pulse" : ""}`}
                         animate={{
@@ -907,7 +907,7 @@ export function PremiumMeatShowcase() {
                         <motion.span
                           key={isActive ? `active-${c.id}` : `idle-${c.id}`}
                           className={`relative text-[8px] md:text-[9.5px] font-sans font-semibold tracking-tight ${
-                            isActive ? "text-[#9A6B22]" : "text-[#9A6B22]/75"
+                            isActive ? "text-[#B31217]" : "text-[#141414]/75"
                           }`}
                           initial={isActive ? { scale: 0.92, opacity: 0.7 } : false}
                           animate={{ scale: 1, opacity: 1 }}
@@ -922,8 +922,8 @@ export function PremiumMeatShowcase() {
               })}
             </div>
 
-            <div className="mt-6 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.28em] text-[#141414]/42">
-              <MousePointerClick className="h-4 w-4 text-[#9A6B22]" />
+            <div className="mt-6 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.28em] text-[#141414]/68">
+              <MousePointerClick className="h-4 w-4 text-[#B31217]" />
               <span>{autoMode ? "Interactieve showroom — klik om te verkennen" : "Klik op een snijstuk"}</span>
             </div>
           </motion.div>
@@ -937,7 +937,7 @@ export function PremiumMeatShowcase() {
             }}
             className="relative lg:max-w-none"
           >
-            <div className="relative flex flex-col overflow-hidden rounded-[28px] border border-black/[0.08] bg-white shadow-[0_32px_90px_-50px_rgba(0,0,0,0.18)] transition-shadow duration-500 hover:shadow-[0_38px_96px_-46px_rgba(198,160,98,0.18)]">
+            <div className="relative flex flex-col overflow-hidden rounded-[28px] border border-black/[0.08] bg-white shadow-[0_32px_90px_-50px_rgba(0,0,0,0.18)] transition-shadow duration-500 hover:shadow-[0_38px_96px_-46px_rgba(179,18,23,0.12)]">
               <div className="relative min-h-0 flex-1 overflow-hidden">
                 <div className="group/if relative aspect-[4/3] overflow-hidden sm:aspect-[16/11]">
                   <AnimatePresence initial={false} mode="wait">
@@ -955,37 +955,39 @@ export function PremiumMeatShowcase() {
                       height={768}
                     />
                   </AnimatePresence>
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#141414]/55 via-transparent to-white/10" />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/95 via-[#0a0a0a]/45 to-[#0a0a0a]/10" />
                   <ImageFrameOverlay variant="prism" />
                   <div className="absolute left-5 top-5 z-10">
-                    <span className="inline-flex rounded-full border border-white/30 bg-white/90 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.22em] text-[#9A6B22] shadow-sm backdrop-blur-sm">
+                    <span className="inline-flex rounded-full border border-white/25 bg-black/45 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.22em] text-white shadow-sm backdrop-blur-md">
                       {isPremiumCut ? "Netherlands Premium" : "100% Halal"}
                     </span>
+                  </div>
+
+                  <div className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-6">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={`info-${active.id}`}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        transition={{ duration: 0.45, ease: DS_EASE }}
+                      >
+                        <span className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[var(--gold-champagne)]">
+                          {active.label}
+                        </span>
+                        <h3 className="mt-1.5 font-display text-[1.75rem] font-semibold leading-[0.98] tracking-[-0.04em] text-white md:text-[2rem]">
+                          {active.name}
+                        </h3>
+                        <p className="mt-2 max-w-md text-[13px] leading-relaxed text-white/90 md:text-[14px]">
+                          {active.description}
+                        </p>
+                      </motion.div>
+                    </AnimatePresence>
                   </div>
                 </div>
               </div>
 
-              <div className="relative border-t border-black/[0.06] bg-[#FAF8F5] p-5 md:p-6">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={`info-${active.id}`}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -6 }}
-                    transition={{ duration: 0.45, ease: DS_EASE }}
-                  >
-                    <span className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[#9A6B22]">
-                      {active.label}
-                    </span>
-                    <h3 className="mt-2 font-display text-[1.75rem] font-semibold leading-[0.98] tracking-[-0.04em] text-[#141414] md:text-[2rem]">
-                      {active.name}
-                    </h3>
-                    <p className="mt-2 text-[13px] leading-relaxed text-[#141414]/62">
-                      {active.description}
-                    </p>
-                  </motion.div>
-                </AnimatePresence>
-
+              <div className="relative border-t border-black/[0.06] bg-[var(--ipek-surface-cream)] p-5 md:p-6">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={`specs-${active.id}`}
@@ -993,7 +995,7 @@ export function PremiumMeatShowcase() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.4, ease: DS_EASE }}
-                    className="mt-5 grid grid-cols-2 gap-2.5 sm:grid-cols-4"
+                    className="grid grid-cols-2 gap-2.5 sm:grid-cols-4"
                   >
                     {active.specs.map((s) => {
                       const Icon = specIcon(s.icon);
@@ -1002,10 +1004,10 @@ export function PremiumMeatShowcase() {
                           key={s.label}
                           className="rounded-xl border border-black/[0.06] bg-white px-2.5 py-3 text-center shadow-[0_8px_24px_-20px_rgba(0,0,0,0.12)]"
                         >
-                          <div className="mx-auto grid h-7 w-7 place-items-center rounded-full border border-[rgba(200,164,107,0.28)] bg-[rgba(226,192,141,0.08)] text-[#9A6B22]">
+                          <div className="mx-auto grid h-7 w-7 place-items-center rounded-full border border-[rgba(179,18,23,0.22)] bg-[rgba(179,18,23,0.08)] text-[#B31217]">
                             <Icon className="h-3 w-3" />
                           </div>
-                          <span className="mt-2 block text-[7px] uppercase tracking-[0.18em] text-[#141414]/42">
+                          <span className="mt-2 block text-[7px] uppercase tracking-[0.18em] text-[#141414]/58">
                             {s.label}
                           </span>
                           <span className="mt-0.5 block text-[10px] font-semibold text-[#141414]">
@@ -1024,15 +1026,15 @@ export function PremiumMeatShowcase() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.45, delay: 0.04, ease: DS_EASE }}
-                    className="mt-5 rounded-xl border border-[rgba(200,164,107,0.22)] bg-white px-4 py-3.5"
+                    className="mt-5 rounded-xl border border-black/[0.08] bg-white px-4 py-3.5"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="h-px w-5 bg-[#9A6B22]/40" />
-                      <span className="font-display text-sm ipek-heading-accent">
+                      <span className="h-px w-5 bg-[#B31217]/35" />
+                      <span className="font-display text-sm font-semibold text-[#B31217]">
                         {isPremiumCut ? "Chef's Selection" : "Chef Recommendation"}
                       </span>
                     </div>
-                    <p className="mt-2 pl-7 text-[14px] leading-snug text-[#141414]/75">
+                    <p className="mt-2 pl-7 text-[14px] leading-snug text-[#141414]/82">
                       {active.bestFor}
                     </p>
                   </motion.div>
@@ -1040,10 +1042,10 @@ export function PremiumMeatShowcase() {
 
                 <a
                   href="/assortiment/rundvlees"
-                  className="ipek-btn-wipe ipek-btn-wipe--primary group mt-5 w-full py-3.5"
+                  className="ipek-btn-premium group mt-5 w-full py-4"
                 >
-                  Bekijk collectie
-                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1.5" />
+                  <span>Bekijk collectie</span>
+                  <ArrowRight className="ipek-btn-premium__arrow h-4 w-4" />
                 </a>
               </div>
             </div>
@@ -1066,14 +1068,14 @@ export function PremiumMeatShowcase() {
                 className="group/if relative overflow-hidden rounded-[20px] border border-black/[0.06] bg-white p-5 shadow-[0_20px_50px_-40px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-1 hover:border-[rgba(200,164,107,0.35)] hover:shadow-[0_28px_60px_-40px_rgba(0,0,0,0.15)]"
               >
                 <CardFrameOverlay variant="pulse" />
-                <div className="mb-3 grid h-10 w-10 place-items-center rounded-xl border border-[rgba(200,164,107,0.28)] bg-[rgba(226,192,141,0.08)] text-[#9A6B22] transition-colors group-hover:border-[rgba(200,164,107,0.45)]">
+                <div className="mb-3 grid h-10 w-10 place-items-center rounded-xl border border-[rgba(179,18,23,0.22)] bg-[rgba(179,18,23,0.08)] text-[#B31217] transition-colors group-hover:border-[rgba(179,18,23,0.38)]">
                   <Icon className="h-4 w-4" />
                 </div>
                 <div className="text-[9px] font-semibold uppercase tracking-[0.24em] text-[#B31217]">
                   {t.label}
                 </div>
                 <h4 className="mt-1.5 font-display text-lg text-[#141414]">{t.title}</h4>
-                <p className="mt-2 text-[13px] leading-relaxed text-[#141414]/55">{t.desc}</p>
+                <p className="mt-2 text-[13px] leading-relaxed text-[#141414]/72">{t.desc}</p>
               </motion.div>
             );
           })}

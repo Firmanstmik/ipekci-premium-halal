@@ -204,14 +204,18 @@ function PillarCard({
         className="absolute left-0 top-6 z-10 grid h-[27px] w-[27px] place-items-center rounded-full border bg-[#FAF8F5] shadow-[0_0_0_4px_rgba(250,248,245,1)]"
         animate={{
           borderColor: isActive ? "rgba(179,18,23,0.85)" : "rgba(0,0,0,0.07)",
-          scale: isActive ? 1.06 : 1,
+          scale: isActive ? 1.08 : 1,
         }}
-        transition={{ duration: 0.4, ease: DS_EASE }}
+        transition={{ type: "spring", stiffness: 320, damping: 26 }}
       >
-        <span
-          className={`rounded-full transition-all duration-500 ${
-            isActive ? "h-2.5 w-2.5 bg-[#B31217]" : "h-2 w-2 bg-[rgba(200,164,107,0.42)]"
-          }`}
+        <motion.span
+          className="rounded-full"
+          animate={{
+            width: isActive ? 10 : 8,
+            height: isActive ? 10 : 8,
+            backgroundColor: isActive ? "#B31217" : "rgba(200,164,107,0.42)",
+          }}
+          transition={{ type: "spring", stiffness: 380, damping: 28 }}
         />
       </motion.span>
 
@@ -222,9 +226,9 @@ function PillarCard({
         onFocus={() => onSelect(index)}
         aria-pressed={isActive}
         layout
-        className="group relative w-full overflow-hidden text-left outline-none focus-visible:ring-2 focus-visible:ring-[rgba(200,164,107,0.45)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAF8F5]"
+        className="pillar-card-btn group relative w-full overflow-hidden text-left outline-none focus-visible:ring-2 focus-visible:ring-[rgba(179,18,23,0.35)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAF8F5]"
         style={{ borderRadius: isActive ? "20px" : "16px" }}
-        transition={{ layout: { duration: 0.42, ease: DS_EASE } }}
+        transition={{ layout: { type: "spring", stiffness: 260, damping: 28, mass: 0.92 } }}
       >
         <span
           aria-hidden
@@ -239,61 +243,64 @@ function PillarCard({
           <>
             <motion.span
               layoutId="pillar-active-bg"
-              className="absolute inset-0 rounded-[20px] bg-[linear-gradient(145deg,#D0161B_0%,#B31217_38%,#8E0E12_72%,#6B0A0D_100%)] shadow-[0_22px_48px_-28px_rgba(179,18,23,0.55)]"
-              transition={{ type: "spring", stiffness: 340, damping: 36 }}
+              className="pillar-card-active-bg absolute inset-0 rounded-[20px]"
+              transition={{ type: "spring", stiffness: 280, damping: 30 }}
               aria-hidden
             />
+            {!reduceMotion ? (
+              <span className="pillar-card-active-shimmer" aria-hidden />
+            ) : null}
             <span
               aria-hidden
               className="pointer-events-none absolute inset-0 rounded-[20px]"
               style={{
                 background:
-                  "linear-gradient(135deg, rgba(255,255,255,0.14) 0%, transparent 42%, rgba(0,0,0,0.12) 100%)",
+                  "linear-gradient(135deg, rgba(255,255,255,0.16) 0%, transparent 44%, rgba(0,0,0,0.1) 100%)",
               }}
             />
             <span
               aria-hidden
-              className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/45 to-transparent"
+              className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent"
             />
           </>
         ) : (
           <span
             aria-hidden
-            className="absolute inset-0 rounded-[16px] border border-black/[0.07] bg-white/88 shadow-[0_16px_40px_-34px_rgba(0,0,0,0.14)] backdrop-blur-sm transition-all duration-500 group-hover:border-[rgba(179,18,23,0.18)] group-hover:bg-white group-hover:shadow-[0_20px_44px_-32px_rgba(179,18,23,0.12)]"
+            className="absolute inset-0 rounded-[16px] border border-black/[0.07] bg-white/90 shadow-[0_16px_40px_-34px_rgba(0,0,0,0.14)] backdrop-blur-sm transition-[border-color,box-shadow,background-color,transform] duration-[0.65s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:border-[rgba(179,18,23,0.28)] group-hover:bg-white group-hover:shadow-[0_22px_48px_-30px_rgba(179,18,23,0.2)]"
           />
         )}
 
         <span
-          className={`relative flex items-start gap-3.5 transition-all duration-500 sm:gap-4 ${
+          className={`relative flex items-start gap-3.5 transition-[padding] duration-[0.65s] ease-[cubic-bezier(0.16,1,0.3,1)] sm:gap-4 ${
             isActive ? "px-5 py-5 sm:px-6 sm:py-5" : "px-4 py-3.5 sm:px-5 sm:py-4"
           }`}
         >
           <span
-            className={`relative grid shrink-0 place-items-center transition-all duration-500 ${
+            className={`relative grid shrink-0 place-items-center transition-all duration-[0.65s] ease-[cubic-bezier(0.16,1,0.3,1)] ${
               isActive
-                ? "h-11 w-11 rounded-[14px] border border-white/28 bg-white/14 text-white"
-                : "h-9 w-9 rounded-[12px] border border-black/[0.08] bg-white group-hover:border-[rgba(179,18,23,0.22)]"
+                ? "h-11 w-11 rounded-[14px] border border-white/30 bg-white/16 text-white shadow-[0_8px_20px_-12px_rgba(0,0,0,0.35)]"
+                : "h-9 w-9 rounded-[12px] border border-black/[0.08] bg-white group-hover:border-[rgba(179,18,23,0.28)] group-hover:shadow-[0_8px_18px_-14px_rgba(179,18,23,0.25)]"
             }`}
           >
             <Icon
               size={isActive ? 17 : 15}
               strokeWidth={1.75}
-              className={`transition-colors duration-500 ${
-                isActive ? "text-white" : "text-[#141414]/55 group-hover:text-[#B31217]"
+              className={`transition-all duration-[0.65s] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                isActive ? "text-white" : "text-[#141414]/55 group-hover:text-[#B31217] group-hover:scale-105"
               }`}
             />
           </span>
 
           <span className="min-w-0 flex-1 pt-0.5">
             <span
-              className={`text-[9px] font-semibold uppercase tracking-[0.22em] transition-colors duration-500 ${
-                isActive ? "text-white/82" : "text-[#141414]/52"
+              className={`text-[9px] font-semibold uppercase tracking-[0.22em] transition-colors duration-[0.65s] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                isActive ? "text-white/88" : "text-[#141414]/58"
               }`}
             >
               {pillar.kicker}
             </span>
             <span
-              className={`mt-1 block font-display font-semibold leading-tight tracking-[-0.03em] transition-colors duration-500 ${
+              className={`mt-1 block font-display font-semibold leading-tight tracking-[-0.03em] transition-all duration-[0.65s] ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 isActive
                   ? "text-[1.15rem] text-white sm:text-[1.28rem]"
                   : "text-[0.98rem] text-[#141414]/78 group-hover:text-[#141414] sm:text-[1.02rem]"
@@ -305,11 +312,11 @@ function PillarCard({
             <AnimatePresence initial={false}>
               {isActive ? (
                 <motion.span
-                  initial={reduceMotion ? false : { opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
-                  transition={{ duration: 0.38, ease: DS_EASE }}
-                  className="mt-2.5 block overflow-hidden text-[13px] leading-[1.72] text-white/84"
+                  initial={reduceMotion ? false : { opacity: 0, height: 0, y: 6 }}
+                  animate={{ opacity: 1, height: "auto", y: 0 }}
+                  exit={reduceMotion ? { opacity: 0 } : { opacity: 0, height: 0, y: -4 }}
+                  transition={{ type: "spring", stiffness: 320, damping: 32 }}
+                  className="mt-2.5 block overflow-hidden text-[13px] leading-[1.72] text-white/88"
                 >
                   {pillar.text}
                 </motion.span>
@@ -319,10 +326,10 @@ function PillarCard({
 
           <ArrowUpRight
             size={14}
-            className={`mt-1 shrink-0 transition-all duration-500 ${
+            className={`mt-1 shrink-0 transition-all duration-[0.65s] ease-[cubic-bezier(0.16,1,0.3,1)] ${
               isActive
-                ? "translate-x-0 translate-y-0 text-white/92 opacity-100"
-                : "translate-y-1 text-[#141414]/30 opacity-0 group-hover:translate-y-0 group-hover:text-[#B31217] group-hover:opacity-70"
+                ? "translate-x-0 translate-y-0 text-white opacity-100"
+                : "translate-y-1 text-[#141414]/30 opacity-0 group-hover:translate-x-0.5 group-hover:translate-y-0 group-hover:text-[#B31217] group-hover:opacity-80"
             }`}
           />
         </span>
@@ -420,16 +427,16 @@ export function EnterpriseTrustSection() {
 
           <StoryItem className="lg:col-span-5">
             <div className="flex h-full flex-col">
-              <div className="mb-7 flex items-end justify-between gap-4 border-b border-black/[0.08] pb-5">
+              <div className="mb-8 flex items-end justify-between gap-4 border-b border-black/[0.08] pb-6">
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-[#141414]/58">
+                  <p className="font-display text-[1.35rem] font-semibold leading-tight tracking-[-0.03em] text-[#141414] sm:text-[1.5rem]">
                     Zes pijlers van vertrouwen
                   </p>
-                  <p className="mt-2 max-w-xs font-display text-[14px] leading-[1.65] text-[#141414]/72">
+                  <p className="mt-2.5 max-w-sm text-[15px] leading-[1.68] text-[#141414]/80 sm:text-[16px]">
                     Klik of hover om elk onderdeel van onze keten te ontdekken.
                   </p>
                 </div>
-                <span className="shrink-0 rounded-full border border-[rgba(179,18,23,0.2)] bg-white/85 px-3 py-1.5 font-display text-[11px] tabular-nums tracking-[0.18em] text-[#B31217]">
+                <span className="shrink-0 rounded-full border border-[rgba(179,18,23,0.22)] bg-white/90 px-3.5 py-2 font-display text-[12px] tabular-nums tracking-[0.16em] text-[#B31217]">
                   {String(active + 1).padStart(2, "0")} / {String(ENTERPRISE_TRUST_PILLARS.length).padStart(2, "0")}
                 </span>
               </div>

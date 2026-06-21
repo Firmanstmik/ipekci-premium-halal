@@ -39,8 +39,6 @@ export function HomeHeroSection() {
     target: heroRef,
     offset: ["start start", "end start"],
   });
-  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
-  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
 
   useEffect(() => {
@@ -128,7 +126,7 @@ export function HomeHeroSection() {
       aria-label="Introductie"
       className="relative min-h-[100svh] w-full overflow-hidden bg-background grain lg:h-[100svh] lg:max-h-[100svh]"
     >
-      <motion.div style={{ y: heroY, scale: heroScale }} className="absolute inset-0">
+      <div className="absolute inset-0">
         <motion.img
           src={heroPoster ?? IPEKCI_HERO_IMAGE}
           alt=""
@@ -172,7 +170,7 @@ export function HomeHeroSection() {
         <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-black/42 via-black/10 to-transparent" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(6,6,6,0.62)_0%,rgba(6,6,6,0.28)_42%,rgba(6,6,6,0.06)_68%,transparent_100%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(720px_480px_at_18%_8%,rgba(226,192,141,0.05)_0%,transparent_70%)]" />
-      </motion.div>
+      </div>
 
       <motion.div
         style={{ opacity: heroOpacity }}

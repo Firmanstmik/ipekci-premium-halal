@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -600,32 +600,20 @@ export function Navbar() {
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
   const [infoVisible, setInfoVisible] = useState(true);
-  const [navHidden, setNavHidden] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const location = useLocation();
-  const lastScrollY = useRef(0);
 
   useMotionValueEvent(scrollY, "change", (current) => {
-    const prev = lastScrollY.current;
-    const delta = current - prev;
-
-    if (current < 100) {
-      setNavHidden(false);
-    } else if (delta > 6) {
-      setNavHidden(true);
-    } else if (delta < -6) {
-      setNavHidden(false);
-    }
-
-    lastScrollY.current = current;
     setScrolled(current > 80);
     setInfoVisible(current < 55);
   });
 
   useEffect(() => {
-    if (mobileOpen) setNavHidden(false);
-  }, [mobileOpen]);
+    const current = scrollY.get();
+    setScrolled(current > 80);
+    setInfoVisible(current < 55);
+  }, [scrollY]);
 
   useEffect(() => {
     setMobileOpen(false);
@@ -644,11 +632,7 @@ export function Navbar() {
     path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
 
   return (
-    <motion.div
-      className="fixed inset-x-0 top-0 z-50"
-      animate={{ y: navHidden && !mobileOpen ? "-100%" : "0%" }}
-      transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
-    >
+    <div className="fixed inset-x-0 top-0 z-50">
       {/* Shared hero-integrated atmosphere — one continuous scrim behind BOTH the
           top bar and the navbar, so they read as a single overlay (no band, no divider).
           Fades out on scroll where the navbar takes over its own glass surface. */}
@@ -716,6 +700,6 @@ export function Navbar() {
 
       {/* Mobile drawer */}
       <MobileDrawer isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
-    </motion.div>
+    </div>
   );
 }

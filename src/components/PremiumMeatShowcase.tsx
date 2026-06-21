@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
   Award,
@@ -65,7 +65,8 @@ const SHOWCASE_ORDER = [
   "shank",
 ] as const;
 
-const SHOWCASE_INTERVAL_MS = 3000;
+const SHOWCASE_INTERVAL_MS = 5500;
+const CUT_TRANSITION = { duration: 0.45, ease: DS_EASE } as const;
 
 const CUTS: Cut[] = [
   {
@@ -367,10 +368,9 @@ const specIcon = (k: string) => {
 };
 
 export function PremiumMeatShowcase() {
+  const reduceMotion = useReducedMotion();
   const [activeId, setActiveId] = useState<string>("round");
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
-  const [autoMode, setAutoMode] = useState(true);
+  const [autoMode, setAutoMode] = useState(false);
   const showcaseIndexRef = useRef(0);
   const sectionRef = useRef<HTMLElement>(null);
   const isInViewRef = useRef(false);
@@ -383,7 +383,6 @@ export function PremiumMeatShowcase() {
     (id: string) => {
       stopAutoMode();
       setActiveId(id);
-      setHoveredId(null);
     },
     [stopAutoMode],
   );
@@ -404,7 +403,7 @@ export function PremiumMeatShowcase() {
   }, []);
 
   useEffect(() => {
-    if (!autoMode) return;
+    if (!autoMode || reduceMotion) return;
 
     const advance = () => {
       if (!isInViewRef.current) return;
@@ -415,11 +414,11 @@ export function PremiumMeatShowcase() {
 
     const timer = window.setInterval(advance, SHOWCASE_INTERVAL_MS);
     return () => window.clearInterval(timer);
-  }, [autoMode]);
+  }, [autoMode, reduceMotion]);
 
   const active = CUTS.find((c) => c.id === activeId)!;
   const isPremiumCut = PREMIUM_IDS.has(active.id);
-  const focusedId = hoveredId ?? activeId;
+  const focusedId = activeId;
   const isTopCallout = active.number <= 6;
   const isRightLegCallout = active.id === "brisket" || active.id === "shank";
 
@@ -437,16 +436,11 @@ export function PremiumMeatShowcase() {
       ? `M ${active.cx} ${active.cy} C ${active.cx + 2.2} ${active.cy + 4.2}, ${calloutAnchorX - 0.6} ${active.cy + 5.2}, ${calloutAnchorX - 0.6} ${active.callout.y - 2.4} L ${calloutAnchorX} ${active.callout.y}`
       : `M ${active.cx} ${active.cy} C ${active.cx} ${calloutCurveY}, ${calloutShoulderX} ${calloutCurveY}, ${calloutShoulderX} ${active.callout.y} L ${calloutAnchorX} ${active.callout.y}`;
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width;
-    const y = (e.clientY - rect.top) / rect.height;
-    setMousePos({ x, y });
+  const handleMouseMove = () => {
+    stopAutoMode();
   };
 
-  const handleMouseLeave = () => {
-    setMousePos({ x: 0.5, y: 0.5 });
-  };
+  const handleMouseLeave = () => {};
 
   // Staggered variants for viewport entry (Client Wow Moment)
   const containerVariants = {
@@ -481,11 +475,11 @@ export function PremiumMeatShowcase() {
   };
 
   const hotspotVariants = {
-    hidden: { opacity: 0, scale: 0 },
+    hidden: { opacity: 0, scale: 0.92 },
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { type: "spring", stiffness: 120, damping: 14 },
+      transition: { duration: 0.4, ease: DS_EASE },
     },
   };
 
@@ -503,9 +497,10 @@ export function PremiumMeatShowcase() {
     >
       <div className="pointer-events-none absolute inset-0 grain opacity-40" />
       <div
-        className="pointer-events-none absolute inset-0 transition-opacity duration-700"
+        className="pointer-events-none absolute inset-0"
         style={{
-          background: `radial-gradient(circle at ${mousePos.x * 100}% ${mousePos.y * 100}%, rgba(226,192,141,0.12) 0%, transparent 55%)`,
+          background:
+            "radial-gradient(circle at 50% 40%, rgba(226,192,141,0.10) 0%, transparent 55%)",
         }}
       />
       <div className="pointer-events-none absolute -left-32 top-20 h-[480px] w-[480px] rounded-full bg-[radial-gradient(circle,rgba(226,192,141,0.14),transparent_68%)]" />
@@ -536,7 +531,7 @@ export function PremiumMeatShowcase() {
             </span>
           </h2>
           <p className="mt-6 max-w-lg text-[15px] leading-relaxed text-[#141414]/78 md:text-base">
-            Klik op een deel van het rund om meer te ontdekken over onze premium halal
+            Beweeg over een deel van het rund om meer te ontdekken over onze premium halal
             rundvlees snijstukken.
           </p>
         </motion.div>
@@ -549,14 +544,8 @@ export function PremiumMeatShowcase() {
           className="mt-14 grid grid-cols-1 gap-10 lg:mt-20 lg:grid-cols-[1.08fr_0.92fr] lg:items-start lg:gap-10"
         >
           {/* Cow Illustration (Left side) */}
-          <motion.div
-            variants={cowVariants}
-            style={{
-              transform: `perspective(1000px) rotateX(${(mousePos.y - 0.5) * -1.5}deg) rotateY(${(mousePos.x - 0.5) * 1.5}deg) translate3d(${(mousePos.x - 0.5) * 2}px, ${(mousePos.y - 0.5) * 2}px, 0)`,
-              transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-            }}
-          >
-            <div className="group/if relative aspect-[5/4] w-full overflow-hidden rounded-[28px] border border-black/[0.08] bg-white shadow-[0_32px_90px_-50px_rgba(0,0,0,0.18)] transition-shadow duration-500 hover:shadow-[0_40px_100px_-48px_rgba(179,18,23,0.12)]">
+          <motion.div variants={cowVariants}>
+            <div className="group/if relative isolate aspect-[5/4] w-full overflow-hidden rounded-[28px] border border-black/[0.08] bg-white shadow-[0_32px_90px_-50px_rgba(0,0,0,0.18)] transition-shadow duration-500 hover:shadow-[0_40px_100px_-48px_rgba(179,18,23,0.12)] [contain:paint]">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_70%_at_50%_40%,rgba(226,192,141,0.08),transparent_60%)]" />
               <img
                 src={cowImg}
@@ -604,8 +593,7 @@ export function PremiumMeatShowcase() {
                 {/* Region Paths */}
                 {CUTS.map((c) => {
                   const isActive = c.id === activeId;
-                  const isHover = c.id === hoveredId;
-                  const isFocus = isActive || isHover;
+                  const isFocus = isActive;
                   const dim = focusedId && !isFocus;
                   return (
                     <g key={c.id}>
@@ -619,17 +607,13 @@ export function PremiumMeatShowcase() {
                         className="cursor-pointer"
                         initial={false}
                         animate={{
-                          fillOpacity: isActive ? 0.1 : isHover ? 0.04 : 0,
-                          strokeOpacity: isActive ? 0.38 : isHover ? 0.22 : 0.14,
+                          fillOpacity: isActive ? 0.1 : 0,
+                          strokeOpacity: isActive ? 0.38 : 0.14,
                           opacity: dim ? 0.32 : 1,
                         }}
                         transition={{ duration: 0.62, ease: DS_EASE }}
                         onClick={() => selectCut(c.id)}
-                        onMouseEnter={() => {
-                          stopAutoMode();
-                          setHoveredId(c.id);
-                        }}
-                        onMouseLeave={() => setHoveredId(null)}
+                        onMouseEnter={() => selectCut(c.id)}
                       />
 
                       {/* Inner gold glow spread */}
@@ -660,14 +644,11 @@ export function PremiumMeatShowcase() {
                             strokeWidth={isActive ? 0.38 : 0.28}
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            initial={{ pathLength: 0, opacity: 0 }}
-                            animate={{ pathLength: 1, opacity: 1 }}
-                            exit={{ opacity: 0, pathLength: 0 }}
-                            transition={{ duration: isActive ? 0.65 : 0.45, ease: DS_EASE }}
-                            style={{
-                              pointerEvents: "none",
-                              filter: "drop-shadow(0 0 2px oklch(0.82 0.13 78 / 0.35))",
-                            }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={CUT_TRANSITION}
+                            style={{ pointerEvents: "none" }}
                           />
                         )}
                       </AnimatePresence>
@@ -686,11 +667,11 @@ export function PremiumMeatShowcase() {
                       strokeWidth="0.75"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      initial={{ opacity: 0, pathLength: 0 }}
-                      animate={{ opacity: 0.85, pathLength: 1 }}
-                      exit={{ opacity: 0, pathLength: 0 }}
-                      transition={{ duration: 0.7, ease: DS_EASE }}
-                      style={{ pointerEvents: "none", filter: "url(#lineGlow)" }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 0.85 }}
+                      exit={{ opacity: 0 }}
+                      transition={CUT_TRANSITION}
+                      style={{ pointerEvents: "none" }}
                     />
                     <motion.path
                       key={`callout-line-${active.id}`}
@@ -700,11 +681,11 @@ export function PremiumMeatShowcase() {
                       strokeWidth="0.14"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      initial={{ opacity: 0, pathLength: 0 }}
-                      animate={{ opacity: 1, pathLength: 1 }}
-                      exit={{ opacity: 0, pathLength: 0 }}
-                      transition={{ duration: 0.68, ease: DS_EASE, delay: 0.04 }}
-                      style={{ pointerEvents: "none", filter: "url(#lineGlow)" }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={CUT_TRANSITION}
+                      style={{ pointerEvents: "none" }}
                     />
                     <motion.circle
                       key={`callout-start-node-${active.id}`}
@@ -714,10 +695,10 @@ export function PremiumMeatShowcase() {
                       fill="oklch(0.82 0.13 78)"
                       stroke="oklch(0.1 0.006 30)"
                       strokeWidth="0.12"
-                      initial={{ opacity: 0, scale: 0 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0 }}
-                      transition={{ duration: 0.35, ease: DS_EASE }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={CUT_TRANSITION}
                       style={{ pointerEvents: "none" }}
                     />
                     <motion.circle
@@ -728,10 +709,10 @@ export function PremiumMeatShowcase() {
                       fill="oklch(0.82 0.13 78)"
                       stroke="oklch(0.1 0.006 30)"
                       strokeWidth="0.12"
-                      initial={{ opacity: 0, scale: 0 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0 }}
-                      transition={{ duration: 0.35, delay: 0.12, ease: DS_EASE }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={CUT_TRANSITION}
                       style={{ pointerEvents: "none" }}
                     />
                   </>
@@ -753,20 +734,12 @@ export function PremiumMeatShowcase() {
                     key={`callout-box-${active.id}`}
                     initial={{
                       opacity: 0,
-                      x: active.callout.align === "left" ? -14 : 14,
-                      y: 6,
-                      scale: 0.95,
-                      filter: "blur(6px)",
                     }}
-                    animate={{ opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }}
+                    animate={{ opacity: 1 }}
                     exit={{
                       opacity: 0,
-                      x: active.callout.align === "left" ? -10 : 10,
-                      y: -4,
-                      scale: 0.97,
-                      filter: "blur(4px)",
                     }}
-                    transition={{ duration: 0.5, ease: DS_EASE }}
+                    transition={CUT_TRANSITION}
                     className="relative overflow-hidden rounded-[14px] border border-[rgba(200,164,107,0.35)] bg-white/95 px-3.5 py-2.5 shadow-[0_16px_40px_-20px_rgba(0,0,0,0.15)] backdrop-blur-md"
                   >
                     <div className="relative min-w-0">
@@ -816,20 +789,10 @@ export function PremiumMeatShowcase() {
                 >
                   <motion.div
                     key={`mobile-callout-${active.id}`}
-                    initial={{
-                      opacity: 0,
-                      x: active.callout.align === "left" ? -8 : 8,
-                      y: 4,
-                      scale: 0.95,
-                    }}
-                    animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-                    exit={{
-                      opacity: 0,
-                      x: active.callout.align === "left" ? -6 : 6,
-                      y: -3,
-                      scale: 0.97,
-                    }}
-                    transition={{ duration: 0.35, ease: DS_EASE }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={CUT_TRANSITION}
                     className="relative overflow-hidden rounded-[10px] border border-[rgba(200,164,107,0.3)] bg-white/95 px-2.5 py-1.5 shadow-[0_10px_24px_-12px_rgba(0,0,0,0.12)] backdrop-blur-md"
                   >
                     <div className="relative min-w-0">
@@ -851,18 +814,14 @@ export function PremiumMeatShowcase() {
               {/* Hotspot Markers */}
               {CUTS.map((c) => {
                 const isActive = c.id === activeId;
-                const isHover = c.id === hoveredId;
 
                 return (
                   <motion.button
                     key={c.id}
                     variants={hotspotVariants}
                     onClick={() => selectCut(c.id)}
-                    onMouseEnter={() => {
-                      stopAutoMode();
-                      setHoveredId(c.id);
-                    }}
-                    onMouseLeave={() => setHoveredId(null)}
+                    onMouseEnter={() => selectCut(c.id)}
+                    onFocus={() => selectCut(c.id)}
                     style={{ left: `${c.cx}%`, top: `${c.cy}%` }}
                     className="group absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-30"
                     aria-label={c.name}
@@ -873,16 +832,12 @@ export function PremiumMeatShowcase() {
                         className="absolute inset-0 rounded-full border"
                         initial={false}
                         animate={{
-                          scale: isActive ? 2.4 : isHover ? 1.85 : 1,
-                          opacity: isActive ? 0.9 : isHover ? 0.55 : 0,
-                          borderColor: isActive
-                            ? "oklch(0.82 0.13 78 / 0.35)"
-                            : "oklch(0.82 0.13 78 / 0.2)",
-                          backgroundColor: isActive
-                            ? "oklch(0.82 0.13 78 / 0.08)"
-                            : "oklch(0.82 0.13 78 / 0.04)",
+                          scale: isActive ? 2.1 : 1,
+                          opacity: isActive ? 0.85 : 0,
+                          borderColor: "oklch(0.82 0.13 78 / 0.35)",
+                          backgroundColor: "oklch(0.82 0.13 78 / 0.08)",
                         }}
-                        transition={{ type: "spring", stiffness: 280, damping: 22 }}
+                        transition={CUT_TRANSITION}
                       />
 
                       <motion.div
@@ -890,11 +845,11 @@ export function PremiumMeatShowcase() {
                           isActive
                             ? "h-8 w-8 md:h-9 md:w-9 border-2 border-[#B31217] bg-white shadow-[0_0_0_4px_rgba(179,18,23,0.15)]"
                             : "h-6 w-6 md:h-7 md:w-7 border border-[rgba(200,164,107,0.45)] bg-white/90 shadow-sm backdrop-blur"
-                        } ${isActive ? "hotspot-active-pulse" : ""}`}
+                        }`}
                         animate={{
-                          scale: isActive ? 1.15 : isHover ? 1.06 : 1,
+                          scale: isActive ? 1.08 : 1,
                         }}
-                        transition={{ type: "spring", stiffness: 420, damping: 20 }}
+                        transition={CUT_TRANSITION}
                       >
                         <div
                           className={`absolute rounded-full transition-all duration-500 ${
@@ -905,13 +860,9 @@ export function PremiumMeatShowcase() {
                         />
 
                         <motion.span
-                          key={isActive ? `active-${c.id}` : `idle-${c.id}`}
                           className={`relative text-[8px] md:text-[9.5px] font-sans font-semibold tracking-tight ${
                             isActive ? "text-[#B31217]" : "text-[#141414]/75"
                           }`}
-                          initial={isActive ? { scale: 0.92, opacity: 0.7 } : false}
-                          animate={{ scale: 1, opacity: 1 }}
-                          transition={{ type: "spring", stiffness: 500, damping: 24 }}
                         >
                           {String(c.number).padStart(2, "0")}
                         </motion.span>
@@ -924,19 +875,12 @@ export function PremiumMeatShowcase() {
 
             <div className="mt-6 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.28em] text-[#141414]/68">
               <MousePointerClick className="h-4 w-4 text-[#B31217]" />
-              <span>{autoMode ? "Interactieve showroom — klik om te verkennen" : "Klik op een snijstuk"}</span>
+              <span>Beweeg over een snijstuk om te verkennen</span>
             </div>
           </motion.div>
 
           {/* Detail Panel (Right side) — compact, aligned with hotspot card */}
-          <motion.div
-            variants={panelVariants}
-            style={{
-              transform: `perspective(1000px) rotateX(${(mousePos.y - 0.5) * -1.5}deg) rotateY(${(mousePos.x - 0.5) * 1.5}deg) translate3d(${(mousePos.x - 0.5) * -2}px, ${(mousePos.y - 0.5) * -2}px, 0)`,
-              transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-            }}
-            className="relative lg:max-w-none"
-          >
+          <motion.div variants={panelVariants} className="relative isolate lg:max-w-none [contain:paint]">
             <div className="relative flex flex-col overflow-hidden rounded-[28px] border border-black/[0.08] bg-white shadow-[0_32px_90px_-50px_rgba(0,0,0,0.18)] transition-shadow duration-500 hover:shadow-[0_38px_96px_-46px_rgba(179,18,23,0.12)]">
               <div className="relative min-h-0 flex-1 overflow-hidden">
                 <div className="group/if relative aspect-[4/3] overflow-hidden sm:aspect-[16/11]">
@@ -945,10 +889,10 @@ export function PremiumMeatShowcase() {
                       key={active.id}
                       src={active.image}
                       alt={active.name}
-                      initial={{ opacity: 0, scale: 1.05 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.98 }}
-                      transition={{ duration: 0.65, ease: DS_EASE }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={CUT_TRANSITION}
                       className="absolute inset-0 h-full w-full object-cover"
                       loading="lazy"
                       width={1024}
@@ -967,10 +911,10 @@ export function PremiumMeatShowcase() {
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={`info-${active.id}`}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -8 }}
-                        transition={{ duration: 0.45, ease: DS_EASE }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={CUT_TRANSITION}
                       >
                         <span className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[var(--gold-champagne)]">
                           {active.label}
@@ -1022,10 +966,10 @@ export function PremiumMeatShowcase() {
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={`chef-${active.id}`}
-                    initial={{ opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.45, delay: 0.04, ease: DS_EASE }}
+                    transition={CUT_TRANSITION}
                     className="mt-5 rounded-xl border border-black/[0.08] bg-white px-4 py-3.5"
                   >
                     <div className="flex items-center gap-2">

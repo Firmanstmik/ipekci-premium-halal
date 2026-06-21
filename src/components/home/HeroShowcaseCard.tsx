@@ -3,7 +3,6 @@ import {
   motion,
   useMotionTemplate,
   useMotionValue,
-  useSpring,
   useTransform,
 } from "framer-motion";
 import { Verify } from "iconsax-react";
@@ -38,8 +37,6 @@ export function HeroShowcaseCard({
   const cardRef = useRef<HTMLDivElement>(null);
   const px = useMotionValue(0.5);
   const py = useMotionValue(0.5);
-  const rotateX = useSpring(useTransform(py, [0, 1], [3, -3]), { stiffness: 140, damping: 26 });
-  const rotateY = useSpring(useTransform(px, [0, 1], [-4, 4]), { stiffness: 140, damping: 26 });
   const glareX = useTransform(px, [0, 1], ["8%", "92%"]);
   const glareY = useTransform(py, [0, 1], ["8%", "92%"]);
   const glare = useMotionTemplate`radial-gradient(360px 280px at ${glareX} ${glareY}, rgba(226,192,141,0.14), transparent 65%)`;
@@ -78,7 +75,6 @@ export function HeroShowcaseCard({
         ref={cardRef}
         onPointerMove={handleMove}
         onPointerLeave={reset}
-        style={{ rotateX, rotateY, transformPerspective: 1600 }}
         className="group relative overflow-visible rounded-[26px] border border-white/[0.1] bg-[linear-gradient(165deg,rgba(14,14,14,0.82)_0%,rgba(6,6,6,0.72)_100%)] shadow-[0_32px_90px_-40px_rgba(0,0,0,0.92)] backdrop-blur-2xl transition-shadow duration-500 hover:shadow-[0_36px_96px_-36px_rgba(226,192,141,0.14)]"
       >
         <span

@@ -174,7 +174,8 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
+    overscroll-behavior-y: none;
     width: 100%;
     overflow-x: hidden;
   }

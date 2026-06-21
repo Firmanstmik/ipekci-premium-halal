@@ -174,36 +174,10 @@ function EindproductenBanner({
   image: string;
 }) {
   const reduceMotion = useReducedMotion();
-  const ref = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
-  const mx = useMotionValue(0.5);
-  const my = useMotionValue(0.5);
-
-  const px = useSpring(useTransform(mx, [0, 1], [-14, 14]), { stiffness: 160, damping: 26 });
-  const py = useSpring(useTransform(my, [0, 1], [-10, 10]), { stiffness: 160, damping: 26 });
-  const pr = useSpring(useTransform(mx, [0, 1], [-1.4, 1.4]), { stiffness: 140, damping: 26 });
-
-  const glareX = useTransform(mx, (v) => `${v * 100}%`);
-  const glareY = useTransform(my, (v) => `${v * 100}%`);
-  const glareBg = useMotionTemplate`radial-gradient(520px 320px at ${glareX} ${glareY}, rgba(245,241,235,0.14) 0%, transparent 60%)`;
-
-  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    mx.set((e.clientX - rect.left) / rect.width);
-    my.set((e.clientY - rect.top) / rect.height);
-  }
-
-  function handleMouseLeave() {
-    mx.set(0.5);
-    my.set(0.5);
-  }
 
   return (
     <motion.div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       initial={{ opacity: 0, y: 24 }}
@@ -220,11 +194,9 @@ function EindproductenBanner({
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.65)_0%,rgba(0,0,0,0.30)_35%,rgba(0,0,0,0.12)_62%,rgba(0,0,0,0.55)_100%)]" />
       </div>
 
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-        style={reduceMotion ? undefined : { background: glareBg }}
-      />
+      <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
+        <div className="absolute inset-0 bg-[radial-gradient(520px_320px_at_50%_40%,rgba(245,241,235,0.12)_0%,transparent_60%)]" />
+      </div>
 
       <div className="relative grid min-h-[520px] gap-8 px-7 py-10 sm:px-10 sm:py-12 lg:grid-cols-12 lg:items-stretch lg:px-14 lg:py-14">
         <div className="relative z-10 flex flex-col justify-center lg:col-span-5">
@@ -263,19 +235,8 @@ function EindproductenBanner({
         </div>
 
         <div className="relative z-10 flex items-center justify-center lg:col-span-7 lg:justify-end">
-          <motion.div
-            className="relative w-full max-w-[760px]"
-            style={
-              reduceMotion ? undefined : { x: px, y: py, rotate: pr, transformStyle: "preserve-3d" }
-            }
-          >
-            <motion.div
-              className="relative"
-              animate={reduceMotion ? undefined : { y: [0, -6, 0] }}
-              transition={
-                reduceMotion ? undefined : { duration: 7.5, ease: "easeInOut", repeat: Infinity }
-              }
-            >
+          <div className="relative w-full max-w-[760px]">
+            <div className="relative">
               <motion.div
                 className="relative overflow-hidden rounded-[26px] border border-white/5 bg-white/[0.02] shadow-[0_50px_140px_-110px_rgba(0,0,0,0.95)] backdrop-blur-[2px]"
                 animate={reduceMotion ? undefined : { y: hovered ? -4 : 0 }}
@@ -315,8 +276,8 @@ function EindproductenBanner({
                   <div className="absolute -left-20 top-6 h-40 w-[420px] rotate-[-18deg] bg-[linear-gradient(90deg,transparent_0%,rgba(245,241,235,0.14)_35%,transparent_70%)] blur-[1px]" />
                 </div>
               </motion.div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </div>
     </motion.div>
@@ -389,68 +350,26 @@ function AssortimentProductCard({
   const reduceMotion = useReducedMotion();
   const ref = useRef<HTMLAnchorElement>(null);
   const [hovered, setHovered] = useState(false);
-  const mx = useMotionValue(0.5);
-  const my = useMotionValue(0.5);
-
-  const rx = useSpring(useTransform(my, [0, 1], [6, -6]), { stiffness: 160, damping: 26 });
-  const ry = useSpring(useTransform(mx, [0, 1], [-8, 8]), { stiffness: 160, damping: 26 });
-  const glowX = useTransform(mx, (v) => `${v * 100}%`);
-  const glowY = useTransform(my, (v) => `${v * 100}%`);
-  const glowBg = useMotionTemplate`radial-gradient(520px circle at ${glowX} ${glowY}, rgba(226,192,141,0.18), transparent 62%)`;
-
-  function handleMouseMove(e: React.MouseEvent<HTMLAnchorElement>) {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    mx.set((e.clientX - rect.left) / rect.width);
-    my.set((e.clientY - rect.top) / rect.height);
-  }
-
-  function handleMouseLeave() {
-    mx.set(0.5);
-    my.set(0.5);
-  }
 
   return (
     <motion.div
-      initial={
-        reduceMotion
-          ? { opacity: 1, x: 0, scale: 1, rotateY: 0, filter: "blur(0px)" }
-          : { opacity: 0, x: 86, scale: 0.985, rotateY: -14, filter: "blur(18px)" }
-      }
-      whileInView={{ opacity: 1, x: 0, scale: 1, rotateY: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, margin: "-120px" }}
+      initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
       transition={{
-        duration: 1.95,
-        delay: reduceMotion ? 0 : 0.28 + index * 0.26,
-        ease: [0.16, 1, 0.3, 1],
+        duration: 0.75,
+        delay: reduceMotion ? 0 : 0.08 + index * 0.1,
+        ease: DS_EASE_REVEAL,
       }}
-      whileHover={reduceMotion ? undefined : { y: -8 }}
-      style={
-        reduceMotion
-          ? undefined
-          : { transformPerspective: 1400, transformStyle: "preserve-3d", willChange: "transform" }
-      }
+      whileHover={reduceMotion ? undefined : { y: -6 }}
       className="transform-gpu"
     >
       <motion.a
         ref={ref}
         href={href}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
-        style={
-          reduceMotion
-            ? undefined
-            : {
-                rotateX: rx,
-                rotateY: ry,
-                transformStyle: "preserve-3d",
-                willChange: "transform",
-                backfaceVisibility: "hidden",
-              }
-        }
-        className="group relative flex h-[340px] flex-col overflow-hidden rounded-[24px] border border-[rgba(226,192,141,0.14)] bg-[#080808] shadow-[0_40px_120px_-88px_rgba(0,0,0,0.98)] transition-[border-color,box-shadow] duration-700 hover:border-[rgba(226,192,141,0.38)] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.22),0_0_56px_-18px_rgba(226,192,141,0.22),0_52px_150px_-96px_rgba(0,0,0,0.98)] lg:h-[400px] transform-gpu"
+        className="group relative flex h-[340px] flex-col overflow-hidden rounded-[24px] border border-[rgba(226,192,141,0.14)] bg-[#080808] shadow-[0_40px_120px_-88px_rgba(0,0,0,0.98)] transition-[border-color,box-shadow] duration-700 hover:border-[rgba(226,192,141,0.38)] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.22),0_0_56px_-18px_rgba(226,192,141,0.22),0_52px_150px_-96px_rgba(0,0,0,0.98)] lg:h-[400px]"
       >
         <motion.img
           src={image}
@@ -469,13 +388,10 @@ function AssortimentProductCard({
             reduceMotion
               ? undefined
               : {
-                  scale: hovered ? 1.14 : 1.07,
-                  x: hovered ? -8 : 0,
-                  y: hovered ? -6 : 0,
-                  rotate: hovered ? -0.9 : -0.15,
+                  scale: hovered ? 1.06 : 1.02,
                 }
           }
-          transition={reduceMotion ? undefined : { duration: 1.35, ease: [0.22, 1, 0.36, 1] }}
+          transition={reduceMotion ? undefined : { duration: 0.55, ease: DS_EASE_REVEAL }}
         />
 
         <div className="pointer-events-none absolute inset-0">
@@ -524,11 +440,9 @@ function AssortimentProductCard({
           <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/55 to-transparent" />
         </div>
 
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-          style={reduceMotion ? undefined : { background: glowBg }}
-        />
+        <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100">
+          <div className="absolute inset-0 bg-[radial-gradient(520px_320px_at_50%_40%,rgba(245,241,235,0.12)_0%,transparent_60%)]" />
+        </div>
 
         <div className="relative flex h-full flex-col">
           <div className="flex items-center gap-2 px-6 pt-6 text-[10px] font-semibold uppercase tracking-[0.34em] text-[rgba(226,192,141,0.82)]">
@@ -705,37 +619,16 @@ function EindproductenStrip({
   image: string;
 }) {
   const reduceMotion = useReducedMotion();
-  const ref = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
-  const mx = useMotionValue(0.5);
-  const my = useMotionValue(0.5);
-
-  const px = useSpring(useTransform(mx, [0, 1], [-12, 12]), { stiffness: 160, damping: 26 });
-  const py = useSpring(useTransform(my, [0, 1], [-8, 8]), { stiffness: 160, damping: 26 });
-
-  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    mx.set((e.clientX - rect.left) / rect.width);
-    my.set((e.clientY - rect.top) / rect.height);
-  }
-
-  function handleMouseLeave() {
-    mx.set(0.5);
-    my.set(0.5);
-  }
 
   return (
     <motion.div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      initial={{ opacity: 0, y: 18, filter: "blur(10px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, margin: "-120px" }}
-      transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.75, ease: DS_EASE_REVEAL }}
       className="group relative overflow-hidden rounded-[22px] border border-[rgba(226,192,141,0.18)] bg-[#070707] shadow-[0_46px_130px_-110px_rgba(0,0,0,0.95)]"
     >
       <motion.img
@@ -1324,16 +1217,14 @@ function HomePage() {
   const [eindproductenDragging, setEindproductenDragging] = useState(false);
   const [eindproductenProgress, setEindproductenProgress] = useState(0);
   const [eindproductenIntroComplete, setEindproductenIntroComplete] = useState(Boolean(reduceMotion));
-  const eindproductenShowcaseInView = useInView(eindproductenShowcaseRef, {
+  const eindproductenShowcaseRevealed = useInView(eindproductenShowcaseRef, {
     once: true,
     margin: "-120px",
   });
-
-  const segmentsTiltRaw = useMotionValue(0);
-  const segmentsTilt = useSpring(segmentsTiltRaw, { stiffness: 240, damping: 32 });
-
-  const eindproductenTiltRaw = useMotionValue(0);
-  const eindproductenTilt = useSpring(eindproductenTiltRaw, { stiffness: 240, damping: 32 });
+  const eindproductenShowcaseVisible = useInView(eindproductenShowcaseRef, {
+    margin: "-80px",
+    amount: 0.15,
+  });
 
   const segmentsPointerIdRef = useRef<number | null>(null);
   const segmentsDragStartXRef = useRef(0);
@@ -1371,7 +1262,7 @@ function HomePage() {
   const eindproductenDraggingRef = useRef(false);
 
   useEffect(() => {
-    if (!eindproductenShowcaseInView) return;
+    if (!eindproductenShowcaseRevealed) return;
     if (reduceMotion) {
       setEindproductenIntroComplete(true);
       return;
@@ -1383,7 +1274,7 @@ function HomePage() {
     }, 2500);
 
     return () => window.clearTimeout(timer);
-  }, [eindproductenShowcaseInView, reduceMotion]);
+  }, [eindproductenShowcaseRevealed, reduceMotion]);
 
   const measureEindproductenLoop = useCallback(() => {
     const track = eindproductenTrackRef.current;
@@ -1471,7 +1362,7 @@ function HomePage() {
   }, [eindproductenDragging]);
 
   useEffect(() => {
-    if (reduceMotion || !eindproductenShowcaseInView || !eindproductenIntroComplete) return;
+    if (reduceMotion || !eindproductenShowcaseVisible || !eindproductenIntroComplete) return;
 
     let cancelled = false;
     let lastTime = performance.now();
@@ -1511,7 +1402,7 @@ function HomePage() {
   }, [
     reduceMotion,
     eindproductenIntroComplete,
-    eindproductenShowcaseInView,
+    eindproductenShowcaseVisible,
     eindproductenX,
     measureEindproductenLoop,
     normalizeEindproductenX,
@@ -1693,11 +1584,7 @@ function HomePage() {
       const decay = atEdge ? 0.86 : 0.93;
       v *= Math.pow(decay, dt / 16);
 
-      const tilt = Math.max(-0.9, Math.min(0.9, v * 0.08));
-      segmentsTiltRaw.set(tilt);
-
       if (Math.abs(v) < 0.02) {
-        segmentsTiltRaw.set(0);
         stopSegmentsInertia();
         return;
       }
@@ -1720,7 +1607,6 @@ function HomePage() {
     segmentsLastXRef.current = e.clientX;
     segmentsLastTRef.current = performance.now();
     segmentsVelocityRef.current = 0;
-    segmentsTiltRaw.set(0);
     setSegmentsDragging(true);
     e.currentTarget.setPointerCapture(e.pointerId);
   };
@@ -1740,10 +1626,6 @@ function HomePage() {
     segmentsLastXRef.current = e.clientX;
     segmentsLastTRef.current = now;
     segmentsVelocityRef.current = segmentsVelocityRef.current * 0.82 + vx * 0.18;
-
-    const scrollV = -segmentsVelocityRef.current;
-    const tilt = Math.max(-0.95, Math.min(0.95, scrollV * 1.2));
-    segmentsTiltRaw.set(tilt);
   };
 
   const handleSegmentsPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -1758,7 +1640,6 @@ function HomePage() {
 
     const scrollV = -segmentsVelocityRef.current;
     startSegmentsInertia(scrollV * 26);
-    window.setTimeout(() => segmentsTiltRaw.set(0), 0);
   };
 
   const stopEindproductenInertia = () => {
@@ -1782,11 +1663,7 @@ function HomePage() {
 
       v *= Math.pow(0.93, dt / 16);
 
-      const tilt = Math.max(-1.1, Math.min(1.1, v * 0.09));
-      eindproductenTiltRaw.set(tilt);
-
       if (Math.abs(v) < 0.02) {
-        eindproductenTiltRaw.set(0);
         stopEindproductenInertia();
         return;
       }
@@ -1822,7 +1699,6 @@ function HomePage() {
     eindproductenLastXRef.current = e.clientX;
     eindproductenLastTRef.current = performance.now();
     eindproductenVelocityRef.current = 0;
-    eindproductenTiltRaw.set(0);
     setEindproductenDragging(true);
     e.currentTarget.setPointerCapture(e.pointerId);
   };
@@ -1841,9 +1717,6 @@ function HomePage() {
     eindproductenLastXRef.current = e.clientX;
     eindproductenLastTRef.current = now;
     eindproductenVelocityRef.current = eindproductenVelocityRef.current * 0.82 + vx * 0.18;
-
-    const tilt = Math.max(-0.75, Math.min(0.75, eindproductenVelocityRef.current * 0.08));
-    eindproductenTiltRaw.set(tilt);
   };
 
   const handleEindproductenPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -1857,7 +1730,6 @@ function HomePage() {
     } catch {}
 
     startEindproductenInertia(eindproductenVelocityRef.current * 28);
-    window.setTimeout(() => eindproductenTiltRaw.set(0), 0);
   };
 
   return (
@@ -2258,7 +2130,6 @@ function HomePage() {
                       key={s.title}
                       {...s}
                       index={idx}
-                      tilt={segmentsTilt}
                       revealVariants={reduceMotion ? undefined : segmentCardRevealVariants}
                       onHoverChange={handleSegmentCardHover}
                     />
@@ -2455,9 +2326,7 @@ function HomePage() {
                       product={p}
                       index={idx % EINDPRODUCTEN_PRODUCTS.length}
                       skipReveal={idx >= EINDPRODUCTEN_PRODUCTS.length}
-                      tilt={eindproductenTilt}
-                      total={EINDPRODUCTEN_PRODUCTS.length}
-                      isRevealed={eindproductenShowcaseInView}
+                      isRevealed={eindproductenShowcaseRevealed}
                     />
                   ))}
 
@@ -2534,7 +2403,6 @@ function SegmentCard({
   icon: Icon,
   image,
   index,
-  tilt,
   revealVariants,
   onHoverChange,
 }: {
@@ -2544,38 +2412,12 @@ function SegmentCard({
   icon: React.ComponentType<{ size?: number; className?: string }>;
   image: string;
   index: number;
-  tilt?: MotionValue<number>;
   revealVariants?: Variants;
   onHoverChange?: (hovered: boolean) => void;
 }) {
   const reduceMotion = useReducedMotion();
   const ref = useRef<HTMLElement>(null);
   const [hovered, setHovered] = useState(false);
-  const mx = useMotionValue(0.5);
-  const my = useMotionValue(0.5);
-  const rx = useSpring(useTransform(my, [0, 1], [5.5, -5.5]), { stiffness: 160, damping: 26 });
-  const ry = useSpring(useTransform(mx, [0, 1], [-7, 7]), { stiffness: 160, damping: 26 });
-  const baseTilt = tilt ?? useMotionValue(0);
-  const rz = useSpring(useTransform(baseTilt, [-1, 1], [-1.15, 1.15]), { stiffness: 200, damping: 30 });
-  const liftY = useSpring(
-    useTransform(baseTilt, (v) => -Math.min(7, Math.abs(v) * 7)),
-    { stiffness: 240, damping: 34 },
-  );
-  const glowX = useTransform(mx, (v) => `${v * 100}%`);
-  const glowY = useTransform(my, (v) => `${v * 100}%`);
-  const glowBg = useMotionTemplate`radial-gradient(520px circle at ${glowX} ${glowY}, rgba(226,192,141,0.20), transparent 60%)`;
-
-  function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    mx.set((e.clientX - rect.left) / rect.width);
-    my.set((e.clientY - rect.top) / rect.height);
-  }
-
-  function handleMouseLeave() {
-    mx.set(0.5);
-    my.set(0.5);
-  }
 
   return (
     <motion.article
@@ -2583,11 +2425,6 @@ function SegmentCard({
       ref={ref}
       data-snap-item
       data-hovered={hovered ? "true" : "false"}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={() => {
-        handleMouseLeave();
-        onHoverChange?.(false);
-      }}
       onPointerEnter={() => {
         setHovered(true);
         onHoverChange?.(true);
@@ -2597,12 +2434,8 @@ function SegmentCard({
         onHoverChange?.(false);
       }}
       variants={revealVariants}
-      style={
-        reduceMotion
-          ? undefined
-          : { rotateX: rx, rotateY: ry, rotateZ: rz, y: liftY, transformStyle: "preserve-3d" }
-      }
-      className="group relative w-[270px] shrink-0 snap-center scroll-mt-28 overflow-hidden rounded-2xl border border-black/10 bg-[#0B0B0B] shadow-[0_28px_110px_-65px_rgba(0,0,0,0.82)] transition-[box-shadow,transform,border-color] duration-700 hover:border-black/20 hover:shadow-[0_40px_150px_-75px_rgba(0,0,0,0.92)] sm:w-[300px] lg:w-[310px]"
+      whileHover={reduceMotion ? undefined : { y: -4 }}
+      className="group relative w-[270px] shrink-0 snap-center scroll-mt-28 overflow-hidden rounded-2xl border border-black/10 bg-[#0B0B0B] shadow-[0_28px_110px_-65px_rgba(0,0,0,0.82)] transition-[box-shadow,border-color] duration-700 hover:border-black/20 hover:shadow-[0_40px_150px_-75px_rgba(0,0,0,0.92)] sm:w-[300px] lg:w-[310px]"
     >
       <motion.img
         src={image}
@@ -2653,22 +2486,6 @@ function SegmentCard({
         <div className="absolute inset-0 bg-black/45 backdrop-blur-[2px]" />
       </div>
 
-      <motion.div
-        aria-hidden
-        className="absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-        style={reduceMotion ? undefined : { background: glowBg }}
-      />
-
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700 group-hover:opacity-100"
-        style={{
-          background:
-            "radial-gradient(520px 320px at 40% 62%, rgba(226,192,141,0.20), transparent 62%), radial-gradient(620px 360px at 70% 30%, rgba(179,18,23,0.22), transparent 65%)",
-          filter: "blur(14px)",
-        }}
-      />
-
       <div className="relative flex min-h-[440px] flex-col justify-end p-8 text-white">
         <div className="absolute right-6 top-6 grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/[0.04]">
           <Icon size={18} className="text-[rgba(226,192,141,0.78)]" />
@@ -2711,113 +2528,35 @@ function EindproductenShowcaseCard({
   product,
   index,
   skipReveal = false,
-  tilt,
-  total,
   isRevealed,
 }: {
   product: (typeof EINDPRODUCTEN_PRODUCTS)[number];
   index: number;
   skipReveal?: boolean;
-  tilt: MotionValue<number>;
-  total: number;
   isRevealed: boolean;
 }) {
   const reduceMotion = useReducedMotion();
   const ref = useRef<HTMLElement>(null);
   const [hovered, setHovered] = useState(false);
-  const centerIndex = (total - 1) / 2;
-  const revealOffset = index - centerIndex;
-  const mx = useMotionValue(0.5);
-  const my = useMotionValue(0.5);
-  const rx = useSpring(useTransform(my, [0, 1], [5.5, -5.5]), { stiffness: 170, damping: 28 });
-  const ry = useSpring(useTransform(mx, [0, 1], [-7, 7]), { stiffness: 170, damping: 28 });
-  const rz = useSpring(useTransform(tilt, [-1.1, 1.1], [-1.4, 1.4]), {
-    stiffness: 220,
-    damping: 32,
-  });
-  const cardLift = useSpring(
-    useTransform(tilt, (v) => -Math.min(9, Math.abs(v) * 6)),
-    { stiffness: 240, damping: 34 },
-  );
-  const imageX = useSpring(useTransform(mx, [0, 1], [-10, 10]), { stiffness: 120, damping: 22 });
-  const imageY = useSpring(useTransform(my, [0, 1], [-8, 8]), { stiffness: 120, damping: 22 });
-  const glowX = useTransform(mx, (v) => `${v * 100}%`);
-  const glowY = useTransform(my, (v) => `${v * 100}%`);
-  const glowBg = useMotionTemplate`radial-gradient(460px circle at ${glowX} ${glowY}, rgba(179,18,23,0.10), transparent 60%)`;
-
-  function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    mx.set((e.clientX - rect.left) / rect.width);
-    my.set((e.clientY - rect.top) / rect.height);
-  }
-
-  function handleMouseLeave() {
-    mx.set(0.5);
-    my.set(0.5);
-  }
 
   return (
     <motion.article
       ref={ref}
       data-snap-item
-      onMouseMove={handleMouseMove}
-      onMouseLeave={() => {
-        handleMouseLeave();
-        setHovered(false);
-      }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      initial={
-        reduceMotion || skipReveal
-          ? { opacity: 1, x: 0, y: 0, scale: 1 }
-          : {
-              opacity: 0,
-              x: 108,
-              y: 0,
-              scale: 0.98,
-            }
-      }
+      initial={reduceMotion || skipReveal ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
       animate={
-        reduceMotion || skipReveal || isRevealed
-          ? { opacity: 1, x: 0, y: 0, scale: 1, rotateX: 0, rotateY: 0 }
-          : undefined
+        reduceMotion || skipReveal || isRevealed ? { opacity: 1, y: 0 } : undefined
       }
       transition={{
-        duration: 1.05,
+        duration: 0.7,
         ease: EINDPRODUCTEN_REVEAL_EASE,
-        delay: reduceMotion || skipReveal ? 0 : 0.14 + index * 0.065,
+        delay: reduceMotion || skipReveal ? 0 : 0.06 + index * 0.05,
       }}
-      whileHover={
-        reduceMotion
-          ? undefined
-          : {
-              y: -12,
-              scale: 1.012,
-              rotateX: -2.5,
-              rotateY: revealOffset > 0 ? -1.8 : 1.8,
-              transition: { type: "spring", stiffness: 260, damping: 28 },
-            }
-      }
-      style={
-        reduceMotion
-          ? undefined
-          : {
-              rotateX: rx,
-              rotateY: ry,
-              rotateZ: rz,
-              y: cardLift,
-              transformStyle: "preserve-3d",
-            }
-      }
-      className="group relative w-[272px] shrink-0 overflow-hidden rounded-[24px] border border-white/80 bg-[#FAF8F5] shadow-[0_28px_70px_-32px_rgba(0,0,0,0.45),0_0_0_1px_rgba(255,255,255,0.65)] transition-[border-color,box-shadow,transform] duration-500 hover:border-white hover:shadow-[0_36px_90px_-30px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.9),0_0_48px_-16px_rgba(179,18,23,0.18)] sm:w-[288px] lg:w-[296px]"
+      whileHover={reduceMotion ? undefined : { y: -6 }}
+      className="group relative w-[272px] shrink-0 overflow-hidden rounded-[24px] border border-white/80 bg-[#FAF8F5] shadow-[0_28px_70px_-32px_rgba(0,0,0,0.45),0_0_0_1px_rgba(255,255,255,0.65)] transition-[border-color,box-shadow] duration-500 hover:border-white hover:shadow-[0_36px_90px_-30px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.9),0_0_48px_-16px_rgba(179,18,23,0.18)] sm:w-[288px] lg:w-[296px]"
     >
-      <motion.div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-[1] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-        style={reduceMotion ? undefined : { background: glowBg }}
-      />
-
       <div className="relative flex h-full min-h-[468px] flex-col">
         <div className="relative flex flex-1 flex-col overflow-hidden bg-[linear-gradient(180deg,#FFFFFF_0%,#F5F0E8_52%,#EDE6DC_100%)]">
           <div
@@ -2878,11 +2617,7 @@ function EindproductenShowcaseCard({
               loading="lazy"
               decoding="async"
               className="relative z-10 h-[176px] w-full object-contain sm:h-[188px]"
-              style={
-                reduceMotion
-                  ? { filter: EINDPRODUCTEN_PRODUCT_SHADOW }
-                  : { x: imageX, y: imageY, filter: EINDPRODUCTEN_PRODUCT_SHADOW }
-              }
+              style={{ filter: EINDPRODUCTEN_PRODUCT_SHADOW }}
               animate={
                 reduceMotion
                   ? undefined
@@ -3381,14 +3116,13 @@ function ProcessQualitySection() {
     >
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div
-          className="mc-drift mc-float-soft absolute -left-[8%] top-[12%] h-[36rem] w-[36rem] rounded-full blur-[120px]"
+          className="absolute -left-[8%] top-[12%] h-[36rem] w-[36rem] rounded-full blur-[120px]"
           style={{ background: "radial-gradient(closest-side, rgba(184,137,58,0.18), transparent 70%)" }}
         />
         <div
-          className="mc-drift mc-orbit absolute right-[-10%] bottom-[8%] h-[34rem] w-[34rem] rounded-full blur-[140px]"
+          className="absolute right-[-10%] bottom-[8%] h-[34rem] w-[34rem] rounded-full blur-[140px]"
           style={{
             background: "radial-gradient(closest-side, rgba(163,36,24,0.10), transparent 70%)",
-            animationDelay: "-6s",
           }}
         />
       </div>

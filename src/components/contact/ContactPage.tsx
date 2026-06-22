@@ -42,6 +42,7 @@ import {
   CONTACT_HERO_IMAGE,
   CONTACT_PARTNER,
   CONTACT_QUICK_ACTIONS,
+  CONTACT_REASSURANCE,
   CONTACT_TRUST,
   type ContactDetail,
 } from "@/lib/contact-content";
@@ -84,12 +85,48 @@ function ContactBackdrop() {
         loading="eager"
         decoding="async"
         referrerPolicy="no-referrer"
-        className="absolute inset-0 h-full w-full object-cover opacity-[0.08]"
-        style={{ filter: "brightness(0.92) contrast(1.05) saturate(0.9)" }}
+        className="absolute inset-0 h-full w-full object-cover opacity-[0.11]"
+        style={{ filter: "brightness(0.94) contrast(1.04) saturate(0.95)" }}
       />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_55%_at_15%_20%,rgba(226,192,141,0.1),transparent_55%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_85%_30%,rgba(177,18,23,0.05),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_60%_at_12%_18%,rgba(179,18,23,0.06),transparent_58%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_65%_55%_at_88%_25%,rgba(226,192,141,0.12),transparent_55%)]" />
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#f8f6f3] via-[#f8f6f3]/80 to-transparent" />
     </div>
+  );
+}
+
+function ReassuranceStrip() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.44, ease: DS_EASE }}
+      className="mt-8 grid gap-3 sm:grid-cols-3"
+    >
+      {CONTACT_REASSURANCE.map((item, index) => {
+        const Icon = item.icon;
+        return (
+          <div
+            key={item.title}
+            className="group flex items-start gap-3 rounded-2xl border border-[#ebe7e1] bg-white/85 px-4 py-4 shadow-[0_12px_40px_-32px_rgba(0,0,0,0.18)] backdrop-blur-sm transition-all duration-500 hover:border-[rgba(179,18,23,0.2)] hover:shadow-[0_18px_48px_-28px_rgba(179,18,23,0.12)]"
+          >
+            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[rgba(179,18,23,0.08)] text-[#B31217] transition-colors duration-500 group-hover:bg-[rgba(179,18,23,0.12)]">
+              <Icon size={17} strokeWidth={1.75} />
+            </div>
+            <div>
+              <p className="text-[12px] font-semibold text-[#1c1c1c]">{item.title}</p>
+              <p className="mt-1 text-[12px] leading-relaxed text-[#6f6a63]">{item.text}</p>
+            </div>
+            <span
+              aria-hidden
+              className="ml-auto hidden text-[10px] font-semibold tabular-nums text-[#e0dbd4] sm:block"
+            >
+              {String(index + 1).padStart(2, "0")}
+            </span>
+          </div>
+        );
+      })}
+    </motion.div>
   );
 }
 
@@ -108,14 +145,20 @@ function DetailCard({ item, index }: { item: ContactDetail; index: number }) {
     >
       <Wrapper
         {...linkProps}
-        className="group relative flex h-full flex-col overflow-hidden rounded-[24px] border border-[#ebe7e1] bg-[linear-gradient(165deg,#ffffff_0%,#faf8f5_100%)] p-6 shadow-[0_18px_50px_-36px_rgba(0,0,0,0.14)] transition-all duration-500 hover:-translate-y-0.5 hover:border-[rgba(198,160,98,0.38)] hover:shadow-[0_26px_64px_-32px_rgba(0,0,0,0.18)]"
+        className="group relative flex h-full flex-col overflow-hidden rounded-[24px] border border-[#ebe7e1] bg-[linear-gradient(165deg,#ffffff_0%,#faf8f5_100%)] p-6 shadow-[0_18px_50px_-36px_rgba(0,0,0,0.14)] transition-all duration-500 hover:-translate-y-1 hover:border-[rgba(179,18,23,0.22)] hover:shadow-[0_28px_70px_-30px_rgba(179,18,23,0.14)]"
       >
         <span
           aria-hidden
           className="absolute inset-y-0 left-0 w-[3px] bg-[linear-gradient(180deg,#B31217_0%,rgba(198,160,98,0.85)_100%)] opacity-80 transition-opacity duration-500 group-hover:opacity-100"
         />
-        <div className="flex items-center justify-between gap-3 pl-1">
-          <div className="grid h-11 w-11 place-items-center rounded-2xl border border-[rgba(198,160,98,0.22)] bg-white text-[rgba(179,18,23,0.88)] shadow-[0_8px_24px_-16px_rgba(0,0,0,0.2)] transition-all duration-500 group-hover:border-[rgba(198,160,98,0.4)]">
+        <span
+          aria-hidden
+          className="absolute right-5 top-5 text-[11px] font-semibold tabular-nums tracking-[0.12em] text-[#e5e0d8] transition-colors duration-500 group-hover:text-[rgba(179,18,23,0.35)]"
+        >
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <div className="flex items-center justify-between gap-3 pl-1 pr-8">
+          <div className="grid h-11 w-11 place-items-center rounded-2xl border border-[rgba(179,18,23,0.12)] bg-[rgba(179,18,23,0.06)] text-[#B31217] shadow-[0_8px_24px_-16px_rgba(179,18,23,0.25)] transition-all duration-500 group-hover:border-[rgba(179,18,23,0.22)] group-hover:bg-[rgba(179,18,23,0.1)]">
             <Icon size={18} strokeWidth={1.75} />
           </div>
           {item.href ? (
@@ -153,7 +196,7 @@ function IconField({
       <Icon
         size={16}
         strokeWidth={1.75}
-        className="pointer-events-none absolute left-4 top-1/2 z-10 -translate-y-1/2 text-[#aaa]"
+        className="pointer-events-none absolute left-4 top-1/2 z-10 -translate-y-1/2 text-[rgba(179,18,23,0.45)]"
       />
       {children}
     </div>
@@ -172,7 +215,7 @@ function IconTextarea({
       <Icon
         size={16}
         strokeWidth={1.75}
-        className="pointer-events-none absolute left-4 top-4 z-10 text-[#aaa]"
+        className="pointer-events-none absolute left-4 top-4 z-10 text-[rgba(179,18,23,0.45)]"
       />
       {children}
     </div>
@@ -429,7 +472,7 @@ function ContactFormPanel() {
 
                 <div className="flex flex-wrap items-start justify-between gap-4 border-t border-[#ebe7e1] pt-5">
                   <div className="flex items-start gap-2.5 text-[12px] leading-relaxed text-[#8a847c]">
-                    <LockKeyhole size={13} className="mt-0.5 shrink-0 text-[rgba(198,160,98,0.95)]" />
+                    <LockKeyhole size={13} className="mt-0.5 shrink-0 text-[#B31217]" />
                     <span>Uw gegevens worden vertrouwelijk behandeld en niet gedeeld met derden.</span>
                   </div>
                   <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#b0aaa2]">
@@ -501,28 +544,55 @@ export function ContactPage() {
                 transition={{ duration: 0.8, delay: 0.4, ease: DS_EASE }}
                 className="mt-6 max-w-md text-[15px] leading-[1.85] text-[#5a5a5a]"
               >
-                Wij staan klaar om uw vragen te beantwoorden, advies te geven en samen te werken aan
-                de beste halal oplossingen voor uw bedrijf.
+                Heeft u een vraag over levering, assortiment of samenwerking? Ons team staat
+                persoonlijk voor u klaar — met korte lijnen en duidelijke afspraken.
               </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.46, ease: DS_EASE }}
+                className="mt-6 flex flex-wrap gap-2"
+              >
+                {["B2B partner", "Halal gecertificeerd", "Harderwijk"].map((badge) => (
+                  <span
+                    key={badge}
+                    className="inline-flex items-center rounded-full border border-[rgba(179,18,23,0.14)] bg-white/90 px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#666] shadow-sm"
+                  >
+                    <span className="mr-2 h-1.5 w-1.5 rounded-full bg-[#B31217]" aria-hidden />
+                    {badge}
+                  </span>
+                ))}
+              </motion.div>
+
+              <ReassuranceStrip />
 
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.48, ease: DS_EASE }}
-                className="mt-8 flex flex-wrap gap-3"
+                transition={{ duration: 0.8, delay: 0.52, ease: DS_EASE }}
+                className="mt-6 flex flex-wrap gap-3"
               >
                 {CONTACT_QUICK_ACTIONS.map((action) => {
                   const Icon = action.icon;
+                  const isPrimary = "primary" in action && action.primary;
                   return (
                     <a
                       key={action.label}
                       href={action.href}
                       target={action.href.startsWith("http") ? "_blank" : undefined}
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2.5 rounded-full border border-black/[0.1] bg-white px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#555] shadow-sm transition-all duration-500 hover:border-[rgba(198,160,98,0.4)] hover:text-[#111] hover:shadow-md"
+                      className={
+                        isPrimary
+                          ? "group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full bg-[#B31217] px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-white shadow-[0_16px_48px_-24px_rgba(177,18,23,0.55)] transition-all duration-500 hover:bg-[#C0181D] hover:shadow-[0_20px_56px_-22px_rgba(177,18,23,0.65)]"
+                          : "inline-flex items-center gap-2.5 rounded-full border border-[#e8e4de] bg-white px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#555] shadow-sm transition-all duration-500 hover:border-[rgba(179,18,23,0.25)] hover:text-[#111] hover:shadow-md"
+                      }
                     >
-                      <Icon size={14} className="text-[#B31217]" />
-                      {action.label}
+                      {isPrimary ? (
+                        <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent)] transition-transform duration-700 group-hover:translate-x-full" />
+                      ) : null}
+                      <Icon size={14} className={`relative ${isPrimary ? "text-white" : "text-[#B31217]"}`} />
+                      <span className="relative">{action.label}</span>
                     </a>
                   );
                 })}
@@ -543,8 +613,8 @@ export function ContactPage() {
           </div>
         </div>
 
-        <div className="relative border-t border-black/[0.08] bg-white/80 backdrop-blur-sm">
-          <div className="mx-auto grid max-w-[1480px] gap-px bg-black/[0.06] px-6 md:grid-cols-2 lg:grid-cols-4 lg:px-10">
+        <div className="relative mt-4 border-t border-[#ebe7e1] bg-[linear-gradient(180deg,#ffffff_0%,#faf8f5_100%)]">
+          <div className="mx-auto grid max-w-[1480px] gap-4 px-6 py-10 sm:grid-cols-2 lg:grid-cols-4 lg:px-10 lg:py-12">
             {CONTACT_TRUST.map((item, index) => {
               const Icon = item.icon;
               return (
@@ -554,13 +624,17 @@ export function ContactPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-5%" }}
                   transition={{ duration: 0.7, delay: index * 0.06, ease: DS_EASE }}
-                  className="flex items-start gap-4 bg-white px-0 py-7 lg:px-6"
+                  className="group relative flex items-start gap-4 overflow-hidden rounded-[20px] border border-[#ebe7e1] bg-white px-5 py-5 shadow-[0_14px_40px_-32px_rgba(0,0,0,0.14)] transition-all duration-500 hover:-translate-y-0.5 hover:border-[rgba(179,18,23,0.18)] hover:shadow-[0_20px_50px_-28px_rgba(179,18,23,0.1)]"
                 >
-                  <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[rgba(198,160,98,0.28)] bg-[rgba(198,160,98,0.08)] text-[rgba(179,18,23,0.85)]">
+                  <span
+                    aria-hidden
+                    className="absolute inset-y-0 left-0 w-[2px] bg-[#B31217] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                  />
+                  <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[rgba(179,18,23,0.12)] bg-[rgba(179,18,23,0.06)] text-[#B31217] transition-colors duration-500 group-hover:bg-[rgba(179,18,23,0.1)]">
                     <Icon size={18} strokeWidth={1.7} />
                   </div>
                   <div>
-                    <p className="text-[14px] text-[#1c1c1c]">{item.title}</p>
+                    <p className="text-[14px] font-medium text-[#1c1c1c]">{item.title}</p>
                     <p className="mt-1 text-[13px] leading-relaxed text-[#666]">{item.description}</p>
                   </div>
                 </motion.div>
@@ -619,18 +693,14 @@ export function ContactPage() {
             transition={{ duration: 0.9, delay: 0.08, ease: DS_EASE }}
             className="lg:col-span-5"
           >
-            <div className="group relative overflow-hidden rounded-[32px] border border-[rgba(198,160,98,0.28)] bg-white shadow-[0_32px_90px_-44px_rgba(0,0,0,0.14)]">
-              <span
+            <div className="group relative overflow-hidden rounded-[32px] border border-[#e8e4de] bg-white shadow-[0_32px_90px_-44px_rgba(0,0,0,0.16)]">
+              <div
                 aria-hidden
-                className="pointer-events-none absolute left-4 top-4 z-10 h-8 w-8 border-l border-t border-[rgba(198,160,98,0.45)] opacity-70 transition-all duration-700 group-hover:left-5 group-hover:top-5 group-hover:opacity-100"
-              />
-              <span
-                aria-hidden
-                className="pointer-events-none absolute bottom-4 right-4 z-10 h-8 w-8 border-b border-r border-[rgba(198,160,98,0.45)] opacity-70 transition-all duration-700 group-hover:bottom-5 group-hover:right-5 group-hover:opacity-100"
+                className="pointer-events-none absolute inset-y-0 left-0 z-10 w-[4px] bg-[linear-gradient(180deg,#B31217_0%,rgba(198,160,98,0.85)_100%)]"
               />
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-x-0 top-0 z-10 h-px bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.5),transparent)]"
+                className="pointer-events-none absolute inset-x-0 top-0 z-10 h-px bg-[linear-gradient(90deg,transparent,rgba(179,18,23,0.2),transparent)]"
               />
               <img
                 src={CONTACT_HERO_IMAGE}
@@ -640,7 +710,18 @@ export function ContactPage() {
                 referrerPolicy="no-referrer"
                 className="aspect-[4/5] w-full object-cover transition-transform duration-[1.35s] ease-[cubic-bezier(.22,.61,.36,1)] group-hover:scale-[1.03]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/25 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a]/45 via-[#1a1a1a]/5 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 z-10 p-7 md:p-8">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-white/75">
+                  Ipekçi Slachterij
+                </p>
+                <p className="mt-2 font-display text-2xl leading-tight text-white">
+                  Persoonlijk contact, professionele service
+                </p>
+                <p className="mt-2 max-w-sm text-[13px] leading-relaxed text-white/80">
+                  Bezoek ons in Harderwijk of neem direct contact op — wij denken graag met u mee.
+                </p>
+              </div>
             </div>
           </motion.div>
         </div>

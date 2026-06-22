@@ -97,6 +97,7 @@ function NavLogo({ scrolled = false }: { scrolled?: boolean }) {
 /* ── Top info bar ───────────────────────────────────────────── */
 
 const LIGHT_TOP_NAV_PATHS = ["/contact"] as const;
+const TOP_BAR_ICON_RED = "#B31217";
 
 function TopInfoBar({ visible, light = false }: { visible: boolean; light?: boolean }) {
   if (!visible) return null;
@@ -115,12 +116,12 @@ function TopInfoBar({ visible, light = false }: { visible: boolean; light?: bool
               {i > 0 && (
                 <span
                   className="mx-[15px] h-[14px] w-px shrink-0"
-                  style={{ background: `${GOLD}0.15)` }}
+                  style={{ background: light ? "rgba(179,18,23,0.12)" : `${GOLD}0.15)` }}
                   aria-hidden
                 />
               )}
               <span className="flex items-center gap-2">
-                <Icon size={13} className="shrink-0" style={{ color: `${GOLD}0.82)` }} />
+                <Icon size={13} className="shrink-0" style={{ color: TOP_BAR_ICON_RED }} />
                 <span>{label}</span>
               </span>
             </Fragment>
@@ -129,7 +130,7 @@ function TopInfoBar({ visible, light = false }: { visible: boolean; light?: bool
           {/* Wider separator before contact block */}
           <span
             className="mx-[19px] h-[14px] w-px shrink-0"
-            style={{ background: `${GOLD}0.18)` }}
+            style={{ background: light ? "rgba(179,18,23,0.14)" : `${GOLD}0.18)` }}
             aria-hidden
           />
 
@@ -138,14 +139,14 @@ function TopInfoBar({ visible, light = false }: { visible: boolean; light?: bool
             href="mailto:info@ipekcislachterij.nl"
             className={`flex items-center gap-2 transition-colors duration-200 ${hoverClass}`}
           >
-            <Mail size={13} className="shrink-0" style={{ color: light ? "rgba(179,18,23,0.75)" : `${GOLD}0.78)` }} />
+            <Mail size={13} className="shrink-0" style={{ color: TOP_BAR_ICON_RED }} />
             info@ipekcislachterij.nl
           </a>
 
           {/* Dot between email and phone */}
           <span
             className="mx-[11px] h-[5px] w-[5px] shrink-0 rounded-full"
-            style={{ background: `${GOLD}0.28)` }}
+            style={{ background: light ? "rgba(179,18,23,0.22)" : `${GOLD}0.28)` }}
             aria-hidden
           />
 
@@ -154,7 +155,7 @@ function TopInfoBar({ visible, light = false }: { visible: boolean; light?: bool
             href="tel:+31627273763"
             className={`flex items-center gap-2 transition-colors duration-200 ${hoverClass}`}
           >
-            <Phone size={13} className="shrink-0" style={{ color: light ? "rgba(179,18,23,0.75)" : `${GOLD}0.78)` }} />
+            <Phone size={13} className="shrink-0" style={{ color: TOP_BAR_ICON_RED }} />
             +31 6 272 737 63
           </a>
         </div>

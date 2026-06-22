@@ -80,7 +80,25 @@ export const CONTACT_TRUST = [
 ] as const;
 
 export const CONTACT_QUICK_ACTIONS = [
-  { label: "Bel direct", href: "tel:+31627273763", icon: Phone },
+  { label: "Bel direct", href: "tel:+31627273763", icon: Phone, primary: true },
   { label: "Stuur e-mail", href: "mailto:info@ipekcislachterij.nl", icon: Mail },
   { label: "Route", href: "http://maps.google.com/maps?q=loc:52.3606892,5.6383247", icon: MapPin },
+] as const;
+
+export const CONTACT_REASSURANCE = [
+  {
+    icon: Clock3,
+    title: "Snelle reactie",
+    text: "Binnen één werkdag persoonlijk antwoord",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Persoonlijk advies",
+    text: "Direct contact met ons B2B-team",
+  },
+  {
+    icon: Award,
+    title: "Betrouwbare partner",
+    text: "Langdurige samenwerkingen sinds 2012",
+  },
 ] as const;

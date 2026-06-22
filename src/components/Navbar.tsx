@@ -96,15 +96,18 @@ function NavLogo({ scrolled = false }: { scrolled?: boolean }) {
 
 /* ── Top info bar ───────────────────────────────────────────── */
 
-function TopInfoBar({ visible }: { visible: boolean }) {
+const LIGHT_TOP_NAV_PATHS = ["/contact"] as const;
+
+function TopInfoBar({ visible, light = false }: { visible: boolean; light?: boolean }) {
   if (!visible) return null;
+
+  const textClass = light ? "text-[#666]" : "text-white/62";
+  const hoverClass = light ? "hover:text-[#111]" : "hover:text-white/88";
 
   return (
     <div className="relative hidden lg:block">
-      {/* One unified group — trust indicators + contact flow continuously,
-          anchored to the right half (justify-end begins the group at ~55–60%) */}
       <div className="mx-auto flex h-[38px] max-w-[1520px] items-center justify-end px-5 sm:px-8 lg:px-10 xl:px-12">
-        <div className="flex items-center text-[13px] font-[500] tracking-[0.05em] text-white/62">
+        <div className={`flex items-center text-[13px] font-[500] tracking-[0.05em] ${textClass}`}>
 
           {/* Trust indicators */}
           {infoItems.map(({ label, Icon }, i) => (
@@ -133,9 +136,9 @@ function TopInfoBar({ visible }: { visible: boolean }) {
           {/* Email */}
           <a
             href="mailto:info@ipekcislachterij.nl"
-            className="flex items-center gap-2 transition-colors duration-200 hover:text-white/88"
+            className={`flex items-center gap-2 transition-colors duration-200 ${hoverClass}`}
           >
-            <Mail size={13} className="shrink-0" style={{ color: `${GOLD}0.78)` }} />
+            <Mail size={13} className="shrink-0" style={{ color: light ? "rgba(179,18,23,0.75)" : `${GOLD}0.78)` }} />
             info@ipekcislachterij.nl
           </a>
 
@@ -149,9 +152,9 @@ function TopInfoBar({ visible }: { visible: boolean }) {
           {/* Phone */}
           <a
             href="tel:+31627273763"
-            className="flex items-center gap-2 transition-colors duration-200 hover:text-white/88"
+            className={`flex items-center gap-2 transition-colors duration-200 ${hoverClass}`}
           >
-            <Phone size={13} className="shrink-0" style={{ color: `${GOLD}0.78)` }} />
+            <Phone size={13} className="shrink-0" style={{ color: light ? "rgba(179,18,23,0.75)" : `${GOLD}0.78)` }} />
             +31 6 272 737 63
           </a>
         </div>
@@ -640,6 +643,9 @@ export function Navbar() {
   const isActive = (path: string) =>
     path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
 
+  const isLightTopPage = LIGHT_TOP_NAV_PATHS.some((path) => location.pathname.startsWith(path));
+  const navSolid = scrolled || isLightTopPage;
+
   return (
     <div className="fixed inset-x-0 top-0 z-50">
       {/* Shared hero-integrated atmosphere — one continuous scrim behind BOTH the
@@ -650,52 +656,52 @@ export function Navbar() {
         style={{
           background:
             "linear-gradient(to bottom, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 42%, rgba(0,0,0,0.08) 75%, transparent 100%)",
-          opacity: scrolled ? 0 : 1,
+          opacity: navSolid ? 0 : 1,
           transition: "opacity 0.5s cubic-bezier(0.16,1,0.3,1)",
         }}
         aria-hidden
       />
 
       {/* Top info bar — slides away on scroll */}
-      <TopInfoBar visible={infoVisible} />
+      <TopInfoBar visible={infoVisible} light={navSolid} />
 
       {/* Main navbar */}
       <motion.div
         animate={{
-          backgroundColor: scrolled ? "#ffffff" : "rgba(0,0,0,0)",
+          backgroundColor: navSolid ? "#ffffff" : "rgba(0,0,0,0)",
         }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         className="relative"
         style={{
           borderBottomWidth: "1px",
           borderBottomStyle: "solid",
-          borderBottomColor: scrolled ? "rgba(0,0,0,0.08)" : "rgba(226,192,141,0)",
-          boxShadow: scrolled ? "0 8px 32px -12px rgba(0,0,0,0.10)" : "none",
+          borderBottomColor: navSolid ? "rgba(0,0,0,0.08)" : "rgba(226,192,141,0)",
+          boxShadow: navSolid ? "0 8px 32px -12px rgba(0,0,0,0.10)" : "none",
           transition:
             "background-color 0.5s cubic-bezier(0.16,1,0.3,1), border-color 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s cubic-bezier(0.16,1,0.3,1)",
         }}
       >
         {/* Desktop — logo left, nav + CTA grouped right */}
         <div className="mx-auto hidden h-[88px] max-w-[1520px] items-center justify-between gap-6 px-5 sm:px-8 lg:flex lg:px-10 xl:px-12">
-          <NavLogo scrolled={scrolled} />
+          <NavLogo scrolled={navSolid} />
 
           <div className="flex items-center gap-0.5 xl:gap-1">
-            <NavLink to="/" label="Home" active={isActive("/")} scrolled={scrolled} />
+            <NavLink to="/" label="Home" active={isActive("/")} scrolled={navSolid} />
             <AssortimentNavDropdown
               active={isActive("/assortiment")}
               open={openDropdown === "Assortiment"}
               onOpenChange={(v) => setOpenDropdown(v ? "Assortiment" : null)}
-              scrolled={scrolled}
+              scrolled={navSolid}
             />
             <VoorWieNavDropdown
               active={isActive("/voor-wie")}
               open={openDropdown === "Voor wie"}
               onOpenChange={(v) => setOpenDropdown(v ? "Voor wie" : null)}
-              scrolled={scrolled}
+              scrolled={navSolid}
             />
-            <NavLink to="/ons-verhaal" label="Ons verhaal" active={isActive("/ons-verhaal")} scrolled={scrolled} />
-            <NavLink to="/contact" label="Contact" active={isActive("/contact")} scrolled={scrolled} />
-            <div className={`ml-3 pl-3 xl:ml-4 xl:pl-4 border-l ${scrolled ? "border-black/10" : "border-white/10"}`}>
+            <NavLink to="/ons-verhaal" label="Ons verhaal" active={isActive("/ons-verhaal")} scrolled={navSolid} />
+            <NavLink to="/contact" label="Contact" active={isActive("/contact")} scrolled={navSolid} />
+            <div className={`ml-3 pl-3 xl:ml-4 xl:pl-4 border-l ${navSolid ? "border-black/10" : "border-white/10"}`}>
               <MainCTA />
             </div>
           </div>
@@ -703,8 +709,8 @@ export function Navbar() {
 
         {/* Mobile header */}
         <div className="flex items-center justify-between px-5 py-4 sm:px-8 lg:hidden">
-          <NavLogo scrolled={scrolled} />
-          <MobileToggle isOpen={mobileOpen} onClick={() => setMobileOpen((v) => !v)} scrolled={scrolled} />
+          <NavLogo scrolled={navSolid} />
+          <MobileToggle isOpen={mobileOpen} onClick={() => setMobileOpen((v) => !v)} scrolled={navSolid} />
         </div>
       </motion.div>
 

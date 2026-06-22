@@ -10,6 +10,7 @@ import {
   Building2,
   CheckCircle2,
   ChevronRight,
+  Clock3,
   LockKeyhole,
   Mail,
   NotebookPen,
@@ -21,7 +22,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { SiteLayout } from "@/components/SiteLayout";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
@@ -61,10 +61,10 @@ const contactSchema = z.object({
 type ContactFormValues = z.infer<typeof contactSchema>;
 
 const fieldClass =
-  "h-12 rounded-xl border border-black/[0.1] bg-white pl-11 text-[14px] text-[#1c1c1c] shadow-sm placeholder:text-[#aaa] transition-all duration-300 focus-visible:border-[rgba(198,160,98,0.55)] focus-visible:bg-white focus-visible:ring-0 focus-visible:shadow-[0_0_0_3px_rgba(198,160,98,0.12)]";
+  "h-12 rounded-xl border border-[#e8e4de] bg-[#fcfbfa] pl-11 text-[14px] text-[#1c1c1c] transition-all duration-300 placeholder:text-[#b0aaa2] focus-visible:border-[rgba(179,18,23,0.35)] focus-visible:bg-white focus-visible:ring-0 focus-visible:shadow-[inset_0_0_0_1px_rgba(179,18,23,0.12)]";
 
 const textareaClass =
-  "min-h-[128px] resize-none rounded-xl border border-black/[0.1] bg-white pl-11 pt-3.5 text-[14px] text-[#1c1c1c] shadow-sm placeholder:text-[#aaa] transition-all duration-300 focus-visible:border-[rgba(198,160,98,0.55)] focus-visible:bg-white focus-visible:ring-0 focus-visible:shadow-[0_0_0_3px_rgba(198,160,98,0.12)]";
+  "min-h-[140px] resize-none rounded-xl border border-[#e8e4de] bg-[#fcfbfa] pl-11 pt-3.5 text-[14px] leading-[1.7] text-[#1c1c1c] transition-all duration-300 placeholder:text-[#b0aaa2] focus-visible:border-[rgba(179,18,23,0.35)] focus-visible:bg-white focus-visible:ring-0 focus-visible:shadow-[inset_0_0_0_1px_rgba(179,18,23,0.12)]";
 
 function ContactBackdrop() {
   return (
@@ -108,27 +108,31 @@ function DetailCard({ item, index }: { item: ContactDetail; index: number }) {
     >
       <Wrapper
         {...linkProps}
-        className="group flex h-full flex-col rounded-[22px] border border-black/[0.08] bg-white p-5 shadow-[0_20px_60px_-40px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-0.5 hover:border-[rgba(198,160,98,0.35)] hover:shadow-[0_28px_70px_-36px_rgba(0,0,0,0.16)]"
+        className="group relative flex h-full flex-col overflow-hidden rounded-[24px] border border-[#ebe7e1] bg-[linear-gradient(165deg,#ffffff_0%,#faf8f5_100%)] p-6 shadow-[0_18px_50px_-36px_rgba(0,0,0,0.14)] transition-all duration-500 hover:-translate-y-0.5 hover:border-[rgba(198,160,98,0.38)] hover:shadow-[0_26px_64px_-32px_rgba(0,0,0,0.18)]"
       >
-        <div className="flex items-center justify-between gap-3">
-          <div className="grid h-10 w-10 place-items-center rounded-full border border-[rgba(198,160,98,0.28)] bg-[rgba(198,160,98,0.08)] text-[rgba(179,18,23,0.85)] transition-colors duration-500 group-hover:border-[rgba(198,160,98,0.45)]">
-            <Icon size={17} strokeWidth={1.75} />
+        <span
+          aria-hidden
+          className="absolute inset-y-0 left-0 w-[3px] bg-[linear-gradient(180deg,#B31217_0%,rgba(198,160,98,0.85)_100%)] opacity-80 transition-opacity duration-500 group-hover:opacity-100"
+        />
+        <div className="flex items-center justify-between gap-3 pl-1">
+          <div className="grid h-11 w-11 place-items-center rounded-2xl border border-[rgba(198,160,98,0.22)] bg-white text-[rgba(179,18,23,0.88)] shadow-[0_8px_24px_-16px_rgba(0,0,0,0.2)] transition-all duration-500 group-hover:border-[rgba(198,160,98,0.4)]">
+            <Icon size={18} strokeWidth={1.75} />
           </div>
           {item.href ? (
             <ArrowUpRight
               size={14}
-              className="text-[#bbb] transition-all duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[rgba(179,18,23,0.85)]"
+              className="text-[#c8c2b8] transition-all duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#B31217]"
             />
           ) : null}
         </div>
-        <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#999]">
+        <p className="mt-5 pl-1 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#9a948c]">
           {item.label}
         </p>
-        <p className="mt-2 font-display text-lg text-[#1c1c1c] transition-colors group-hover:text-[#B31217]">
+        <p className="mt-2 pl-1 font-display text-[1.35rem] leading-tight text-[#1c1c1c] transition-colors duration-300 group-hover:text-[#B31217]">
           {item.primary}
         </p>
         {item.secondary ? (
-          <p className="mt-1.5 text-[13px] leading-relaxed text-[#666]">{item.secondary}</p>
+          <p className="mt-2 pl-1 text-[13px] leading-relaxed text-[#6f6a63]">{item.secondary}</p>
         ) : null}
       </Wrapper>
     </motion.div>
@@ -233,42 +237,55 @@ function ContactFormPanel() {
       transition={{ duration: 1, delay: 0.12, ease: DS_EASE_REVEAL }}
       className="lg:pl-4 xl:pl-8"
     >
-      <div className="group relative">
-        <div className="relative overflow-hidden rounded-[32px] border border-black/[0.08] bg-white p-7 shadow-[0_40px_100px_-48px_rgba(0,0,0,0.18)] md:p-9">
-          <span
-            aria-hidden
-            className="pointer-events-none absolute left-5 top-5 h-8 w-8 border-l border-t border-[rgba(198,160,98,0.4)] opacity-60 transition-all duration-700 group-hover:left-6 group-hover:top-6 group-hover:opacity-100"
-          />
-          <span
-            aria-hidden
-            className="pointer-events-none absolute bottom-5 right-5 h-8 w-8 border-b border-r border-[rgba(198,160,98,0.4)] opacity-60 transition-all duration-700 group-hover:bottom-6 group-hover:right-6 group-hover:opacity-100"
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(198,160,98,0.5)] to-transparent"
-          />
+      <div className="group relative overflow-hidden rounded-[32px] border border-[#e8e4de] bg-[linear-gradient(165deg,#ffffff_0%,#faf8f5_52%,#f3efe8_100%)] shadow-[0_40px_100px_-48px_rgba(0,0,0,0.22),0_0_0_1px_rgba(255,255,255,0.8)]">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 left-0 w-[4px] bg-[linear-gradient(180deg,#B31217_0%,rgba(198,160,98,0.9)_55%,rgba(198,160,98,0.35)_100%)]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[radial-gradient(circle,rgba(179,18,23,0.06)_0%,transparent_70%)]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(198,160,98,0.08)_0%,transparent_68%)]"
+        />
 
-          <div className="relative">
-            <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.28em]">
-              Stuur ons een bericht
-            </p>
-            <h2 className="mt-3 font-display text-[clamp(1.8rem,2.5vw,2.4rem)] text-[#1c1c1c]">
-              Wij nemen zo spoedig mogelijk contact op
-            </h2>
+        <div className="relative border-b border-[#ebe7e1]/80 px-7 py-8 md:px-9 md:py-9">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.28em]">
+                Stuur ons een bericht
+              </p>
+              <h2 className="mt-3 max-w-md font-display text-[clamp(1.75rem,2.5vw,2.35rem)] leading-[1.02] text-[#1c1c1c]">
+                Vertel ons over uw vraag of samenwerking
+              </h2>
+            </div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(198,160,98,0.28)] bg-white/90 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#666] shadow-sm">
+              <Clock3 size={12} className="text-[#B31217]" />
+              Reactie binnen 1 werkdag
+            </span>
+          </div>
+          <p className="mt-4 max-w-lg text-[14px] leading-[1.75] text-[#6f6a63]">
+            Vul het formulier in en ons team neemt persoonlijk contact met u op. Voor spoed kunt u
+            ons ook direct bellen.
+          </p>
+        </div>
 
-            <Form {...form}>
-              <form
-                id="contact-form"
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="mt-8 space-y-5"
-              >
+        <div className="relative px-7 py-8 md:px-9 md:py-9">
+          <Form {...form}>
+            <form
+              id="contact-form"
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-5"
+            >
                 <div className="grid gap-5 sm:grid-cols-2">
                   <FormField
                     control={form.control}
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-[12px] text-[#666]">Uw naam</FormLabel>
+                        <FormLabel className="text-[12px] font-medium text-[#5a554e]">Uw naam</FormLabel>
                         <FormControl>
                           <IconField icon={UserRound}>
                             <Input
@@ -287,7 +304,7 @@ function ContactFormPanel() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-[12px] text-[#666]">E-mail adres</FormLabel>
+                        <FormLabel className="text-[12px] font-medium text-[#5a554e]">E-mail adres</FormLabel>
                         <FormControl>
                           <IconField icon={Mail}>
                             <Input
@@ -310,7 +327,7 @@ function ContactFormPanel() {
                     name="company"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-[12px] text-[#666]">Bedrijf</FormLabel>
+                        <FormLabel className="text-[12px] font-medium text-[#5a554e]">Bedrijf</FormLabel>
                         <FormControl>
                           <IconField icon={Building2}>
                             <Input
@@ -329,7 +346,7 @@ function ContactFormPanel() {
                     name="phone"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-[12px] text-[#666]">Telefoonnummer</FormLabel>
+                        <FormLabel className="text-[12px] font-medium text-[#5a554e]">Telefoonnummer</FormLabel>
                         <FormControl>
                           <IconField icon={Phone}>
                             <Input
@@ -350,7 +367,7 @@ function ContactFormPanel() {
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[12px] text-[#666]">Bericht</FormLabel>
+                      <FormLabel className="text-[12px] font-medium text-[#5a554e]">Bericht</FormLabel>
                       <FormControl>
                         <IconTextarea icon={NotebookPen}>
                           <Textarea
@@ -370,7 +387,7 @@ function ContactFormPanel() {
                   name="privacy"
                   render={({ field }) => (
                     <FormItem>
-                      <div className="flex items-start gap-3 rounded-xl border border-black/[0.08] bg-[#faf8f5] px-4 py-3.5">
+                      <div className="flex items-start gap-3 rounded-xl border border-[#ebe7e1] bg-white/80 px-4 py-3.5">
                         <FormControl>
                           <Checkbox
                             checked={field.value}
@@ -398,22 +415,29 @@ function ContactFormPanel() {
                   )}
                 />
 
-                <Button
-                  type="submit"
-                  disabled={form.formState.isSubmitting}
-                  className="group h-12 w-full rounded-xl bg-[#B31217] text-[12px] font-semibold uppercase tracking-[0.18em] text-white shadow-[0_20px_50px_-25px_rgba(177,18,23,0.55)] transition-all duration-500 hover:bg-[#C0181D] hover:shadow-[0_24px_60px_-22px_rgba(177,18,23,0.65)] disabled:opacity-50"
-                >
-                  <SendHorizonal size={16} className="mr-2 transition-transform duration-500 group-hover:translate-x-0.5" />
-                  Verstuur bericht
-                </Button>
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    disabled={form.formState.isSubmitting}
+                    className="group relative flex h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-[#B31217] text-[12px] font-semibold uppercase tracking-[0.18em] text-white shadow-[0_20px_50px_-25px_rgba(177,18,23,0.55)] transition-all duration-500 hover:bg-[#C0181D] hover:shadow-[0_24px_60px_-22px_rgba(177,18,23,0.65)] disabled:opacity-50"
+                  >
+                    <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.14),transparent)] transition-transform duration-700 group-hover:translate-x-full" />
+                    <SendHorizonal size={16} className="relative transition-transform duration-500 group-hover:translate-x-0.5" />
+                    <span className="relative">Verstuur bericht</span>
+                  </button>
+                </div>
 
-                <div className="flex items-start gap-2.5 text-[12px] leading-relaxed text-[#888]">
-                  <LockKeyhole size={13} className="mt-0.5 shrink-0 text-[rgba(198,160,98,0.9)]" />
-                  <span>Uw gegevens worden vertrouwelijk behandeld en niet gedeeld met derden.</span>
+                <div className="flex flex-wrap items-start justify-between gap-4 border-t border-[#ebe7e1] pt-5">
+                  <div className="flex items-start gap-2.5 text-[12px] leading-relaxed text-[#8a847c]">
+                    <LockKeyhole size={13} className="mt-0.5 shrink-0 text-[rgba(198,160,98,0.95)]" />
+                    <span>Uw gegevens worden vertrouwelijk behandeld en niet gedeeld met derden.</span>
+                  </div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#b0aaa2]">
+                    Ipekçi B2B · Harderwijk
+                  </p>
                 </div>
               </form>
             </Form>
-          </div>
         </div>
       </div>
     </motion.div>

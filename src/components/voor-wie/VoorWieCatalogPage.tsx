@@ -9,7 +9,7 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import { useRef } from "react";
+import { useId, useRef } from "react";
 import { ArrowDown, ArrowUpRight, Check, ChevronRight } from "lucide-react";
 import { AssortimentKlantCta } from "@/components/assortiment/AssortimentKlantCta";
 import { MagneticButton } from "@/components/MagneticButton";
@@ -20,7 +20,7 @@ import {
   type VoorWieSegmentId,
 } from "@/lib/voor-wie-content";
 import { DS_EASE, DS_EASE_REVEAL } from "@/lib/design-system";
-import backgroundBlack from "@/assets/background-black2.webp";
+import backgroundWhite3 from "@/assets/background-white3.webp";
 
 const gridContainer = {
   hidden: {},
@@ -28,13 +28,11 @@ const gridContainer = {
 };
 
 const gridItem = {
-  hidden: { opacity: 0, y: 44, scale: 0.92, rotateX: 10 },
+  hidden: { opacity: 0, y: 32 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    rotateX: 0,
-    transition: { duration: 0.95, ease: DS_EASE_REVEAL },
+    transition: { duration: 0.85, ease: DS_EASE_REVEAL },
   },
 };
 
@@ -51,7 +49,7 @@ function SegmentTabs({ active }: { active: VoorWieSegmentId | "all" }) {
         const linkClass = `relative inline-flex items-center gap-2 rounded-full border px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.2em] transition-all duration-500 ${
           isActive
             ? "border-[rgba(226,192,141,0.45)] text-[#111]"
-            : "border-white/14 bg-black/25 text-white/72 backdrop-blur-md hover:border-white/28 hover:text-white"
+            : "border-black/10 bg-white/70 text-[#555] backdrop-blur-md hover:border-[rgba(198,160,98,0.45)] hover:text-[#111]"
         }`;
 
         const inner = (
@@ -128,10 +126,10 @@ function SegmentDetailShowcase({ segment }: { segment: VoorWieSegment }) {
           <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.32em]">
             {segment.eyebrow}
           </p>
-          <h2 className="mt-5 font-display text-[clamp(2.4rem,4vw,3.5rem)] leading-[1.02] text-white">
+          <h2 className="mt-5 font-display text-[clamp(2.4rem,4vw,3.5rem)] leading-[1.02] text-[#1c1c1c]">
             {segment.label}
           </h2>
-          <p className="mt-6 text-base leading-[1.85] text-white/58 md:text-[17px]">
+          <p className="mt-6 text-base leading-[1.85] text-[#5a5a5a] md:text-[17px]">
             {segment.longDescription}
           </p>
 
@@ -143,12 +141,12 @@ function SegmentDetailShowcase({ segment }: { segment: VoorWieSegment }) {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.08, ease: DS_EASE }}
-                className="flex items-center gap-3.5 border-b border-white/8 pb-4 last:border-0"
+                className="flex items-center gap-3.5 border-b border-black/[0.08] pb-4 last:border-0"
               >
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-[rgba(226,192,141,0.25)] bg-[rgba(226,192,141,0.08)]">
-                  <Check size={14} className="text-[rgba(226,192,141,0.95)]" />
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-[rgba(198,160,98,0.28)] bg-[rgba(198,160,98,0.08)]">
+                  <Check size={14} className="text-[rgba(179,18,23,0.9)]" />
                 </span>
-                <span className="text-[14px] tracking-[0.01em] text-white/72">{b}</span>
+                <span className="text-[14px] tracking-[0.01em] text-[#444]">{b}</span>
               </motion.li>
             ))}
           </ul>
@@ -160,7 +158,7 @@ function SegmentDetailShowcase({ segment }: { segment: VoorWieSegment }) {
             </MagneticButton>
             <Link
               to="/assortiment"
-              className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/45 transition-colors hover:text-[rgba(226,192,141,0.9)]"
+              className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#777] transition-colors hover:text-[rgba(179,18,23,0.9)]"
             >
               Bekijk assortiment
               <ArrowUpRight size={14} />
@@ -251,10 +249,10 @@ function SegmentDetailShowcase({ segment }: { segment: VoorWieSegment }) {
       >
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-white/40">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#999]">
               Meer klantgroepen
             </p>
-            <h3 className="mt-3 font-display text-2xl text-white">Ontdek ook</h3>
+            <h3 className="mt-3 font-display text-2xl text-[#1c1c1c]">Ontdek ook</h3>
           </div>
         </div>
 
@@ -267,7 +265,7 @@ function SegmentDetailShowcase({ segment }: { segment: VoorWieSegment }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: i * 0.08, ease: DS_EASE }}
-              className="group relative overflow-hidden rounded-[20px] border border-white/10 bg-[#0c0c0c]/80"
+              className="group relative overflow-hidden rounded-[24px] border border-black/[0.08] bg-[#0c0c0c] shadow-[0_24px_70px_-40px_rgba(0,0,0,0.45)] transition-all duration-700 hover:-translate-y-1.5 hover:border-[rgba(198,160,98,0.35)] hover:shadow-[0_36px_90px_-36px_rgba(0,0,0,0.55)]"
             >
               <div className="relative aspect-[16/9] overflow-hidden">
                 <img
@@ -281,12 +279,13 @@ function SegmentDetailShowcase({ segment }: { segment: VoorWieSegment }) {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/30 to-transparent" />
               </div>
               <div className="p-5">
-                <p className="font-display text-xl text-white transition-colors group-hover:text-[var(--primary)]">
+                <p className="font-display text-xl text-white transition-colors group-hover:text-[rgba(226,192,141,0.95)]">
                   {other.label}
                 </p>
-                <span className="mt-3 inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40 transition-colors group-hover:text-[rgba(226,192,141,0.85)]">
-                  Lees meer
-                  <ArrowUpRight size={12} />
+                <span className="group/btn relative mt-4 inline-flex items-center gap-2 overflow-hidden rounded-xl border border-[rgba(198,160,98,0.45)] px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-[rgba(198,160,98,0.92)] transition-colors duration-700 group-hover:border-[rgba(198,160,98,0.75)] group-hover:text-[#0a0a0a]">
+                  <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[rgba(226,192,141,0.95)] transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:translate-x-0" />
+                  <span className="relative">Lees meer</span>
+                  <ArrowUpRight size={12} className="relative transition-transform duration-500 group-hover:translate-x-0.5" />
                 </span>
               </div>
             </motion.a>
@@ -297,89 +296,119 @@ function SegmentDetailShowcase({ segment }: { segment: VoorWieSegment }) {
   );
 }
 
-function SegmentCard({ segment }: { segment: VoorWieSegment }) {
-  const ref = useRef<HTMLElement>(null);
-  const mx = useMotionValue(0.5);
-  const my = useMotionValue(0.5);
-  const rotateX = useSpring(useTransform(my, [0, 1], [6, -6]), { stiffness: 180, damping: 24 });
-  const rotateY = useSpring(useTransform(mx, [0, 1], [-6, 6]), { stiffness: 180, damping: 24 });
-  const glareX = useTransform(mx, (v) => `${v * 100}%`);
-  const glareY = useTransform(my, (v) => `${v * 100}%`);
-  const glare = useMotionTemplate`radial-gradient(500px 320px at ${glareX} ${glareY}, rgba(255,255,255,0.2) 0%, transparent 58%)`;
-
-  function onMove(e: React.MouseEvent<HTMLElement>) {
-    if (!ref.current) return;
-    const r = ref.current.getBoundingClientRect();
-    mx.set((e.clientX - r.left) / r.width);
-    my.set((e.clientY - r.top) / r.height);
-  }
-
-  function onLeave() {
-    mx.set(0.5);
-    my.set(0.5);
-  }
+function SegmentCard({ segment, index }: { segment: VoorWieSegment; index: number }) {
+  const badgeId = useId();
+  const pathId = `voorwie-segment-badge-${badgeId}`;
+  const indexLabel = String(index + 1).padStart(2, "0");
 
   return (
-    <motion.article
-      ref={ref}
-      variants={gridItem}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      style={{ rotateX, rotateY, transformPerspective: 1200 }}
-      className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-[#0c0c0c] shadow-[0_32px_80px_-40px_rgba(0,0,0,0.85)] transition-shadow duration-500 hover:border-[rgba(226,192,141,0.28)] hover:shadow-[0_40px_100px_-36px_rgba(0,0,0,0.9)]"
-    >
-      <motion.div
-        className="pointer-events-none absolute inset-0 z-20 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-        style={{ background: glare }}
-        aria-hidden
-      />
-
-      <div className="relative aspect-[16/10] overflow-hidden">
-        <img
-          src={segment.image}
-          alt={segment.label}
-          loading="lazy"
-          decoding="async"
-          referrerPolicy="no-referrer"
-          className="h-full w-full object-cover transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06]"
+    <motion.article variants={gridItem} className="group relative">
+      <Link
+        to="/voor-wie/$segment"
+        params={{ segment: segment.id }}
+        className="relative block overflow-hidden rounded-[32px] border border-black/[0.08] bg-[#0a0a0a] shadow-[0_28px_80px_-44px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.04)] transition-all duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:-translate-y-2 group-hover:border-[rgba(198,160,98,0.42)] group-hover:shadow-[0_48px_120px_-48px_rgba(0,0,0,0.62),0_0_0_1px_rgba(198,160,98,0.18)]"
+      >
+        <span
+          aria-hidden
+          className="pointer-events-none absolute left-5 top-5 z-20 h-9 w-9 border-l border-t border-[rgba(198,160,98,0.4)] opacity-50 transition-all duration-700 group-hover:left-6 group-hover:top-6 group-hover:opacity-100"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/35 to-transparent" />
-        <p className="absolute left-5 top-5 rounded-full border border-white/14 bg-black/45 px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.22em] text-white/75 backdrop-blur-md">
-          {segment.eyebrow}
-        </p>
-      </div>
+        <span
+          aria-hidden
+          className="pointer-events-none absolute bottom-5 right-5 z-20 h-9 w-9 border-b border-r border-[rgba(198,160,98,0.4)] opacity-50 transition-all duration-700 group-hover:bottom-6 group-hover:right-6 group-hover:opacity-100"
+        />
 
-      <div className="relative border-t border-white/8 p-6 sm:p-7">
-        <div className="flex items-start justify-between gap-4">
-          <h3 className="font-display text-3xl text-white">{segment.label}</h3>
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[0.04] text-white/50 transition-all duration-300 group-hover:border-[rgba(226,192,141,0.35)] group-hover:text-[var(--primary)]">
-            <ArrowUpRight
-              size={16}
-              className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-          </span>
-        </div>
-        <p className="mt-4 text-sm leading-[1.75] text-white/58">{segment.longDescription}</p>
-
-        <ul className="mt-6 grid gap-2.5 sm:grid-cols-2">
-          {segment.benefits.map((b) => (
-            <li key={b} className="flex items-center gap-2.5 text-[12px] text-white/52">
-              <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[rgba(226,192,141,0.12)]">
-                <Check size={11} className="text-[rgba(226,192,141,0.9)]" />
-              </span>
-              {b}
-            </li>
-          ))}
-        </ul>
-
-        <a
-          href={segment.href}
-          className="mt-7 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[rgba(226,192,141,0.9)] transition-colors group-hover:text-[rgba(226,192,141,1)]"
+        <span
+          aria-hidden
+          className="pointer-events-none absolute right-6 top-3 z-10 select-none font-display text-[4.25rem] font-semibold leading-none tracking-[-0.06em] text-white/[0.05] transition-colors duration-700 group-hover:text-[rgba(198,160,98,0.12)]"
         >
-          {VOOR_WIE_MEGA_MENU.ctaLabel}
-          <ArrowUpRight size={13} />
-        </a>
-      </div>
+          {indexLabel}
+        </span>
+
+        <div className="relative aspect-[4/3] overflow-hidden">
+          <img
+            src={segment.image}
+            alt={segment.label}
+            loading="lazy"
+            decoding="async"
+            referrerPolicy="no-referrer"
+            className="h-full w-full object-cover transition-transform duration-[1.35s] ease-[cubic-bezier(.22,.61,.36,1)] group-hover:scale-[1.05]"
+            style={{ filter: "brightness(0.9) contrast(1.06) saturate(1.04)" }}
+          />
+          <div className="absolute inset-0 bg-[radial-gradient(900px_520px_at_50%_38%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.22)_52%,rgba(0,0,0,0.82)_100%)]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-transparent" />
+
+          <div className="pointer-events-none absolute right-5 top-5 grid h-[74px] w-[74px] place-items-center rounded-full border border-[rgba(198,160,98,0.28)] bg-black/40 backdrop-blur-[2px] transition-colors duration-700 group-hover:border-[rgba(198,160,98,0.5)]">
+            <svg viewBox="0 0 112 112" className="absolute inset-0 h-full w-full spin-ring" aria-hidden="true">
+              <defs>
+                <path id={pathId} d="M56,56 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0" />
+              </defs>
+              <text
+                fill="rgba(198,160,98,0.82)"
+                fontSize="7.1"
+                fontWeight="700"
+                letterSpacing="0.26em"
+                textAnchor="middle"
+              >
+                <textPath href={`#${pathId}`} startOffset="50%">
+                  100% HALAL • PUUR &amp; VERS • 100% HALAL • PUUR &amp; VERS
+                </textPath>
+              </text>
+            </svg>
+            <img
+              src={segment.stickerSrc}
+              alt=""
+              aria-hidden
+              className="relative h-[26px] w-[26px] opacity-90"
+              loading="lazy"
+              decoding="async"
+              referrerPolicy="no-referrer"
+            />
+          </div>
+        </div>
+
+        <div className="relative border-t border-white/[0.08] p-6 sm:p-7">
+          <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[rgba(198,160,98,0.88)]">
+            {segment.eyebrow}
+          </p>
+          <h3 className="mt-2 font-display text-[clamp(1.75rem,2.8vw,2.35rem)] font-medium leading-[1.02] tracking-[-0.03em] text-white">
+            {segment.label}
+          </h3>
+          <p className="mt-3 text-sm leading-[1.75] text-white/72 transition-colors duration-700 group-hover:text-white/88">
+            {segment.description}
+          </p>
+
+          <ul className="mt-5 grid gap-2 sm:grid-cols-2">
+            {segment.benefits.slice(0, 2).map((b) => (
+              <li key={b} className="flex items-center gap-2 text-[11px] text-white/62">
+                <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full border border-[rgba(198,160,98,0.2)] bg-[rgba(198,160,98,0.1)]">
+                  <Check size={10} className="text-[rgba(198,160,98,0.95)]" />
+                </span>
+                {b}
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-7">
+            <span className="group/btn relative inline-flex items-center gap-3 overflow-hidden rounded-2xl border border-[rgba(198,160,98,0.55)] bg-transparent px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.24em] text-[rgba(198,160,98,0.95)] transition-[color,border-color] duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:border-[rgba(198,160,98,0.9)] group-hover:text-[#0a0a0a]">
+              <span className="pointer-events-none absolute inset-0 -translate-x-[110%] bg-[rgba(226,192,141,0.95)] transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:translate-x-0" />
+              <span className="relative">{VOOR_WIE_MEGA_MENU.ctaLabel}</span>
+              <ArrowUpRight
+                size={13}
+                className="relative transition-transform duration-[600ms] ease-[cubic-bezier(.22,.61,.36,1)] group-hover:translate-x-1"
+              />
+            </span>
+          </div>
+        </div>
+
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-[32px] opacity-0 transition-opacity duration-700 group-hover:opacity-100"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(198,160,98,0.08) 0%, transparent 42%, rgba(179,18,23,0.05) 100%)",
+          }}
+        />
+      </Link>
     </motion.article>
   );
 }
@@ -432,7 +461,7 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
     <>
       <section
         ref={heroRef}
-        className="relative min-h-[92vh] overflow-hidden bg-[#030303] grain"
+        className="relative min-h-[88vh] overflow-hidden bg-[#030303] grain"
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -454,17 +483,18 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
               referrerPolicy="no-referrer"
               animate={reduceMotion ? undefined : { scale: [1, 1.08] }}
               transition={{ duration: 22, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
-              style={{ filter: "brightness(0.36) contrast(1.1) saturate(1.05)" }}
+              style={{ filter: "brightness(0.4) contrast(1.1) saturate(1.05)" }}
             />
           </motion.div>
         </AnimatePresence>
 
-        <div className="absolute inset-0 bg-gradient-to-b from-[#030303]/40 via-[#030303]/68 to-[#030303]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#030303]/55 via-[#030303]/25 to-transparent" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_75%_15%,rgba(226,192,141,0.14),transparent_50%)]" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[58%] bg-gradient-to-t from-[#030303] via-[#030303]/82 to-transparent" />
 
         <motion.div
           style={{ y: reduceMotion ? 0 : heroContentY, opacity: reduceMotion ? 1 : heroOpacity }}
-          className="relative mx-auto flex min-h-[92vh] max-w-[1480px] flex-col justify-end px-6 pb-16 pt-44 lg:px-10 lg:pb-20 lg:pt-52"
+          className="relative mx-auto flex min-h-[88vh] max-w-[1480px] flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-24 lg:pt-48"
         >
           <motion.nav
             aria-label="Breadcrumb"
@@ -534,7 +564,7 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.55, ease: DS_EASE }}
-                className="mt-8 max-w-2xl text-base leading-[1.8] text-white/60 md:text-lg"
+                className="mt-8 max-w-2xl text-base leading-[1.8] text-white/72 md:text-lg"
               >
                 {pageDescription}
               </motion.p>
@@ -562,53 +592,27 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
         </motion.div>
       </section>
 
-      <section className="relative z-10 -mt-8 px-6 lg:px-10">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-5%" }}
-          transition={{ duration: 0.9, ease: DS_EASE_REVEAL }}
-          className="mx-auto grid max-w-[1480px] gap-px overflow-hidden rounded-[24px] border border-white/10 bg-white/10 shadow-[0_40px_100px_-50px_rgba(0,0,0,0.9)] backdrop-blur-xl md:grid-cols-4"
-        >
-          {VOOR_WIE_SEGMENTS.map((s, i) => (
-            <motion.a
-              key={s.id}
-              href={s.href}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: i * 0.08, ease: DS_EASE }}
-              className="group bg-[#0a0a0a]/90 px-6 py-7 text-center transition-colors hover:bg-[#111] md:text-left"
-            >
-              <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-white/42">
-                {s.eyebrow}
-              </p>
-              <p className="mt-2 font-display text-2xl text-white transition-colors group-hover:text-[var(--primary)]">
-                {s.label}
-              </p>
-            </motion.a>
-          ))}
-        </motion.div>
-      </section>
-
       <section
         id="klantgroepen"
         ref={gridRef}
-        className="relative mt-20 overflow-hidden px-6 py-20 lg:px-10 lg:py-28"
+        className="relative z-10 overflow-hidden px-6 py-20 lg:px-10 lg:py-28"
       >
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 z-20 h-px bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.42),transparent)]"
+        />
         <motion.div
           aria-hidden
           className="pointer-events-none absolute inset-0"
           style={{ y: reduceMotion ? 0 : bgY }}
         >
           <img
-            src={backgroundBlack}
+            src={backgroundWhite3}
             alt=""
             className="h-full w-full object-cover object-center"
             loading="lazy"
             decoding="async"
           />
-          <div className="absolute inset-0 bg-[#030303]/74" />
         </motion.div>
 
         <div className="relative mx-auto max-w-[1480px]">
@@ -631,11 +635,14 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
             <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.32em]">
               Klantgroepen
             </p>
-            <h2 className="mt-4 font-display text-3xl text-white md:text-4xl">
+            <h2 className="mt-4 font-display text-3xl text-[#1c1c1c] md:text-4xl">
               {activeSegment === "all"
                 ? "Halalvlees voor elke schakel in de keten"
                 : `Oplossingen voor ${segmentMeta?.label?.toLowerCase()}`}
             </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[#5a5a5a] md:text-base">
+              {VOOR_WIE_MEGA_MENU.subtitle}
+            </p>
           </motion.div>
 
           <motion.div
@@ -644,11 +651,12 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
             initial={activeSegment === "all" ? "hidden" : false}
             whileInView={activeSegment === "all" ? "visible" : undefined}
             viewport={{ once: true, margin: "-5%" }}
-            className={activeSegment === "all" ? "mt-12 grid gap-8 lg:grid-cols-2" : undefined}
-            style={activeSegment === "all" ? { perspective: 1400 } : undefined}
+            className={activeSegment === "all" ? "mt-12 grid gap-8 md:grid-cols-2" : undefined}
           >
             {activeSegment === "all" ? (
-              segments.map((segment) => <SegmentCard key={segment.id} segment={segment} />)
+              segments.map((segment, index) => (
+                <SegmentCard key={segment.id} segment={segment} index={index} />
+              ))
             ) : segmentMeta ? (
               <SegmentDetailShowcase segment={segmentMeta} />
             ) : null}

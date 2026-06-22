@@ -2206,6 +2206,10 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .spin-ring {
+      animation: none;
+    }
+
     .hero-origin-badge__orbit,
     .hero-origin-badge__glow,
     .hero-origin-badge__sweep {

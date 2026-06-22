@@ -24,7 +24,7 @@ import {
   type AssortimentProduct,
 } from "@/lib/assortiment-products";
 import { DS_EASE, DS_EASE_REVEAL } from "@/lib/design-system";
-import backgroundBlack from "@/assets/background-black2.webp";
+import backgroundWhite3 from "@/assets/background-white3.webp";
 
 const gridContainer = {
   hidden: {},
@@ -68,7 +68,7 @@ function CategoryTabs({ active }: { active: AssortimentCategoryId | "all" }) {
         const linkClass = `relative inline-flex items-center gap-2 overflow-hidden rounded-full border px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.2em] transition-all duration-500 ${
           isActive
             ? "border-[rgba(226,192,141,0.45)] text-[#111]"
-            : "border-white/14 bg-black/25 text-white/72 backdrop-blur-md hover:border-white/28 hover:text-white"
+            : "border-black/10 bg-white/70 text-[#555] backdrop-blur-md hover:border-[rgba(198,160,98,0.45)] hover:text-[#111]"
         }`;
 
         const sticker =
@@ -256,7 +256,7 @@ export function AssortimentCatalogPage({
       {/* ── Hero ───────────────────────────────────────────── */}
       <section
         ref={heroRef}
-        className="relative min-h-[92vh] overflow-hidden bg-[#030303] grain"
+        className="relative min-h-[88vh] overflow-hidden bg-[#030303] grain"
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -278,18 +278,19 @@ export function AssortimentCatalogPage({
               referrerPolicy="no-referrer"
               animate={reduceMotion ? undefined : { scale: [1, 1.08] }}
               transition={{ duration: 22, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
-              style={{ filter: "brightness(0.34) contrast(1.12) saturate(1.1)" }}
+              style={{ filter: "brightness(0.38) contrast(1.12) saturate(1.1)" }}
             />
           </motion.div>
         </AnimatePresence>
 
-        <div className="absolute inset-0 bg-gradient-to-b from-[#030303]/40 via-[#030303]/65 to-[#030303]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#030303]/55 via-[#030303]/25 to-transparent" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_75%_15%,rgba(226,192,141,0.16),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_10%_90%,rgba(177,18,23,0.18),transparent_55%)]" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[58%] bg-gradient-to-t from-[#030303] via-[#030303]/82 to-transparent" />
 
         <motion.div
           style={{ y: reduceMotion ? 0 : heroContentY, opacity: reduceMotion ? 1 : heroOpacity }}
-          className="relative mx-auto flex min-h-[92vh] max-w-[1480px] flex-col justify-end px-6 pb-16 pt-44 lg:px-10 lg:pb-20 lg:pt-52"
+          className="relative mx-auto flex min-h-[88vh] max-w-[1480px] flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-24 lg:pt-48"
         >
           <motion.nav
             aria-label="Breadcrumb"
@@ -357,7 +358,7 @@ export function AssortimentCatalogPage({
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.55, ease: DS_EASE }}
-                className="mt-8 max-w-2xl text-base leading-[1.8] text-white/60 md:text-lg"
+                className="mt-8 max-w-2xl text-base leading-[1.8] text-white/72 md:text-lg"
               >
                 {pageDescription}
               </motion.p>
@@ -405,59 +406,31 @@ export function AssortimentCatalogPage({
         </motion.div>
       </section>
 
-      {/* ── Bridge stats ───────────────────────────────────── */}
-      <section className="relative z-10 -mt-8 px-6 lg:px-10">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-5%" }}
-          transition={{ duration: 0.9, ease: DS_EASE_REVEAL }}
-          className="mx-auto grid max-w-[1480px] gap-px overflow-hidden rounded-[24px] border border-white/10 bg-white/10 shadow-[0_40px_100px_-50px_rgba(0,0,0,0.9)] backdrop-blur-xl md:grid-cols-3"
-        >
-          {[
-            { label: "Halal gecertificeerd", value: "100%" },
-            { label: "Eigen slachthuis", value: "Sinds 2012" },
-            { label: "B2B levering", value: "NL breed" },
-          ].map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: i * 0.1, ease: DS_EASE }}
-              className="bg-[#0a0a0a]/90 px-8 py-7 text-center md:text-left"
-            >
-              <p className="text-[10px] font-semibold uppercase tracking-[0.26em] text-white/42">
-                {stat.label}
-              </p>
-              <p className="mt-2 font-display text-3xl text-[var(--primary)]">{stat.value}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
-
       {/* ── Productoverzicht ───────────────────────────────── */}
       <section
         id="productoverzicht"
         ref={productsRef}
-        className="relative mt-20 overflow-hidden px-6 py-20 lg:px-10 lg:py-28"
+        className="relative z-10 overflow-hidden px-6 py-20 lg:px-10 lg:py-28"
       >
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 z-20 h-px bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.42),transparent)]"
+        />
         <motion.div
           aria-hidden
           className="pointer-events-none absolute inset-0"
           style={{ y: reduceMotion ? 0 : bgY }}
         >
           <img
-            src={backgroundBlack}
+            src={backgroundWhite3}
             alt=""
             className="h-full w-full object-cover object-center"
             loading="lazy"
             decoding="async"
           />
-          <div className="absolute inset-0 bg-[#030303]/72" />
         </motion.div>
 
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(226,192,141,0.08),transparent_55%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,rgba(226,192,141,0.06),transparent_55%)]" />
 
         <div className="relative mx-auto max-w-[1480px]">
           <motion.div
@@ -482,16 +455,16 @@ export function AssortimentCatalogPage({
                 <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.32em]">
                   Productoverzicht
                 </p>
-                <h2 className="mt-4 font-display text-3xl text-white md:text-4xl">
+                <h2 className="mt-4 font-display text-3xl text-[#1c1c1c] md:text-4xl">
                   Selectie uit ons slachthuis
                 </h2>
-                <p className="mt-3 max-w-lg text-sm leading-relaxed text-white/52">
+                <p className="mt-3 max-w-lg text-sm leading-relaxed text-[#666]">
                   Zelfde kwaliteit als op de vloer bij Ipekçi. Vers, halal en constant geleverd.
                 </p>
               </div>
               <a
                 href="/contact"
-                className="group inline-flex items-center gap-2 rounded-full border border-white/14 bg-white/[0.06] px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/70 backdrop-blur-md transition-all hover:border-[rgba(226,192,141,0.4)] hover:text-white"
+                className="group inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/80 px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#555] backdrop-blur-md transition-all hover:border-[rgba(198,160,98,0.45)] hover:text-[#111]"
               >
                 Vraag beschikbaarheid
                 <ArrowUpRight

@@ -51,7 +51,7 @@ import assortmentRundvleesImage from "@/assets/Ons assortiment - sapi.avif";
 import assortmentKipImage from "@/assets/Ons assortiment - ayam.avif";
 import productenImage from "@/assets/producten.avif";
 import cardProductenImage from "@/assets/card-producten.avif";
-import backgroundBlack1 from "@/assets/background-black1.webp";
+import backgroundWhite1 from "@/assets/background-white1.webp";
 import assortimentLamsvleesHeroImage from "@/assets/assortiment-lamsvlees.webp";
 import assortimentRundvleesHeroImage from "@/assets/Assortiment-rundvlees.webp";
 import assortimentKipHeroImage from "@/assets/assortiment-Kip.webp";
@@ -556,7 +556,7 @@ function AssortimentUnifiedCard({
         </div>
 
         <div className="pointer-events-none absolute left-6 top-6 grid h-[82px] w-[82px] place-items-center rounded-full border border-[rgba(198,160,98,0.26)] bg-black/35 backdrop-blur-[2px] transition-colors duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:border-[rgba(198,160,98,0.5)]">
-          <svg viewBox="0 0 112 112" className="absolute inset-0 h-full w-full" aria-hidden="true">
+          <svg viewBox="0 0 112 112" className="absolute inset-0 h-full w-full spin-ring" aria-hidden="true">
             <defs>
               <path id={pathId} d="M56,56 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0" />
             </defs>
@@ -587,8 +587,7 @@ function AssortimentUnifiedCard({
         </div>
 
         <div className="relative flex min-h-[460px] flex-col justify-end p-7 sm:min-h-[520px]">
-          <div className="h-px w-10 bg-[#B31217] transition-all duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:w-16 group-hover:bg-[rgba(198,160,98,0.85)]" />
-          <h3 className="mt-6 font-display text-3xl font-semibold leading-[0.98] tracking-[-0.04em] text-[#F5F2ED] transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform group-hover:-translate-y-1">
+          <h3 className="font-display text-3xl font-semibold leading-[0.98] tracking-[-0.04em] text-[#F5F2ED] transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform group-hover:-translate-y-1">
             {title}
           </h3>
           <p className="mt-4 max-w-sm text-[13px] leading-[1.7] text-[rgba(245,242,237,0.6)]">{description}</p>
@@ -2148,20 +2147,19 @@ function HomePage() {
         id="products"
         data-story-chapter="finished-products"
         aria-labelledby="products-heading"
-        className="relative isolate overflow-hidden px-6 py-28 text-[#F5F2ED] grain lg:px-10 lg:py-36"
+        className="relative isolate overflow-hidden px-6 py-28 text-[#1c1c1c] grain lg:px-10 lg:py-36"
       >
         <div className="pointer-events-none absolute inset-0" aria-hidden>
           <img
-            src={backgroundBlack1}
+            src={backgroundWhite1}
             alt=""
             className="h-full w-full object-cover"
             loading="lazy"
             decoding="async"
           />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,8,8,0.52)_0%,rgba(12,10,9,0.68)_48%,rgba(6,6,6,0.82)_100%)]" />
           <div className="absolute left-0 right-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.32),transparent)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(1200px_760px_at_50%_0%,rgba(255,255,255,0.06)_0%,transparent_62%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(900px_640px_at_82%_72%,rgba(179,18,23,0.08)_0%,transparent_58%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(1200px_760px_at_50%_0%,rgba(255,255,255,0.55)_0%,transparent_62%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(900px_640px_at_82%_72%,rgba(179,18,23,0.04)_0%,transparent_58%)]" />
         </div>
 
         <div className="relative z-10 mx-auto max-w-[1480px]">
@@ -2172,20 +2170,20 @@ function HomePage() {
               </div>
               <h2
                 id="products-heading"
-                className="ipek-h2-lg mt-6 text-[#F5F2ED]"
+                className="ipek-h2-lg mt-6 text-[#1c1c1c]"
               >
                 Slacht van Ipekçi
               </h2>
 
               <div className="relative mx-auto mt-8 h-px w-[220px] bg-[rgba(198,160,98,0.55)]">
-                <div className="absolute left-1/2 top-1/2 grid h-7 w-7 -translate-x-1/2 -translate-y-1/2 place-items-center bg-[#121110]">
+                <div className="absolute left-1/2 top-1/2 grid h-7 w-7 -translate-x-1/2 -translate-y-1/2 place-items-center bg-[#f8f6f3]">
                   <div className="h-2 w-2 rotate-45 bg-[#B31217]" />
                 </div>
               </div>
             </StoryItem>
 
             <StoryItem>
-              <p className="mx-auto mt-9 max-w-[720px] text-sm leading-relaxed text-[#B9B9B9] sm:text-base">
+              <p className="mx-auto mt-9 max-w-[720px] text-sm leading-relaxed text-[#5a5a5a] sm:text-base">
                 Al ons vlees is 100% halal, met zorg geselecteerd en met vakmanschap verwerkt. Puur,
                 vers en van de hoogste kwaliteit.
               </p>
@@ -2234,7 +2232,7 @@ function HomePage() {
               className="lg:col-span-4 lg:sticky lg:top-28 lg:self-start"
             >
               <div className="ipek-label ipek-heading-label">Eindproducten</div>
-              <h3 className="ipek-h2-lg mt-5 text-[#F5F2ED]">
+              <h3 className="ipek-h2-lg mt-5 text-[#1c1c1c]">
                 Premium
                 <span className="mt-1 block ipek-heading-accent">
                   Finished Products
@@ -2245,7 +2243,7 @@ function HomePage() {
                 <div className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#B31217]" />
               </div>
 
-              <p className="mt-6 max-w-[42ch] text-[15px] leading-[1.75] text-[rgba(245,242,237,0.68)]">
+              <p className="mt-6 max-w-[42ch] text-[15px] leading-[1.75] text-[#5a5a5a]">
                 Een zorgvuldig samengestelde halal collectie voor retail, slagerij,
                 horeca en moderne foodconcepten — van shoarma en kebab tot burgers en
                 verpakte specialiteiten.
@@ -2255,7 +2253,7 @@ function HomePage() {
                 {["Shoarma", "Kebab", "Burgers", "Verpakt"].map((item) => (
                   <span
                     key={item}
-                    className="rounded-full border border-[rgba(226,192,141,0.18)] bg-white/[0.03] px-3.5 py-1.5 text-[9px] font-medium uppercase tracking-[0.24em] text-[rgba(245,242,237,0.62)]"
+                    className="rounded-full border border-[rgba(198,160,98,0.28)] bg-white/70 px-3.5 py-1.5 text-[9px] font-medium uppercase tracking-[0.24em] text-[#666]"
                   >
                     {item}
                   </span>
@@ -2273,7 +2271,7 @@ function HomePage() {
                     className="transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-1"
                   />
                 </a>
-                <span className="text-[10px] uppercase tracking-[0.28em] text-[rgba(245,242,237,0.38)]">
+                <span className="text-[10px] uppercase tracking-[0.28em] text-[#999]">
                   {EINDPRODUCTEN_PRODUCTS.length} signature selecties
                 </span>
               </div>
@@ -2374,7 +2372,7 @@ function HomePage() {
                 </div>
               </div>
 
-              <div className="relative mt-8 hidden h-[2px] overflow-hidden rounded-full bg-white/[0.06] sm:block">
+              <div className="relative mt-8 hidden h-[2px] overflow-hidden rounded-full bg-black/[0.06] sm:block">
                 <div
                   className="h-full rounded-full bg-[linear-gradient(90deg,rgba(226,192,141,0.0),rgba(226,192,141,0.75),rgba(226,192,141,0.0))] transition-[width] duration-700 ease-[cubic-bezier(.22,1,.36,1)]"
                   style={{ width: `${Math.round(eindproductenProgress * 100)}%` }}
@@ -2722,7 +2720,7 @@ function AssortmentCategoryCard({
         </div>
 
         <div className="pointer-events-none absolute left-7 top-7 grid h-[86px] w-[86px] place-items-center rounded-full border border-[rgba(226,192,141,0.26)] bg-black/35 backdrop-blur-[2px]">
-          <svg viewBox="0 0 112 112" className="absolute inset-0 h-full w-full" aria-hidden="true">
+          <svg viewBox="0 0 112 112" className="absolute inset-0 h-full w-full spin-ring" aria-hidden="true">
             <defs>
               <path id={pathId} d="M56,56 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0" />
             </defs>
@@ -2755,8 +2753,7 @@ function AssortmentCategoryCard({
         </div>
 
         <div className="relative flex min-h-[560px] flex-col justify-end p-8 sm:min-h-[600px]">
-          <div className="h-px w-10 bg-[#B31217]" />
-          <div className="mt-6 font-display text-4xl font-medium leading-[1.03] tracking-[-0.03em] text-[#F5F2ED]">
+          <div className="font-display text-4xl font-medium leading-[1.03] tracking-[-0.03em] text-[#F5F2ED]">
             {title}
           </div>
           <p className="mt-4 text-sm leading-relaxed text-[rgba(245,242,237,0.70)]">{text}</p>

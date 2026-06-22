@@ -539,6 +539,15 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 
             {/* original accordion structure */}
             <nav className="flex w-full flex-col">
+              <Link
+                to="/"
+                onClick={onClose}
+                className="flex items-center justify-between border-b border-white/[0.08] py-5 text-[15px] font-medium tracking-[0.04em] text-white/85 transition-colors hover:text-white"
+              >
+                <span>Home</span>
+                <ArrowUpRight size={14} className="text-white/35" />
+              </Link>
+
               <Accordion type="multiple" className="w-full">
                 <AccordionItem value="assortiment" className="border-white/[0.05]">
                   <AccordionTrigger className="px-0 text-base font-medium tracking-[0.06em] text-white/85 hover:no-underline">
@@ -671,6 +680,7 @@ export function Navbar() {
           <NavLogo scrolled={scrolled} />
 
           <div className="flex items-center gap-0.5 xl:gap-1">
+            <NavLink to="/" label="Home" active={isActive("/")} scrolled={scrolled} />
             <AssortimentNavDropdown
               active={isActive("/assortiment")}
               open={openDropdown === "Assortiment"}

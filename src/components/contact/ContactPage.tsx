@@ -2,11 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "@tanstack/react-router";
 import {
   motion,
-  useMotionTemplate,
-  useMotionValue,
   useReducedMotion,
-  useSpring,
-  useTransform,
 } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 import {
@@ -21,7 +17,7 @@ import {
   SendHorizonal,
   UserRound,
 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { SiteLayout } from "@/components/SiteLayout";
@@ -39,6 +35,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Toaster } from "@/components/ui/sonner";
 import { DS_EASE, DS_EASE_REVEAL } from "@/lib/design-system";
+import backgroundWhite1 from "@/assets/background-white1.webp";
+import backgroundWhite3 from "@/assets/background-white3.webp";
 import {
   CONTACT_DETAILS,
   CONTACT_HERO_IMAGE,
@@ -63,15 +61,22 @@ const contactSchema = z.object({
 type ContactFormValues = z.infer<typeof contactSchema>;
 
 const fieldClass =
-  "h-12 rounded-xl border-white/10 bg-white/[0.04] pl-11 text-[14px] text-white placeholder:text-white/30 transition-all duration-300 focus-visible:border-[rgba(226,192,141,0.45)] focus-visible:bg-white/[0.06] focus-visible:ring-0";
+  "h-12 rounded-xl border border-black/[0.1] bg-white pl-11 text-[14px] text-[#1c1c1c] shadow-sm placeholder:text-[#aaa] transition-all duration-300 focus-visible:border-[rgba(198,160,98,0.55)] focus-visible:bg-white focus-visible:ring-0 focus-visible:shadow-[0_0_0_3px_rgba(198,160,98,0.12)]";
 
 const textareaClass =
-  "min-h-[128px] resize-none rounded-xl border-white/10 bg-white/[0.04] pl-11 pt-3.5 text-[14px] text-white placeholder:text-white/30 transition-all duration-300 focus-visible:border-[rgba(226,192,141,0.45)] focus-visible:bg-white/[0.06] focus-visible:ring-0";
+  "min-h-[128px] resize-none rounded-xl border border-black/[0.1] bg-white pl-11 pt-3.5 text-[14px] text-[#1c1c1c] shadow-sm placeholder:text-[#aaa] transition-all duration-300 focus-visible:border-[rgba(198,160,98,0.55)] focus-visible:bg-white focus-visible:ring-0 focus-visible:shadow-[0_0_0_3px_rgba(198,160,98,0.12)]";
 
 function ContactBackdrop() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div className="absolute inset-0 bg-[#030303]" />
+      <img
+        src={backgroundWhite1}
+        alt=""
+        aria-hidden
+        className="absolute inset-0 h-full w-full object-cover"
+        loading="eager"
+        decoding="async"
+      />
       <img
         src={CONTACT_HERO_IMAGE}
         alt=""
@@ -79,13 +84,11 @@ function ContactBackdrop() {
         loading="eager"
         decoding="async"
         referrerPolicy="no-referrer"
-        className="absolute inset-0 h-full w-full object-cover opacity-[0.14]"
-        style={{ filter: "brightness(0.5) contrast(1.05) saturate(0.85)" }}
+        className="absolute inset-0 h-full w-full object-cover opacity-[0.08]"
+        style={{ filter: "brightness(0.92) contrast(1.05) saturate(0.9)" }}
       />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_55%_at_15%_20%,rgba(226,192,141,0.1),transparent_55%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_85%_30%,rgba(177,18,23,0.08),transparent_50%)]" />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#030303]/60 via-[#030303]/88 to-[#030303]" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#030303]/95 via-[#030303]/80 to-[#030303]/55" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_85%_30%,rgba(177,18,23,0.05),transparent_50%)]" />
     </div>
   );
 }
@@ -105,27 +108,27 @@ function DetailCard({ item, index }: { item: ContactDetail; index: number }) {
     >
       <Wrapper
         {...linkProps}
-        className="group flex h-full flex-col rounded-[20px] border border-white/[0.08] bg-white/[0.03] p-5 transition-all duration-500 hover:border-[rgba(226,192,141,0.28)] hover:bg-white/[0.05]"
+        className="group flex h-full flex-col rounded-[22px] border border-black/[0.08] bg-white p-5 shadow-[0_20px_60px_-40px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-0.5 hover:border-[rgba(198,160,98,0.35)] hover:shadow-[0_28px_70px_-36px_rgba(0,0,0,0.16)]"
       >
         <div className="flex items-center justify-between gap-3">
-          <div className="grid h-10 w-10 place-items-center rounded-full border border-[rgba(226,192,141,0.22)] bg-[rgba(226,192,141,0.06)] text-[rgba(226,192,141,0.9)] transition-colors duration-500 group-hover:border-[rgba(226,192,141,0.4)]">
+          <div className="grid h-10 w-10 place-items-center rounded-full border border-[rgba(198,160,98,0.28)] bg-[rgba(198,160,98,0.08)] text-[rgba(179,18,23,0.85)] transition-colors duration-500 group-hover:border-[rgba(198,160,98,0.45)]">
             <Icon size={17} strokeWidth={1.75} />
           </div>
           {item.href ? (
             <ArrowUpRight
               size={14}
-              className="text-white/25 transition-all duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[rgba(226,192,141,0.85)]"
+              className="text-[#bbb] transition-all duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[rgba(179,18,23,0.85)]"
             />
           ) : null}
         </div>
-        <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/38">
+        <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#999]">
           {item.label}
         </p>
-        <p className="mt-2 font-display text-lg text-white transition-colors group-hover:text-[var(--primary)]">
+        <p className="mt-2 font-display text-lg text-[#1c1c1c] transition-colors group-hover:text-[#B31217]">
           {item.primary}
         </p>
         {item.secondary ? (
-          <p className="mt-1.5 text-[13px] leading-relaxed text-white/48">{item.secondary}</p>
+          <p className="mt-1.5 text-[13px] leading-relaxed text-[#666]">{item.secondary}</p>
         ) : null}
       </Wrapper>
     </motion.div>
@@ -146,7 +149,7 @@ function IconField({
       <Icon
         size={16}
         strokeWidth={1.75}
-        className="pointer-events-none absolute left-4 top-1/2 z-10 -translate-y-1/2 text-white/35"
+        className="pointer-events-none absolute left-4 top-1/2 z-10 -translate-y-1/2 text-[#aaa]"
       />
       {children}
     </div>
@@ -165,7 +168,7 @@ function IconTextarea({
       <Icon
         size={16}
         strokeWidth={1.75}
-        className="pointer-events-none absolute left-4 top-4 z-10 text-white/35"
+        className="pointer-events-none absolute left-4 top-4 z-10 text-[#aaa]"
       />
       {children}
     </div>
@@ -174,14 +177,6 @@ function IconTextarea({
 
 function ContactFormPanel() {
   const [submitted, setSubmitted] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const mx = useMotionValue(0.5);
-  const my = useMotionValue(0.5);
-  const rotateY = useSpring(useTransform(mx, [0, 1], [-4, 4]), { stiffness: 140, damping: 28 });
-  const rotateX = useSpring(useTransform(my, [0, 1], [3, -3]), { stiffness: 140, damping: 28 });
-  const glareX = useTransform(mx, (v) => `${v * 100}%`);
-  const glareY = useTransform(my, (v) => `${v * 100}%`);
-  const glare = useMotionTemplate`radial-gradient(520px 360px at ${glareX} ${glareY}, rgba(255,255,255,0.1) 0%, transparent 58%)`;
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
@@ -194,18 +189,6 @@ function ContactFormPanel() {
       privacy: false,
     },
   });
-
-  function onMove(e: React.MouseEvent<HTMLDivElement>) {
-    if (!cardRef.current) return;
-    const r = cardRef.current.getBoundingClientRect();
-    mx.set((e.clientX - r.left) / r.width);
-    my.set((e.clientY - r.top) / r.height);
-  }
-
-  function onLeave() {
-    mx.set(0.5);
-    my.set(0.5);
-  }
 
   function onSubmit(values: ContactFormValues) {
     setSubmitted(true);
@@ -222,20 +205,20 @@ function ContactFormPanel() {
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, ease: DS_EASE }}
-        className="flex min-h-[520px] flex-col items-center justify-center rounded-[28px] border border-[rgba(226,192,141,0.22)] bg-white/[0.04] px-8 py-16 text-center backdrop-blur-xl"
+        className="flex min-h-[520px] flex-col items-center justify-center rounded-[32px] border border-[rgba(198,160,98,0.28)] bg-white px-8 py-16 text-center shadow-[0_32px_90px_-44px_rgba(0,0,0,0.14)]"
       >
-        <div className="grid h-16 w-16 place-items-center rounded-full border border-[rgba(226,192,141,0.3)] bg-[rgba(226,192,141,0.08)] text-[rgba(226,192,141,0.95)]">
+        <div className="grid h-16 w-16 place-items-center rounded-full border border-[rgba(198,160,98,0.35)] bg-[rgba(198,160,98,0.1)] text-[rgba(179,18,23,0.9)]">
           <CheckCircle2 size={28} />
         </div>
-        <h3 className="mt-8 font-display text-3xl text-white">Bedankt voor uw bericht</h3>
-        <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-white/55">
+        <h3 className="mt-8 font-display text-3xl text-[#1c1c1c]">Bedankt voor uw bericht</h3>
+        <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-[#666]">
           Wij nemen zo spoedig mogelijk contact met u op. Voor dringende vragen kunt u ons direct
           bellen.
         </p>
         <button
           type="button"
           onClick={() => setSubmitted(false)}
-          className="mt-10 text-[11px] font-semibold uppercase tracking-[0.2em] text-[rgba(226,192,141,0.85)] transition-colors hover:text-white"
+          className="mt-10 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#B31217] transition-colors hover:text-[#8e0e12]"
         >
           Nieuw bericht versturen
         </button>
@@ -249,33 +232,27 @@ function ContactFormPanel() {
       animate={{ opacity: 1, y: 0, x: 0 }}
       transition={{ duration: 1, delay: 0.12, ease: DS_EASE_REVEAL }}
       className="lg:pl-4 xl:pl-8"
-      style={{ perspective: 1200 }}
     >
-      <div
-        ref={cardRef}
-        onMouseMove={onMove}
-        onMouseLeave={onLeave}
-        className="group relative"
-      >
-        <motion.div
-          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-          className="relative overflow-hidden rounded-[28px] border border-white/12 bg-[#0a0a0a]/75 p-7 shadow-[0_40px_100px_-45px_rgba(0,0,0,0.95)] backdrop-blur-2xl md:p-9"
-        >
-          <motion.div
+      <div className="group relative">
+        <div className="relative overflow-hidden rounded-[32px] border border-black/[0.08] bg-white p-7 shadow-[0_40px_100px_-48px_rgba(0,0,0,0.18)] md:p-9">
+          <span
             aria-hidden
-            className="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-            style={{ background: glare }}
+            className="pointer-events-none absolute left-5 top-5 h-8 w-8 border-l border-t border-[rgba(198,160,98,0.4)] opacity-60 transition-all duration-700 group-hover:left-6 group-hover:top-6 group-hover:opacity-100"
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute bottom-5 right-5 h-8 w-8 border-b border-r border-[rgba(198,160,98,0.4)] opacity-60 transition-all duration-700 group-hover:bottom-6 group-hover:right-6 group-hover:opacity-100"
           />
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(226,192,141,0.45)] to-transparent"
+            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(198,160,98,0.5)] to-transparent"
           />
 
           <div className="relative">
             <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.28em]">
               Stuur ons een bericht
             </p>
-            <h2 className="mt-3 font-display text-[clamp(1.8rem,2.5vw,2.4rem)] text-white">
+            <h2 className="mt-3 font-display text-[clamp(1.8rem,2.5vw,2.4rem)] text-[#1c1c1c]">
               Wij nemen zo spoedig mogelijk contact op
             </h2>
 
@@ -291,7 +268,7 @@ function ContactFormPanel() {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-[12px] text-white/55">Uw naam</FormLabel>
+                        <FormLabel className="text-[12px] text-[#666]">Uw naam</FormLabel>
                         <FormControl>
                           <IconField icon={UserRound}>
                             <Input
@@ -310,7 +287,7 @@ function ContactFormPanel() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-[12px] text-white/55">E-mail adres</FormLabel>
+                        <FormLabel className="text-[12px] text-[#666]">E-mail adres</FormLabel>
                         <FormControl>
                           <IconField icon={Mail}>
                             <Input
@@ -333,7 +310,7 @@ function ContactFormPanel() {
                     name="company"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-[12px] text-white/55">Bedrijf</FormLabel>
+                        <FormLabel className="text-[12px] text-[#666]">Bedrijf</FormLabel>
                         <FormControl>
                           <IconField icon={Building2}>
                             <Input
@@ -352,7 +329,7 @@ function ContactFormPanel() {
                     name="phone"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-[12px] text-white/55">Telefoonnummer</FormLabel>
+                        <FormLabel className="text-[12px] text-[#666]">Telefoonnummer</FormLabel>
                         <FormControl>
                           <IconField icon={Phone}>
                             <Input
@@ -373,7 +350,7 @@ function ContactFormPanel() {
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-[12px] text-white/55">Bericht</FormLabel>
+                      <FormLabel className="text-[12px] text-[#666]">Bericht</FormLabel>
                       <FormControl>
                         <IconTextarea icon={NotebookPen}>
                           <Textarea
@@ -393,22 +370,22 @@ function ContactFormPanel() {
                   name="privacy"
                   render={({ field }) => (
                     <FormItem>
-                      <div className="flex items-start gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3.5">
+                      <div className="flex items-start gap-3 rounded-xl border border-black/[0.08] bg-[#faf8f5] px-4 py-3.5">
                         <FormControl>
                           <Checkbox
                             checked={field.value}
                             onCheckedChange={field.onChange}
-                            className="mt-0.5 border-white/20 data-[state=checked]:border-[#B31217] data-[state=checked]:bg-[#B31217]"
+                            className="mt-0.5 border-[#ccc] data-[state=checked]:border-[#B31217] data-[state=checked]:bg-[#B31217]"
                           />
                         </FormControl>
                         <div className="space-y-1 leading-none">
-                          <FormLabel className="cursor-pointer text-[13px] font-normal leading-6 text-white/58">
+                          <FormLabel className="cursor-pointer text-[13px] font-normal leading-6 text-[#555]">
                             Ik ga akkoord met de{" "}
                             <a
                               href="https://www.ipekcislachterij.nl/privacy-policy/"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-[rgba(226,192,141,0.9)] underline underline-offset-4 transition-colors hover:text-white"
+                              className="text-[#B31217] underline underline-offset-4 transition-colors hover:text-[#8e0e12]"
                               onClick={(e) => e.stopPropagation()}
                             >
                               privacy policy
@@ -424,20 +401,20 @@ function ContactFormPanel() {
                 <Button
                   type="submit"
                   disabled={form.formState.isSubmitting}
-                  className="h-12 w-full rounded-xl bg-[#B31217] text-[12px] font-semibold uppercase tracking-[0.18em] text-white shadow-[0_20px_50px_-25px_rgba(177,18,23,0.8)] transition-all duration-500 hover:bg-[#C0181D] disabled:opacity-50"
+                  className="group h-12 w-full rounded-xl bg-[#B31217] text-[12px] font-semibold uppercase tracking-[0.18em] text-white shadow-[0_20px_50px_-25px_rgba(177,18,23,0.55)] transition-all duration-500 hover:bg-[#C0181D] hover:shadow-[0_24px_60px_-22px_rgba(177,18,23,0.65)] disabled:opacity-50"
                 >
-                  <SendHorizonal size={16} className="mr-2" />
+                  <SendHorizonal size={16} className="mr-2 transition-transform duration-500 group-hover:translate-x-0.5" />
                   Verstuur bericht
                 </Button>
 
-                <div className="flex items-start gap-2.5 text-[12px] leading-relaxed text-white/38">
-                  <LockKeyhole size={13} className="mt-0.5 shrink-0 text-[rgba(226,192,141,0.7)]" />
+                <div className="flex items-start gap-2.5 text-[12px] leading-relaxed text-[#888]">
+                  <LockKeyhole size={13} className="mt-0.5 shrink-0 text-[rgba(198,160,98,0.9)]" />
                   <span>Uw gegevens worden vertrouwelijk behandeld en niet gedeeld met derden.</span>
                 </div>
               </form>
             </Form>
           </div>
-        </motion.div>
+        </div>
       </div>
     </motion.div>
   );
@@ -449,9 +426,9 @@ export function ContactPage() {
 
   return (
     <SiteLayout>
-      <Toaster position="top-center" richColors theme="dark" />
+      <Toaster position="top-center" richColors theme="light" />
 
-      <section className="relative overflow-hidden bg-[#030303] pt-36 text-white grain md:pt-40 lg:pt-[148px]">
+      <section className="relative overflow-hidden bg-[#f8f6f3] pt-36 text-[#1c1c1c] md:pt-40 lg:pt-[148px]">
         <ContactBackdrop />
 
         <div className="relative mx-auto max-w-[1480px] px-6 pb-20 lg:px-10 lg:pb-28">
@@ -460,13 +437,13 @@ export function ContactPage() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: DS_EASE }}
-            className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.22em] text-white/38"
+            className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.22em] text-[#999]"
           >
-            <Link to="/" className="transition-colors hover:text-[rgba(226,192,141,0.9)]">
+            <Link to="/" className="transition-colors hover:text-[#B31217]">
               Home
             </Link>
-            <ChevronRight size={12} className="text-white/20" />
-            <span className="text-white/72">Contact</span>
+            <ChevronRight size={12} className="text-[#ccc]" />
+            <span className="text-[#444]">Contact</span>
           </motion.nav>
 
           <div className="mt-14 grid items-start gap-14 lg:grid-cols-12 lg:gap-12 xl:gap-16">
@@ -480,7 +457,7 @@ export function ContactPage() {
                 Contact
               </motion.p>
 
-              <h1 className="mt-5 max-w-xl font-display text-[clamp(2.6rem,5vw,4.2rem)] leading-[0.98] text-white">
+              <h1 className="mt-5 max-w-xl font-display text-[clamp(2.6rem,5vw,4.2rem)] leading-[0.98] text-[#1c1c1c]">
                 {titleWords.map((word, i) => (
                   <motion.span
                     key={word}
@@ -498,7 +475,7 @@ export function ContactPage() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4, ease: DS_EASE }}
-                className="mt-6 max-w-md text-[15px] leading-[1.85] text-white/52"
+                className="mt-6 max-w-md text-[15px] leading-[1.85] text-[#5a5a5a]"
               >
                 Wij staan klaar om uw vragen te beantwoorden, advies te geven en samen te werken aan
                 de beste halal oplossingen voor uw bedrijf.
@@ -518,9 +495,9 @@ export function ContactPage() {
                       href={action.href}
                       target={action.href.startsWith("http") ? "_blank" : undefined}
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/62 transition-all duration-500 hover:border-[rgba(226,192,141,0.3)] hover:text-white"
+                      className="inline-flex items-center gap-2.5 rounded-full border border-black/[0.1] bg-white px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#555] shadow-sm transition-all duration-500 hover:border-[rgba(198,160,98,0.4)] hover:text-[#111] hover:shadow-md"
                     >
-                      <Icon size={14} className="text-[rgba(226,192,141,0.85)]" />
+                      <Icon size={14} className="text-[#B31217]" />
                       {action.label}
                     </a>
                   );
@@ -542,8 +519,8 @@ export function ContactPage() {
           </div>
         </div>
 
-        <div className="relative border-t border-white/[0.06] bg-[#050505]/80 backdrop-blur-sm">
-          <div className="mx-auto grid max-w-[1480px] gap-px bg-white/[0.04] px-6 md:grid-cols-2 lg:grid-cols-4 lg:px-10">
+        <div className="relative border-t border-black/[0.08] bg-white/80 backdrop-blur-sm">
+          <div className="mx-auto grid max-w-[1480px] gap-px bg-black/[0.06] px-6 md:grid-cols-2 lg:grid-cols-4 lg:px-10">
             {CONTACT_TRUST.map((item, index) => {
               const Icon = item.icon;
               return (
@@ -553,14 +530,14 @@ export function ContactPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-5%" }}
                   transition={{ duration: 0.7, delay: index * 0.06, ease: DS_EASE }}
-                  className="flex items-start gap-4 bg-[#050505] px-0 py-7 lg:px-6"
+                  className="flex items-start gap-4 bg-white px-0 py-7 lg:px-6"
                 >
-                  <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[rgba(226,192,141,0.22)] bg-[rgba(226,192,141,0.05)] text-[rgba(226,192,141,0.9)]">
+                  <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-[rgba(198,160,98,0.28)] bg-[rgba(198,160,98,0.08)] text-[rgba(179,18,23,0.85)]">
                     <Icon size={18} strokeWidth={1.7} />
                   </div>
                   <div>
-                    <p className="text-[14px] text-white">{item.title}</p>
-                    <p className="mt-1 text-[13px] leading-relaxed text-white/48">{item.description}</p>
+                    <p className="text-[14px] text-[#1c1c1c]">{item.title}</p>
+                    <p className="mt-1 text-[13px] leading-relaxed text-[#666]">{item.description}</p>
                   </div>
                 </motion.div>
               );
@@ -569,10 +546,18 @@ export function ContactPage() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-[#FAF8F5] px-6 py-24 grain lg:px-10 lg:py-28">
+      <section className="relative isolate overflow-hidden px-6 py-24 lg:px-10 lg:py-28">
+        <img
+          src={backgroundWhite3}
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          loading="lazy"
+          decoding="async"
+        />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_70%_at_0%_50%,rgba(226,192,141,0.12),transparent_55%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_70%_at_0%_50%,rgba(226,192,141,0.08),transparent_55%)]"
         />
         <div className="relative mx-auto grid max-w-[1480px] items-center gap-12 lg:grid-cols-12 lg:gap-16">
           <motion.div
@@ -593,7 +578,7 @@ export function ContactPage() {
             </p>
             <a
               href="#contact-form"
-              className="group mt-10 inline-flex items-center gap-3 rounded-full bg-[#B31217] px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white shadow-[0_20px_60px_-30px_rgba(177,18,23,0.75)] transition-all duration-500 hover:bg-[#C0181D]"
+              className="group relative mt-10 inline-flex items-center gap-3 overflow-hidden rounded-full bg-[#B31217] px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white shadow-[0_20px_60px_-30px_rgba(177,18,23,0.55)] transition-all duration-500 hover:bg-[#C0181D] hover:shadow-[0_24px_70px_-28px_rgba(177,18,23,0.65)]"
             >
               {CONTACT_PARTNER.cta}
               <ArrowUpRight
@@ -610,16 +595,28 @@ export function ContactPage() {
             transition={{ duration: 0.9, delay: 0.08, ease: DS_EASE }}
             className="lg:col-span-5"
           >
-            <div className="relative overflow-hidden rounded-[24px] border border-[rgba(226,192,141,0.28)] shadow-[0_32px_80px_-40px_rgba(0,0,0,0.28)]">
+            <div className="group relative overflow-hidden rounded-[32px] border border-[rgba(198,160,98,0.28)] bg-white shadow-[0_32px_90px_-44px_rgba(0,0,0,0.14)]">
+              <span
+                aria-hidden
+                className="pointer-events-none absolute left-4 top-4 z-10 h-8 w-8 border-l border-t border-[rgba(198,160,98,0.45)] opacity-70 transition-all duration-700 group-hover:left-5 group-hover:top-5 group-hover:opacity-100"
+              />
+              <span
+                aria-hidden
+                className="pointer-events-none absolute bottom-4 right-4 z-10 h-8 w-8 border-b border-r border-[rgba(198,160,98,0.45)] opacity-70 transition-all duration-700 group-hover:bottom-5 group-hover:right-5 group-hover:opacity-100"
+              />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 top-0 z-10 h-px bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.5),transparent)]"
+              />
               <img
                 src={CONTACT_HERO_IMAGE}
                 alt="Ipekçi Slachterij contact"
                 loading="lazy"
                 decoding="async"
                 referrerPolicy="no-referrer"
-                className="aspect-[4/5] w-full object-cover"
+                className="aspect-[4/5] w-full object-cover transition-transform duration-[1.35s] ease-[cubic-bezier(.22,.61,.36,1)] group-hover:scale-[1.03]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#111]/30 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/25 via-transparent to-transparent" />
             </div>
           </motion.div>
         </div>

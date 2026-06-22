@@ -2301,7 +2301,20 @@ function HomePage() {
                   eindproductenAutoPausedRef.current = false;
                 }}
               >
-                <div className="overflow-hidden pb-2 pt-1">
+                <div className="relative overflow-hidden pb-2 pt-1">
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-y-0 left-0 z-20 w-14 sm:w-24 lg:w-36"
+                  >
+                    <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(248,246,243,0.98)_0%,rgba(248,246,243,0.72)_28%,rgba(248,246,243,0.18)_62%,rgba(248,246,243,0)_100%)]" />
+                  </div>
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-y-0 right-0 z-20 w-14 sm:w-24 lg:w-36"
+                  >
+                    <div className="absolute inset-0 bg-[linear-gradient(270deg,rgba(248,246,243,0.98)_0%,rgba(248,246,243,0.72)_28%,rgba(248,246,243,0.18)_62%,rgba(248,246,243,0)_100%)]" />
+                  </div>
+
                   <motion.div
                     ref={eindproductenTrackRef}
                     onPointerDown={handleEindproductenPointerDown}
@@ -2343,11 +2356,11 @@ function HomePage() {
                         markEindproductenUserInteract();
                         nudgeEindproducten("left");
                       }}
-                      className="pointer-events-auto group grid h-10 w-10 place-items-center rounded-full border border-[rgba(226,192,141,0.22)] bg-[rgba(18,17,16,0.88)] shadow-[0_12px_40px_-20px_rgba(0,0,0,0.8)] transition-all duration-400 hover:border-[rgba(226,192,141,0.42)] hover:bg-[rgba(24,22,20,0.95)] active:scale-[0.98] lg:h-11 lg:w-11"
+                      className="pointer-events-auto group grid h-10 w-10 place-items-center rounded-2xl border border-black/10 bg-white/70 shadow-[0_22px_70px_-46px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all duration-400 hover:border-[rgba(198,160,98,0.35)] hover:bg-white hover:shadow-[0_28px_80px_-48px_rgba(0,0,0,0.42)] active:scale-[0.98] lg:h-11 lg:w-11"
                     >
                       <ArrowRight
                         size={16}
-                        className="rotate-180 text-[rgba(245,242,237,0.86)] transition-transform duration-400 group-hover:-translate-x-0.5"
+                        className="rotate-180 text-[#333] transition-transform duration-400 group-hover:-translate-x-0.5"
                       />
                     </button>
                   ) : null}
@@ -2361,11 +2374,11 @@ function HomePage() {
                         markEindproductenUserInteract();
                         nudgeEindproducten("right");
                       }}
-                      className="pointer-events-auto group grid h-10 w-10 place-items-center rounded-full border border-[rgba(226,192,141,0.22)] bg-[rgba(18,17,16,0.88)] shadow-[0_12px_40px_-20px_rgba(0,0,0,0.8)] transition-all duration-400 hover:border-[rgba(226,192,141,0.42)] hover:bg-[rgba(24,22,20,0.95)] active:scale-[0.98] lg:h-11 lg:w-11"
+                      className="pointer-events-auto group grid h-10 w-10 place-items-center rounded-2xl border border-black/10 bg-white/70 shadow-[0_22px_70px_-46px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all duration-400 hover:border-[rgba(198,160,98,0.35)] hover:bg-white hover:shadow-[0_28px_80px_-48px_rgba(0,0,0,0.42)] active:scale-[0.98] lg:h-11 lg:w-11"
                     >
                       <ArrowRight
                         size={16}
-                        className="text-[rgba(245,242,237,0.86)] transition-transform duration-400 group-hover:translate-x-0.5"
+                        className="text-[#333] transition-transform duration-400 group-hover:translate-x-0.5"
                       />
                     </button>
                   ) : null}

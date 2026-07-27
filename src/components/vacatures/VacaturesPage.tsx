@@ -451,9 +451,9 @@ export function VacaturesPage() {
             <Reveal delay={0.1}>
               <a
                 href={`#${SOLLICITEREN_ANCHOR}`}
-                className="group relative inline-flex items-center gap-3 overflow-hidden rounded-2xl border border-[rgba(198,160,98,0.45)] bg-transparent px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#555] transition-[color,border-color] duration-700 hover:border-[rgba(198,160,98,0.75)] hover:text-[#111]"
+                className="group relative inline-flex items-center gap-3 overflow-hidden rounded-2xl border border-[rgba(198,160,98,0.45)] bg-transparent px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#555] transition-[color,border-color] duration-[320ms] hover:border-[rgba(198,160,98,0.75)] hover:text-[#111]"
               >
-                <span className="pointer-events-none absolute inset-0 -translate-x-[110%] bg-[rgba(226,192,141,0.92)] transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:translate-x-0" />
+                <span className="pointer-events-none absolute inset-0 -translate-x-[110%] bg-[rgba(226,192,141,0.92)] transition-transform duration-[320ms] ease-[cubic-bezier(.22,.61,.36,1)] group-hover:translate-x-0" />
                 <span className="relative">Hoe solliciteren werkt</span>
                 <ArrowUpRight
                   size={13}

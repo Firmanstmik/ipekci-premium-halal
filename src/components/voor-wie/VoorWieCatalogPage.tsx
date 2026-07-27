@@ -282,8 +282,8 @@ function SegmentDetailShowcase({ segment }: { segment: VoorWieSegment }) {
                 <p className="font-display text-xl text-white transition-colors group-hover:text-[rgba(226,192,141,0.95)]">
                   {other.label}
                 </p>
-                <span className="group/btn relative mt-4 inline-flex items-center gap-2 overflow-hidden rounded-xl border border-[rgba(198,160,98,0.45)] px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-[rgba(198,160,98,0.92)] transition-colors duration-700 group-hover:border-[rgba(198,160,98,0.75)] group-hover:text-[#0a0a0a]">
-                  <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[rgba(226,192,141,0.95)] transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:translate-x-0" />
+                <span className="group/btn relative mt-4 inline-flex items-center gap-2 overflow-hidden rounded-xl border border-[rgba(198,160,98,0.45)] px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-[rgba(198,160,98,0.92)] transition-colors duration-[320ms] group-hover:border-[rgba(198,160,98,0.75)] group-hover:text-[#0a0a0a]">
+                  <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[rgba(226,192,141,0.95)] transition-transform duration-[320ms] ease-[cubic-bezier(.22,.61,.36,1)] group-hover:translate-x-0" />
                   <span className="relative">Lees meer</span>
                   <ArrowUpRight
                     size={12}
@@ -396,8 +396,8 @@ function SegmentCard({ segment, index }: { segment: VoorWieSegment; index: numbe
           </ul>
 
           <div className="mt-7">
-            <span className="group/btn relative inline-flex items-center gap-3 overflow-hidden rounded-2xl border border-[rgba(198,160,98,0.55)] bg-transparent px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.24em] text-[rgba(198,160,98,0.95)] transition-[color,border-color] duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:border-[rgba(198,160,98,0.9)] group-hover:text-[#0a0a0a]">
-              <span className="pointer-events-none absolute inset-0 -translate-x-[110%] bg-[rgba(226,192,141,0.95)] transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:translate-x-0" />
+            <span className="group/btn relative inline-flex items-center gap-3 overflow-hidden rounded-2xl border border-[rgba(198,160,98,0.55)] bg-transparent px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.24em] text-[rgba(198,160,98,0.95)] transition-[color,border-color] duration-[320ms] ease-[cubic-bezier(.22,.61,.36,1)] group-hover:border-[rgba(198,160,98,0.9)] group-hover:text-[#0a0a0a]">
+              <span className="pointer-events-none absolute inset-0 -translate-x-[110%] bg-[rgba(226,192,141,0.95)] transition-transform duration-[320ms] ease-[cubic-bezier(.22,.61,.36,1)] group-hover:translate-x-0" />
               <span className="relative">{VOOR_WIE_MEGA_MENU.ctaLabel}</span>
               <ArrowUpRight
                 size={13}

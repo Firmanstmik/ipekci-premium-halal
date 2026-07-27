@@ -139,13 +139,15 @@
   --ipek-stagger: 90ms;
 
   /* ── Layout ──────────────────────────────────────────────────────
-     The homepage is the reference: 1320px of content with a 24/32/40px
-     gutter. Every page, the navbar and the footer share these, so the
-     left edge of a logo, a heading and a footer column all line up. */
-  --ipek-container: 1320px;
+     The homepage HERO is the reference: 1480px of content with a
+     24/40/56/64px gutter. Every page, every section, the navbar and the
+     footer share these, so the hero, a heading, a card grid and a footer
+     column all begin on exactly the same vertical line. */
+  --ipek-container: 1480px;
   --ipek-gutter: 1.5rem;
-  --ipek-gutter-sm: 2rem;
-  --ipek-gutter-lg: 2.5rem;
+  --ipek-gutter-sm: 2.5rem;
+  --ipek-gutter-lg: 3.5rem;
+  --ipek-gutter-xl: 4rem;
 
   --ipek-section-y: clamp(5rem, 10vw, 7.5rem);
   --ipek-section-y-lg: clamp(6.5rem, 11vw, 9rem);
@@ -565,6 +567,12 @@
     }
   }
 
+  @media (min-width: 1280px) {
+    .ipek-container {
+      padding-inline: var(--ipek-gutter-xl);
+    }
+  }
+
   /* Full-bleed sections that paint their own background still need the
      inner column; this pairs `.ipek-section` (vertical) with the
      horizontal gutter without needing px-6 lg:px-10 on every section. */
@@ -581,6 +589,12 @@
   @media (min-width: 1024px) {
     .ipek-bleed {
       padding-inline: var(--ipek-gutter-lg);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .ipek-bleed {
+      padding-inline: var(--ipek-gutter-xl);
     }
   }
 
@@ -878,11 +892,17 @@
       box-shadow var(--ipek-duration-ui) ease;
   }
 
+  /* z-index -1, not 0. `.ipek-btn-wipe > *` only lifts child ELEMENTS above
+     the fill, so a bare text label — `Solliciteren` on the vacancy cards —
+     stayed behind it and vanished on hover while the arrow (an SVG element)
+     survived. Parking the fill behind the content fixes every instance,
+     including labels that are not wrapped in a span. `isolation: isolate` on
+     the button keeps it from escaping behind the card. */
   .ipek-btn-wipe::before {
     content: "";
     position: absolute;
     inset: 0;
-    z-index: 0;
+    z-index: -1;
     transform: translateX(-102%);
     transition: transform var(--ipek-duration-ui) var(--ipek-ease);
     pointer-events: none;
@@ -904,14 +924,20 @@
     box-shadow: 0 16px 40px -24px rgba(177, 18, 23, 0.55);
   }
 
+  /* Hover fills white, matching the hero and navbar CTAs. The old gold
+     gradient ran to #9a6b22, so the dark label sat on dark brown and became
+     unreadable — worst on the white vacancy cards. */
   .ipek-btn-wipe--primary::before {
-    background: linear-gradient(120deg, #e2c08d, #c6a062, #9a6b22);
+    background: linear-gradient(120deg, #ffffff, #fdfcfa 55%, #f7f3ec);
   }
 
   .ipek-btn-wipe--primary:hover {
-    color: #141414;
-    border-color: rgba(198, 160, 98, 0.55);
-    box-shadow: 0 20px 48px -20px rgba(198, 160, 98, 0.4);
+    color: var(--primary);
+    /* Red edge keeps the button readable when it fills white on a white card. */
+    border-color: rgba(218, 41, 42, 0.5);
+    box-shadow:
+      0 0 0 1px rgba(218, 41, 42, 0.14),
+      0 20px 48px -20px rgba(218, 41, 42, 0.42);
   }
 
   .ipek-btn-wipe--light {

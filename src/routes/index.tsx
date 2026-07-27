@@ -551,7 +551,7 @@ function AssortimentUnifiedCard({
             aria-hidden
             loading="lazy"
             decoding="async"
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform group-hover:scale-[1.045]"
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-[320ms] ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform group-hover:scale-[1.045]"
             style={{ filter: "brightness(0.88) contrast(1.14) saturate(1.1)" }}
           />
 
@@ -599,7 +599,7 @@ function AssortimentUnifiedCard({
 
         <div className="relative flex min-h-[460px] flex-col justify-end p-7 sm:min-h-[520px]">
           <h3
-            className="font-display text-3xl font-semibold leading-[0.98] tracking-[-0.04em] text-[#F8F4EE] transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform group-hover:-translate-y-1"
+            className="font-display text-3xl font-semibold leading-[0.98] tracking-[-0.04em] text-[#F8F4EE] transition-transform duration-[320ms] ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform group-hover:-translate-y-1"
             style={{ textShadow: "0 2px 24px rgba(0,0,0,0.45)" }}
           >
             {title}
@@ -610,7 +610,7 @@ function AssortimentUnifiedCard({
 
           <div className="mt-8">
             <div className="group/btn relative inline-flex items-center gap-3 overflow-hidden rounded-2xl border border-[rgba(226,192,141,0.65)] bg-transparent px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.26em] text-[rgba(226,192,141,0.95)] shadow-[0_0_0_1px_rgba(226,192,141,0.08)] transition-[color,border-color,box-shadow,transform] duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:border-[rgba(226,192,141,0.95)] group-hover:text-[#070707] group-hover:shadow-[0_0_28px_-8px_rgba(226,192,141,0.55)]">
-              <span className="pointer-events-none absolute inset-0 -translate-x-[110%] bg-[rgba(226,192,141,0.96)] transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:translate-x-0" />
+              <span className="pointer-events-none absolute inset-0 -translate-x-[110%] bg-[rgba(226,192,141,0.96)] transition-transform duration-[320ms] ease-[cubic-bezier(.22,.61,.36,1)] group-hover:translate-x-0" />
               <span className="relative">Lees meer</span>
               <ArrowRight
                 size={13}
@@ -2746,7 +2746,7 @@ function AssortmentCategoryCard({
 
           <div className="mt-10">
             <div className="group/btn relative inline-flex items-center gap-3 overflow-hidden rounded-2xl border border-[rgba(226,192,141,0.58)] bg-transparent px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.26em] text-[rgba(226,192,141,0.92)] transition-colors duration-500 group-hover:text-[#070707]">
-              <span className="pointer-events-none absolute inset-0 -translate-x-[110%] bg-[rgba(226,192,141,0.92)] transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-0" />
+              <span className="pointer-events-none absolute inset-0 -translate-x-[110%] bg-[rgba(226,192,141,0.92)] transition-transform duration-[320ms] ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-0" />
               <span className="relative">Lees meer</span>
               <ArrowRight
                 size={14}

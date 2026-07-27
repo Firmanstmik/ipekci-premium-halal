@@ -149,7 +149,7 @@ export function HomeHeroSection() {
 
       <motion.div
         style={{ opacity: heroOpacity }}
-        className="relative z-10 mx-auto flex h-[100svh] max-h-[100svh] min-h-0 max-w-[1480px] flex-col px-6 pb-4 pt-[8.5rem] sm:px-10 sm:pt-[9rem] lg:px-14 lg:pb-5 lg:pt-[10rem] xl:px-16 xl:pt-[10.25rem]"
+        className="ipek-container relative z-10 flex h-[100svh] max-h-[100svh] min-h-0 flex-col pb-4 pt-[8.5rem] sm:pt-[9rem] lg:pb-5 lg:pt-[10rem] xl:pt-[10.25rem]"
       >
         <motion.div
           className="grid min-h-0 flex-1 items-center gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:gap-12 xl:gap-16"

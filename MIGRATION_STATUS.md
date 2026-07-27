@@ -3,7 +3,39 @@
 _Source of truth: the working tree (`ipekci-theme/` is intentionally untracked — git holds only the React `src/` reference)._
 _Live WP: staging wp-admin — URL and credentials are kept out of this repo (it is public). Export `WP_BASE`, `WP_USER` and `WP_PASS` before running anything in `scripts/`. Deploy = rebuild `ipekci-theme.zip` → upload via Appearance → Themes. React reference dev server: http://localhost:3000._
 
-Last updated: 2026-07-27 (Phase 9 — product experience rebuilt on Ayat's real catalogue; React done, **WP mirror + deploy still open**)
+Last updated: 2026-07-27 (Phase 10 — design system unified and shipped; **WP mirror still open**)
+
+## Live deployment (React)
+
+**https://ayatfood.vercel.app** — Vercel project `ayatfood`, connected to this
+GitHub repo, so **`git push` to `main` is the deploy**. No CLI step needed.
+
+### The alias trap this cost us three deploys — don't reintroduce it
+Renaming a Vercel project does **not** rename its auto-generated domain. After
+`ipekci-premium-halal` → `ayatfood`, the project still owned
+`ipekci-premium-halal.vercel.app`, so `ayatfood.vercel.app` was only ever a
+**manual alias** created with `vercel alias set`. Manual aliases are pinned to
+one deployment and do **not** follow production — every push silently left the
+live URL on the previous build.
+
+Fixed by registering it as a real **project domain**:
+```
+POST /v10/projects/ayatfood/domains  {"name":"ayatfood.vercel.app"}
+DELETE /v9/projects/ayatfood/domains/ipekci-premium-halal.vercel.app
+```
+Verified: a fresh deployment now reports `▲ Aliased https://ayatfood.vercel.app`
+on its own. If the live URL ever goes stale again, check
+`GET /v9/projects/ayatfood/domains` first — a manual alias has crept back in.
+
+### Other deployment notes
+- `.vercelignore` is required. Without it the CLI falls back to `.gitignore`,
+  which does not exclude `ipekci-theme/` or its 85 MB zip; the upload hits
+  ~230 MB and aborts.
+- `ayatfood.ukonnect.nl` is attached and verified but **not resolving**:
+  `ukonnect.nl` runs on Cloudflare nameservers, so it needs an
+  `A ayatfood → 76.76.21.21` record (proxy **DNS only**, not orange-cloud, or
+  Vercel cannot issue the certificate).
+
 
 ## Phase 9 — Product experience (2026-07-27) — ✅ REACT COMPLETE & VERIFIED · ⏳ WP MIRROR NOT STARTED
 Rebuilt the catalogue around Ayat Food's own hierarchy. Content scraped and verified from `ayatfood.nl/producten/` + its eight category pages: **8 categories, 34 products**, every name/description/intro verbatim. The official category pages carry **no product photography** (variants are a text accordion), so product cards are spec-forward and photography lives in the hero + gallery — nothing is presented as a photo of a variant we don't have.

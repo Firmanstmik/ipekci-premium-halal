@@ -88,8 +88,7 @@ export function PremiumMeatShowcase() {
 
     const advance = () => {
       if (!isInViewRef.current) return;
-      showcaseIndexRef.current =
-        (showcaseIndexRef.current + 1) % PRODUCT_EXPLORER_ORDER.length;
+      showcaseIndexRef.current = (showcaseIndexRef.current + 1) % PRODUCT_EXPLORER_ORDER.length;
       setActiveId(PRODUCT_EXPLORER_ORDER[showcaseIndexRef.current]);
     };
 
@@ -97,15 +96,10 @@ export function PremiumMeatShowcase() {
     return () => window.clearInterval(timer);
   }, [autoMode, reduceMotion]);
 
-  const active =
-    PRODUCT_EXPLORER_ITEMS.find((c) => c.id === activeId) ?? PRODUCT_EXPLORER_ITEMS[0];
+  const active = PRODUCT_EXPLORER_ITEMS.find((c) => c.id === activeId) ?? PRODUCT_EXPLORER_ITEMS[0];
   const isFeatured = Boolean(active.featured);
   const focusedId = activeId;
-  const callout = computeExplorerCallout(
-    active.cx,
-    active.cy,
-    active.callout.width ?? 148,
-  );
+  const callout = computeExplorerCallout(active.cx, active.cy, active.callout.width ?? 148);
   const calloutPath = callout.path;
   const calloutAnchorX = callout.endX;
   const calloutAnchorY = callout.endY;
@@ -181,7 +175,7 @@ export function PremiumMeatShowcase() {
       <div className="pointer-events-none absolute -right-24 bottom-0 z-0 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(177,18,23,0.07),transparent_70%)]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 z-0 h-px bg-gradient-to-r from-transparent via-[rgba(200,164,107,0.4)] to-transparent" />
 
-      <div className="relative z-10 mx-auto max-w-[1400px] px-6 pb-14 pt-16 md:pb-16 md:pt-20 lg:px-10 lg:pb-20 lg:pt-24">
+      <div className="relative z-10 ipek-container pb-14 pt-16 md:pb-16 md:pt-20 lg:pb-20 lg:pt-24">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -189,27 +183,16 @@ export function PremiumMeatShowcase() {
           transition={{ duration: 0.8, ease: DS_EASE }}
           className="max-w-2xl"
         >
-          <AyatSectionBadge
-            kicker="Assortiment"
-            title="Ons assortiment"
-            className="mb-5"
-          />
-          <h2
-            id="meat-explorer-heading"
-            className="ipek-h2 text-[#141414]"
-          >
+          <AyatSectionBadge kicker="Assortiment" title="Ons assortiment" className="mb-5" />
+          <h2 id="meat-explorer-heading" className="ipek-h2 text-[#141414]">
             {PRODUCT_EXPLORER_COPY.headingLine}{" "}
-            <span className="ipek-heading-accent">
-              {PRODUCT_EXPLORER_COPY.headingAccent}
-            </span>
+            <span className="ipek-heading-accent">{PRODUCT_EXPLORER_COPY.headingAccent}</span>
           </h2>
           <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-[#141414]/78 md:text-base">
             <span className="hidden [@media(hover:hover)]:inline">
               {PRODUCT_EXPLORER_COPY.introHover}
             </span>
-            <span className="[@media(hover:hover)]:hidden">
-              {PRODUCT_EXPLORER_COPY.introTap}
-            </span>
+            <span className="[@media(hover:hover)]:hidden">{PRODUCT_EXPLORER_COPY.introTap}</span>
           </p>
         </motion.div>
 
@@ -221,7 +204,9 @@ export function PremiumMeatShowcase() {
           className="mt-10 grid grid-cols-1 gap-8 lg:mt-12 lg:grid-cols-[1.42fr_0.58fr] lg:items-start lg:gap-8 xl:gap-10"
         >
           <motion.div variants={cowVariants}>
-            <div className={`group/if relative isolate ${PRODUCT_EXPLORER_STAGE_ASPECT} w-full overflow-hidden rounded-[28px] border border-black/[0.08] bg-white shadow-[0_32px_90px_-50px_rgba(0,0,0,0.18)] transition-shadow duration-500 hover:shadow-[0_40px_100px_-48px_rgba(179,18,23,0.12)] [contain:paint]`}>
+            <div
+              className={`group/if relative isolate ${PRODUCT_EXPLORER_STAGE_ASPECT} w-full overflow-hidden rounded-[28px] border border-black/[0.08] bg-white shadow-[0_32px_90px_-50px_rgba(0,0,0,0.18)] transition-shadow duration-500 hover:shadow-[0_40px_100px_-48px_rgba(179,18,23,0.12)] [contain:paint]`}
+            >
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_70%_at_50%_40%,rgba(226,192,141,0.08),transparent_60%)]" />
               <img
                 src={PRODUCT_EXPLORER_STAGE_IMAGE}
@@ -314,9 +299,7 @@ export function PremiumMeatShowcase() {
                             d={c.region}
                             fill="none"
                             stroke={
-                              isActive
-                                ? "oklch(0.82 0.13 78 / 0.9)"
-                                : "oklch(0.82 0.13 78 / 0.55)"
+                              isActive ? "oklch(0.82 0.13 78 / 0.9)" : "oklch(0.82 0.13 78 / 0.55)"
                             }
                             strokeWidth={isActive ? 0.38 : 0.28}
                             strokeLinecap="round"
@@ -547,13 +530,14 @@ export function PremiumMeatShowcase() {
               <span className="hidden [@media(hover:hover)]:inline">
                 {PRODUCT_EXPLORER_COPY.hintHover}
               </span>
-              <span className="[@media(hover:hover)]:hidden">
-                {PRODUCT_EXPLORER_COPY.hintTap}
-              </span>
+              <span className="[@media(hover:hover)]:hidden">{PRODUCT_EXPLORER_COPY.hintTap}</span>
             </div>
           </motion.div>
 
-          <motion.div variants={panelVariants} className="relative isolate lg:max-w-none [contain:paint]">
+          <motion.div
+            variants={panelVariants}
+            className="relative isolate lg:max-w-none [contain:paint]"
+          >
             <div className="relative flex flex-col overflow-hidden rounded-[22px] border border-black/[0.08] bg-white shadow-[0_28px_70px_-46px_rgba(0,0,0,0.2)] transition-shadow duration-500 hover:shadow-[0_34px_80px_-42px_rgba(179,18,23,0.14)]">
               <div className="relative min-h-0 flex-1 overflow-hidden">
                 <div className="group/if relative aspect-[16/11] overflow-hidden sm:aspect-[5/3]">
@@ -673,7 +657,10 @@ export function PremiumMeatShowcase() {
                   </motion.div>
                 </AnimatePresence>
 
-                <a href={active.href} className="ipek-btn-premium group mt-3.5 w-full py-3.5 text-[11px]">
+                <a
+                  href={active.href}
+                  className="ipek-btn-premium group mt-3.5 w-full py-3.5 text-[11px]"
+                >
                   <span>{PRODUCT_EXPLORER_COPY.ctaLabel}</span>
                   <ArrowRight className="ipek-btn-premium__arrow h-4 w-4" />
                 </a>
@@ -740,9 +727,7 @@ export function PremiumMeatShowcase() {
                     <h4 className="font-display text-[1.05rem] font-semibold leading-snug tracking-[-0.02em] text-[#141414]">
                       {t.title}
                     </h4>
-                    <p className="mt-2 text-[13px] leading-[1.65] text-[#2a2a2a]">
-                      {t.desc}
-                    </p>
+                    <p className="mt-2 text-[13px] leading-[1.65] text-[#2a2a2a]">{t.desc}</p>
                   </div>
                 </motion.article>
               );

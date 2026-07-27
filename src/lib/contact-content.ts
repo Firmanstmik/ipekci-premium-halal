@@ -1,14 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import {
-  Award,
-  Building2,
-  Clock3,
-  Mail,
-  MapPin,
-  Phone,
-  ShieldCheck,
-  Truck,
-} from "lucide-react";
+import { Award, Building2, Clock3, Mail, MapPin, Phone, ShieldCheck, Truck } from "lucide-react";
 import { CONTACT_HERO_IMAGE, CONTACT_PARTNER } from "@/lib/ons-verhaal-content";
 import { BRAND } from "@/lib/brand";
 

@@ -58,12 +58,7 @@ export const HOME_OVER_ONS = {
     meta: "Partner van slagerijen, groothandels, supermarkten en restaurants",
     icon: iconMessen,
   },
-  checklist: [
-    "100% Halal",
-    "Punctuele Levertijd",
-    "Hoge Kwaliteit",
-    "Klant Staat Centraal",
-  ],
+  checklist: ["100% Halal", "Punctuele Levertijd", "Hoge Kwaliteit", "Klant Staat Centraal"],
   ctaLabel: "Lees ons verhaal",
   ctaTo: "/ons-verhaal" as const,
   /** Microcopy above the closing CTA — gives the button a reason to exist */

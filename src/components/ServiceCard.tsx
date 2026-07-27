@@ -75,19 +75,34 @@ export function ServiceCard({ number, title, description, image, index }: Props)
           transition={{ duration: DS_DURATION.slow, ease: DS_EASE }}
           style={{ transformOrigin: "center" }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent transition-opacity group-hover:from-background/95" style={{ transitionDuration: `${DS_DURATION.ui}s` }} />
+        <div
+          className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent transition-opacity group-hover:from-background/95"
+          style={{ transitionDuration: `${DS_DURATION.ui}s` }}
+        />
 
         <div
           className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform group-hover:translate-x-full"
-          style={{ transitionDuration: `${DS_DURATION.slow}s`, transitionTimingFunction: "var(--ipek-ease)" }}
+          style={{
+            transitionDuration: `${DS_DURATION.slow}s`,
+            transitionTimingFunction: "var(--ipek-ease)",
+          }}
         />
 
         <div className="ipek-label absolute left-6 top-6 text-primary">{number}</div>
-        <motion.div className="absolute right-6 top-6 grid h-10 w-10 place-items-center rounded-2xl border border-white/15 bg-background/40 backdrop-blur transition-all group-hover:border-primary group-hover:bg-primary" style={{ transitionDuration: `${DS_DURATION.ui}s` }}>
-          <ArrowUpRight size={16} className="ipek-btn-icon text-foreground group-hover:text-primary-foreground" />
+        <motion.div
+          className="absolute right-6 top-6 grid h-10 w-10 place-items-center rounded-2xl border border-white/15 bg-background/40 backdrop-blur transition-all group-hover:border-primary group-hover:bg-primary"
+          style={{ transitionDuration: `${DS_DURATION.ui}s` }}
+        >
+          <ArrowUpRight
+            size={16}
+            className="ipek-btn-icon text-foreground group-hover:text-primary-foreground"
+          />
         </motion.div>
         <div className="absolute inset-x-0 bottom-0 p-7">
-          <h3 className="ipek-h3 text-foreground transition-transform group-hover:-translate-y-1" style={{ transitionDuration: `${DS_DURATION.ui}s` }}>
+          <h3
+            className="ipek-h3 text-foreground transition-transform group-hover:-translate-y-1"
+            style={{ transitionDuration: `${DS_DURATION.ui}s` }}
+          >
             {title}
           </h3>
           <p className="ipek-body-sm mt-3 max-w-xs text-muted-foreground">{description}</p>

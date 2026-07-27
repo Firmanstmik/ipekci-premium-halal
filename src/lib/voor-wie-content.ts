@@ -147,6 +147,5 @@ export const VOOR_WIE_HOME = {
   kicker: "Partners",
   title: "Voor wie wij werken",
   headline: "Vertrouwde Halal-partner voor professionals",
-  lede:
-    "Ayat Food is de betrouwbare leverancier voor professionele foodbedrijven in Nederland. Wij ondersteunen restaurants, horeca en retailpartners met premium Halal producten, snelle levering en persoonlijke begeleiding.",
+  lede: "Ayat Food is de betrouwbare leverancier voor professionele foodbedrijven in Nederland. Wij ondersteunen restaurants, horeca en retailpartners met premium Halal producten, snelle levering en persoonlijke begeleiding.",
 } as const;

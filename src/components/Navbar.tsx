@@ -1,20 +1,7 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { Fragment, useEffect, useState } from "react";
-import {
-  AnimatePresence,
-  motion,
-  useMotionValueEvent,
-  useScroll,
-} from "framer-motion";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  Gem,
-  Mail,
-  Phone,
-  ShieldCheck,
-  Truck,
-} from "lucide-react";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
+import { ArrowRight, ArrowUpRight, Gem, Mail, Phone, ShieldCheck, Truck } from "lucide-react";
 import { IconMenu2, IconX } from "@tabler/icons-react";
 import {
   Accordion,
@@ -63,7 +50,8 @@ function NavLogo({ scrolled = false }: { scrolled?: boolean }) {
           scrolled
             ? undefined
             : {
-                filter: "drop-shadow(0 10px 28px rgba(0,0,0,0.45)) drop-shadow(0 0 18px rgba(218,41,42,0.22))",
+                filter:
+                  "drop-shadow(0 10px 28px rgba(0,0,0,0.45)) drop-shadow(0 0 18px rgba(218,41,42,0.22))",
               }
         }
       />
@@ -84,9 +72,8 @@ function TopInfoBar({ visible, light = false }: { visible: boolean; light?: bool
 
   return (
     <div className="relative hidden lg:block">
-      <div className="mx-auto flex h-[38px] max-w-[1480px] items-center justify-end px-6 sm:px-10 lg:px-14 xl:px-16">
+      <div className="ipek-container flex h-[38px] items-center justify-end">
         <div className={`flex items-center text-[13px] font-[500] tracking-[0.05em] ${textClass}`}>
-
           {/* Trust indicators */}
           {infoItems.map(({ label, Icon }, i) => (
             <Fragment key={label}>
@@ -152,7 +139,9 @@ function MainCTA({ onClick, className = "" }: { onClick?: () => void; className?
     >
       <span
         className="pointer-events-none absolute inset-x-0 top-0 h-px opacity-70 group-hover:opacity-0"
-        style={{ background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent)" }}
+        style={{
+          background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent)",
+        }}
         aria-hidden
       />
       <span className="relative">Offerte aanvragen</span>
@@ -471,12 +460,17 @@ export function Navbar() {
         }}
       >
         {/* Desktop — logo left, nav + CTA grouped right */}
-        <div className="mx-auto hidden h-[88px] max-w-[1480px] items-center justify-between gap-6 px-6 sm:px-10 lg:flex lg:px-14 xl:px-16">
+        <div className="ipek-container hidden h-[88px] items-center justify-between gap-6 lg:flex">
           <NavLogo scrolled={navSolid} />
 
           <div className="flex items-center gap-0.5 xl:gap-1">
             <NavLink to="/" label="Home" active={isActive("/")} scrolled={navSolid} />
-            <NavLink to="/ons-verhaal" label="Over Ons" active={isActive("/ons-verhaal")} scrolled={navSolid} />
+            <NavLink
+              to="/ons-verhaal"
+              label="Over Ons"
+              active={isActive("/ons-verhaal")}
+              scrolled={navSolid}
+            />
             <AssortimentNavDropdown
               active={isActive("/producten")}
               open={openDropdown === "Producten"}
@@ -489,17 +483,28 @@ export function Navbar() {
               active={isActive("/vacatures")}
               scrolled={navSolid}
             />
-            <NavLink to="/contact" label="Contact" active={isActive("/contact")} scrolled={navSolid} />
-            <div className={`ml-3 pl-3 xl:ml-4 xl:pl-4 border-l ${navSolid ? "border-black/10" : "border-white/10"}`}>
+            <NavLink
+              to="/contact"
+              label="Contact"
+              active={isActive("/contact")}
+              scrolled={navSolid}
+            />
+            <div
+              className={`ml-3 pl-3 xl:ml-4 xl:pl-4 border-l ${navSolid ? "border-black/10" : "border-white/10"}`}
+            >
               <MainCTA />
             </div>
           </div>
         </div>
 
         {/* Mobile header */}
-        <div className="flex items-center justify-between px-5 py-4 sm:px-8 lg:hidden">
+        <div className="ipek-container flex items-center justify-between py-4 lg:hidden">
           <NavLogo scrolled={navSolid} />
-          <MobileToggle isOpen={mobileOpen} onClick={() => setMobileOpen((v) => !v)} scrolled={navSolid} />
+          <MobileToggle
+            isOpen={mobileOpen}
+            onClick={() => setMobileOpen((v) => !v)}
+            scrolled={navSolid}
+          />
         </div>
       </motion.div>
 

@@ -1,14 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import {
-  ArrowUpRight,
-  Clock,
-  Facebook,
-  Instagram,
-  Mail,
-  MapPin,
-  Phone,
-} from "lucide-react";
+import { ArrowUpRight, Clock, Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import footerBackground from "@/assets/background-footer.webp";
 import ayatLogo from "@/assets/ayat/logo-transparent.png";
 import { BRAND } from "@/lib/brand";
@@ -44,9 +36,12 @@ export function Footer() {
       className="relative overflow-hidden bg-cover bg-center bg-no-repeat text-[#1A1A1A]"
       style={{ backgroundImage: `url(${footerBackground})` }}
     >
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(200,164,107,0.45),transparent)]" />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(200,164,107,0.45),transparent)]"
+      />
 
-      <div className="relative mx-auto w-full max-w-[1320px] px-6 py-20 lg:px-10 lg:py-24">
+      <div className="ipek-container relative py-20 lg:py-24">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-12 xl:gap-14">
           <div className="lg:col-span-4">
             <img
@@ -85,7 +80,10 @@ export function Footer() {
                     aria-label={label}
                     className="group grid h-11 w-11 place-items-center rounded-xl border border-[#141414]/10 bg-white/90 text-[#141414]/65 shadow-[0_10px_28px_-18px_rgba(0,0,0,0.16)] transition-all duration-300 hover:border-[rgba(200,164,107,0.45)] hover:bg-white hover:text-primary hover:shadow-[0_14px_36px_-20px_rgba(0,0,0,0.2)]"
                   >
-                    <Icon size={18} className="transition-transform duration-300 group-hover:scale-105" />
+                    <Icon
+                      size={18}
+                      className="transition-transform duration-300 group-hover:scale-105"
+                    />
                   </a>
                 ))}
               </div>

@@ -141,7 +141,7 @@ export function SpeerpuntenSection() {
       aria-labelledby="speerpunten-heading"
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
-      className="story-section story-section--visual relative isolate overflow-hidden px-6 py-24 text-[#F5F2ED] lg:px-10 lg:py-32"
+      className="story-section story-section--visual relative isolate overflow-hidden py-24 text-[#F5F2ED] lg:py-32"
     >
       {/* Atmosphere — existing bg + layered cinematic depth */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
@@ -178,7 +178,7 @@ export function SpeerpuntenSection() {
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/50 to-transparent" />
       </div>
 
-      <div className="relative z-10 mx-auto w-full max-w-[1320px]">
+      <div className="relative z-10 w-full ipek-container">
         {/* Header — badge + heading first, lede second */}
         <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-12">
           <motion.div
@@ -215,22 +215,12 @@ export function SpeerpuntenSection() {
         <div className="mt-14 grid gap-x-14 gap-y-10 sm:mt-16 lg:mt-20 lg:grid-cols-2 lg:gap-x-20 lg:gap-y-12">
           <div className="space-y-9 lg:space-y-10">
             {leftMetrics.map((metric, i) => (
-              <SpeerpuntBar
-                key={metric.id}
-                metric={metric}
-                index={i}
-                active={isInView}
-              />
+              <SpeerpuntBar key={metric.id} metric={metric} index={i} active={isInView} />
             ))}
           </div>
           <div className="space-y-9 lg:space-y-10">
             {rightMetrics.map((metric, i) => (
-              <SpeerpuntBar
-                key={metric.id}
-                metric={metric}
-                index={i + 3}
-                active={isInView}
-              />
+              <SpeerpuntBar key={metric.id} metric={metric} index={i + 3} active={isInView} />
             ))}
           </div>
         </div>

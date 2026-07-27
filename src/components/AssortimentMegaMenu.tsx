@@ -1,9 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
-import {
-  ASSORTIMENT_MEGA_MENU,
-  PRODUCTEN_MEGA_ITEMS,
-} from "@/lib/assortiment-content";
+import { ASSORTIMENT_MEGA_MENU, PRODUCTEN_MEGA_ITEMS } from "@/lib/assortiment-content";
 
 /** Mobile accordion rows — full Ayat Food producten list */
 export function AssortimentMobileLinks({ onNavigate }: { onNavigate: () => void }) {

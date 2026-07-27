@@ -1,10 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { ArrowUpRight, ChevronRight } from "lucide-react";
 import { AssortimentKlantCta } from "@/components/assortiment/AssortimentKlantCta";
@@ -45,7 +40,13 @@ function SectionBackdrop({
       className="pointer-events-none absolute inset-0"
       style={y !== undefined ? { y } : undefined}
     >
-      <img src={src} alt="" className="h-full w-full object-cover" loading="lazy" decoding="async" />
+      <img
+        src={src}
+        alt=""
+        className="h-full w-full object-cover"
+        loading="lazy"
+        decoding="async"
+      />
     </motion.div>
   );
 }
@@ -65,7 +66,10 @@ function PremiumLinkButton({
     <>
       <span className="pointer-events-none absolute inset-0 -translate-x-[110%] bg-[rgba(226,192,141,0.92)] transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:translate-x-0" />
       <span className="relative">{children}</span>
-      <ArrowUpRight size={13} className="relative transition-transform duration-500 group-hover:translate-x-0.5" />
+      <ArrowUpRight
+        size={13}
+        className="relative transition-transform duration-500 group-hover:translate-x-0.5"
+      />
     </>
   );
   if (to) {
@@ -267,10 +271,7 @@ export function OnsVerhaalPage() {
 
   return (
     <>
-      <section
-        ref={heroRef}
-        className="relative min-h-[88vh] overflow-hidden bg-[#030303] grain"
-      >
+      <section ref={heroRef} className="relative min-h-[88vh] overflow-hidden bg-[#030303] grain">
         <div className="absolute inset-0">
           <motion.img
             src={ONS_VERHAAL_HERO_FALLBACK}
@@ -293,7 +294,7 @@ export function OnsVerhaalPage() {
 
         <motion.div
           style={{ y: reduceMotion ? 0 : heroContentY, opacity: reduceMotion ? 1 : heroOpacity }}
-          className="relative mx-auto flex min-h-[88vh] max-w-[1200px] flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-24 lg:pt-48"
+          className="relative mx-auto flex min-h-[88vh] ipek-container flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-24 lg:pt-48"
         >
           <motion.nav
             aria-label="Breadcrumb"
@@ -346,13 +347,13 @@ export function OnsVerhaalPage() {
         </motion.div>
       </section>
 
-      <section className="relative isolate overflow-hidden px-6 py-24 lg:px-10 lg:py-32">
+      <section className="relative isolate overflow-hidden ipek-section">
         <SectionBackdrop src={backgroundWhite1} />
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.42),transparent)]"
         />
-        <div className="relative mx-auto max-w-[1200px]">
+        <div className="relative ipek-container">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -374,9 +375,9 @@ export function OnsVerhaalPage() {
         </div>
       </section>
 
-      <section className="relative isolate overflow-hidden px-6 py-24 lg:px-10 lg:py-36">
+      <section className="relative isolate overflow-hidden ipek-section">
         <SectionBackdrop src={backgroundWhite3} />
-        <div className="relative mx-auto max-w-[1200px]">
+        <div className="relative ipek-container">
           <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
             <motion.div
               initial={{ opacity: 0, x: -40 }}
@@ -419,7 +420,11 @@ export function OnsVerhaalPage() {
               className="lg:col-span-7"
             >
               <div className="grid gap-5 sm:grid-cols-2">
-                <TiltImage src={ONS_VERHAAL_HALAL_IMAGE} alt="Halal certificaat" aspect="aspect-[4/5]" />
+                <TiltImage
+                  src={ONS_VERHAAL_HALAL_IMAGE}
+                  alt="Halal certificaat"
+                  aspect="aspect-[4/5]"
+                />
                 <TiltImage
                   src={ONS_VERHAAL_HALAL_NORMEN_IMAGE}
                   alt="Islamitische normen en waarden"
@@ -432,9 +437,9 @@ export function OnsVerhaalPage() {
         </div>
       </section>
 
-      <section className="relative isolate overflow-hidden px-6 py-24 lg:px-10 lg:py-36">
+      <section className="relative isolate overflow-hidden ipek-section">
         <SectionBackdrop src={backgroundWhite1} />
-        <div className="relative mx-auto max-w-[1200px]">
+        <div className="relative ipek-container">
           <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
             <motion.div
               initial={{ opacity: 0, x: 48 }}
@@ -485,9 +490,9 @@ export function OnsVerhaalPage() {
         </div>
       </section>
 
-      <section className="relative isolate overflow-hidden px-6 py-24 lg:px-10 lg:py-36">
+      <section className="relative isolate overflow-hidden ipek-section">
         <SectionBackdrop src={backgroundWhite3} />
-        <div className="relative mx-auto max-w-[1200px]">
+        <div className="relative ipek-container">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -536,7 +541,7 @@ export function OnsVerhaalPage() {
       </section>
 
       {/* Statistieken — "We zijn klaar om perfectie te dienen" */}
-      <section className="relative isolate overflow-hidden bg-[#070707] px-6 py-24 grain lg:px-10 lg:py-32">
+      <section className="relative isolate overflow-hidden bg-[#070707] ipek-section grain">
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <img
             src={ONS_VERHAAL_STATS.backgroundImage}
@@ -552,7 +557,7 @@ export function OnsVerhaalPage() {
           <div className="absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,transparent,rgba(226,192,141,0.28),transparent)]" />
         </div>
 
-        <div className="relative mx-auto max-w-[1200px]">
+        <div className="relative ipek-container">
           <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-12">
             <motion.div
               initial={{ opacity: 0, y: 22 }}
@@ -561,11 +566,7 @@ export function OnsVerhaalPage() {
               transition={{ duration: 0.95, ease: DS_EASE }}
               className="lg:col-span-7"
             >
-              <AyatSectionBadge
-                kicker={ONS_VERHAAL_STATS.eyebrow}
-                title="Ayat Food"
-                tone="dark"
-              />
+              <AyatSectionBadge kicker={ONS_VERHAAL_STATS.eyebrow} title="Ayat Food" tone="dark" />
               <h2 className="mt-5 font-display text-[clamp(2rem,3.5vw,3rem)] leading-[1.12] text-[#F8F4EE]">
                 {ONS_VERHAAL_STATS.title}
               </h2>
@@ -591,17 +592,14 @@ export function OnsVerhaalPage() {
         </div>
       </section>
 
-      <section
-        ref={gridRef}
-        className="relative isolate overflow-hidden px-6 py-24 lg:px-10 lg:py-36"
-      >
+      <section ref={gridRef} className="relative isolate overflow-hidden ipek-section">
         <SectionBackdrop src={backgroundWhite3} y={reduceMotion ? undefined : bgY} />
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 z-20 h-px bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.42),transparent)]"
         />
 
-        <div className="relative mx-auto max-w-[1200px]">
+        <div className="relative ipek-container">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
               <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.28em]">
@@ -642,14 +640,24 @@ export function OnsVerhaalPage() {
                       {cat.eyebrow}
                     </p>
                     <h3 className="mt-2 font-display text-2xl text-white">{cat.label}</h3>
-                    <p className="mt-3 text-[13px] leading-relaxed text-white/68">{cat.description}</p>
+                    <p className="mt-3 text-[13px] leading-relaxed text-white/68">
+                      {cat.description}
+                    </p>
                   </div>
-                  <img src={cat.stickerSrc} alt="" aria-hidden className="h-9 w-9 shrink-0 opacity-80" />
+                  <img
+                    src={cat.stickerSrc}
+                    alt=""
+                    aria-hidden
+                    className="h-9 w-9 shrink-0 opacity-80"
+                  />
                 </div>
                 <span className="group/btn relative mx-7 mb-7 inline-flex items-center gap-2 overflow-hidden rounded-xl border border-[rgba(198,160,98,0.45)] px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-[rgba(198,160,98,0.92)] transition-colors duration-700 group-hover:border-[rgba(198,160,98,0.75)] group-hover:text-[#0a0a0a]">
                   <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[rgba(226,192,141,0.95)] transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:translate-x-0" />
                   <span className="relative">Lees meer</span>
-                  <ArrowUpRight size={12} className="relative transition-transform duration-500 group-hover:translate-x-0.5" />
+                  <ArrowUpRight
+                    size={12}
+                    className="relative transition-transform duration-500 group-hover:translate-x-0.5"
+                  />
                 </span>
               </motion.a>
             ))}
@@ -682,9 +690,9 @@ export function OnsVerhaalPage() {
         </div>
       </section>
 
-      <section className="relative isolate overflow-hidden px-6 py-24 lg:px-10 lg:py-32">
+      <section className="relative isolate overflow-hidden ipek-section">
         <SectionBackdrop src={backgroundWhite1} />
-        <div className="relative mx-auto max-w-[1200px]">
+        <div className="relative ipek-container">
           <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
             <motion.div
               initial={{ opacity: 0, x: -40 }}
@@ -699,7 +707,9 @@ export function OnsVerhaalPage() {
               <h2 className="mt-5 font-display text-[clamp(2rem,3.5vw,3rem)] text-[#1c1c1c]">
                 {ONS_VERHAAL_CAREERS.title}
               </h2>
-              <p className="mt-6 text-[15px] leading-[1.85] text-[#5a5a5a]">{ONS_VERHAAL_CAREERS.text}</p>
+              <p className="mt-6 text-[15px] leading-[1.85] text-[#5a5a5a]">
+                {ONS_VERHAAL_CAREERS.text}
+              </p>
               <p className="mt-6 font-display text-xl text-[#333]">
                 Verwelkomen we ook jou binnenkort?
               </p>

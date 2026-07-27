@@ -1,12 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import {
-  Award,
-  BadgeCheck,
-  Factory,
-  HeartHandshake,
-  ShieldCheck,
-  Truck,
-} from "lucide-react";
+import { Award, BadgeCheck, Factory, HeartHandshake, ShieldCheck, Truck } from "lucide-react";
 import imgHalal from "@/assets/ayat/trust-pillar-halal.webp";
 import imgNvwa from "@/assets/ayat/trust-pillar-nvwa.webp";
 import imgKwaliteit from "@/assets/ayat/trust-pillar-kwaliteit.webp";
@@ -80,11 +73,7 @@ export const ENTERPRISE_TRUST_PILLARS: readonly EnterprisePillar[] = [
   },
 ] as const;
 
-export const ENTERPRISE_TRUST_BADGES = [
-  "ECC Halal",
-  "NVWA-normen",
-  "Watergang",
-] as const;
+export const ENTERPRISE_TRUST_BADGES = ["ECC Halal", "NVWA-normen", "Watergang"] as const;
 
 export const ENTERPRISE_AUTOPLAY_MS = 5600;
 
@@ -94,6 +83,5 @@ export const ENTERPRISE_TRUST_COPY = {
   headingLine1: "De betrouwbaarheid van een",
   headingAccent: "premium Halal-partner.",
   pillarsTitle: "Zes pijlers van vertrouwen",
-  pillarsIntro:
-    "Snelheid, kwaliteit en klantgerichtheid — klik een pijler om te ontdekken.",
+  pillarsIntro: "Snelheid, kwaliteit en klantgerichtheid — klik een pijler om te ontdekken.",
 } as const;

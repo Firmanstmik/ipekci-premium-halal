@@ -10,10 +10,7 @@ import { useCallback, useRef } from "react";
 import { HalalStamp } from "@/components/home/HalalStamp";
 import { ImageFrameOverlay } from "@/components/ui/premium-frame";
 import { DS_EASE } from "@/lib/design-system";
-import {
-  HERO_SHOWCASE_AUTOPLAY_MS,
-  HERO_SHOWCASE_SLIDES,
-} from "@/lib/home-hero-content";
+import { HERO_SHOWCASE_AUTOPLAY_MS, HERO_SHOWCASE_SLIDES } from "@/lib/home-hero-content";
 
 const SLIDE_STICKER_KEY: Record<string, string> = {
   doner: "lamsvlees",
@@ -24,8 +21,7 @@ const SLIDE_STICKER_KEY: Record<string, string> = {
 };
 
 /** Soft asymmetric shell — not a plain rectangle */
-const SHELL =
-  "rounded-[2.4rem_1.15rem_2.65rem_1.45rem] sm:rounded-[2.75rem_1.35rem_3rem_1.65rem]";
+const SHELL = "rounded-[2.4rem_1.15rem_2.65rem_1.45rem] sm:rounded-[2.75rem_1.35rem_3rem_1.65rem]";
 
 export function HeroShowcaseCard({
   active,
@@ -101,11 +97,7 @@ export function HeroShowcaseCard({
         aria-hidden
         className="pointer-events-none absolute -inset-8 rounded-[3rem] border border-dashed border-white/[0.07]"
         initial={reduceMotion ? false : { opacity: 0, rotate: -4 }}
-        animate={
-          reduceMotion
-            ? { opacity: 0.7 }
-            : { opacity: 0.7, rotate: 0 }
-        }
+        animate={reduceMotion ? { opacity: 0.7 } : { opacity: 0.7, rotate: 0 }}
         transition={{ delay: 0.85, duration: 1.2, ease: DS_EASE }}
       />
 
@@ -207,10 +199,7 @@ export function HeroShowcaseCard({
               </div>
 
               <div className="pointer-events-none absolute right-0.5 top-0.5 z-20 sm:right-1 sm:top-1">
-                <HalalStamp
-                  compact
-                  activeKey={SLIDE_STICKER_KEY[slide.id] ?? "lamsvlees"}
-                />
+                <HalalStamp compact activeKey={SLIDE_STICKER_KEY[slide.id] ?? "lamsvlees"} />
               </div>
             </div>
           </div>
@@ -240,9 +229,7 @@ export function HeroShowcaseCard({
                 </div>
                 <span
                   className={`absolute inset-x-0 bottom-0 py-0.5 text-center font-display text-[7px] tabular-nums tracking-[0.08em] ${
-                    i === active
-                      ? "bg-[var(--primary)]/90 text-white"
-                      : "bg-black/65 text-white/65"
+                    i === active ? "bg-[var(--primary)]/90 text-white" : "bg-black/65 text-white/65"
                   }`}
                 >
                   {String(i + 1).padStart(2, "0")}

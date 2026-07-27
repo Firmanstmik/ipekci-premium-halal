@@ -1,23 +1,15 @@
-import {
-  AnimatePresence,
-  motion,
-  useReducedMotion,
-} from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { useState } from "react";
 import { AyatSectionBadge } from "@/components/home/AyatSectionBadge";
 import { StoryItem, StoryReveal } from "@/components/HomeStorytelling";
 import { ImageFrameOverlay } from "@/components/ui/premium-frame";
 import { DS_EASE } from "@/lib/design-system";
-import {
-  ENTERPRISE_TRUST_COPY,
-  ENTERPRISE_TRUST_PILLARS,
-} from "@/lib/enterprise-trust-content";
+import { ENTERPRISE_TRUST_COPY, ENTERPRISE_TRUST_PILLARS } from "@/lib/enterprise-trust-content";
 
 const PILLAR_TRANSITION = { duration: 0.35, ease: DS_EASE } as const;
 
-const SHELL =
-  "rounded-[1.6rem_0.85rem_1.85rem_1rem] sm:rounded-[1.85rem_0.95rem_2.1rem_1.15rem]";
+const SHELL = "rounded-[1.6rem_0.85rem_1.85rem_1rem] sm:rounded-[1.85rem_0.95rem_2.1rem_1.15rem]";
 
 function TrustImageStage({
   active,
@@ -257,7 +249,7 @@ export function EnterpriseTrustSection() {
   return (
     <section
       aria-labelledby="enterprise-trust-heading"
-      className="story-section relative flex min-h-0 flex-col justify-center overflow-hidden bg-[#FAF8F5] px-6 py-12 text-[#111111] grain sm:px-10 lg:min-h-[100svh] lg:px-14 lg:py-12 xl:px-16"
+      className="story-section relative flex min-h-0 flex-col justify-center overflow-hidden bg-[#FAF8F5] py-12 text-[#111111] grain lg:min-h-[100svh] lg:py-12"
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="absolute -left-32 top-4 h-[360px] w-[360px] rounded-full bg-[radial-gradient(circle,rgba(226,192,141,0.14),transparent_70%)]" />
@@ -270,13 +262,12 @@ export function EnterpriseTrustSection() {
             backgroundImage:
               "linear-gradient(rgba(200,164,107,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(200,164,107,0.045) 1px, transparent 1px)",
             backgroundSize: "48px 48px",
-            maskImage:
-              "radial-gradient(ellipse 75% 65% at 50% 45%, #000 15%, transparent 72%)",
+            maskImage: "radial-gradient(ellipse 75% 65% at 50% 45%, #000 15%, transparent 72%)",
           }}
         />
       </div>
 
-      <div className="relative mx-auto w-full max-w-[1480px]">
+      <div className="relative w-full ipek-container">
         <StoryReveal>
           <StoryItem>
             <div className="relative flex items-start gap-4">
@@ -295,9 +286,7 @@ export function EnterpriseTrustSection() {
                   className="mt-3.5 max-w-2xl ipek-h2 text-[#141414]"
                 >
                   {ENTERPRISE_TRUST_COPY.headingLine1}{" "}
-                  <span className="ipek-heading-accent">
-                    {ENTERPRISE_TRUST_COPY.headingAccent}
-                  </span>
+                  <span className="ipek-heading-accent">{ENTERPRISE_TRUST_COPY.headingAccent}</span>
                 </h2>
               </div>
             </div>

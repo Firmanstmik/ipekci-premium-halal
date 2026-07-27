@@ -1,12 +1,6 @@
 import type { ReactNode } from "react";
 
-export type FrameVariant =
-  | "reticle"
-  | "prism"
-  | "aurora"
-  | "halo"
-  | "orbit"
-  | "pulse";
+export type FrameVariant = "reticle" | "prism" | "aurora" | "halo" | "orbit" | "pulse";
 
 /** Living frame overlay — always rendered INSIDE the image/card bounds */
 export function ImageFrameOverlay({

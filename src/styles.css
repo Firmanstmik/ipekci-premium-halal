@@ -123,12 +123,29 @@
   --sidebar-ring: var(--primary);
 
   /* ── Ayat Food design system ── */
+  /* ── Motion ──────────────────────────────────────────────────────
+     One easing and one duration scale for the whole site. `ui` is the
+     default for anything a pointer touches (buttons, links, chips,
+     dropdowns, form controls) and sits in the 220–320ms band that reads
+     as responsive without feeling abrupt. Reveals and cinematic moments
+     keep their longer values — those are narrative, not feedback. */
   --ipek-ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --ipek-duration-instant: 150ms;
-  --ipek-duration-ui: 400ms;
+  --ipek-ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ipek-duration-instant: 120ms;
+  --ipek-duration-ui: 260ms;
+  --ipek-duration-ui-slow: 320ms;
   --ipek-duration-reveal: 650ms;
   --ipek-duration-slow: 900ms;
   --ipek-stagger: 90ms;
+
+  /* ── Layout ──────────────────────────────────────────────────────
+     The homepage is the reference: 1320px of content with a 24/32/40px
+     gutter. Every page, the navbar and the footer share these, so the
+     left edge of a logo, a heading and a footer column all line up. */
+  --ipek-container: 1320px;
+  --ipek-gutter: 1.5rem;
+  --ipek-gutter-sm: 2rem;
+  --ipek-gutter-lg: 2.5rem;
 
   --ipek-section-y: clamp(5rem, 10vw, 7.5rem);
   --ipek-section-y-lg: clamp(6.5rem, 11vw, 9rem);
@@ -137,8 +154,12 @@
   --ipek-stack-lg: 2rem;
   --ipek-stack-xl: 2.5rem;
 
-  --ipek-radius-btn: 18px;
-  --ipek-radius-btn-sm: 14px;
+  /* ── Radii ───────────────────────────────────────────────────────
+     Buttons were shipping five different radii (18 / 9999 / 12 / 14 /
+     10px). One scale now: `btn` for standard controls, `btn-sm` for
+     compact/inline ones. Cards and panels keep their own softer radii. */
+  --ipek-radius-btn: 14px;
+  --ipek-radius-btn-sm: 12px;
   --ipek-radius-card: 26px;
   --ipek-radius-panel: 28px;
 
@@ -520,6 +541,49 @@
     line-height: 1.5;
   }
 
+  /* ── Container ──────────────────────────────────────────────────
+     The single content column. Interior pages used to sit at 1200px
+     while the homepage and footer sat at 1320px, so moving between them
+     made the content visibly jump. One utility now, used by every page
+     shell plus the navbar and footer, so every left edge aligns. */
+  .ipek-container {
+    width: 100%;
+    max-width: var(--ipek-container);
+    margin-inline: auto;
+    padding-inline: var(--ipek-gutter);
+  }
+
+  @media (min-width: 640px) {
+    .ipek-container {
+      padding-inline: var(--ipek-gutter-sm);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .ipek-container {
+      padding-inline: var(--ipek-gutter-lg);
+    }
+  }
+
+  /* Full-bleed sections that paint their own background still need the
+     inner column; this pairs `.ipek-section` (vertical) with the
+     horizontal gutter without needing px-6 lg:px-10 on every section. */
+  .ipek-bleed {
+    padding-inline: var(--ipek-gutter);
+  }
+
+  @media (min-width: 640px) {
+    .ipek-bleed {
+      padding-inline: var(--ipek-gutter-sm);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .ipek-bleed {
+      padding-inline: var(--ipek-gutter-lg);
+    }
+  }
+
   /* ── Section rhythm ── */
   .ipek-section {
     padding-top: var(--ipek-section-y);
@@ -551,8 +615,8 @@
     transition:
       transform var(--ipek-duration-ui) var(--ipek-ease),
       box-shadow var(--ipek-duration-ui) var(--ipek-ease),
-      border-color 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-      color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      border-color var(--ipek-duration-ui) var(--ipek-ease),
+      color var(--ipek-duration-ui) var(--ipek-ease);
   }
 
   .ipek-btn::before {
@@ -641,11 +705,11 @@
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: var(--ipek-radius-btn);
     transition:
-      box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-      color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow var(--ipek-duration-ui) var(--ipek-ease),
+      border-color var(--ipek-duration-ui) var(--ipek-ease),
+      color var(--ipek-duration-ui) var(--ipek-ease);
   }
 
   .hero-cta-wipe {
@@ -803,15 +867,15 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    border-radius: 9999px;
+    border-radius: var(--ipek-radius-btn-sm);
     font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     transition:
-      border-color 0.45s ease,
-      color 0.45s ease,
-      box-shadow 0.45s ease;
+      border-color var(--ipek-duration-ui) ease,
+      color var(--ipek-duration-ui) ease,
+      box-shadow var(--ipek-duration-ui) ease;
   }
 
   .ipek-btn-wipe::before {
@@ -820,7 +884,7 @@
     inset: 0;
     z-index: 0;
     transform: translateX(-102%);
-    transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform var(--ipek-duration-ui) var(--ipek-ease);
     pointer-events: none;
   }
 
@@ -875,7 +939,7 @@
     align-items: center;
     justify-content: center;
     gap: 0.65rem;
-    border-radius: 12px;
+    border-radius: var(--ipek-radius-btn);
     border: 1px solid rgba(255, 255, 255, 0.12);
     background: linear-gradient(135deg, #ef3b3c 0%, #da292a 48%, #b01e20 100%);
     color: #fff;
@@ -887,9 +951,9 @@
       0 1px 0 rgba(255, 255, 255, 0.12) inset,
       0 18px 44px -22px rgba(179, 18, 23, 0.65);
     transition:
-      transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 0.45s ease;
+      transform var(--ipek-duration-ui) var(--ipek-ease),
+      box-shadow var(--ipek-duration-ui) var(--ipek-ease),
+      border-color var(--ipek-duration-ui) ease;
   }
 
   .ipek-btn-premium::before {
@@ -904,7 +968,7 @@
       transparent 68%
     );
     transform: translateX(-130%);
-    transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform var(--ipek-duration-reveal) var(--ipek-ease);
     pointer-events: none;
   }
 
@@ -915,7 +979,7 @@
     z-index: 0;
     background: linear-gradient(135deg, #e8181e 0%, #ef3b3c 45%, #9a1014 100%);
     opacity: 0;
-    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.5s var(--ipek-ease);
     pointer-events: none;
   }
 
@@ -943,7 +1007,7 @@
   }
 
   .ipek-btn-premium__arrow {
-    transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform var(--ipek-duration-ui) var(--ipek-ease);
   }
 
   .ipek-btn-premium:hover .ipek-btn-premium__arrow {
@@ -2929,16 +2993,64 @@
 
   /* ── Buttons ───────────────────────────────────────────────────── */
 
-  /* Shared focus ring for every luxury control — keyboard users get the
-     same brand-gold halo everywhere instead of the UA outline. */
+  /* Shared focus ring for every interactive control — keyboard users get the
+     same brand halo everywhere instead of the UA outline. Every button family
+     is listed here, so a new variant inherits accessible focus by default. */
   .lux-btn:focus-visible,
+  .lux-chip:focus-visible,
+  .ipek-btn:focus-visible,
   .ipek-btn-premium:focus-visible,
-  .lux-chip:focus-visible {
+  .ipek-btn-wipe:focus-visible,
+  .hero-cta:focus-visible {
     outline: none;
     box-shadow:
       0 0 0 2px var(--background, #fff),
       0 0 0 4px rgba(218, 41, 42, 0.55),
       0 18px 44px -22px rgba(179, 18, 23, 0.6);
+  }
+
+  /* On dark surfaces the white inner ring would glow; use the surface colour. */
+  .lux-btn--dark:focus-visible,
+  .hero-cta:focus-visible {
+    box-shadow:
+      0 0 0 2px #0a0a0a,
+      0 0 0 4px rgba(226, 192, 141, 0.7);
+  }
+
+  /* ── Unified press feedback ─────────────────────────────────────
+     Every button dips the same amount on press. `.ipek-btn-wipe` and
+     `.hero-cta` previously had no active state at all, so they felt dead
+     on touch while the others responded. */
+  .ipek-btn:active:not([disabled]):not([aria-disabled="true"]),
+  .ipek-btn-wipe:active:not([disabled]):not([aria-disabled="true"]),
+  .hero-cta:active:not([disabled]):not([aria-disabled="true"]) {
+    transform: translateY(0) scale(0.985);
+    transition-duration: var(--ipek-duration-instant);
+  }
+
+  /* ── Unified disabled state ─────────────────────────────────────
+     Same visual language regardless of variant. */
+  .ipek-btn[disabled],
+  .ipek-btn[aria-disabled="true"],
+  .ipek-btn-wipe[disabled],
+  .ipek-btn-wipe[aria-disabled="true"],
+  .hero-cta[disabled],
+  .hero-cta[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.5;
+    transform: none;
+    box-shadow: none;
+    filter: saturate(0.4);
+  }
+
+  /* ── Hover lift, shared ─────────────────────────────────────────
+     `.ipek-btn-wipe` and `.hero-cta` only changed colour on hover; the
+     others lifted. One lift value for all of them. */
+  @media (hover: hover) {
+    .ipek-btn-wipe:hover:not([disabled]),
+    .hero-cta:hover:not([disabled]) {
+      transform: translateY(-2px);
+    }
   }
 
   /* Press feedback — a real dip, not a colour change. */
@@ -3018,7 +3130,7 @@
     align-items: center;
     justify-content: center;
     gap: 0.7rem;
-    border-radius: 14px;
+    border-radius: var(--ipek-radius-btn);
     border: 1px solid var(--lux-btn-border);
     padding: 0.8rem 1.4rem;
     font-size: 10.5px;
@@ -3028,10 +3140,10 @@
     color: var(--lux-btn-fg);
     background: transparent;
     transition:
-      color 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      color var(--ipek-duration-ui) var(--ipek-ease),
+      border-color var(--ipek-duration-ui) var(--ipek-ease),
+      transform var(--ipek-duration-ui) var(--ipek-ease),
+      box-shadow var(--ipek-duration-ui) var(--ipek-ease);
   }
 
   .lux-btn::before {
@@ -3042,7 +3154,7 @@
     background: var(--lux-btn-fill);
     transform: translateX(-118%) skewX(-8deg) scaleX(1.1);
     transform-origin: left center;
-    transition: transform 0.72s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transition: transform var(--ipek-duration-reveal) var(--ipek-ease-out);
   }
 
   .lux-btn:hover {
@@ -3091,7 +3203,7 @@
   /* The arrow inside any luxury button travels on hover. */
   .lux-btn__arrow,
   .lux-arrow {
-    transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform var(--ipek-duration-ui) var(--ipek-ease);
   }
 
   .lux-btn:hover .lux-btn__arrow,
@@ -3431,6 +3543,14 @@
   /* ── Reduced motion ────────────────────────────────────────────── */
 
   @media (prefers-reduced-motion: reduce) {
+    .ipek-btn-wipe:hover,
+    .hero-cta:hover,
+    .ipek-btn:active,
+    .ipek-btn-wipe:active,
+    .hero-cta:active {
+      transform: none;
+    }
+
     .lux-btn,
     .lux-btn::before,
     .lux-btn__arrow,

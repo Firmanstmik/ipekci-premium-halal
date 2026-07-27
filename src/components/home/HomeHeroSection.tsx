@@ -1,15 +1,5 @@
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
-import {
-  Award,
-  Buildings,
-  ShieldTick,
-  TruckTick,
-} from "iconsax-react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { Award, Buildings, ShieldTick, TruckTick } from "iconsax-react";
 import { useEffect, useRef, useState } from "react";
 import { HeroCtaButton } from "@/components/home/HeroCtaButton";
 import { HeroMeatScrollCue } from "@/components/home/HeroMeatScrollCue";
@@ -164,15 +154,9 @@ export function HomeHeroSection() {
         <motion.div
           className="grid min-h-0 flex-1 items-center gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:gap-12 xl:gap-16"
           initial={
-            reduceMotion
-              ? false
-              : { opacity: 0, clipPath: "inset(10% 8% 14% 8% round 32px)" }
+            reduceMotion ? false : { opacity: 0, clipPath: "inset(10% 8% 14% 8% round 32px)" }
           }
-          animate={
-            entered
-              ? { opacity: 1, clipPath: "inset(0% 0% 0% 0% round 0px)" }
-              : undefined
-          }
+          animate={entered ? { opacity: 1, clipPath: "inset(0% 0% 0% 0% round 0px)" } : undefined}
           transition={{ duration: 1.2, ease: DS_EASE }}
         >
           <div className="relative z-20 min-w-0 overflow-visible lg:pr-6 xl:pr-10">
@@ -185,7 +169,9 @@ export function HomeHeroSection() {
 
             <motion.h1 className="mt-5 overflow-visible font-display text-[clamp(2.35rem,4.8vw,3.85rem)] font-semibold leading-[1.02] tracking-[-0.03em] text-foreground">
               <motion.span
-                initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 22, filter: "blur(8px)" }}
+                initial={
+                  reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 22, filter: "blur(8px)" }
+                }
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 transition={{ delay: 0.22, duration: DS_DURATION.reveal, ease: DS_EASE }}
                 className="block"
@@ -212,9 +198,9 @@ export function HomeHeroSection() {
               transition={{ delay: 0.58, duration: 0.85, ease: DS_EASE }}
               className="mt-5 max-w-[34rem] text-[14px] leading-[1.72] text-foreground/64 sm:text-[15px]"
             >
-              Ayat Food is gespecialiseerd in het produceren van hoogwaardige Halal producten.
-              Wij leveren aan restaurants, supermarkten en retail — 100% Halal, volgens NVWA-normen,
-              met snelle en betrouwbare levering.
+              Ayat Food is gespecialiseerd in het produceren van hoogwaardige Halal producten. Wij
+              leveren aan restaurants, supermarkten en retail — 100% Halal, volgens NVWA-normen, met
+              snelle en betrouwbare levering.
             </motion.p>
 
             <motion.div

@@ -177,7 +177,7 @@ export function ProductHero({
 
       <motion.div
         style={{ y: reduceMotion ? 0 : contentY, opacity: reduceMotion ? 1 : opacity }}
-        className="relative mx-auto flex min-h-[88vh] max-w-[1200px] flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-24 lg:pt-48"
+        className="relative mx-auto flex min-h-[88vh] ipek-container flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-24 lg:pt-48"
       >
         <motion.nav
           aria-label="Breadcrumb"
@@ -577,12 +577,12 @@ export function ProductOrderSteps() {
 
 export function ProductHelpCta() {
   return (
-    <section className="relative isolate overflow-hidden bg-[#070707] px-6 py-24 grain lg:px-10 lg:py-28">
+    <section className="relative isolate overflow-hidden bg-[#070707] ipek-section grain">
       <div aria-hidden className="lux-ambient lux-ambient--dark" />
       <div aria-hidden className="lux-hairline top-0" />
       <div aria-hidden className="lux-hairline bottom-0 opacity-60" />
 
-      <div className="relative mx-auto max-w-[1200px]">
+      <div className="relative ipek-container">
         <Reveal>
           <div className="flex flex-col items-center text-center">
             <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-[rgba(226,192,141,0.92)]">

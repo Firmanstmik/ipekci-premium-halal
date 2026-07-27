@@ -52,15 +52,12 @@ export function ProductenIndexPage() {
       </ProductHero>
 
       {/* ── Categories ────────────────────────────────────────── */}
-      <section
-        id="categorieen"
-        className="relative isolate overflow-hidden px-6 py-24 lg:px-10 lg:py-32"
-      >
+      <section id="categorieen" className="relative isolate overflow-hidden ipek-section">
         <SectionBackdrop src={backgroundWhite1} />
         <div aria-hidden className="lux-ambient" />
         <div aria-hidden className="lux-hairline top-0" />
 
-        <div className="relative mx-auto max-w-[1200px]">
+        <div className="relative ipek-container">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <Reveal className="max-w-2xl">
               <AyatSectionBadge kicker="Assortiment" title="Ayat Food" />
@@ -85,11 +82,11 @@ export function ProductenIndexPage() {
       </section>
 
       {/* ── Quality assurances ────────────────────────────────── */}
-      <section className="relative isolate overflow-hidden px-6 py-24 lg:px-10 lg:py-32">
+      <section className="relative isolate overflow-hidden ipek-section">
         <SectionBackdrop src={backgroundWhite3} />
         <div aria-hidden className="lux-ambient" />
 
-        <div className="relative mx-auto max-w-[1200px]">
+        <div className="relative ipek-container">
           <Reveal className="max-w-2xl">
             <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.28em]">
               Kwaliteitsgarantie
@@ -106,22 +103,22 @@ export function ProductenIndexPage() {
       </section>
 
       {/* ── Certification ─────────────────────────────────────── */}
-      <section className="relative isolate overflow-hidden px-6 py-24 lg:px-10 lg:py-32">
+      <section className="relative isolate overflow-hidden ipek-section">
         <SectionBackdrop src={backgroundWhite1} />
         <div aria-hidden className="lux-ambient" />
         <div aria-hidden className="lux-hairline top-0" />
 
-        <div className="relative mx-auto max-w-[1200px]">
+        <div className="relative ipek-container">
           <ProductCertification image={PRODUCTEN_INDEX.backdrop} />
         </div>
       </section>
 
       {/* ── Ordering process ──────────────────────────────────── */}
-      <section className="relative isolate overflow-hidden bg-[#070707] px-6 py-24 grain lg:px-10 lg:py-32">
+      <section className="relative isolate overflow-hidden bg-[#070707] ipek-section grain">
         <div aria-hidden className="lux-ambient lux-ambient--dark" />
         <div aria-hidden className="lux-hairline top-0" />
 
-        <div className="relative mx-auto max-w-[1200px]">
+        <div className="relative ipek-container">
           <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-12">
             <Reveal className="lg:col-span-7">
               <AyatSectionBadge kicker="Hoe we werken" title="Ayat Food" tone="dark" />

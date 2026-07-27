@@ -26,10 +26,7 @@ export const DS_REVEAL_Y_SECTION = 24; // major-section translateY
 export const DS_VIEWPORT = { once: true, margin: "-10% 0px" } as const;
 export const DS_VIEWPORT_TIGHT = { once: true, margin: "-8% 0px" } as const;
 
-export function dsTransition(
-  duration: number = DS_DURATION.reveal,
-  delay = 0,
-): Transition {
+export function dsTransition(duration: number = DS_DURATION.reveal, delay = 0): Transition {
   return { duration, delay, ease: DS_EASE_REVEAL };
 }
 

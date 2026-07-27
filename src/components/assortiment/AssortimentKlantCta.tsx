@@ -56,10 +56,7 @@ export function AssortimentKlantCta() {
   }
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative overflow-hidden bg-[#FAF8F5] px-6 py-24 grain lg:px-10 lg:py-32"
-    >
+    <section ref={sectionRef} className="relative overflow-hidden bg-[#FAF8F5] ipek-section grain">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_70%_at_0%_50%,rgba(226,192,141,0.14),transparent_55%)]"
@@ -85,7 +82,7 @@ export function AssortimentKlantCta() {
         className="pointer-events-none absolute bottom-[12%] left-[6%] h-24 w-24 rounded-full border border-dashed border-[rgba(177,18,23,0.15)]"
       />
 
-      <div className="relative mx-auto max-w-[1200px]">
+      <div className="relative ipek-container">
         <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
           <motion.div
             initial={{ opacity: 0, x: -40, filter: "blur(8px)" }}
@@ -102,10 +99,12 @@ export function AssortimentKlantCta() {
             </h2>
             <p className="mt-6 max-w-xl text-base leading-[1.8] text-[#141414]/68 md:text-[17px]">
               Kies voor de zekerheid van een Halal vleesgroothandel die werkt volgens NVWA-normen en
-              onder toezicht van ECC Halal. Snelle levering via ons moderne wagenpark en 24/7 service.
+              onder toezicht van ECC Halal. Snelle levering via ons moderne wagenpark en 24/7
+              service.
             </p>
             <p className="mt-4 max-w-lg text-sm leading-relaxed text-[#141414]/50">
-              Word klant van Ayat Food. Hoogwaardige Halal producten, op tijd geleverd aan uw bedrijf.
+              Word klant van Ayat Food. Hoogwaardige Halal producten, op tijd geleverd aan uw
+              bedrijf.
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <MagneticButton href="/contact">
@@ -178,7 +177,10 @@ export function AssortimentKlantCta() {
                       className="ipek-btn-wipe ipek-btn-wipe--light group mt-4 px-4 py-2 text-[10px] tracking-[0.16em]"
                     >
                       Klant worden
-                      <ArrowUpRight size={13} className="transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-0.5" />
+                      <ArrowUpRight
+                        size={13}
+                        className="transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-0.5"
+                      />
                     </a>
                   </div>
                 </motion.div>
@@ -187,7 +189,12 @@ export function AssortimentKlantCta() {
                 <motion.div
                   aria-hidden
                   animate={reduceMotion ? undefined : { x: ["-120%", "220%"] }}
-                  transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", repeatDelay: 1.2 }}
+                  transition={{
+                    duration: 4.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    repeatDelay: 1.2,
+                  }}
                   className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(226,192,141,0.9)] to-transparent opacity-70"
                 />
               </div>

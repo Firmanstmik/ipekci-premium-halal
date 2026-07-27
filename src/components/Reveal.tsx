@@ -80,11 +80,7 @@ export function RevealGroup({ children, className, ...rest }: RevealGroupProps) 
   );
 }
 
-export function RevealItem({
-  children,
-  className,
-  ...rest
-}: HTMLMotionProps<"div">) {
+export function RevealItem({ children, className, ...rest }: HTMLMotionProps<"div">) {
   const reduce = useReducedMotion();
 
   if (reduce) {

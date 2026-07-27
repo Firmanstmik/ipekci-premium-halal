@@ -11,20 +11,13 @@ import {
 import { ArrowUpRight, Check } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import {
-  AyatBrandSeal,
-  AyatSectionBadge,
-} from "@/components/home/AyatSectionBadge";
+import { AyatBrandSeal, AyatSectionBadge } from "@/components/home/AyatSectionBadge";
 import { DS_EASE_REVEAL } from "@/lib/design-system";
-import {
-  HOME_OVER_ONS,
-  type OverOnsFeature,
-} from "@/lib/home-company-story-content";
+import { HOME_OVER_ONS, type OverOnsFeature } from "@/lib/home-company-story-content";
 
 const LUXURY_EASE = [0.22, 1, 0.36, 1] as const;
 const COUNT_EASE = [0.33, 1, 0.68, 1] as const;
-const SHELL =
-  "rounded-[1.35rem_0.75rem_1.5rem_0.9rem] sm:rounded-[1.65rem_0.9rem_1.85rem_1.05rem]";
+const SHELL = "rounded-[1.35rem_0.75rem_1.5rem_0.9rem] sm:rounded-[1.65rem_0.9rem_1.85rem_1.05rem]";
 
 function Reveal({
   children,
@@ -104,9 +97,7 @@ function OverOnsFeatureCard({
             <h3 className="pr-9 font-display text-[1.35rem] font-semibold tracking-[-0.02em] text-[#141414]">
               {feature.title}
             </h3>
-            <p className="mt-2.5 text-[13px] leading-[1.7] text-[#141414]/66">
-              {feature.text}
-            </p>
+            <p className="mt-2.5 text-[13px] leading-[1.7] text-[#141414]/66">{feature.text}</p>
           </div>
         </div>
 
@@ -128,10 +119,7 @@ function OverOnsFeatureCard({
                 key={item}
                 className="over-ons-chip inline-flex items-center gap-1.5 rounded-full border border-black/[0.07] bg-white/70 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-[#141414]/55"
               >
-                <span
-                  aria-hidden
-                  className="h-1 w-1 shrink-0 rounded-full bg-[#141414]/25"
-                />
+                <span aria-hidden className="h-1 w-1 shrink-0 rounded-full bg-[#141414]/25" />
                 {item}
               </li>
             ))}
@@ -144,13 +132,8 @@ function OverOnsFeatureCard({
               to={feature.linkTo}
               className="over-ons-icon-card__link inline-flex items-center gap-1.5 text-[9.5px] font-semibold uppercase tracking-[0.22em] text-[#B31217]"
             >
-              <span className="over-ons-icon-card__link-text relative">
-                {feature.linkLabel}
-              </span>
-              <ArrowUpRight
-                size={12}
-                className="over-ons-icon-card__link-arrow shrink-0"
-              />
+              <span className="over-ons-icon-card__link-text relative">{feature.linkLabel}</span>
+              <ArrowUpRight size={12} className="over-ons-icon-card__link-arrow shrink-0" />
             </Link>
           ) : (
             <span aria-hidden />
@@ -228,7 +211,7 @@ export function HomeOverOnsSection() {
       id="over-ons"
       data-story-chapter="heritage"
       aria-labelledby="story-heritage-heading"
-      className="story-section story-section--editorial story-surface-light relative overflow-hidden px-6 grain lg:px-10"
+      className="story-section story-section--editorial story-surface-light relative overflow-hidden grain"
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="absolute -left-20 top-0 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(226,192,141,0.16),transparent_68%)]" />
@@ -236,15 +219,12 @@ export function HomeOverOnsSection() {
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(200,164,107,0.35)] to-transparent" />
       </div>
 
-      <div className="relative mx-auto w-full max-w-[1320px]">
+      <div className="relative w-full ipek-container">
         {/* Editorial header */}
         <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-10">
           <div className="lg:col-span-7">
             <Reveal>
-              <AyatSectionBadge
-                kicker={HOME_OVER_ONS.kicker}
-                title={HOME_OVER_ONS.badgeTitle}
-              />
+              <AyatSectionBadge kicker={HOME_OVER_ONS.kicker} title={HOME_OVER_ONS.badgeTitle} />
             </Reveal>
             <motion.h2
               id="story-heritage-heading"

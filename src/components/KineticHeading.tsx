@@ -28,12 +28,7 @@ export function KineticHeading({ lines, className = "", delay = 0.5 }: Props) {
       {lines.map((line, li) => (
         <span
           key={li}
-          className="
-            block
-            overflow-visible
-            pb-[0.22em]
-            leading-[0.85]
-          "
+          className="block overflow-visible pb-[0.22em] leading-[0.85]"
           style={{
             overflow: "visible",
           }}
@@ -50,11 +45,7 @@ export function KineticHeading({ lines, className = "", delay = 0.5 }: Props) {
               return (
                 <span
                   key={wi}
-                  className="
-                    inline-flex
-                    align-baseline
-                    overflow-visible
-                  "
+                  className="inline-flex align-baseline overflow-visible"
                   style={{
                     overflow: "visible",
                   }}

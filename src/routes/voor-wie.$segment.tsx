@@ -1,7 +1,11 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/SiteLayout";
 import { VoorWieCatalogPage } from "@/components/voor-wie/VoorWieCatalogPage";
-import { VOOR_WIE_SEGMENTS, isVoorWieSegmentId, type VoorWieSegmentId } from "@/lib/voor-wie-content";
+import {
+  VOOR_WIE_SEGMENTS,
+  isVoorWieSegmentId,
+  type VoorWieSegmentId,
+} from "@/lib/voor-wie-content";
 
 export const Route = createFileRoute("/voor-wie/$segment")({
   beforeLoad: ({ params }) => {

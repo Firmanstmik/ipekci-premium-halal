@@ -38,7 +38,9 @@ export function HeroCtaButton({ to, variant, children }: HeroCtaButtonProps) {
           my.set(50);
         }}
         className={`hero-cta group relative isolate inline-flex items-center justify-center gap-2 overflow-hidden rounded-[10px] px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.18em] ${
-          isPrimary ? "hero-cta--primary text-[var(--primary-foreground)]" : "hero-cta--ghost text-foreground/92"
+          isPrimary
+            ? "hero-cta--primary text-[var(--primary-foreground)]"
+            : "hero-cta--ghost text-foreground/92"
         }`}
       >
         <span className="hero-cta-wipe" aria-hidden />
@@ -71,7 +73,9 @@ export function HeroCtaButton({ to, variant, children }: HeroCtaButtonProps) {
           variant="Linear"
           color="currentColor"
           className={`relative z-10 transition-transform duration-500 group-hover:translate-x-1.5 ${
-            isPrimary ? "group-hover:text-[#da292a]" : "text-foreground/50 group-hover:text-[#da292a]"
+            isPrimary
+              ? "group-hover:text-[#da292a]"
+              : "text-foreground/50 group-hover:text-[#da292a]"
           }`}
         />
       </Link>

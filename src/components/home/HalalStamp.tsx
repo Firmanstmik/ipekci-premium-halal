@@ -28,10 +28,7 @@ export function HalalStamp({
 }) {
   const reduceMotion = useReducedMotion();
   const pathId = useId().replace(/:/g, "");
-  const icons = useMemo(
-    () => STICKER_KEYS.map((key) => ({ key, src: STICKER_SRC[key] })),
-    [],
-  );
+  const icons = useMemo(() => STICKER_KEYS.map((key) => ({ key, src: STICKER_SRC[key] })), []);
 
   const [shownIdx, setShownIdx] = useState(0);
   const [incomingIdx, setIncomingIdx] = useState<number | null>(null);
@@ -79,11 +76,17 @@ export function HalalStamp({
 
   const shown = icons[shownIdx] ?? icons[0];
   const incoming = incomingIdx !== null ? (icons[incomingIdx] ?? null) : null;
-  const size = compact ? "h-[5.25rem] w-[5.25rem] sm:h-[5.75rem] sm:w-[5.75rem]" : "h-36 w-36 sm:h-40 sm:w-40";
-  const iconSize = compact ? "h-[2.1rem] w-[2.1rem] sm:h-[2.35rem] sm:w-[2.35rem]" : "h-[64px] w-[64px] sm:h-[72px] sm:w-[72px]";
+  const size = compact
+    ? "h-[5.25rem] w-[5.25rem] sm:h-[5.75rem] sm:w-[5.75rem]"
+    : "h-36 w-36 sm:h-40 sm:w-40";
+  const iconSize = compact
+    ? "h-[2.1rem] w-[2.1rem] sm:h-[2.35rem] sm:w-[2.35rem]"
+    : "h-[64px] w-[64px] sm:h-[72px] sm:w-[72px]";
 
   return (
-    <div className={`relative grid place-items-center rounded-full bg-transparent ${size} ${className}`}>
+    <div
+      className={`relative grid place-items-center rounded-full bg-transparent ${size} ${className}`}
+    >
       <svg viewBox="0 0 112 112" className="absolute inset-0 h-full w-full spin-ring" aria-hidden>
         <defs>
           <path id={pathId} d="M56,56 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0" />

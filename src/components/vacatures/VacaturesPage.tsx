@@ -240,7 +240,7 @@ export function VacaturesPage() {
 
         <motion.div
           style={{ y: reduceMotion ? 0 : heroContentY, opacity: reduceMotion ? 1 : heroOpacity }}
-          className="relative mx-auto flex min-h-[88vh] max-w-[1200px] flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-24 lg:pt-48"
+          className="relative mx-auto flex min-h-[88vh] ipek-container flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-24 lg:pt-48"
         >
           <motion.nav
             aria-label="Breadcrumb"
@@ -340,14 +340,14 @@ export function VacaturesPage() {
       </section>
 
       {/* ── Werken bij Ayat Food ───────────────────────────── */}
-      <section className="relative isolate overflow-hidden px-6 py-24 lg:px-10 lg:py-32">
+      <section className="relative isolate overflow-hidden ipek-section">
         <SectionBackdrop src={backgroundWhite1} />
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.42),transparent)]"
         />
 
-        <div className="relative mx-auto max-w-[1200px]">
+        <div className="relative ipek-container">
           <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
             <Reveal className="lg:col-span-6">
               <AyatSectionBadge
@@ -432,12 +432,9 @@ export function VacaturesPage() {
       </section>
 
       {/* ── Openstaande vacatures ──────────────────────────── */}
-      <section
-        id={VACATURES_ANCHOR}
-        className="relative isolate overflow-hidden px-6 py-24 lg:px-10 lg:py-36"
-      >
+      <section id={VACATURES_ANCHOR} className="relative isolate overflow-hidden ipek-section">
         <SectionBackdrop src={backgroundWhite3} />
-        <div className="relative mx-auto max-w-[1200px]">
+        <div className="relative ipek-container">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <Reveal>
               <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.28em]">
@@ -477,7 +474,7 @@ export function VacaturesPage() {
       {/* ── Solliciteren ───────────────────────────────────── */}
       <section
         id={SOLLICITEREN_ANCHOR}
-        className="relative isolate overflow-hidden bg-[#070707] px-6 py-24 grain lg:px-10 lg:py-32"
+        className="relative isolate overflow-hidden bg-[#070707] ipek-section grain"
       >
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_78%_60%_at_18%_0%,rgba(179,18,23,0.2),transparent_58%)]" />
@@ -486,7 +483,7 @@ export function VacaturesPage() {
           <div className="absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,transparent,rgba(226,192,141,0.24),transparent)]" />
         </div>
 
-        <div className="relative mx-auto max-w-[1200px]">
+        <div className="relative ipek-container">
           <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-12">
             <Reveal className="lg:col-span-7">
               <AyatSectionBadge
@@ -594,13 +591,13 @@ export function VacaturesPage() {
       </section>
 
       {/* ── Open sollicitatie ──────────────────────────────── */}
-      <section className="relative isolate overflow-hidden px-6 py-24 lg:px-10 lg:py-28">
+      <section className="relative isolate overflow-hidden ipek-section">
         <SectionBackdrop src={backgroundWhite1} />
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.42),transparent)]"
         />
-        <div className="relative mx-auto max-w-[1200px]">
+        <div className="relative ipek-container">
           <Reveal>
             <div className="flex flex-col items-center text-center">
               <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.3em]">

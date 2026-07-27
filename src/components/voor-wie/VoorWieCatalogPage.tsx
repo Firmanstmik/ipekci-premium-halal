@@ -285,7 +285,10 @@ function SegmentDetailShowcase({ segment }: { segment: VoorWieSegment }) {
                 <span className="group/btn relative mt-4 inline-flex items-center gap-2 overflow-hidden rounded-xl border border-[rgba(198,160,98,0.45)] px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-[rgba(198,160,98,0.92)] transition-colors duration-700 group-hover:border-[rgba(198,160,98,0.75)] group-hover:text-[#0a0a0a]">
                   <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[rgba(226,192,141,0.95)] transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:translate-x-0" />
                   <span className="relative">Lees meer</span>
-                  <ArrowUpRight size={12} className="relative transition-transform duration-500 group-hover:translate-x-0.5" />
+                  <ArrowUpRight
+                    size={12}
+                    className="relative transition-transform duration-500 group-hover:translate-x-0.5"
+                  />
                 </span>
               </div>
             </motion.a>
@@ -338,7 +341,11 @@ function SegmentCard({ segment, index }: { segment: VoorWieSegment; index: numbe
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-transparent" />
 
           <div className="pointer-events-none absolute right-5 top-5 grid h-[74px] w-[74px] place-items-center rounded-full border border-[rgba(198,160,98,0.28)] bg-black/40 backdrop-blur-[2px] transition-colors duration-700 group-hover:border-[rgba(198,160,98,0.5)]">
-            <svg viewBox="0 0 112 112" className="absolute inset-0 h-full w-full spin-ring" aria-hidden="true">
+            <svg
+              viewBox="0 0 112 112"
+              className="absolute inset-0 h-full w-full spin-ring"
+              aria-hidden="true"
+            >
               <defs>
                 <path id={pathId} d="M56,56 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0" />
               </defs>
@@ -419,9 +426,7 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
   const gridRef = useRef<HTMLElement>(null);
 
   const segmentMeta =
-    activeSegment === "all"
-      ? null
-      : VOOR_WIE_SEGMENTS.find((s) => s.id === activeSegment);
+    activeSegment === "all" ? null : VOOR_WIE_SEGMENTS.find((s) => s.id === activeSegment);
 
   const segments =
     activeSegment === "all"
@@ -432,9 +437,7 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
     activeSegment === "all" ? VOOR_WIE_MEGA_MENU.pageTitle : (segmentMeta?.label ?? "Voor wie");
 
   const pageDescription =
-    activeSegment === "all"
-      ? VOOR_WIE_MEGA_MENU.pageDescription
-      : segmentMeta?.longDescription;
+    activeSegment === "all" ? VOOR_WIE_MEGA_MENU.pageDescription : segmentMeta?.longDescription;
 
   const heroImage =
     activeSegment === "all"
@@ -459,10 +462,7 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
 
   return (
     <>
-      <section
-        ref={heroRef}
-        className="relative min-h-[88vh] overflow-hidden bg-[#030303] grain"
-      >
+      <section ref={heroRef} className="relative min-h-[88vh] overflow-hidden bg-[#030303] grain">
         <AnimatePresence mode="wait">
           <motion.div
             key={heroImage}
@@ -494,7 +494,7 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
 
         <motion.div
           style={{ y: reduceMotion ? 0 : heroContentY, opacity: reduceMotion ? 1 : heroOpacity }}
-          className="relative mx-auto flex min-h-[88vh] max-w-[1200px] flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-24 lg:pt-48"
+          className="relative mx-auto flex min-h-[88vh] ipek-container flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-24 lg:pt-48"
         >
           <motion.nav
             aria-label="Breadcrumb"
@@ -511,7 +511,10 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
               <span className="text-white/80">Voor wie</span>
             ) : (
               <>
-                <Link to="/voor-wie" className="transition-colors hover:text-[rgba(226,192,141,0.95)]">
+                <Link
+                  to="/voor-wie"
+                  className="transition-colors hover:text-[rgba(226,192,141,0.95)]"
+                >
                   Voor wie
                 </Link>
                 <ChevronRight size={12} className="text-white/22" />
@@ -595,7 +598,7 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
       <section
         id="klantgroepen"
         ref={gridRef}
-        className="relative z-10 overflow-hidden px-6 py-20 lg:px-10 lg:py-28"
+        className="relative z-10 overflow-hidden ipek-section"
       >
         <div
           aria-hidden
@@ -615,7 +618,7 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
           />
         </motion.div>
 
-        <div className="relative mx-auto max-w-[1200px]">
+        <div className="relative ipek-container">
           <motion.div
             initial={{ opacity: 0, x: -32 }}
             whileInView={{ opacity: 1, x: 0 }}

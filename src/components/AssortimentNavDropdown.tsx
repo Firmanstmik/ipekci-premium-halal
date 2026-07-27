@@ -15,8 +15,7 @@ import {
 import { DS_EASE } from "@/lib/design-system";
 
 const GOLD = "rgba(240,215,168,";
-const STICKER_FILTER =
-  "sepia(1) saturate(520%) hue-rotate(352deg) brightness(0.66) contrast(1.12)";
+const STICKER_FILTER = "sepia(1) saturate(520%) hue-rotate(352deg) brightness(0.66) contrast(1.12)";
 const RED = "rgba(218,41,42,";
 
 export function AssortimentNavDropdown({
@@ -58,16 +57,11 @@ export function AssortimentNavDropdown({
             animate={{ rotate: open ? 180 : 0 }}
             transition={{ duration: 0.26, ease: DS_EASE }}
           >
-            <ChevronDown
-              size={13}
-              className={scrolled ? "text-[#141414]/45" : "text-white/50"}
-            />
+            <ChevronDown size={13} className={scrolled ? "text-[#141414]/45" : "text-white/50"} />
           </motion.span>
           <span
             className={`absolute inset-x-5 -bottom-px h-px transition-transform duration-[360ms] ease-[cubic-bezier(.22,1,.36,1)] xl:inset-x-6 ${
-              open || active
-                ? "scale-x-100"
-                : "origin-left scale-x-0 group-hover:scale-x-100"
+              open || active ? "scale-x-100" : "origin-left scale-x-0 group-hover:scale-x-100"
             }`}
             style={{ background: scrolled ? `${RED}0.85)` : `${GOLD}0.72)` }}
             aria-hidden

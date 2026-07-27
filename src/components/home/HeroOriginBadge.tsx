@@ -30,7 +30,10 @@ export function HeroOriginBadge({ reduceMotion }: { reduceMotion: boolean | null
             animate={reduceMotion ? {} : { y: [0, -1.5, 0] }}
             transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
           />
-          <span className="pointer-events-none absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-[var(--primary)] shadow-[0_0_8px_rgba(218,41,42,0.65)]" aria-hidden />
+          <span
+            className="pointer-events-none absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-[var(--primary)] shadow-[0_0_8px_rgba(218,41,42,0.65)]"
+            aria-hidden
+          />
         </motion.span>
 
         <span className="relative min-w-0">

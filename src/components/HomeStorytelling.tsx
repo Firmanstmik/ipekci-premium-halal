@@ -1,10 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
-import {
-  DS_VIEWPORT,
-  dsContainerVariants,
-  dsItemVariants,
-} from "@/lib/design-system";
+import { DS_VIEWPORT, dsContainerVariants, dsItemVariants } from "@/lib/design-system";
 
 export type StoryBridgeTone = "dark-dark" | "dark-light" | "light-dark" | "light-light";
 
@@ -38,13 +34,7 @@ export function StoryMoment({
   );
 }
 
-export function StoryReveal({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+export function StoryReveal({ children, className }: { children: ReactNode; className?: string }) {
   const reduce = useReducedMotion();
 
   if (reduce) {
@@ -64,13 +54,7 @@ export function StoryReveal({
   );
 }
 
-export function StoryItem({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+export function StoryItem({ children, className }: { children: ReactNode; className?: string }) {
   const reduce = useReducedMotion();
 
   if (reduce) {

@@ -1790,7 +1790,7 @@ function HomePage() {
           id="ons-assortiment"
           data-story-chapter="quality"
           aria-labelledby="assortiment-heading"
-          className="story-moment story-surface-light relative isolate overflow-hidden px-6 py-20 grain lg:px-10 lg:py-28"
+          className="story-moment story-surface-light relative isolate overflow-hidden py-20 grain lg:py-28"
         >
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute -left-32 top-0 h-[480px] w-[480px] rounded-full bg-[radial-gradient(circle,rgba(226,192,141,0.14),transparent_68%)]" />
@@ -1798,7 +1798,7 @@ function HomePage() {
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(200,164,107,0.38)] to-transparent" />
           </div>
 
-          <div className="relative mx-auto w-full max-w-[1320px]">
+          <div className="relative w-full ipek-container">
             <div className="relative z-0 grid gap-10 lg:grid-cols-12 lg:items-stretch lg:gap-8">
               <motion.div
                 initial={{ opacity: 0, y: 24 }}
@@ -1892,7 +1892,7 @@ function HomePage() {
           id="segments"
           data-story-chapter="partnership"
           aria-labelledby="segments-heading"
-          className="story-section story-section--information story-surface-light relative overflow-hidden px-6 grain lg:px-10"
+          className="story-section story-section--information story-surface-light relative overflow-hidden grain"
         >
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute left-0 top-1/4 h-[460px] w-[460px] rounded-full bg-[radial-gradient(circle,rgba(200,164,107,0.18),transparent_70%)]" />
@@ -1900,7 +1900,7 @@ function HomePage() {
             <div className="absolute bottom-1/4 left-1/3 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(226,192,141,0.18),transparent_70%)]" />
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(200,164,107,0.35)] to-transparent" />
           </div>
-          <div className="relative mx-auto w-full max-w-[1320px]">
+          <div className="relative w-full ipek-container">
             <div className="grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-12">
               <StoryReveal className="lg:col-span-5">
                 <StoryItem>
@@ -2059,7 +2059,7 @@ function HomePage() {
             id="products"
             data-story-chapter="finished-products"
             aria-labelledby="products-heading"
-            className="relative isolate overflow-hidden px-6 py-28 text-[#0a0a0a] grain lg:px-10 lg:py-36"
+            className="relative isolate overflow-hidden py-28 text-[#0a0a0a] grain lg:py-36"
           >
             <div className="pointer-events-none absolute inset-0" aria-hidden>
               <img
@@ -2085,7 +2085,7 @@ function HomePage() {
               <div className="absolute left-0 right-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.38),transparent)]" />
             </div>
 
-            <div className="relative z-10 mx-auto w-full max-w-[1320px]">
+            <div className="relative z-10 w-full ipek-container">
               <StoryReveal className="text-center">
                 <StoryItem>
                   <AyatSectionBadge kicker="Producten" title="Ons assortiment" align="center" />
@@ -3112,7 +3112,7 @@ function ProcessQualitySection() {
         />
       </div>
 
-      <div className="relative mx-auto w-full max-w-[1320px] px-6 py-24 md:px-10 md:py-32 lg:py-40">
+      <div className="relative ipek-container ipek-section-lg">
         <motion.header
           initial={initial}
           whileInView="show"

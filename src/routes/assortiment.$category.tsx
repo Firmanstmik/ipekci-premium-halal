@@ -1,43 +1,33 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
-import { SiteLayout } from "@/components/SiteLayout";
-import { AssortimentCatalogPage } from "@/components/assortiment/AssortimentCatalogPage";
-import { ASSORTIMENT_CATEGORIES } from "@/lib/assortiment-content";
-import {
-  isAssortimentCategoryId,
-  type AssortimentCategoryId,
-} from "@/lib/assortiment-products";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import type { ProductCategorySlug } from "@/lib/producten-content";
+
+/**
+ * Legacy route: /assortiment/{category}.
+ *
+ * The pre-Ayat catalogue used four Ipekçi slugs. Phase 9 replaced them with the
+ * eight real Ayat categories under /producten. Each old slug maps to the Ayat
+ * category it was actually displaying, so an existing bookmark lands on the
+ * right page instead of a 404; anything unrecognised falls back to the index.
+ */
+const LEGACY_SLUG_MAP: Record<string, ProductCategorySlug> = {
+  lamsvlees: "doner",
+  rundvlees: "shoarma",
+  kip: "gevogelte",
+  eindproducten: "vleessoorten",
+};
 
 export const Route = createFileRoute("/assortiment/$category")({
   beforeLoad: ({ params }) => {
-    if (!isAssortimentCategoryId(params.category)) {
-      throw notFound();
+    const target = LEGACY_SLUG_MAP[params.category];
+
+    if (target) {
+      throw redirect({
+        to: "/producten/$category",
+        params: { category: target },
+        replace: true,
+      });
     }
+
+    throw redirect({ to: "/producten", replace: true });
   },
-  head: ({ params }) => {
-    const category = params.category as AssortimentCategoryId;
-    const meta = ASSORTIMENT_CATEGORIES.find((c) => c.id === category);
-    const title = meta ? `${meta.label} — Assortiment` : "Assortiment";
-    return {
-      meta: [
-        { title: `${title} — Ipekçi Slachterij` },
-        {
-          name: "description",
-          content: meta?.description ?? "Premium halalvlees assortiment van Ipekçi Slachterij.",
-        },
-        { property: "og:title", content: `${title} — Ipekçi Slachterij` },
-        { property: "og:image", content: meta?.heroImage },
-      ],
-    };
-  },
-  component: AssortimentCategoryRoute,
 });
-
-function AssortimentCategoryRoute() {
-  const { category } = Route.useParams();
-
-  return (
-    <SiteLayout>
-      <AssortimentCatalogPage activeCategory={category as AssortimentCategoryId} />
-    </SiteLayout>
-  );
-}

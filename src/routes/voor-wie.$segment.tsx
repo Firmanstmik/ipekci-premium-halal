@@ -15,12 +15,12 @@ export const Route = createFileRoute("/voor-wie/$segment")({
     const title = meta ? `${meta.label} — Voor wie` : "Voor wie";
     return {
       meta: [
-        { title: `${title} — Ipekçi Slachterij` },
+        { title: `${title} — Ayat Food` },
         {
           name: "description",
-          content: meta?.longDescription ?? "Premium halalvlees voor B2B klanten.",
+          content: meta?.longDescription ?? "Premium Halal producten voor B2B-partners.",
         },
-        { property: "og:title", content: `${title} — Ipekçi Slachterij` },
+        { property: "og:title", content: `${title} — Ayat Food` },
         { property: "og:image", content: meta?.image },
       ],
     };

@@ -8,26 +8,24 @@ import {
 import { useRef } from "react";
 import { ArrowUpRight, ChevronRight } from "lucide-react";
 import { AssortimentKlantCta } from "@/components/assortiment/AssortimentKlantCta";
+import { AyatSectionBadge } from "@/components/home/AyatSectionBadge";
 import { MagneticButton } from "@/components/MagneticButton";
-import {
-  ASSORTIMENT_PRODUCTS,
-  CATEGORY_LABELS,
-  CATEGORY_STICKERS,
-  type AssortimentProduct,
-} from "@/lib/assortiment-products";
+import { RollingCounter } from "@/components/RollingCounter";
+import type { ProductenMegaItem } from "@/lib/assortiment-content";
 import {
   ONS_VERHAAL_ASSORTIMENT,
   ONS_VERHAAL_CAREERS,
   ONS_VERHAAL_CAREERS_IMAGE,
-  ONS_VERHAAL_FEATURED_PRODUCTS,
   ONS_VERHAAL_HALAL,
   ONS_VERHAAL_HALAL_IMAGE,
   ONS_VERHAAL_HALAL_NORMEN_IMAGE,
+  ONS_VERHAAL_HERO,
   ONS_VERHAAL_HERO_FALLBACK,
-  ONS_VERHAAL_HERO_VIDEO,
   ONS_VERHAAL_HIGHLIGHTS,
-  ONS_VERHAAL_HISTORY,
-  ONS_VERHAAL_HISTORY_IMAGE,
+  ONS_VERHAAL_INTRO,
+  ONS_VERHAAL_INTRO_IMAGE,
+  ONS_VERHAAL_PRODUCTGROEPEN,
+  ONS_VERHAAL_STATS,
   ONS_VERHAAL_WORKFLOW,
 } from "@/lib/ons-verhaal-content";
 import { DS_EASE, DS_EASE_REVEAL } from "@/lib/design-system";
@@ -83,10 +81,6 @@ function PremiumLinkButton({
     </a>
   );
 }
-
-const featuredProducts = ONS_VERHAAL_FEATURED_PRODUCTS.map((title) =>
-  ASSORTIMENT_PRODUCTS.find((p) => p.title === title),
-).filter((p): p is AssortimentProduct => Boolean(p));
 
 function ScrollLine() {
   return (
@@ -181,36 +175,72 @@ function HighlightCard({
   );
 }
 
-function ProductMiniCard({ product, index }: { product: AssortimentProduct; index: number }) {
-  const sticker = CATEGORY_STICKERS[product.category];
+function ProductMiniCard({ product, index }: { product: ProductenMegaItem; index: number }) {
   return (
-    <motion.div
+    <motion.a
+      href={product.href}
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-4%" }}
       transition={{ duration: 0.7, delay: index * 0.04, ease: DS_EASE }}
-      className="group relative overflow-hidden rounded-[20px] border border-black/[0.08] bg-white shadow-[0_20px_60px_-36px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-1 hover:border-[rgba(198,160,98,0.32)] hover:shadow-[0_28px_70px_-32px_rgba(0,0,0,0.18)]"
+      className="group relative block overflow-hidden rounded-[20px] border border-black/[0.08] bg-white shadow-[0_20px_60px_-36px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-1 hover:border-[rgba(198,160,98,0.32)] hover:shadow-[0_28px_70px_-32px_rgba(0,0,0,0.18)]"
     >
       <div className="relative aspect-square overflow-hidden bg-[linear-gradient(180deg,#FFFFFF_0%,#F5F0E8_100%)]">
         <img
           src={product.image}
-          alt={product.title}
+          alt={product.label}
           loading="lazy"
           decoding="async"
-          referrerPolicy="no-referrer"
           className="h-full w-full object-cover transition-transform duration-[1.2s] group-hover:scale-[1.05]"
         />
         <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(179,18,23,0.15),transparent)]" />
       </div>
       <div className="flex items-start justify-between gap-3 p-4">
-        <div>
+        <div className="min-w-0">
           <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[#B31217]/80">
-            {CATEGORY_LABELS[product.category]}
+            {product.eyebrow}
           </p>
-          <p className="mt-1.5 font-display text-lg text-[#1c1c1c]">{product.title}</p>
+          <p className="mt-1.5 font-display text-lg leading-tight text-[#1c1c1c]">
+            {product.label}
+          </p>
         </div>
-        <img src={sticker} alt="" aria-hidden className="h-7 w-7 shrink-0 opacity-80" />
+        <img src={product.stickerSrc} alt="" aria-hidden className="h-7 w-7 shrink-0 opacity-80" />
       </div>
+    </motion.a>
+  );
+}
+
+/** One official statistic — counts up once, in view. */
+function StatCard({
+  stat,
+  index,
+}: {
+  stat: (typeof ONS_VERHAAL_STATS.items)[number];
+  index: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-6%" }}
+      transition={{ duration: 0.85, delay: index * 0.09, ease: DS_EASE_REVEAL }}
+      className="group relative overflow-hidden rounded-[24px] border border-white/[0.08] bg-[linear-gradient(165deg,rgba(255,255,255,0.06)_0%,rgba(10,10,10,0.32)_55%,rgba(26,8,8,0.42)_100%)] p-7 backdrop-blur-[6px] transition-all duration-700 hover:-translate-y-1 hover:border-[rgba(226,192,141,0.32)] lg:p-8"
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(226,192,141,0.4),transparent)]"
+      />
+      <p className="flex items-baseline font-display text-[clamp(2.4rem,4.4vw,3.2rem)] font-semibold leading-none tracking-[-0.04em] text-[#F8F4EE]">
+        <RollingCounter value={stat.value} />
+        <span className="text-[#DA292A]">{stat.suffix}</span>
+      </p>
+      <div
+        aria-hidden
+        className="mt-5 h-px w-12 bg-[linear-gradient(90deg,rgba(226,192,141,0.9),transparent)]"
+      />
+      <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.24em] text-white/62">
+        {stat.label}
+      </p>
     </motion.div>
   );
 }
@@ -233,7 +263,7 @@ export function OnsVerhaalPage() {
   });
   const bgY = useTransform(gridProgress, [0, 1], ["-6%", "6%"]);
 
-  const titleWords = "Het verhaal van Ipekçi".split(" ");
+  const titleWords = ONS_VERHAAL_HERO.title.split(" ");
 
   return (
     <>
@@ -242,25 +272,18 @@ export function OnsVerhaalPage() {
         className="relative min-h-[88vh] overflow-hidden bg-[#030303] grain"
       >
         <div className="absolute inset-0">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster={ONS_VERHAAL_HERO_FALLBACK}
-            className="h-full w-full object-cover"
-            style={{ filter: "brightness(0.34) contrast(1.1) saturate(1.05)" }}
-          >
-            <source src={ONS_VERHAAL_HERO_VIDEO} type="video/mp4" />
-          </video>
-          <img
+          <motion.img
             src={ONS_VERHAAL_HERO_FALLBACK}
             alt=""
             aria-hidden
-            className="absolute inset-0 h-full w-full object-cover opacity-0"
+            className="h-full w-full object-cover"
+            style={{ filter: "brightness(0.36) contrast(1.08) saturate(1.05)" }}
+            initial={reduceMotion ? false : { scale: 1.08 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 2.4, ease: DS_EASE_REVEAL }}
             loading="eager"
             decoding="async"
-            referrerPolicy="no-referrer"
+            fetchPriority="high"
           />
         </div>
 
@@ -270,7 +293,7 @@ export function OnsVerhaalPage() {
 
         <motion.div
           style={{ y: reduceMotion ? 0 : heroContentY, opacity: reduceMotion ? 1 : heroOpacity }}
-          className="relative mx-auto flex min-h-[88vh] max-w-[1480px] flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-24 lg:pt-48"
+          className="relative mx-auto flex min-h-[88vh] max-w-[1200px] flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-24 lg:pt-48"
         >
           <motion.nav
             aria-label="Breadcrumb"
@@ -283,7 +306,7 @@ export function OnsVerhaalPage() {
               Home
             </Link>
             <ChevronRight size={12} className="text-white/22" />
-            <span className="text-white/80">Ons verhaal</span>
+            <span className="text-white/80">{ONS_VERHAAL_HERO.breadcrumb}</span>
           </motion.nav>
 
           <motion.div
@@ -295,10 +318,10 @@ export function OnsVerhaalPage() {
           />
 
           <p className="mt-8 ipek-label ipek-heading-label text-[10px] tracking-[0.32em]">
-            Sinds 2012 · Harderwijk
+            {ONS_VERHAAL_HERO.eyebrow}
           </p>
 
-          <h1 className="mt-5 max-w-4xl font-display text-[clamp(2.8rem,6vw,5.2rem)] leading-[0.98] text-white">
+          <h1 className="mt-5 max-w-4xl font-display text-[clamp(2.5rem,5.4vw,4.6rem)] leading-[1.02] text-white">
             {titleWords.map((word, i) => (
               <motion.span
                 key={`${word}-${i}`}
@@ -318,8 +341,7 @@ export function OnsVerhaalPage() {
             transition={{ duration: 0.9, delay: 0.55, ease: DS_EASE }}
             className="mt-7 max-w-2xl text-base leading-[1.85] text-white/72 md:text-[17px]"
           >
-            Een familiebedrijf met generaties kennis in de halalvleessector. Van onbedwelmd slacht
-            tot gekoelde levering: premium Nederlands halalvlees met persoonlijke aandacht.
+            {ONS_VERHAAL_HERO.lede}
           </motion.p>
         </motion.div>
       </section>
@@ -330,7 +352,7 @@ export function OnsVerhaalPage() {
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.42),transparent)]"
         />
-        <div className="relative mx-auto max-w-[1480px]">
+        <div className="relative mx-auto max-w-[1200px]">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -338,10 +360,8 @@ export function OnsVerhaalPage() {
             transition={{ duration: 0.9, ease: DS_EASE }}
             className="max-w-2xl"
           >
-            <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.28em]">
-              Waarom Ipekçi
-            </p>
-            <h2 className="mt-4 font-display text-[clamp(2rem,3.5vw,3rem)] text-[#1c1c1c]">
+            <AyatSectionBadge kicker="Waarom Ayat Food" title="Onze speerpunten" />
+            <h2 className="mt-5 font-display text-[clamp(2rem,3.5vw,3rem)] text-[#1c1c1c]">
               Een premium standaard in elke stap
             </h2>
           </motion.div>
@@ -356,7 +376,7 @@ export function OnsVerhaalPage() {
 
       <section className="relative isolate overflow-hidden px-6 py-24 lg:px-10 lg:py-36">
         <SectionBackdrop src={backgroundWhite3} />
-        <div className="relative mx-auto max-w-[1480px]">
+        <div className="relative mx-auto max-w-[1200px]">
           <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
             <motion.div
               initial={{ opacity: 0, x: -40 }}
@@ -414,7 +434,7 @@ export function OnsVerhaalPage() {
 
       <section className="relative isolate overflow-hidden px-6 py-24 lg:px-10 lg:py-36">
         <SectionBackdrop src={backgroundWhite1} />
-        <div className="relative mx-auto max-w-[1480px]">
+        <div className="relative mx-auto max-w-[1200px]">
           <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
             <motion.div
               initial={{ opacity: 0, x: 48 }}
@@ -424,8 +444,8 @@ export function OnsVerhaalPage() {
               className="lg:col-span-6 lg:order-2"
             >
               <TiltImage
-                src={ONS_VERHAAL_HISTORY_IMAGE}
-                alt={ONS_VERHAAL_HISTORY.title}
+                src={ONS_VERHAAL_INTRO_IMAGE}
+                alt={ONS_VERHAAL_INTRO.title}
                 aspect="aspect-[5/4]"
               />
             </motion.div>
@@ -438,20 +458,20 @@ export function OnsVerhaalPage() {
               className="lg:col-span-6 lg:sticky lg:top-32 lg:order-1"
             >
               <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.28em]">
-                {ONS_VERHAAL_HISTORY.eyebrow}
+                {ONS_VERHAAL_INTRO.eyebrow}
               </p>
               <h2 className="mt-5 font-display text-[clamp(2.2rem,3.5vw,3.2rem)] text-[#1c1c1c]">
-                {ONS_VERHAAL_HISTORY.title}
+                {ONS_VERHAAL_INTRO.title}
               </h2>
               <div className="mt-8 space-y-5">
-                {ONS_VERHAAL_HISTORY.paragraphs.map((p) => (
+                {ONS_VERHAAL_INTRO.paragraphs.map((p) => (
                   <p key={p.slice(0, 24)} className="text-[15px] leading-[1.85] text-[#5a5a5a]">
                     {p}
                   </p>
                 ))}
               </div>
               <div className="mt-10 flex flex-wrap gap-3">
-                {ONS_VERHAAL_HISTORY.badges.map((badge) => (
+                {ONS_VERHAAL_INTRO.badges.map((badge) => (
                   <span
                     key={badge}
                     className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#999]"
@@ -467,7 +487,7 @@ export function OnsVerhaalPage() {
 
       <section className="relative isolate overflow-hidden px-6 py-24 lg:px-10 lg:py-36">
         <SectionBackdrop src={backgroundWhite3} />
-        <div className="relative mx-auto max-w-[1480px]">
+        <div className="relative mx-auto max-w-[1200px]">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -483,10 +503,10 @@ export function OnsVerhaalPage() {
             </h2>
           </motion.div>
 
-          <div className="relative mt-16 grid gap-6 lg:grid-cols-3">
+          <div className="relative mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             <div
               aria-hidden
-              className="pointer-events-none absolute left-[16.5%] right-[16.5%] top-[52px] hidden h-px bg-gradient-to-r from-transparent via-[rgba(198,160,98,0.35)] to-transparent lg:block"
+              className="pointer-events-none absolute left-[12.5%] right-[12.5%] top-[52px] hidden h-px bg-gradient-to-r from-transparent via-[rgba(198,160,98,0.35)] to-transparent lg:block"
             />
             {ONS_VERHAAL_WORKFLOW.steps.map((step, i) => (
               <motion.article
@@ -495,7 +515,7 @@ export function OnsVerhaalPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-6%" }}
                 transition={{ duration: 0.85, delay: i * 0.1, ease: DS_EASE_REVEAL }}
-                className="group relative rounded-[28px] border border-black/[0.08] bg-white/90 p-8 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.12)] transition-all duration-700 hover:-translate-y-1 hover:border-[rgba(198,160,98,0.32)] hover:shadow-[0_32px_90px_-36px_rgba(0,0,0,0.16)] lg:p-9"
+                className="group relative rounded-[28px] border border-black/[0.08] bg-white/90 p-8 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.12)] transition-all duration-700 hover:-translate-y-1 hover:border-[rgba(198,160,98,0.32)] hover:shadow-[0_32px_90px_-36px_rgba(0,0,0,0.16)] lg:p-7 xl:p-8"
               >
                 <div className="flex items-center gap-4">
                   <span className="grid h-11 w-11 place-items-center rounded-full border border-[rgba(198,160,98,0.35)] bg-[rgba(198,160,98,0.1)] font-display text-lg text-[rgba(179,18,23,0.9)]">
@@ -505,9 +525,67 @@ export function OnsVerhaalPage() {
                     {step.n}
                   </span>
                 </div>
-                <h3 className="mt-6 font-display text-2xl text-[#1c1c1c]">{step.title}</h3>
+                <h3 className="mt-6 font-display text-[1.4rem] leading-tight text-[#1c1c1c] lg:text-2xl">
+                  {step.title}
+                </h3>
                 <p className="mt-4 text-[14px] leading-[1.8] text-[#5a5a5a]">{step.text}</p>
               </motion.article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Statistieken — "We zijn klaar om perfectie te dienen" */}
+      <section className="relative isolate overflow-hidden bg-[#070707] px-6 py-24 grain lg:px-10 lg:py-32">
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          <img
+            src={ONS_VERHAAL_STATS.backgroundImage}
+            alt=""
+            className="h-full w-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+          <div className="absolute inset-0 bg-black/[0.74]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_78%_60%_at_20%_0%,rgba(179,18,23,0.2),transparent_58%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_58%_at_50%_45%,transparent_10%,rgba(0,0,0,0.5)_78%)]" />
+          <div className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(226,192,141,0.4),transparent)]" />
+          <div className="absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,transparent,rgba(226,192,141,0.28),transparent)]" />
+        </div>
+
+        <div className="relative mx-auto max-w-[1200px]">
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-12">
+            <motion.div
+              initial={{ opacity: 0, y: 22 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-8%" }}
+              transition={{ duration: 0.95, ease: DS_EASE }}
+              className="lg:col-span-7"
+            >
+              <AyatSectionBadge
+                kicker={ONS_VERHAAL_STATS.eyebrow}
+                title="Ayat Food"
+                tone="dark"
+              />
+              <h2 className="mt-5 font-display text-[clamp(2rem,3.5vw,3rem)] leading-[1.12] text-[#F8F4EE]">
+                {ONS_VERHAAL_STATS.title}
+              </h2>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-8%" }}
+              transition={{ duration: 0.9, delay: 0.14, ease: DS_EASE }}
+              className="lg:col-span-5"
+            >
+              <p className="max-w-[42ch] text-[15px] leading-[1.8] text-white/70 lg:ml-auto lg:text-right">
+                {ONS_VERHAAL_STATS.lede}
+              </p>
+            </motion.div>
+          </div>
+
+          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4">
+            {ONS_VERHAAL_STATS.items.map((stat, i) => (
+              <StatCard key={stat.id} stat={stat} index={i} />
             ))}
           </div>
         </div>
@@ -523,17 +601,17 @@ export function OnsVerhaalPage() {
           className="pointer-events-none absolute inset-x-0 top-0 z-20 h-px bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.42),transparent)]"
         />
 
-        <div className="relative mx-auto max-w-[1480px]">
+        <div className="relative mx-auto max-w-[1200px]">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
               <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.28em]">
                 Ons assortiment
               </p>
               <h2 className="mt-4 font-display text-[clamp(2rem,3.5vw,3rem)] text-[#1c1c1c]">
-                Slacht van Ipekçi
+                Producten van Ayat Food
               </h2>
             </div>
-            <PremiumLinkButton to="/assortiment">Bekijk assortiment</PremiumLinkButton>
+            <PremiumLinkButton to="/producten">Bekijk assortiment</PremiumLinkButton>
           </div>
 
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
@@ -582,21 +660,22 @@ export function OnsVerhaalPage() {
           <div className="mt-20 flex flex-wrap items-end justify-between gap-6">
             <div>
               <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.28em]">
-                Eindproducten
+                Productgroepen
               </p>
               <h2 className="mt-4 font-display text-[clamp(2rem,3.5vw,3rem)] text-[#1c1c1c]">
-                Premium kwaliteit
+                Het volledige aanbod
               </h2>
               <p className="mt-4 max-w-xl text-[14px] leading-relaxed text-[#5a5a5a]">
-                Onze eindproducten worden gemaakt van ons eigen halalvlees. Kebabstaafjes, hamburgers,
-                kipburgers en meer voor supermarkten, slagerijen en restaurants.
+                Van döner en shoarma tot gevogelte, vleessoorten, diepvriesproducten, Turkse pizza,
+                gegrilde producten en tortilla durum — Halal geproduceerd voor restaurants,
+                supermarkten en retail.
               </p>
             </div>
-            <PremiumLinkButton to="/assortiment/eindproducten">Alle producten</PremiumLinkButton>
+            <PremiumLinkButton to="/producten">Alle producten</PremiumLinkButton>
           </div>
 
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7">
-            {featuredProducts.map((product, i) => (
+          <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+            {ONS_VERHAAL_PRODUCTGROEPEN.map((product, i) => (
               <ProductMiniCard key={product.id} product={product} index={i} />
             ))}
           </div>
@@ -605,7 +684,7 @@ export function OnsVerhaalPage() {
 
       <section className="relative isolate overflow-hidden px-6 py-24 lg:px-10 lg:py-32">
         <SectionBackdrop src={backgroundWhite1} />
-        <div className="relative mx-auto max-w-[1480px]">
+        <div className="relative mx-auto max-w-[1200px]">
           <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
             <motion.div
               initial={{ opacity: 0, x: -40 }}
@@ -625,7 +704,7 @@ export function OnsVerhaalPage() {
                 Verwelkomen we ook jou binnenkort?
               </p>
               <div className="mt-10">
-                <MagneticButton href="/contact">
+                <MagneticButton href={ONS_VERHAAL_CAREERS.ctaTo}>
                   {ONS_VERHAAL_CAREERS.cta}
                   <ArrowUpRight size={14} />
                 </MagneticButton>
@@ -641,7 +720,7 @@ export function OnsVerhaalPage() {
             >
               <TiltImage
                 src={ONS_VERHAAL_CAREERS_IMAGE}
-                alt="Werken bij Ipekçi"
+                alt="Werken bij Ayat Food"
                 aspect="aspect-[16/10]"
               />
             </motion.div>

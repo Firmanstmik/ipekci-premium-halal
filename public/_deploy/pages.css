@@ -1,0 +1,677 @@
+/**
+ * Ipekci Theme - shared interior-page styles.
+ *
+ * Loaded on every migrated virtual page (see inc/enqueue.php). Holds the
+ * cross-page building blocks ported from the React source: premium buttons
+ * (ipek-btn / wipe / link-wipe), the bordered tilt image, the magnetic button
+ * wrapper and the "Ook klant worden?" CTA. Page-specific rules live in the
+ * per-slug stylesheet (e.g. ons-verhaal.css).
+ *
+ * @package Ipekci
+ * @since   1.1.0
+ */
+
+/* ==========================================================================
+   Full-bleed interior-page container
+   `.site-main` (main.css) gives regular WP content a 1200px max-width and top
+   clearance for the fixed navbar. Migrated pages are built like the homepage:
+   each section is full-viewport-width, owns its own inner max-width (1480px)
+   and its own padding, and the leading hero deliberately sits *under* the
+   transparent navbar. So `.site-main--page` drops the constraint, exactly as
+   `.site-main--home` does in home.css.
+   ========================================================================== */
+
+.site-main--page {
+	margin: 0;
+	max-width: none;
+	padding: 0;
+	width: 100%;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+.ipek-btn {
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	border-radius: var(--ipek-radius-btn);
+	padding: 0.75rem 1.5rem;
+	font-family: var(--ipek-font-sans);
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: var(--ipek-tracking-btn);
+	text-transform: uppercase;
+	line-height: 1;
+	text-decoration: none;
+	cursor: pointer;
+	transition:
+		transform var(--ipek-duration-ui) var(--ipek-ease),
+		box-shadow var(--ipek-duration-ui) var(--ipek-ease),
+		border-color 0.55s var(--ipek-ease),
+		color 0.45s var(--ipek-ease);
+}
+
+.ipek-btn:active {
+	transform: translateY(1px);
+}
+
+.ipek-btn-primary {
+	background: var(--ipek-primary);
+	color: var(--ipek-primary-foreground);
+	border: 1px solid rgba(177, 18, 23, 0.8);
+	box-shadow: 0 0 30px -16px rgba(177, 18, 23, 0.7);
+}
+
+.ipek-btn-primary::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	transform: translateX(-102%);
+	background: linear-gradient(120deg, #e2c08d, #c6a062, #9a6b22);
+	transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ipek-btn-primary:hover {
+	color: #141414;
+	border-color: rgba(198, 160, 98, 0.55);
+	box-shadow: 0 22px 52px -24px rgba(198, 160, 98, 0.5);
+}
+
+.ipek-btn-primary:hover::before {
+	transform: translateX(0);
+}
+
+.ipekci-magnetic__inner {
+	position: relative;
+	z-index: 1;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.6rem;
+	transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+	will-change: transform;
+}
+
+/* Standalone wipe button (used inside the CTA card caption) */
+.ipek-btn-wipe {
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	border-radius: 9999px;
+	padding: 0.55rem 1rem;
+	font-family: var(--ipek-font-sans);
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	text-decoration: none;
+	transition:
+		border-color 0.45s ease,
+		color 0.45s ease,
+		box-shadow 0.45s ease;
+}
+
+.ipek-btn-wipe::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	transform: translateX(-102%);
+	transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+	pointer-events: none;
+}
+
+.ipek-btn-wipe:hover::before {
+	transform: translateX(0);
+}
+
+.ipek-btn-wipe > * {
+	position: relative;
+	z-index: 1;
+	display: inline-flex;
+	align-items: center;
+}
+
+.ipek-btn-wipe--light {
+	border: 1px solid rgba(255, 255, 255, 0.85);
+	background: #fff;
+	color: #141414;
+	box-shadow: 0 12px 30px -18px rgba(0, 0, 0, 0.45);
+}
+
+.ipek-btn-wipe--light::before {
+	background: linear-gradient(120deg, #c4141a, #b31217, #8f0e12);
+}
+
+.ipek-btn-wipe--light:hover {
+	color: #fff;
+	border-color: rgba(179, 18, 23, 0.35);
+	box-shadow: 0 16px 36px -16px rgba(179, 18, 23, 0.45);
+}
+
+.ipek-btn-wipe .ipekci-page-icon {
+	transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ipek-btn-wipe:hover .ipekci-page-icon {
+	transform: translate(0.25rem, -0.12rem);
+}
+
+/* Ghost "link with wipe" (PremiumLinkButton) */
+.ipek-link-wipe {
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.75rem;
+	border-radius: 1rem;
+	border: 1px solid rgba(198, 160, 98, 0.45);
+	padding: 0.65rem 1.25rem;
+	font-family: var(--ipek-font-sans);
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: #555;
+	text-decoration: none;
+	white-space: nowrap;
+	transition: color 0.7s var(--ipek-ease-reveal), border-color 0.7s var(--ipek-ease-reveal);
+}
+
+.ipek-link-wipe__fill {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	transform: translateX(-110%);
+	background: rgba(226, 192, 141, 0.92);
+	transition: transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+	pointer-events: none;
+}
+
+.ipek-link-wipe__label,
+.ipek-link-wipe .ipekci-page-icon {
+	position: relative;
+	z-index: 1;
+}
+
+.ipek-link-wipe .ipekci-page-icon {
+	transition: transform 0.5s ease;
+}
+
+.ipek-link-wipe:hover {
+	border-color: rgba(198, 160, 98, 0.75);
+	color: #111;
+}
+
+.ipek-link-wipe:hover .ipek-link-wipe__fill {
+	transform: translateX(0);
+}
+
+.ipek-link-wipe:hover .ipekci-page-icon {
+	transform: translateX(0.15rem);
+}
+
+/* ==========================================================================
+   Tilt image (bordered, cornered, hover zoom)
+   ========================================================================== */
+
+.ipekci-tilt {
+	position: relative;
+}
+
+.ipekci-tilt__frame {
+	position: relative;
+	overflow: hidden;
+	border-radius: 32px;
+	border: 1px solid rgba(198, 160, 98, 0.28);
+	background: #fff;
+	box-shadow: 0 32px 90px -44px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.04);
+	transition: border-color 0.7s ease, box-shadow 0.7s ease;
+}
+
+.ipekci-tilt:hover .ipekci-tilt__frame {
+	border-color: rgba(198, 160, 98, 0.48);
+	box-shadow: 0 44px 110px -40px rgba(0, 0, 0, 0.2);
+}
+
+.ipekci-tilt__corner {
+	position: absolute;
+	z-index: 20;
+	height: 2rem;
+	width: 2rem;
+	opacity: 0.7;
+	transition: all 0.7s ease;
+	pointer-events: none;
+}
+
+.ipekci-tilt__corner--tl {
+	left: 1rem;
+	top: 1rem;
+	border-left: 1px solid rgba(198, 160, 98, 0.45);
+	border-top: 1px solid rgba(198, 160, 98, 0.45);
+}
+
+.ipekci-tilt__corner--br {
+	right: 1rem;
+	bottom: 1rem;
+	border-right: 1px solid rgba(198, 160, 98, 0.45);
+	border-bottom: 1px solid rgba(198, 160, 98, 0.45);
+}
+
+.ipekci-tilt:hover .ipekci-tilt__corner--tl {
+	left: 1.25rem;
+	top: 1.25rem;
+	opacity: 1;
+}
+
+.ipekci-tilt:hover .ipekci-tilt__corner--br {
+	right: 1.25rem;
+	bottom: 1.25rem;
+	opacity: 1;
+}
+
+.ipekci-tilt__hair {
+	position: absolute;
+	inset-inline: 0;
+	top: 0;
+	z-index: 10;
+	height: 1px;
+	background: linear-gradient(90deg, transparent, rgba(198, 160, 98, 0.5), transparent);
+	pointer-events: none;
+}
+
+.ipekci-tilt__media {
+	position: relative;
+	overflow: hidden;
+}
+
+.ipekci-tilt__media--4-5 {
+	aspect-ratio: 4 / 5;
+}
+
+.ipekci-tilt__media--5-4 {
+	aspect-ratio: 5 / 4;
+}
+
+.ipekci-tilt__media--16-10 {
+	aspect-ratio: 16 / 10;
+}
+
+.ipekci-tilt__img {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+	transition: transform 1.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.ipekci-tilt:hover .ipekci-tilt__img {
+	transform: scale(1.04);
+}
+
+.ipekci-tilt__scrim {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(to top, rgba(10, 10, 10, 0.35), transparent 55%);
+	pointer-events: none;
+}
+
+/* ==========================================================================
+   "Ook klant worden?" CTA
+   ========================================================================== */
+
+.ipekci-klant {
+	position: relative;
+	overflow: hidden;
+	background: #faf8f5;
+	padding-block: 6rem;
+	padding-inline: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+	.ipekci-klant {
+		padding-block: 8rem;
+		padding-inline: 2.5rem;
+	}
+}
+
+/* AssortimentKlantCta.tsx applies a bare `grain` to this section, so it keeps
+   the default ::after strength from main.css. */
+
+.ipekci-klant__glow {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+
+.ipekci-klant__glow--gold {
+	background: radial-gradient(ellipse 90% 70% at 0% 50%, rgba(226, 192, 141, 0.14), transparent 55%);
+}
+
+.ipekci-klant__glow--red {
+	background: radial-gradient(ellipse 70% 60% at 100% 20%, rgba(177, 18, 23, 0.06), transparent 50%);
+}
+
+.ipekci-klant__hairline {
+	position: absolute;
+	inset-inline: 0;
+	top: 0;
+	height: 1px;
+	background: linear-gradient(90deg, transparent, rgba(177, 18, 23, 0.18), transparent);
+	pointer-events: none;
+}
+
+.ipekci-klant__ring {
+	position: absolute;
+	right: 8%;
+	top: 18%;
+	height: 8rem;
+	width: 8rem;
+	border-radius: 9999px;
+	border: 1px solid rgba(226, 192, 141, 0.35);
+	opacity: 0.6;
+	pointer-events: none;
+}
+
+.ipekci-klant__dashed {
+	position: absolute;
+	bottom: 12%;
+	left: 6%;
+	height: 6rem;
+	width: 6rem;
+	border-radius: 9999px;
+	border: 1px dashed rgba(177, 18, 23, 0.15);
+	animation: ipekci-klant-spin 48s linear infinite;
+	pointer-events: none;
+}
+
+@keyframes ipekci-klant-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.ipekci-klant__inner {
+	position: relative;
+	margin-inline: auto;
+	max-width: 1480px;
+}
+
+.ipekci-klant__grid {
+	display: grid;
+	align-items: center;
+	gap: 3.5rem;
+}
+
+@media (min-width: 1024px) {
+	.ipekci-klant__grid {
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+		gap: 4rem;
+	}
+
+	.ipekci-klant__copy {
+		grid-column: span 7 / span 7;
+	}
+
+	/*
+	 * `lg:col-span-5 lg:justify-end` — the card is pushed right by the flex
+	 * container's own justify-content, not by `justify-self`. Using
+	 * `justify-self: end` would size this grid item to max-content, and since
+	 * the card inside is `width: 100%`, the column collapses to the frame's
+	 * padding (24px) whenever the image has no intrinsic size yet.
+	 */
+	.ipekci-klant__figure {
+		grid-column: span 5 / span 5;
+		justify-content: flex-end;
+	}
+}
+
+.ipekci-klant__eyebrow {
+	font-family: var(--ipek-font-sans);
+	font-size: 10px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.34em;
+	color: #b11217;
+}
+
+.ipekci-klant__title {
+	margin-top: 1.25rem;
+	font-family: var(--ipek-font-display);
+	font-size: clamp(2.25rem, 4vw, 3.25rem);
+	font-weight: 600;
+	line-height: 0.98;
+	letter-spacing: -0.04em;
+	color: #141414;
+}
+
+.ipekci-klant__lede {
+	margin-top: 1.5rem;
+	max-width: 36rem;
+	font-family: var(--ipek-font-sans);
+	font-size: 1rem;
+	line-height: 1.8;
+	color: rgba(20, 20, 20, 0.68);
+}
+
+/* `text-base ... md:text-[17px]` */
+@media (min-width: 768px) {
+	.ipekci-klant__lede {
+		font-size: 17px;
+	}
+}
+
+.ipekci-klant__sub {
+	margin-top: 1rem;
+	max-width: 32rem;
+	font-family: var(--ipek-font-sans);
+	font-size: 0.875rem;
+	/* `leading-relaxed` */
+	line-height: 1.625;
+	color: rgba(20, 20, 20, 0.5);
+}
+
+.ipekci-klant__actions {
+	margin-top: 2.5rem;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 1rem;
+}
+
+.ipekci-klant__link {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-family: var(--ipek-font-sans);
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+	color: rgba(20, 20, 20, 0.5);
+	text-decoration: none;
+	transition: color 0.4s ease;
+}
+
+.ipekci-klant__link:hover {
+	color: #b11217;
+}
+
+/* Figure / tilt card */
+.ipekci-klant__figure {
+	display: flex;
+	justify-content: center;
+}
+
+.ipekci-klant__card {
+	position: relative;
+	width: 100%;
+	max-width: 380px;
+}
+
+@media (min-width: 640px) {
+	.ipekci-klant__card {
+		max-width: 400px;
+	}
+}
+
+.ipekci-klant__frame {
+	position: relative;
+	border-radius: 22px;
+	background: #fff;
+	padding: 0.75rem;
+	box-shadow: 0 24px 60px -28px rgba(17, 17, 17, 0.2);
+	box-shadow: 0 24px 60px -28px rgba(17, 17, 17, 0.2), 0 0 0 1px rgba(20, 20, 20, 0.06);
+	transition: box-shadow 0.5s ease;
+}
+
+.ipekci-klant__card:hover .ipekci-klant__frame {
+	box-shadow: 0 32px 70px -24px rgba(177, 18, 23, 0.14), 0 0 0 1px rgba(20, 20, 20, 0.06);
+}
+
+.ipekci-klant__tilt {
+	position: relative;
+	overflow: hidden;
+	border-radius: 14px;
+	background: #111;
+	transform: perspective(1200px);
+	transform-style: preserve-3d;
+	transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ipekci-klant__glare {
+	position: absolute;
+	inset: 0;
+	z-index: 20;
+	opacity: 0;
+	transition: opacity 0.5s ease;
+	pointer-events: none;
+}
+
+.ipekci-klant__media {
+	position: relative;
+	aspect-ratio: 4 / 3;
+	overflow: hidden;
+}
+
+.ipekci-klant__img {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+	transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ipekci-klant__card:hover .ipekci-klant__img {
+	transform: scale(1.05);
+}
+
+.ipekci-klant__scrim {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(to top, rgba(20, 20, 20, 0.75), rgba(20, 20, 20, 0.15) 55%, transparent);
+	pointer-events: none;
+}
+
+.ipekci-klant__orbit {
+	position: absolute;
+	right: -20%;
+	top: -20%;
+	height: 70%;
+	width: 70%;
+	border-radius: 9999px;
+	border: 1px solid rgba(226, 192, 141, 0.35);
+	opacity: 0.5;
+	animation: ipekci-klant-spin 32s linear infinite;
+	pointer-events: none;
+}
+
+.ipekci-klant__caption {
+	position: absolute;
+	inset-inline: 0;
+	bottom: 0;
+	z-index: 10;
+	padding: 1.25rem;
+}
+
+.ipekci-klant__caption-eyebrow {
+	font-family: var(--ipek-font-sans);
+	font-size: 9px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.26em;
+	color: rgba(226, 192, 141, 0.92);
+}
+
+.ipekci-klant__caption-title {
+	margin-top: 0.5rem;
+	font-family: var(--ipek-font-display);
+	font-size: 1.25rem;
+	/* `leading-snug` */
+	line-height: 1.375;
+	color: #fff;
+}
+
+.ipekci-klant__caption-cta {
+	margin-top: 1rem;
+}
+
+.ipekci-klant__rail {
+	position: absolute;
+	inset-inline: 1rem;
+	top: 0;
+	height: 1px;
+	background: linear-gradient(90deg, transparent, rgba(226, 192, 141, 0.9), transparent);
+	opacity: 0.7;
+	animation: ipekci-klant-rail 4.5s ease-in-out infinite;
+	pointer-events: none;
+}
+
+@keyframes ipekci-klant-rail {
+	0%,
+	100% {
+		transform: translateX(-120%);
+	}
+	55% {
+		transform: translateX(220%);
+	}
+}
+
+.ipekci-klant__shadow {
+	position: absolute;
+	bottom: -1.25rem;
+	left: 12%;
+	right: 12%;
+	height: 2rem;
+	border-radius: 50%;
+	background: rgba(20, 20, 20, 0.1);
+	filter: blur(16px);
+	transition: background 0.5s ease;
+	pointer-events: none;
+}
+
+.ipekci-klant__card:hover .ipekci-klant__shadow {
+	background: rgba(20, 20, 20, 0.16);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ipekci-klant__dashed,
+	.ipekci-klant__orbit,
+	.ipekci-klant__rail {
+		animation: none;
+	}
+
+	.ipekci-magnetic__inner,
+	.ipekci-klant__tilt {
+		transition: none;
+	}
+}

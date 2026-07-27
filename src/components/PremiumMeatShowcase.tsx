@@ -3,364 +3,45 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
   Award,
-  Beef,
   CalendarDays,
-  Flame,
+  HeartHandshake,
   MousePointerClick,
   ShieldCheck,
   Sparkles,
   Truck,
   UtensilsCrossed,
 } from "lucide-react";
+import { AyatSectionBadge } from "@/components/home/AyatSectionBadge";
 import { DS_EASE } from "@/lib/design-system";
 import { CardFrameOverlay, ImageFrameOverlay } from "@/components/ui/premium-frame";
-import cowImg from "@/assets/cow-hero.jpg";
-import ribeyeImg from "@/assets/cut-ribeye.jpg";
-import tenderloinImg from "@/assets/cut-tenderloin.jpg";
-import sirloinImg from "@/assets/cut-sirloin.jpg";
-import brisketImg from "@/assets/cut-brisket.jpg";
-import chuckImg from "@/assets/cut-chuck.jpg";
-import rumpImg from "@/assets/cut-rump.jpg";
-import shortloinImg from "@/assets/cut-shortloin.jpg";
-import roundImg from "@/assets/cut-round.jpg";
-import flankImg from "@/assets/cut-flank.jpg";
-import plateImg from "@/assets/cut-plate.jpg";
-import shankImg from "@/assets/cut-shank.jpg";
-import neckImg from "@/assets/cut-neck.jpg";
-
-type Cut = {
-  id: string;
-  label: string;
-  name: string;
-  description: string;
-  chef: string;
-  bestFor: string;
-  image: string;
-  cx: number;
-  cy: number;
-  region: string;
-  number: number;
-  labelSize?: number;
-  callout: {
-    x: number;
-    y: number;
-    align: "left" | "right";
-    width?: number;
-  };
-  specs: { icon: string; label: string; value: string }[];
-};
-
-const SHOWCASE_ORDER = [
-  "round",
-  "sirloin",
-  "ribeye",
-  "tenderloin",
-  "neck",
-  "chuck",
-  "shortloin",
-  "rump",
-  "flank",
-  "plate",
-  "brisket",
-  "shank",
-] as const;
+import {
+  PRODUCT_EXPLORER_COPY,
+  PRODUCT_EXPLORER_ITEMS,
+  PRODUCT_EXPLORER_ORDER,
+  PRODUCT_EXPLORER_STAGE_ASPECT,
+  PRODUCT_EXPLORER_STAGE_IMAGE,
+  PRODUCT_EXPLORER_TRUST,
+  computeExplorerCallout,
+  type ExplorerProduct,
+} from "@/lib/product-explorer-content";
 
 const SHOWCASE_INTERVAL_MS = 5500;
 const CUT_TRANSITION = { duration: 0.45, ease: DS_EASE } as const;
 
-const CUTS: Cut[] = [
-  {
-    id: "neck",
-    label: "NEK",
-    name: "Neck",
-    description:
-      "Smaakvolle, bindweefselrijke snede. Perfect voor lange braadtijden en rijke bouillon.",
-    chef: "Chef's tip: laat 6 uur sudderen voor diepe umami.",
-    bestFor: "Slow braising, rich broth, premium stews",
-    image: neckImg,
-    number: 1,
-    cx: 70,
-    cy: 44,
-    region: "M62,37.5 C65,38 67,39 69,41 C71,43 73,42 75,39 L75,50 L62,50 Z",
-    callout: { x: 90, y: 16, align: "right", width: 150 },
-    specs: [
-      { icon: "tender", label: "Malsheid", value: "Slow cooked" },
-      { icon: "flavor", label: "Smaak", value: "Diep" },
-      { icon: "prep", label: "Bereiding", value: "Slow, Bouillon" },
-      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
-    ],
-  },
-  {
-    id: "chuck",
-    label: "SCHOUDER",
-    name: "Chuck",
-    description:
-      "Rijke smaak met mooie marmering. Voor pot roast, stoof, cross rib en perfecte ground beef.",
-    chef: "Chef's tip: laag-en-langzaam 4-6 uur voor vorkmals resultaat.",
-    bestFor: "Pot roast, slow braise, premium ground beef",
-    image: chuckImg,
-    number: 2,
-    cx: 57,
-    cy: 43,
-    region: "M52,37 C55,36.8 58,37 62,37.5 L62,50 L52,50 Z",
-    callout: { x: 66, y: 16, align: "left", width: 150 },
-    specs: [
-      { icon: "tender", label: "Malsheid", value: "Goed" },
-      { icon: "flavor", label: "Smaak", value: "Intens" },
-      { icon: "prep", label: "Bereiding", value: "Slow, Oven" },
-      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
-    ],
-  },
-  {
-    id: "ribeye",
-    label: "RIB EYE",
-    name: "Rib",
-    description:
-      "Mals, sappig en vol van smaak met rijke marmering. Voor rib roast, rib steaks en rib eye.",
-    chef: "Chef's tip: omgekeerd garen in de oven, afbakken op de grill.",
-    bestFor: "Grill, reverse sear, premium carving",
-    image: ribeyeImg,
-    number: 3,
-    cx: 47,
-    cy: 43,
-    region: "M42,37.5 C44,37 47,37 49,37 C50.5,37 52,37 52,37 L52,50 L42,50 Z",
-    callout: { x: 50, y: 14, align: "left", width: 146 },
-    specs: [
-      { icon: "tender", label: "Malsheid", value: "Uitstekend" },
-      { icon: "flavor", label: "Smaak", value: "Rijk & vol" },
-      { icon: "prep", label: "Bereiding", value: "Grill, Pan, Oven" },
-      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
-    ],
-  },
-  {
-    id: "shortloin",
-    label: "DUNNE LENDE",
-    name: "Short Loin",
-    description:
-      "Premium lendestuk. Bron van T-bone, porterhouse, club steak en striploin.",
-    chef: "Chef's tip: laat op kamertemperatuur komen voor het grillen.",
-    bestFor: "T-bone, porterhouse, high-heat grill",
-    image: shortloinImg,
-    number: 4,
-    cx: 37,
-    cy: 43,
-    region: "M32,37.5 C34,37.3 37,37.3 40,37.3 C41,37.3 42,37.4 42,37.5 L42,50 L32,50 Z",
-    callout: { x: 33, y: 16, align: "left", width: 150 },
-    specs: [
-      { icon: "tender", label: "Malsheid", value: "Uitstekend" },
-      { icon: "flavor", label: "Smaak", value: "Verfijnd & vol" },
-      { icon: "prep", label: "Bereiding", value: "Grill, Pan" },
-      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
-    ],
-  },
-  {
-    id: "sirloin",
-    label: "ENTRECOTE",
-    name: "Sirloin",
-    description:
-      "Krachtige bite met fijne marmering. Ideaal voor de klassieke biefstuk en T-bone.",
-    chef: "Chef's tip: 2 minuten per zijde op hoog vuur, dan rust onder folie.",
-    bestFor: "Classic steak, pan-sear, premium grill",
-    image: sirloinImg,
-    number: 5,
-    cx: 27,
-    cy: 43,
-    region: "M22,37 C24,37 27,37 30,37.2 C31,37.3 32,37.4 32,37.5 L32,50 L22,50 Z",
-    callout: { x: 20, y: 16, align: "left", width: 150 },
-    specs: [
-      { icon: "tender", label: "Malsheid", value: "Zeer goed" },
-      { icon: "flavor", label: "Smaak", value: "Vol & krachtig" },
-      { icon: "prep", label: "Bereiding", value: "Grill, Pan" },
-      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
-    ],
-  },
-  {
-    id: "rump",
-    label: "STAARTSTUK",
-    name: "Rump",
-    description:
-      "Smaakvolle bovenkant van de achterbout. Pot roast, stoof of klassieke biefstuk.",
-    chef: "Chef's tip: laat lang rusten na het bakken voor sappige plakken.",
-    bestFor: "Pot roast, pan-fry, slow oven",
-    image: rumpImg,
-    number: 6,
-    cx: 17,
-    cy: 43,
-    region: "M12,40 C13,38.5 15,37.5 18,37 C20,36.8 22,37 22,37 L22,50 L12,50 Z",
-    callout: { x: 8, y: 16, align: "left", width: 146 },
-    specs: [
-      { icon: "tender", label: "Malsheid", value: "Goed" },
-      { icon: "flavor", label: "Smaak", value: "Vol" },
-      { icon: "prep", label: "Bereiding", value: "Roast, Pan" },
-      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
-    ],
-  },
-  {
-    id: "round",
-    label: "ACHTERBOUT",
-    name: "Round",
-    description:
-      "Magere, krachtige snede van de achterbout. Ideaal voor stoofschotels, rosbief en dunne plakken.",
-    chef: "Chef's tip: marineer en gril snel op hoog vuur voor maximale malsheid.",
-    bestFor: "Slow roast, braise, premium carving",
-    image: roundImg,
-    number: 7,
-    cx: 17,
-    cy: 58,
-    region: "M12,50 L22,50 L22,62 C21,64.5 18,66 15,65.5 C13.5,65.2 12.5,63 12,60 Z",
-    callout: { x: 8, y: 78, align: "left", width: 146 },
-    specs: [
-      { icon: "tender", label: "Malsheid", value: "Gemiddeld" },
-      { icon: "flavor", label: "Smaak", value: "Robuust" },
-      { icon: "prep", label: "Bereiding", value: "Roast, Stoof" },
-      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
-    ],
-  },
-  {
-    id: "flank",
-    label: "VANG",
-    name: "Flank",
-    description:
-      "Karakteristieke nerfstructuur. Voor flank steak, London broil en stir-fry.",
-    chef: "Chef's tip: snij altijd dwars op de vezel voor optimale malsheid.",
-    bestFor: "Grill, stir-fry, London broil",
-    image: flankImg,
-    number: 8,
-    cx: 29,
-    cy: 58,
-    region: "M22,50 L37,50 L37,67.5 C33,68.5 28,68 24,67 C23,66.7 22,65 22,62 Z",
-    callout: { x: 22, y: 79, align: "left", width: 150 },
-    specs: [
-      { icon: "tender", label: "Malsheid", value: "Stevig" },
-      { icon: "flavor", label: "Smaak", value: "Krachtig" },
-      { icon: "prep", label: "Bereiding", value: "Grill, Wok" },
-      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
-    ],
-  },
-  {
-    id: "plate",
-    label: "NAVEL",
-    name: "Plate",
-    description:
-      "Rijk gemarmerde buikplaat. Bron van short ribs, skirt steak en stew.",
-    chef: "Chef's tip: low & slow BBQ voor authentieke smoke ring.",
-    bestFor: "Short ribs, BBQ, slow smoke",
-    image: plateImg,
-    number: 9,
-    cx: 45,
-    cy: 58,
-    region: "M37,50 L53,50 L53,66.5 C48,68 42,68 38,67.7 C37.3,67.6 37,67.5 37,67.5 Z",
-    callout: { x: 42, y: 79, align: "left", width: 150 },
-    specs: [
-      { icon: "tender", label: "Malsheid", value: "Slow cooked" },
-      { icon: "flavor", label: "Smaak", value: "Vet & rijk" },
-      { icon: "prep", label: "Bereiding", value: "BBQ, Slow" },
-      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
-    ],
-  },
-  {
-    id: "brisket",
-    label: "BORSTSTUK",
-    name: "Brisket",
-    description:
-      "Robuust en smaakvol. De favoriet voor pulled beef, corned beef en BBQ.",
-    chef: "Chef's tip: 12 uur smoken op 110C tot 96C kerntemperatuur.",
-    bestFor: "Pulled beef, corned beef, low & slow BBQ",
-    image: brisketImg,
-    number: 10,
-    cx: 64,
-    cy: 57,
-    region: "M53,50 L70,50 C71,53 70.5,57 68,60 C64,63 58,65 53,66.5 Z",
-    callout: { x: 69, y: 74, align: "left", width: 142 },
-    specs: [
-      { icon: "tender", label: "Malsheid", value: "Slow cooked" },
-      { icon: "flavor", label: "Smaak", value: "Diep & rokerig" },
-      { icon: "prep", label: "Bereiding", value: "Slow, BBQ" },
-      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
-    ],
-  },
-  {
-    id: "tenderloin",
-    label: "OSSENHAAS",
-    name: "Tenderloin",
-    description:
-      "Zeer malse premium snede. Ideaal voor tournedos, medaillons en verfijnde bereidingen.",
-    chef: "Chef's tip: kort en heet bakken, daarna ruim laten rusten.",
-    bestFor: "Tournedos, medaillons, refined pan-sear",
-    image: tenderloinImg,
-    number: 11,
-    cx: 38,
-    cy: 53,
-    labelSize: 1.45,
-    region: "M31,50 L43,50 L42,57 L32,57 Z",
-    callout: { x: 52, y: 73, align: "left", width: 156 },
-    specs: [
-      { icon: "tender", label: "Malsheid", value: "Botermals" },
-      { icon: "flavor", label: "Smaak", value: "Elegant" },
-      { icon: "prep", label: "Bereiding", value: "Pan, Oven" },
-      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
-    ],
-  },
-  {
-    id: "shank",
-    label: "SCHENKEL",
-    name: "Shank",
-    description:
-      "Krachtige onderpoot met veel collageen. Uitstekend voor osso buco en diepe bouillons.",
-    chef: "Chef's tip: langzaam garen tot het vlees vanzelf loskomt.",
-    bestFor: "Osso buco, rich fond, slow braise",
-    image: shankImg,
-    number: 12,
-    cx: 63,
-    cy: 69,
-    labelSize: 1.3,
-    region: "M61,60 L66,60 L66,75 L61,75 Z",
-    callout: { x: 70, y: 82, align: "left", width: 144 },
-    specs: [
-      { icon: "tender", label: "Malsheid", value: "Slow cooked" },
-      { icon: "flavor", label: "Smaak", value: "Krachtig" },
-      { icon: "prep", label: "Bereiding", value: "Stoof, Fond" },
-      { icon: "fresh", label: "Beschikbaarheid", value: "Altijd vers" },
-    ],
-  },
-];
-
-const PREMIUM_IDS = new Set(["ribeye", "sirloin", "shortloin", "rump"]);
-
-const TRUST = [
-  {
-    icon: Award,
-    label: "HALAL & BETROUWBAAR",
-    title: "100% Halal gecertificeerd",
-    desc: "Al ons vlees voldoet aan de hoogste islamitische normen en waarden.",
-  },
-  {
-    icon: Beef,
-    label: "PREMIUM KWALITEIT",
-    title: "Geselecteerd & gecontroleerd",
-    desc: "Alleen het beste vlees, zorgvuldig geselecteerd door onze experts.",
-  },
-  {
-    icon: Truck,
-    label: "SNEL & BETROUWBAAR",
-    title: "Snelle levering",
-    desc: "Dagelijks vers geleverd door heel Nederland en daarbuiten.",
-  },
-  {
-    icon: ShieldCheck,
-    label: "VOLLEDIGE TRACEERBAARHEID",
-    title: "Van boer tot klant",
-    desc: "Volledige controle over kwaliteit, herkomst en verwerking.",
-  },
-];
+const TRUST_ICONS = {
+  award: Award,
+  shield: ShieldCheck,
+  truck: Truck,
+  heart: HeartHandshake,
+} as const;
 
 const specIcon = (k: string) => {
   switch (k) {
-    case "tender":
+    case "halal":
+      return ShieldCheck;
+    case "quality":
       return Sparkles;
-    case "flavor":
-      return Flame;
-    case "prep":
+    case "use":
       return UtensilsCrossed;
     default:
       return CalendarDays;
@@ -369,7 +50,7 @@ const specIcon = (k: string) => {
 
 export function PremiumMeatShowcase() {
   const reduceMotion = useReducedMotion();
-  const [activeId, setActiveId] = useState<string>("round");
+  const [activeId, setActiveId] = useState<string>(PRODUCT_EXPLORER_ITEMS[0].id);
   const [autoMode, setAutoMode] = useState(false);
   const showcaseIndexRef = useRef(0);
   const sectionRef = useRef<HTMLElement>(null);
@@ -408,33 +89,27 @@ export function PremiumMeatShowcase() {
     const advance = () => {
       if (!isInViewRef.current) return;
       showcaseIndexRef.current =
-        (showcaseIndexRef.current + 1) % SHOWCASE_ORDER.length;
-      setActiveId(SHOWCASE_ORDER[showcaseIndexRef.current]);
+        (showcaseIndexRef.current + 1) % PRODUCT_EXPLORER_ORDER.length;
+      setActiveId(PRODUCT_EXPLORER_ORDER[showcaseIndexRef.current]);
     };
 
     const timer = window.setInterval(advance, SHOWCASE_INTERVAL_MS);
     return () => window.clearInterval(timer);
   }, [autoMode, reduceMotion]);
 
-  const active = CUTS.find((c) => c.id === activeId)!;
-  const isPremiumCut = PREMIUM_IDS.has(active.id);
+  const active =
+    PRODUCT_EXPLORER_ITEMS.find((c) => c.id === activeId) ?? PRODUCT_EXPLORER_ITEMS[0];
+  const isFeatured = Boolean(active.featured);
   const focusedId = activeId;
-  const isTopCallout = active.number <= 6;
-  const isRightLegCallout = active.id === "brisket" || active.id === "shank";
-
-  const mobileCalloutWidth = Math.max(
-    92,
-    Math.min(116, Math.round((active.callout.width ?? 196) * 0.7)),
+  const callout = computeExplorerCallout(
+    active.cx,
+    active.cy,
+    active.callout.width ?? 148,
   );
-  const calloutAnchorX = active.callout.align === "left" ? active.callout.x - 1.4 : active.callout.x + 1.4;
-  const calloutDirection = active.callout.align === "left" ? 1 : -1;
-  const calloutShoulderX = calloutAnchorX - calloutDirection * (isRightLegCallout ? 5 : 6.5);
-  const calloutVerticalLift = isTopCallout ? -9.5 : isRightLegCallout ? 7.5 : 10.5;
-  const calloutCurveY = active.cy + calloutVerticalLift;
-  const calloutPath =
-    active.id === "brisket"
-      ? `M ${active.cx} ${active.cy} C ${active.cx + 2.2} ${active.cy + 4.2}, ${calloutAnchorX - 0.6} ${active.cy + 5.2}, ${calloutAnchorX - 0.6} ${active.callout.y - 2.4} L ${calloutAnchorX} ${active.callout.y}`
-      : `M ${active.cx} ${active.cy} C ${active.cx} ${calloutCurveY}, ${calloutShoulderX} ${calloutCurveY}, ${calloutShoulderX} ${active.callout.y} L ${calloutAnchorX} ${active.callout.y}`;
+  const calloutPath = callout.path;
+  const calloutAnchorX = callout.endX;
+  const calloutAnchorY = callout.endY;
+  const mobileCalloutWidth = callout.mobileWidth;
 
   const handleMouseMove = () => {
     stopAutoMode();
@@ -442,7 +117,6 @@ export function PremiumMeatShowcase() {
 
   const handleMouseLeave = () => {};
 
-  // Staggered variants for viewport entry (Client Wow Moment)
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -493,21 +167,21 @@ export function PremiumMeatShowcase() {
       onMouseLeave={handleMouseLeave}
       onPointerDown={stopAutoMode}
       onKeyDown={stopAutoMode}
-      className="story-surface-light relative overflow-hidden"
+      className="story-surface-light relative overflow-hidden bg-[#FAF8F5]"
     >
-      <div className="pointer-events-none absolute inset-0 grain opacity-40" />
+      <div className="pointer-events-none absolute inset-0 z-0 grain opacity-40" />
       <div
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-0 z-0"
         style={{
           background:
-            "radial-gradient(circle at 50% 40%, rgba(226,192,141,0.10) 0%, transparent 55%)",
+            "radial-gradient(circle at 50% 40%, rgba(226,192,141,0.12) 0%, transparent 55%)",
         }}
       />
-      <div className="pointer-events-none absolute -left-32 top-20 h-[480px] w-[480px] rounded-full bg-[radial-gradient(circle,rgba(226,192,141,0.14),transparent_68%)]" />
-      <div className="pointer-events-none absolute -right-24 bottom-0 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(177,18,23,0.05),transparent_70%)]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(200,164,107,0.4)] to-transparent" />
+      <div className="pointer-events-none absolute -left-32 top-20 z-0 h-[480px] w-[480px] rounded-full bg-[radial-gradient(circle,rgba(226,192,141,0.16),transparent_68%)]" />
+      <div className="pointer-events-none absolute -right-24 bottom-0 z-0 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(177,18,23,0.07),transparent_70%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-0 h-px bg-gradient-to-r from-transparent via-[rgba(200,164,107,0.4)] to-transparent" />
 
-      <div className="relative mx-auto max-w-[1400px] px-6 py-20 md:py-28 lg:px-10">
+      <div className="relative z-10 mx-auto max-w-[1400px] px-6 pb-14 pt-16 md:pb-16 md:pt-20 lg:px-10 lg:pb-20 lg:pt-24">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -515,53 +189,55 @@ export function PremiumMeatShowcase() {
           transition={{ duration: 0.8, ease: DS_EASE }}
           className="max-w-2xl"
         >
-          <div className="mb-6 flex items-center gap-3">
-            <span className="h-2 w-2 rotate-45 bg-[#B31217]" aria-hidden />
-            <span className="text-[10px] font-semibold uppercase tracking-[0.32em] ipek-heading-label">
-              Ons vlees. Onze kwaliteit.
-            </span>
-          </div>
+          <AyatSectionBadge
+            kicker="Assortiment"
+            title="Ons assortiment"
+            className="mb-5"
+          />
           <h2
             id="meat-explorer-heading"
-            className="font-display text-[clamp(2.4rem,5vw,4rem)] font-semibold leading-[0.98] tracking-[-0.04em] text-[#141414]"
+            className="ipek-h2 text-[#141414]"
           >
-            Ontdek ons{" "}
+            {PRODUCT_EXPLORER_COPY.headingLine}{" "}
             <span className="ipek-heading-accent">
-              rundvlees
+              {PRODUCT_EXPLORER_COPY.headingAccent}
             </span>
           </h2>
-          <p className="mt-6 max-w-lg text-[15px] leading-relaxed text-[#141414]/78 md:text-base">
-            Beweeg over een deel van het rund om meer te ontdekken over onze premium halal
-            rundvlees snijstukken.
+          <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-[#141414]/78 md:text-base">
+            <span className="hidden [@media(hover:hover)]:inline">
+              {PRODUCT_EXPLORER_COPY.introHover}
+            </span>
+            <span className="[@media(hover:hover)]:hidden">
+              {PRODUCT_EXPLORER_COPY.introTap}
+            </span>
           </p>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="mt-14 grid grid-cols-1 gap-10 lg:mt-20 lg:grid-cols-[1.08fr_0.92fr] lg:items-start lg:gap-10"
+          className="mt-10 grid grid-cols-1 gap-8 lg:mt-12 lg:grid-cols-[1.42fr_0.58fr] lg:items-start lg:gap-8 xl:gap-10"
         >
-          {/* Cow Illustration (Left side) */}
           <motion.div variants={cowVariants}>
-            <div className="group/if relative isolate aspect-[5/4] w-full overflow-hidden rounded-[28px] border border-black/[0.08] bg-white shadow-[0_32px_90px_-50px_rgba(0,0,0,0.18)] transition-shadow duration-500 hover:shadow-[0_40px_100px_-48px_rgba(179,18,23,0.12)] [contain:paint]">
+            <div className={`group/if relative isolate ${PRODUCT_EXPLORER_STAGE_ASPECT} w-full overflow-hidden rounded-[28px] border border-black/[0.08] bg-white shadow-[0_32px_90px_-50px_rgba(0,0,0,0.18)] transition-shadow duration-500 hover:shadow-[0_40px_100px_-48px_rgba(179,18,23,0.12)] [contain:paint]`}>
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_70%_at_50%_40%,rgba(226,192,141,0.08),transparent_60%)]" />
               <img
-                src={cowImg}
-                alt="Premium rund visualisatie"
+                src={PRODUCT_EXPLORER_STAGE_IMAGE}
+                alt={PRODUCT_EXPLORER_COPY.stageAlt}
                 className="absolute inset-0 h-full w-full object-cover"
                 loading="lazy"
                 width={1024}
                 height={1024}
               />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-white/30" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/25 via-transparent to-black/35" />
               <ImageFrameOverlay variant="reticle" className="rounded-[28px]" />
 
               <svg
                 viewBox="0 0 100 100"
                 preserveAspectRatio="none"
-                className="absolute inset-0 h-full w-full z-10"
+                className="absolute inset-0 z-10 h-full w-full"
               >
                 <defs>
                   <filter id="goldGlow" x="-50%" y="-50%" width="200%" height="200%">
@@ -590,8 +266,7 @@ export function PremiumMeatShowcase() {
                   </linearGradient>
                 </defs>
 
-                {/* Region Paths */}
-                {CUTS.map((c) => {
+                {PRODUCT_EXPLORER_ITEMS.map((c) => {
                   const isActive = c.id === activeId;
                   const isFocus = isActive;
                   const dim = focusedId && !isFocus;
@@ -607,8 +282,8 @@ export function PremiumMeatShowcase() {
                         className="cursor-pointer"
                         initial={false}
                         animate={{
-                          fillOpacity: isActive ? 0.1 : 0,
-                          strokeOpacity: isActive ? 0.38 : 0.14,
+                          fillOpacity: isActive ? 0.14 : 0,
+                          strokeOpacity: isActive ? 0.45 : 0.12,
                           opacity: dim ? 0.32 : 1,
                         }}
                         transition={{ duration: 0.62, ease: DS_EASE }}
@@ -616,7 +291,6 @@ export function PremiumMeatShowcase() {
                         onMouseEnter={() => selectCut(c.id)}
                       />
 
-                      {/* Inner gold glow spread */}
                       <AnimatePresence>
                         {isActive && (
                           <motion.path
@@ -633,14 +307,17 @@ export function PremiumMeatShowcase() {
                         )}
                       </AnimatePresence>
 
-                      {/* Active Region border draw */}
                       <AnimatePresence>
                         {isFocus && (
                           <motion.path
                             key={`trail-${c.id}-${isActive}`}
                             d={c.region}
                             fill="none"
-                            stroke={isActive ? "oklch(0.82 0.13 78 / 0.9)" : "oklch(0.82 0.13 78 / 0.55)"}
+                            stroke={
+                              isActive
+                                ? "oklch(0.82 0.13 78 / 0.9)"
+                                : "oklch(0.82 0.13 78 / 0.55)"
+                            }
                             strokeWidth={isActive ? 0.38 : 0.28}
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -656,7 +333,6 @@ export function PremiumMeatShowcase() {
                   );
                 })}
 
-                {/* Premium Connector Lines */}
                 <AnimatePresence mode="wait">
                   <>
                     <motion.path
@@ -704,7 +380,7 @@ export function PremiumMeatShowcase() {
                     <motion.circle
                       key={`callout-end-node-${active.id}`}
                       cx={calloutAnchorX}
-                      cy={active.callout.y}
+                      cy={calloutAnchorY}
                       r="0.45"
                       fill="oklch(0.82 0.13 78)"
                       stroke="oklch(0.1 0.006 30)"
@@ -719,26 +395,21 @@ export function PremiumMeatShowcase() {
                 </AnimatePresence>
               </svg>
 
-              {/* Desktop Floating Callout Box */}
               <AnimatePresence mode="wait">
                 <div
                   style={{
-                    left: `${active.callout.x}%`,
-                    top: `${active.callout.y}%`,
-                    width: `${active.callout.width ?? 196}px`,
-                    transform: active.callout.align === "left" ? "translate(0, -50%)" : "translate(-100%, -50%)",
+                    left: `${callout.x}%`,
+                    top: `${callout.y}%`,
+                    width: `${callout.width}px`,
+                    transform: callout.transform,
                   }}
                   className="pointer-events-none absolute z-20 hidden md:block"
                 >
                   <motion.div
                     key={`callout-box-${active.id}`}
-                    initial={{
-                      opacity: 0,
-                    }}
+                    initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    exit={{
-                      opacity: 0,
-                    }}
+                    exit={{ opacity: 0 }}
                     transition={CUT_TRANSITION}
                     className="relative overflow-hidden rounded-[14px] border border-[rgba(200,164,107,0.35)] bg-white/95 px-3.5 py-2.5 shadow-[0_16px_40px_-20px_rgba(0,0,0,0.15)] backdrop-blur-md"
                   >
@@ -750,7 +421,7 @@ export function PremiumMeatShowcase() {
                         transition={{ duration: 0.25 }}
                         className="text-[6px] font-semibold uppercase tracking-[0.25em] text-[#B31217]"
                       >
-                        Geselecteerd
+                        {PRODUCT_EXPLORER_COPY.calloutEyebrow}
                       </motion.div>
                       <motion.div
                         initial={{ opacity: 0, y: 5 }}
@@ -776,14 +447,13 @@ export function PremiumMeatShowcase() {
                 </div>
               </AnimatePresence>
 
-              {/* Mobile Floating Callout Box */}
               <AnimatePresence mode="wait">
                 <div
                   style={{
-                    left: `${active.callout.x}%`,
-                    top: `${active.callout.y}%`,
+                    left: `${callout.x}%`,
+                    top: `${callout.y}%`,
                     width: `${mobileCalloutWidth}px`,
-                    transform: active.callout.align === "left" ? "translate(0, -50%)" : "translate(-100%, -50%)",
+                    transform: callout.transform,
                   }}
                   className="pointer-events-none absolute z-20 md:hidden"
                 >
@@ -797,7 +467,7 @@ export function PremiumMeatShowcase() {
                   >
                     <div className="relative min-w-0">
                       <div className="text-[5px] font-semibold uppercase tracking-[0.2em] text-[#B31217]">
-                        Geselecteerd
+                        {PRODUCT_EXPLORER_COPY.calloutEyebrow}
                       </div>
                       <div className="mt-0.5 font-display text-[12px] font-semibold leading-[0.9] text-[#141414]">
                         {active.label}
@@ -811,8 +481,7 @@ export function PremiumMeatShowcase() {
                 </div>
               </AnimatePresence>
 
-              {/* Hotspot Markers */}
-              {CUTS.map((c) => {
+              {PRODUCT_EXPLORER_ITEMS.map((c) => {
                 const isActive = c.id === activeId;
 
                 return (
@@ -823,7 +492,7 @@ export function PremiumMeatShowcase() {
                     onMouseEnter={() => selectCut(c.id)}
                     onFocus={() => selectCut(c.id)}
                     style={{ left: `${c.cx}%`, top: `${c.cy}%` }}
-                    className="group absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer z-30"
+                    className="group absolute z-30 -translate-x-1/2 -translate-y-1/2 cursor-pointer"
                     aria-label={c.name}
                     whileTap={{ scale: 0.92 }}
                   >
@@ -843,8 +512,8 @@ export function PremiumMeatShowcase() {
                       <motion.div
                         className={`relative flex items-center justify-center rounded-full ${
                           isActive
-                            ? "h-8 w-8 md:h-9 md:w-9 border-2 border-[#B31217] bg-white shadow-[0_0_0_4px_rgba(179,18,23,0.15)]"
-                            : "h-6 w-6 md:h-7 md:w-7 border border-[rgba(200,164,107,0.45)] bg-white/90 shadow-sm backdrop-blur"
+                            ? "h-8 w-8 border-2 border-[#B31217] bg-white shadow-[0_0_0_4px_rgba(179,18,23,0.15)] md:h-9 md:w-9"
+                            : "h-6 w-6 border border-[rgba(200,164,107,0.45)] bg-white/90 shadow-sm backdrop-blur md:h-7 md:w-7"
                         }`}
                         animate={{
                           scale: isActive ? 1.08 : 1,
@@ -860,7 +529,7 @@ export function PremiumMeatShowcase() {
                         />
 
                         <motion.span
-                          className={`relative text-[8px] md:text-[9.5px] font-sans font-semibold tracking-tight ${
+                          className={`relative font-sans text-[8px] font-semibold tracking-tight md:text-[9.5px] ${
                             isActive ? "text-[#B31217]" : "text-[#141414]/75"
                           }`}
                         >
@@ -873,17 +542,21 @@ export function PremiumMeatShowcase() {
               })}
             </div>
 
-            <div className="mt-6 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.28em] text-[#141414]/68">
+            <div className="mt-4 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.28em] text-[#141414]/68">
               <MousePointerClick className="h-4 w-4 text-[#B31217]" />
-              <span>Beweeg over een snijstuk om te verkennen</span>
+              <span className="hidden [@media(hover:hover)]:inline">
+                {PRODUCT_EXPLORER_COPY.hintHover}
+              </span>
+              <span className="[@media(hover:hover)]:hidden">
+                {PRODUCT_EXPLORER_COPY.hintTap}
+              </span>
             </div>
           </motion.div>
 
-          {/* Detail Panel (Right side) — compact, aligned with hotspot card */}
           <motion.div variants={panelVariants} className="relative isolate lg:max-w-none [contain:paint]">
-            <div className="relative flex flex-col overflow-hidden rounded-[28px] border border-black/[0.08] bg-white shadow-[0_32px_90px_-50px_rgba(0,0,0,0.18)] transition-shadow duration-500 hover:shadow-[0_38px_96px_-46px_rgba(179,18,23,0.12)]">
+            <div className="relative flex flex-col overflow-hidden rounded-[22px] border border-black/[0.08] bg-white shadow-[0_28px_70px_-46px_rgba(0,0,0,0.2)] transition-shadow duration-500 hover:shadow-[0_34px_80px_-42px_rgba(179,18,23,0.14)]">
               <div className="relative min-h-0 flex-1 overflow-hidden">
-                <div className="group/if relative aspect-[4/3] overflow-hidden sm:aspect-[16/11]">
+                <div className="group/if relative aspect-[16/11] overflow-hidden sm:aspect-[5/3]">
                   <AnimatePresence initial={false} mode="wait">
                     <motion.img
                       key={active.id}
@@ -899,15 +572,17 @@ export function PremiumMeatShowcase() {
                       height={768}
                     />
                   </AnimatePresence>
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/95 via-[#0a0a0a]/45 to-[#0a0a0a]/10" />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/95 via-[#0a0a0a]/4 to-[#0a0a0a]/08" />
                   <ImageFrameOverlay variant="prism" />
-                  <div className="absolute left-5 top-5 z-10">
-                    <span className="inline-flex rounded-full border border-white/25 bg-black/45 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.22em] text-white shadow-sm backdrop-blur-md">
-                      {isPremiumCut ? "Netherlands Premium" : "100% Halal"}
+                  <div className="absolute left-4 top-4 z-10">
+                    <span className="inline-flex rounded-full border border-white/25 bg-black/45 px-2.5 py-1 text-[8px] font-semibold uppercase tracking-[0.2em] text-white shadow-sm backdrop-blur-md">
+                      {isFeatured
+                        ? PRODUCT_EXPLORER_COPY.badgeFeatured
+                        : PRODUCT_EXPLORER_COPY.badgeHalal}
                     </span>
                   </div>
 
-                  <div className="absolute inset-x-0 bottom-0 z-10 p-5 md:p-6">
+                  <div className="absolute inset-x-0 bottom-0 z-10 p-4 md:p-5">
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={`info-${active.id}`}
@@ -916,13 +591,13 @@ export function PremiumMeatShowcase() {
                         exit={{ opacity: 0 }}
                         transition={CUT_TRANSITION}
                       >
-                        <span className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[var(--gold-champagne)]">
+                        <span className="text-[8px] font-semibold uppercase tracking-[0.26em] text-[var(--gold-champagne)]">
                           {active.label}
                         </span>
-                        <h3 className="mt-1.5 font-display text-[1.75rem] font-semibold leading-[0.98] tracking-[-0.04em] text-white md:text-[2rem]">
+                        <h3 className="mt-1 font-display text-[1.35rem] font-semibold leading-[1.05] tracking-[-0.03em] text-white md:text-[1.5rem]">
                           {active.name}
                         </h3>
-                        <p className="mt-2 max-w-md text-[13px] leading-relaxed text-white/90 md:text-[14px]">
+                        <p className="mt-1.5 line-clamp-3 text-[12px] leading-relaxed text-white/88 md:text-[13px]">
                           {active.description}
                         </p>
                       </motion.div>
@@ -931,7 +606,7 @@ export function PremiumMeatShowcase() {
                 </div>
               </div>
 
-              <div className="relative border-t border-black/[0.06] bg-[var(--ipek-surface-cream)] p-5 md:p-6">
+              <div className="relative border-t border-black/[0.06] bg-[linear-gradient(180deg,#fff_0%,#faf8f5_100%)] p-4">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={`specs-${active.id}`}
@@ -939,24 +614,32 @@ export function PremiumMeatShowcase() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.4, ease: DS_EASE }}
-                    className="grid grid-cols-2 gap-2.5 sm:grid-cols-4"
+                    className="grid grid-cols-2 gap-2"
                   >
                     {active.specs.map((s) => {
                       const Icon = specIcon(s.icon);
                       return (
                         <div
                           key={s.label}
-                          className="rounded-xl border border-black/[0.06] bg-white px-2.5 py-3 text-center shadow-[0_8px_24px_-20px_rgba(0,0,0,0.12)]"
+                          className="group/spec relative overflow-hidden rounded-[14px] border border-[rgba(179,18,23,0.1)] bg-[linear-gradient(145deg,rgba(255,255,255,0.98),rgba(250,248,245,0.9))] px-3 py-2.5 shadow-[0_10px_28px_-22px_rgba(179,18,23,0.28)] transition-colors duration-300 hover:border-[rgba(179,18,23,0.28)]"
                         >
-                          <div className="mx-auto grid h-7 w-7 place-items-center rounded-full border border-[rgba(179,18,23,0.22)] bg-[rgba(179,18,23,0.08)] text-[#B31217]">
-                            <Icon className="h-3 w-3" />
+                          <span
+                            aria-hidden
+                            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(200,164,107,0.55)] to-transparent"
+                          />
+                          <div className="flex items-center gap-2.5">
+                            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-[10px] border border-[rgba(179,18,23,0.22)] bg-[linear-gradient(145deg,rgba(179,18,23,0.12),#fff)] text-[#B31217] shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+                              <Icon className="h-3.5 w-3.5" strokeWidth={1.85} />
+                            </span>
+                            <span className="min-w-0">
+                              <span className="block text-[8px] font-semibold uppercase tracking-[0.16em] text-[#B31217]">
+                                {s.label}
+                              </span>
+                              <span className="mt-0.5 block truncate font-display text-[12.5px] font-semibold leading-tight tracking-[-0.02em] text-[#141414]">
+                                {s.value}
+                              </span>
+                            </span>
                           </div>
-                          <span className="mt-2 block text-[7px] uppercase tracking-[0.18em] text-[#141414]/58">
-                            {s.label}
-                          </span>
-                          <span className="mt-0.5 block text-[10px] font-semibold text-[#141414]">
-                            {s.value}
-                          </span>
                         </div>
                       );
                     })}
@@ -970,61 +653,106 @@ export function PremiumMeatShowcase() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={CUT_TRANSITION}
-                    className="mt-5 rounded-xl border border-black/[0.08] bg-white px-4 py-3.5"
+                    className="relative mt-3 overflow-hidden rounded-[14px] border border-[rgba(179,18,23,0.14)] bg-[linear-gradient(135deg,rgba(179,18,23,0.06)_0%,rgba(255,255,255,0.95)_42%,rgba(250,248,245,0.9)_100%)] px-3.5 py-3"
                   >
-                    <div className="flex items-center gap-2">
-                      <span className="h-px w-5 bg-[#B31217]/35" />
-                      <span className="font-display text-sm font-semibold text-[#B31217]">
-                        {isPremiumCut ? "Chef's Selection" : "Chef Recommendation"}
-                      </span>
+                    <span
+                      aria-hidden
+                      className="absolute bottom-3 left-0 top-3 w-[3px] rounded-full bg-gradient-to-b from-[#B31217] via-[rgba(200,164,107,0.85)] to-transparent"
+                    />
+                    <div className="pl-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[8px] font-semibold uppercase tracking-[0.2em] text-[#B31217]">
+                          {PRODUCT_EXPLORER_COPY.usageLabel}
+                        </span>
+                        <span className="h-px flex-1 bg-gradient-to-r from-[rgba(179,18,23,0.25)] to-transparent" />
+                      </div>
+                      <p className="mt-1.5 font-display text-[13px] font-medium leading-snug tracking-[-0.015em] text-[#141414]/88">
+                        {active.bestFor}
+                      </p>
                     </div>
-                    <p className="mt-2 pl-7 text-[14px] leading-snug text-[#141414]/82">
-                      {active.bestFor}
-                    </p>
                   </motion.div>
                 </AnimatePresence>
 
-                <a
-                  href="/assortiment/rundvlees"
-                  className="ipek-btn-premium group mt-5 w-full py-4"
-                >
-                  <span>Bekijk collectie</span>
+                <a href={active.href} className="ipek-btn-premium group mt-3.5 w-full py-3.5 text-[11px]">
+                  <span>{PRODUCT_EXPLORER_COPY.ctaLabel}</span>
                   <ArrowRight className="ipek-btn-premium__arrow h-4 w-4" />
                 </a>
               </div>
             </div>
           </motion.div>
         </motion.div>
-      </div>
 
-      {/* Trust points — tighter to explorer grid */}
-      <div className="relative mx-auto max-w-[1400px] px-6 pb-24 lg:px-10 lg:pb-28">
-        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:mt-10 lg:grid-cols-4">
-          {TRUST.map((t, i) => {
-            const Icon = t.icon;
-            return (
-              <motion.div
-                key={t.title}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.55, delay: i * 0.06 }}
-                className="group/if relative overflow-hidden rounded-[20px] border border-black/[0.06] bg-white p-5 shadow-[0_20px_50px_-40px_rgba(0,0,0,0.12)] transition-all duration-500 hover:-translate-y-1 hover:border-[rgba(200,164,107,0.35)] hover:shadow-[0_28px_60px_-40px_rgba(0,0,0,0.15)]"
-              >
-                <CardFrameOverlay variant="pulse" />
-                <div className="mb-3 grid h-10 w-10 place-items-center rounded-xl border border-[rgba(179,18,23,0.22)] bg-[rgba(179,18,23,0.08)] text-[#B31217] transition-colors group-hover:border-[rgba(179,18,23,0.38)]">
-                  <Icon className="h-4 w-4" />
-                </div>
-                <div className="text-[9px] font-semibold uppercase tracking-[0.24em] text-[#B31217]">
-                  {t.label}
-                </div>
-                <h4 className="mt-1.5 font-display text-lg text-[#141414]">{t.title}</h4>
-                <p className="mt-2 text-[13px] leading-relaxed text-[#141414]/72">{t.desc}</p>
-              </motion.div>
-            );
-          })}
+        <div className="mt-8 border-t border-[rgba(200,164,107,0.22)] pt-8 md:mt-10 md:pt-9">
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <p className="text-[9px] font-semibold uppercase tracking-[0.24em] text-[#B31217]">
+                Waarom Ayat Food
+              </p>
+              <p className="mt-1 font-display text-[1.05rem] font-semibold tracking-[-0.02em] text-[#141414] md:text-[1.15rem]">
+                Vertrouwen in elke levering
+              </p>
+            </div>
+            <span
+              aria-hidden
+              className="hidden h-px flex-1 max-w-[220px] bg-gradient-to-r from-[rgba(200,164,107,0.45)] to-transparent sm:block"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+            {PRODUCT_EXPLORER_TRUST.map((t, i) => {
+              const Icon = TRUST_ICONS[t.icon];
+              return (
+                <motion.article
+                  key={t.title}
+                  initial={{ opacity: 0, y: 14 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.45, delay: i * 0.06 }}
+                  className="group/if relative flex flex-col overflow-hidden rounded-[20px] border border-[rgba(179,18,23,0.12)] bg-white shadow-[0_18px_44px_-30px_rgba(0,0,0,0.28)] transition-all duration-500 hover:-translate-y-1 hover:border-[rgba(179,18,23,0.28)] hover:shadow-[0_28px_56px_-32px_rgba(179,18,23,0.28)]"
+                >
+                  <CardFrameOverlay variant="pulse" />
+
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <img
+                      src={t.image}
+                      alt={t.imageAlt}
+                      className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover/if:scale-[1.06]"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <div
+                      aria-hidden
+                      className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,10,0.08)_0%,rgba(10,10,10,0.18)_42%,rgba(10,10,10,0.72)_100%)]"
+                    />
+                    <div
+                      aria-hidden
+                      className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(255,255,255,0.45)] to-transparent"
+                    />
+                    <div className="absolute bottom-3 left-3 grid h-10 w-10 place-items-center rounded-[12px] border border-white/70 bg-white text-[#B31217] shadow-[0_10px_24px_-12px_rgba(0,0,0,0.55)]">
+                      <Icon className="h-4 w-4" strokeWidth={1.85} />
+                    </div>
+                    <span className="absolute bottom-3.5 right-3 text-[8px] font-semibold uppercase tracking-[0.2em] text-white/90">
+                      {t.label}
+                    </span>
+                  </div>
+
+                  <div className="relative z-[1] flex flex-1 flex-col px-4 pb-4 pt-3.5">
+                    <h4 className="font-display text-[1.05rem] font-semibold leading-snug tracking-[-0.02em] text-[#141414]">
+                      {t.title}
+                    </h4>
+                    <p className="mt-2 text-[13px] leading-[1.65] text-[#2a2a2a]">
+                      {t.desc}
+                    </p>
+                  </div>
+                </motion.article>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
   );
 }
+
+/** Kept for typing convenience if needed by consumers */
+export type { ExplorerProduct };

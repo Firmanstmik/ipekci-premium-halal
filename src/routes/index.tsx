@@ -27,107 +27,118 @@ import {
   Store,
   Truck,
 } from "lucide-react";
-import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { SectionHeader } from "@/components/SectionHeader";
 import { MagneticButton } from "@/components/MagneticButton";
 import { EnterpriseTrustSection } from "@/components/home/EnterpriseTrustSection";
+import { SpeerpuntenSection } from "@/components/home/SpeerpuntenSection";
+import { HomeOverOnsSection } from "@/components/home/HomeOverOnsSection";
 import { HomeHeroSection } from "@/components/home/HomeHeroSection";
+import { AyatSectionBadge } from "@/components/home/AyatSectionBadge";
 import { IPEKCI_HERO_IMAGE } from "@/lib/home-hero-content";
 import { PremiumMeatShowcase } from "@/components/PremiumMeatShowcase";
-import {
-  StoryBridge,
-  StoryItem,
-  StoryMoment,
-  StoryReveal,
-} from "@/components/HomeStorytelling";
+import { StoryBridge, StoryItem, StoryMoment, StoryReveal } from "@/components/HomeStorytelling";
 import { DS_DURATION, DS_EASE, DS_EASE_REVEAL, dsRevealTransition } from "@/lib/design-system";
-import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
-import brandmovie1 from "@/assets/Ipekci_Brandmovie_1.webm";
-import brandmovie2 from "@/assets/Ipekci_Brandmovie_2.webm";
-import brandmovie3 from "@/assets/Ipekci_Brandmovie_3.webm";
-import assortmentLamsvleesImage from "@/assets/Ons assortiment - dombaa.avif";
-import assortmentRundvleesImage from "@/assets/Ons assortiment - sapi.avif";
-import assortmentKipImage from "@/assets/Ons assortiment - ayam.avif";
-import productenImage from "@/assets/producten.avif";
-import cardProductenImage from "@/assets/card-producten.avif";
-import backgroundWhite1 from "@/assets/background-white1.webp";
-import assortimentLamsvleesHeroImage from "@/assets/assortiment-lamsvlees.webp";
-import assortimentRundvleesHeroImage from "@/assets/Assortiment-rundvlees.webp";
-import assortimentKipHeroImage from "@/assets/assortiment-Kip.webp";
+import { VOOR_WIE_HOME, VOOR_WIE_SEGMENTS } from "@/lib/voor-wie-content";
+import assortmentDonerImage from "@/assets/ayat/product-doner.jpg";
+import assortmentShoarmaImage from "@/assets/ayat/product-shoarma.jpg";
+import assortmentGevogelteImage from "@/assets/ayat/product-gevogelte.jpg";
+import productenImage from "@/assets/ayat/hero-doner-bak.jpg";
+import cardProductenImage from "@/assets/ayat/explorer-stage.webp";
+import backgroundWhite1 from "@/assets/ayat/hero-backdrop.jpeg";
+import assortimentDonerHeroImage from "@/assets/ayat/explorer-doner.webp";
+import assortimentShoarmaHeroImage from "@/assets/ayat/explorer-shoarma.webp";
+import assortimentGevogelteHeroImage from "@/assets/ayat/explorer-gevogelte.webp";
+import eindKombiDonerImage from "@/assets/ayat/hero-doner.jpg";
+import eindKipDonerImage from "@/assets/ayat/product-doner.jpg";
+import eindGehaktDonerImage from "@/assets/ayat/hero-doner-bak.jpg";
+import eindKalfsDonerImage from "@/assets/ayat/explorer-doner.webp";
+import eindKalkoenShoarmaImage from "@/assets/ayat/product-shoarma.jpg";
+import eindKipShoarmaImage from "@/assets/ayat/hero-shoarma.jpg";
+import eindMixShoarmaImage from "@/assets/ayat/hero-shoarma-bak.jpg";
+import eindKalfsShoarmaImage from "@/assets/ayat/explorer-shoarma.webp";
+import eindDiepvriesDonerImage from "@/assets/ayat/product-diepvries.jpg";
+import stickerLamsvlees from "@/assets/stiker-kambing.svg";
+import stickerRundvlees from "@/assets/stiker-sapi.svg";
+import stickerKip from "@/assets/stiker-ayam.svg";
 
 const STICKER_GOLD_FILTER =
   "sepia(1) saturate(520%) hue-rotate(352deg) brightness(0.66) contrast(1.12) drop-shadow(0 10px 22px rgba(194,139,82,0.12))";
 
 const HERO_STICKERS = {
-  lamsvlees: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_lamsvlees.svg",
-  rundvlees: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_rundvlees.svg",
-  kip: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_gevogelte.svg",
+  lamsvlees: stickerLamsvlees,
+  rundvlees: stickerRundvlees,
+  kip: stickerKip,
 } as const;
 
-const customerTypes = ["Slagerijen", "Groothandels", "Supermarkten", "Restaurants"] as const;
+const SEGMENT_ICONS = {
+  slagerijen: Store,
+  groothandels: Package,
+  supermarkten: ShieldCheck,
+  restaurants: ChefHat,
+} as const;
 
-const segments = [
-  {
-    id: "slagerijen",
-    title: "Slagerijen",
-    text: "Onze slagerijen ontvangen dagelijks vers halalvlees van de hoogste Nederlandse kwaliteit. Van complete lammeren tot versgesneden delen, altijd snel geleverd en volledig volgens islamitische normen en waarden.",
-    icon: Store,
-    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/Voor-wie-slagerijen.webp",
-  },
-  {
-    id: "groothandels",
-    title: "Groothandels",
-    text: "Groothandels kunnen rekenen op een stabiele aanvoer van Nederlands halalvlees, direct uit ons eigen slachthuis. Ontvang grote aantallen op vaste momenten, zodat uw klantenbestand altijd efficiënt bediend wordt.",
-    icon: Package,
-    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/Voor-wie-groothandels.webp",
-  },
-  {
-    id: "supermarkten",
-    title: "Supermarkten",
-    text: "Aan supermarkten leveren we halalvlees én eindproducten die geschikt zijn voor zowel de versafdeling als de diepvries. Een breed assortiment dat direct verkoopklaar is en aansluit op de vraag van uw klanten.",
-    icon: ShieldCheck,
-    image:
-      "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/Ipekci-voor-supermarkten.webp",
-  },
-  {
-    id: "restaurants",
-    title: "Restaurants",
-    text: "Voor restaurants leveren we geselecteerde delen zoals koteletten, gehakt en grillproducten, precies afgestemd op uw menukaart. Altijd halal, vers en klaar voor directe bereiding in de keuken.",
-    icon: ChefHat,
-    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/Voor-restaurants.webp",
-  },
-];
+const segments = VOOR_WIE_SEGMENTS.map((s) => ({
+  id: s.id,
+  title: s.label,
+  text: s.longDescription,
+  icon: SEGMENT_ICONS[s.id],
+  image: s.image,
+}));
+
+/**
+ * The homepage assortiment cards still key off the original ids (they also drive
+ * the sticker lookup), so this maps each one to its real Ayat product route.
+ * Phase 9 moved the catalogue to /producten/{slug}.
+ */
+const PRODUCT_ROUTE: Record<string, string> = {
+  lamsvlees: "/producten/doner",
+  rundvlees: "/producten/shoarma",
+  kip: "/producten/gevogelte",
+  eindproducten: "/producten/vleessoorten",
+};
+
+const productHref = (id: string) => PRODUCT_ROUTE[id] ?? "/producten";
 
 const categories = [
   {
     id: "lamsvlees",
-    title: "Lamsvlees",
-    text: "Premium Nederlandse lammeren, onbedwelmd halalgeslacht in eigen slachthuis. Leverbaar als karkas of delen.",
+    title: "Döner",
+    text: "Wij produceren verschillende soorten en smaken döner kebab producten.",
     icon: Beef,
-    image: assortimentLamsvleesHeroImage,
+    image: assortimentDonerHeroImage,
     stickerSrc: HERO_STICKERS.lamsvlees,
   },
   {
     id: "rundvlees",
-    title: "Rundvlees",
-    text: "Nederlands rundvlees via vaste partners. Leverbaar als premium cuts en veelgevraagde delen.",
+    title: "Shoarma",
+    text: "Verticaal opgestelde spit van rundvlees, kip, lamsvlees, kalkoen of mix.",
     icon: Beef,
-    image: assortimentRundvleesHeroImage,
+    image: assortimentShoarmaHeroImage,
     stickerSrc: HERO_STICKERS.rundvlees,
   },
   {
     id: "kip",
-    title: "Kip",
-    text: "Op aanvraag van bestaande klanten: halalgeslachte kip van premium kwaliteit in standaarddelen.",
+    title: "Gevogelte",
+    text: "Dankzij onze eigen productie bieden wij u de heerlijkste gevogelte.",
     icon: Package,
-    image: assortimentKipHeroImage,
+    image: assortimentGevogelteHeroImage,
     stickerSrc: HERO_STICKERS.kip,
   },
   {
     id: "eindproducten",
-    title: "Eindproducten",
-    text: "Gemaakt van ons eigen halalvlees: hamburgers, kebab, shoarma en meer voor verkoop en bereiding.",
+    title: "Vleessoorten",
+    text: "Een breed assortiment aan vleessoorten — daar staan wij om bekend.",
     icon: ShieldCheck,
     image: productenImage,
   },
@@ -136,31 +147,31 @@ const categories = [
 const homeAssortment = [
   {
     id: "lamsvlees",
-    title: "Lamsvlees",
-    text: "Premium Nederlandse lammeren, onbedwelmd halalgeslacht in ons eigen slachthuis. Leverbaar als complete karkassen of versgesneden delen voor iedere klantvraag.",
-    image: assortmentLamsvleesImage,
+    title: "Döner",
+    text: "Wij produceren verschillende soorten en smaken döner kebab producten voor horeca en retail.",
+    image: assortmentDonerImage,
     icon: Beef,
   },
   {
     id: "rundvlees",
-    title: "Rundvlees",
-    text: "Ons rundvlees komt van Nederlandse runderen en vaste partners. Altijd halalgeslacht en leverbaar als ribeye, entrecote, gehakt en andere veelgevraagde delen.",
-    image: assortmentRundvleesImage,
+    title: "Shoarma",
+    text: "Verticaal opgestelde spit van rundvlees, kip, lamsvlees, kalkoen of mix — authentiek gekruid.",
+    image: assortmentShoarmaImage,
     icon: Beef,
   },
   {
     id: "kip",
-    title: "Kip",
-    text: "Op aanvraag van bestaande klanten leveren wij ook halalgeslachte kip. Premium kwaliteit uit Nederland en beschikbaar in alle standaarddelen.",
-    image: assortmentKipImage,
+    title: "Gevogelte",
+    text: "Dankzij onze eigen productie bieden wij u de heerlijkste kipproducten, smaakvol en breed inzetbaar.",
+    image: assortmentGevogelteImage,
     icon: Package,
   },
 ] as const;
 
 const endProducts = {
-  title: "Eindproducten",
-  eyebrow: "Premium kwaliteit",
-  text: "Onze eindproducten worden gemaakt van ons eigen halalvlees. Kebabstaafjes, hamburgers, kipburgers en meer voor supermarkten, slagerijen en restaurants.",
+  title: "Döner & Shoarma",
+  eyebrow: "Eigen productie",
+  text: "Ayat Food produceert hoogwaardige Halal döner kebab en shoarma — exclusief, smaakvol en klaar voor restaurants, snackbars en retail.",
   image: productenImage,
 } as const;
 
@@ -200,19 +211,15 @@ function EindproductenBanner({
 
       <div className="relative grid min-h-[520px] gap-8 px-7 py-10 sm:px-10 sm:py-12 lg:grid-cols-12 lg:items-stretch lg:px-14 lg:py-14">
         <div className="relative z-10 flex flex-col justify-center lg:col-span-5">
-          <div className="ipek-label ipek-heading-label">
-            PREMIUM KWALITEIT
-          </div>
-          <h3 className="ipek-h2 mt-6 text-[#F5F1EB]">
-            {title}
-          </h3>
+          <div className="ipek-label ipek-heading-label">PREMIUM KWALITEIT</div>
+          <h3 className="ipek-h2 mt-6 text-[#F5F1EB]">{title}</h3>
           <p className="mt-6 max-w-[420px] text-[15px] leading-[1.7] text-[rgba(245,241,235,0.70)]">
             {text}
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-5">
             <Link
-              to="/assortiment"
+              to="/producten"
               className="group inline-flex items-center gap-3 rounded-2xl bg-[#9D0208] px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-white shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_24px_90px_-60px_rgba(0,0,0,0.85)] transition-all duration-500 hover:bg-[#B11217] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.18),0_0_58px_-24px_rgba(177,18,23,0.70),0_34px_110px_-70px_rgba(0,0,0,0.90)] active:translate-y-px"
             >
               Alle producten
@@ -222,7 +229,7 @@ function EindproductenBanner({
               />
             </Link>
             <a
-              href="/assortiment/eindproducten"
+              href="/producten/vleessoorten"
               className="group inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.26em] text-[rgba(226,192,141,0.92)] transition-colors duration-500 hover:text-[rgba(245,241,235,0.90)]"
             >
               Lees meer
@@ -267,9 +274,7 @@ function EindproductenBanner({
                           scale: hovered ? 1.055 : 1.02,
                         }
                   }
-                  transition={
-                    reduceMotion ? undefined : { duration: 1.25, ease: DS_EASE }
-                  }
+                  transition={reduceMotion ? undefined : { duration: 1.25, ease: DS_EASE }}
                 />
 
                 <div className="pointer-events-none absolute inset-0 opacity-70 mix-blend-screen">
@@ -490,7 +495,13 @@ function AssortimentProductCard({
                 <motion.div
                   aria-hidden
                   className="absolute inset-0 rounded-full border border-[rgba(226,192,141,0.35)]"
-                  animate={reduceMotion ? undefined : hovered ? { scale: [1, 1.35], opacity: [0.5, 0] } : { scale: 1, opacity: 0 }}
+                  animate={
+                    reduceMotion
+                      ? undefined
+                      : hovered
+                        ? { scale: [1, 1.35], opacity: [0.5, 0] }
+                        : { scale: 1, opacity: 0 }
+                  }
                   transition={{ duration: 1.1, ease: "easeOut" }}
                 />
                 <ArrowUpRight
@@ -526,42 +537,42 @@ function AssortimentUnifiedCard({
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 22 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-120px" }}
-      transition={{ duration: DS_DURATION.reveal, delay: index * 0.1, ease: DS_EASE_REVEAL }}
-      className="group relative overflow-hidden rounded-3xl border border-[rgba(198,160,98,0.28)] bg-[#070707] shadow-[0_40px_120px_-95px_rgba(0,0,0,0.98)] transition-all duration-700 ease-[cubic-bezier(.22,.61,.36,1)] hover:-translate-y-1.5 hover:border-[rgba(198,160,98,0.55)] hover:shadow-[0_56px_170px_-120px_rgba(0,0,0,0.98)]"
+      transition={{ duration: 0.85, delay: index * 0.12, ease: DS_EASE_REVEAL }}
+      className="group relative overflow-hidden rounded-3xl border border-[rgba(198,160,98,0.32)] bg-[#070707] shadow-[0_36px_100px_-72px_rgba(0,0,0,0.95),0_0_0_1px_rgba(255,255,255,0.04)] transition-all duration-700 ease-[cubic-bezier(.22,.61,.36,1)] hover:-translate-y-2 hover:border-[rgba(226,192,141,0.62)] hover:shadow-[0_48px_140px_-80px_rgba(0,0,0,0.98),0_0_60px_-28px_rgba(179,18,23,0.35),0_0_0_1px_rgba(226,192,141,0.28)]"
     >
-      <a href={`/assortiment/${id}`} className="relative block h-full">
+      <a href={productHref(id)} className="relative block h-full">
         <div className="pointer-events-none absolute inset-0">
-          {/* Cinematic image — subtle group-driven zoom (CSS hover works even
-              though this layer is pointer-events-none) */}
           <img
             src={image}
             alt=""
             aria-hidden
             loading="lazy"
             decoding="async"
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform group-hover:scale-[1.03]"
-            style={{ filter: "brightness(0.82) contrast(1.12) saturate(1.06)" }}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform group-hover:scale-[1.045]"
+            style={{ filter: "brightness(0.88) contrast(1.14) saturate(1.1)" }}
           />
 
-          {/* top sheen + warm depth */}
-          <div className="absolute inset-0 bg-[radial-gradient(900px_560px_at_60%_22%,rgba(255,255,255,0.10)_0%,transparent_60%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(900px_720px_at_45%_92%,rgba(179,18,23,0.26)_0%,transparent_60%)]" />
-          {/* cinematic vignette — darkened edges add depth without blur */}
-          <div className="absolute inset-0 bg-[radial-gradient(130%_120%_at_50%_36%,transparent_50%,rgba(0,0,0,0.5)_100%)]" />
-          {/* base dark gradient — eases off slightly on hover so the image breathes */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/92 via-black/45 to-black/8 transition-opacity duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:opacity-[0.86]" />
+          <div className="absolute inset-0 bg-[radial-gradient(900px_560px_at_60%_22%,rgba(255,255,255,0.14)_0%,transparent_60%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(900px_720px_at_45%_92%,rgba(179,18,23,0.28)_0%,transparent_60%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(130%_120%_at_50%_36%,transparent_42%,rgba(0,0,0,0.58)_100%)]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/94 via-black/48 to-black/10 transition-opacity duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:opacity-[0.9]" />
+          <div className="absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,transparent,rgba(226,192,141,0.35),transparent)] opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
         </div>
 
-        <div className="pointer-events-none absolute left-6 top-6 grid h-[82px] w-[82px] place-items-center rounded-full border border-[rgba(198,160,98,0.26)] bg-black/35 backdrop-blur-[2px] transition-colors duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:border-[rgba(198,160,98,0.5)]">
-          <svg viewBox="0 0 112 112" className="absolute inset-0 h-full w-full spin-ring" aria-hidden="true">
+        <div className="pointer-events-none absolute left-6 top-6 grid h-[82px] w-[82px] place-items-center rounded-full border border-[rgba(198,160,98,0.32)] bg-black/40 shadow-[0_12px_40px_-18px_rgba(0,0,0,0.8)] backdrop-blur-[3px] transition-colors duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:border-[rgba(226,192,141,0.58)] group-hover:bg-black/50">
+          <svg
+            viewBox="0 0 112 112"
+            className="absolute inset-0 h-full w-full spin-ring"
+            aria-hidden="true"
+          >
             <defs>
               <path id={pathId} d="M56,56 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0" />
             </defs>
             <text
-              fill="rgba(198,160,98,0.82)"
+              fill="rgba(226,192,141,0.88)"
               fontSize="7.1"
               fontWeight="700"
               letterSpacing="0.26em"
@@ -578,7 +589,7 @@ function AssortimentUnifiedCard({
               src={stickerSrc}
               alt=""
               aria-hidden
-              className="relative h-[28px] w-[28px] opacity-90"
+              className="relative h-[28px] w-[28px] opacity-95"
               loading="lazy"
               decoding="async"
               style={{ filter: STICKER_GOLD_FILTER }}
@@ -587,14 +598,19 @@ function AssortimentUnifiedCard({
         </div>
 
         <div className="relative flex min-h-[460px] flex-col justify-end p-7 sm:min-h-[520px]">
-          <h3 className="font-display text-3xl font-semibold leading-[0.98] tracking-[-0.04em] text-[#F5F2ED] transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform group-hover:-translate-y-1">
+          <h3
+            className="font-display text-3xl font-semibold leading-[0.98] tracking-[-0.04em] text-[#F8F4EE] transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform group-hover:-translate-y-1"
+            style={{ textShadow: "0 2px 24px rgba(0,0,0,0.45)" }}
+          >
             {title}
           </h3>
-          <p className="mt-4 max-w-sm text-[13px] leading-[1.7] text-[rgba(245,242,237,0.6)]">{description}</p>
+          <p className="mt-4 max-w-sm text-[13px] leading-[1.7] text-[rgba(245,242,237,0.72)]">
+            {description}
+          </p>
 
           <div className="mt-8">
-            <div className="group/btn relative inline-flex items-center gap-3 overflow-hidden rounded-2xl border border-[rgba(198,160,98,0.58)] bg-transparent px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.26em] text-[rgba(198,160,98,0.92)] transition-[color,border-color] duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:border-[rgba(198,160,98,0.9)] group-hover:text-[#070707]">
-              <span className="pointer-events-none absolute inset-0 -translate-x-[110%] bg-[rgba(226,192,141,0.95)] transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:translate-x-0" />
+            <div className="group/btn relative inline-flex items-center gap-3 overflow-hidden rounded-2xl border border-[rgba(226,192,141,0.65)] bg-transparent px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.26em] text-[rgba(226,192,141,0.95)] shadow-[0_0_0_1px_rgba(226,192,141,0.08)] transition-[color,border-color,box-shadow,transform] duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:border-[rgba(226,192,141,0.95)] group-hover:text-[#070707] group-hover:shadow-[0_0_28px_-8px_rgba(226,192,141,0.55)]">
+              <span className="pointer-events-none absolute inset-0 -translate-x-[110%] bg-[rgba(226,192,141,0.96)] transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:translate-x-0" />
               <span className="relative">Lees meer</span>
               <ArrowRight
                 size={13}
@@ -658,7 +674,7 @@ function EindproductenStrip({
       <div className="relative grid h-[310px] gap-7 px-7 py-8 sm:h-[340px] sm:px-10 sm:py-10 lg:grid-cols-12 lg:items-center">
         <div className="relative lg:col-span-5">
           <div className="text-[10px] font-semibold uppercase tracking-[0.34em] text-[#B11217]">
-            EINDPRODUCTEN
+            EIGEN PRODUCTIE
           </div>
           <div className="mt-4 font-display text-[clamp(2.2rem,3.1vw,3.2rem)] font-medium leading-[1.02] tracking-[-0.03em] text-[#F5F1EB]">
             {title}
@@ -669,7 +685,7 @@ function EindproductenStrip({
 
           <div className="mt-6 flex flex-wrap items-center gap-5">
             <Link
-              to="/assortiment"
+              to="/producten"
               className="group inline-flex items-center gap-3 rounded-2xl bg-[#9D0208] px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-white shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_22px_80px_-60px_rgba(0,0,0,0.85)] transition-all duration-500 hover:bg-[#B11217] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.16),0_0_50px_-24px_rgba(177,18,23,0.65),0_30px_96px_-70px_rgba(0,0,0,0.90)] active:translate-y-px"
             >
               Alle producten
@@ -679,7 +695,7 @@ function EindproductenStrip({
               />
             </Link>
             <a
-              href="/assortiment/eindproducten"
+              href="/producten/vleessoorten"
               className="group inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.26em] text-[rgba(226,192,141,0.92)] transition-colors duration-500 hover:text-[rgba(245,241,235,0.90)]"
             >
               Lees meer
@@ -876,8 +892,7 @@ const processSteps: ProcessStep[] = [
     navLabel: "Herkomst",
     title: "Halal slacht,",
     titleAccent: "onder toezicht.",
-    body:
-      "Met de hand uitgevoerd in EU-gecertificeerde slachthuizen door ervaren moslimslachters. Elk dier wordt gevolgd, gezegend en volgens de rite verwerkt, zorgvuldig geregistreerd en bevestigd.",
+    body: "Met de hand uitgevoerd in EU-gecertificeerde slachthuizen door ervaren moslimslachters. Elk dier wordt gevolgd, gezegend en volgens de rite verwerkt, zorgvuldig geregistreerd en bevestigd.",
     bullets: [
       "Traceerbaarheids-ID per dier",
       "Veterinaire controle op locatie",
@@ -908,8 +923,7 @@ const processSteps: ProcessStep[] = [
     navLabel: "Atelier",
     title: "Meesterlijke bereiding,",
     titleAccent: "met de hand versneden.",
-    body:
-      "Gerijpt aan het bot en volledig met de hand uitgebeend in ateliers met gecontroleerde temperatuur. Onze meester-slagers werken onder strikte HACCP-discipline, elke snede gewogen en elke afwerking verantwoord.",
+    body: "Gerijpt aan het bot en volledig met de hand uitgebeend in ateliers met gecontroleerde temperatuur. Onze meester-slagers werken onder strikte HACCP-discipline, elke snede gewogen en elke afwerking verantwoord.",
     bullets: [
       "21 tot 35 dagen dry-aged aan het bot",
       "Met de hand versneden door meester-slagers",
@@ -941,8 +955,7 @@ const processSteps: ProcessStep[] = [
     navLabel: "Levering",
     title: "Ononderbroken koelketen,",
     titleAccent: "tot aan uw deur.",
-    body:
-      "Vacuüm verpakt, digitaal geregistreerd en verzonden via ons eigen gekoelde transport. Van atelier tot keuken blijft de keten intact en elk moment is controleerbaar.",
+    body: "Vacuüm verpakt, digitaal geregistreerd en verzonden via ons eigen gekoelde transport. Van atelier tot keuken blijft de keten intact en elk moment is controleerbaar.",
     bullets: [
       "Live temperatuurlogging per pallet",
       "Eigen gekoelde vloot, zonder derde partij",
@@ -1032,85 +1045,103 @@ const segmentCardRevealVariants: Variants = {
 
 const EINDPRODUCTEN_PRODUCTS = [
   {
-    category: "Rundvlees",
-    title: "Runder Merquez",
-    eyebrow: "Premium grill collectie",
-    blurb: "Vol van smaak, gekruid voor constante kwaliteit en geschikt voor foodservice en retail.",
-    traits: ["Grill", "Foodservice", "Retail"],
-    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Runder-Merquez.png",
-    stickerSrc: HERO_STICKERS.rundvlees,
-  },
-  {
-    category: "Kip",
-    title: "Kalkoens-shoarma",
-    eyebrow: "Ready to serve",
-    blurb: "Luxe shoarma met zachte bite, ontwikkeld voor snelle bereiding en premium presentatie.",
-    traits: ["Shoarma", "Retail pack", "Consistent"],
-    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Kalkoensshoarma.png",
-    stickerSrc: HERO_STICKERS.kip,
-  },
-  {
-    category: "Lamsvlees",
-    title: "Lamsshoarma",
-    eyebrow: "Signature sliced range",
-    blurb: "Rijk gekruid en elegant gelaagd, ideaal voor premium horeca en ambachtelijke counters.",
-    traits: ["Signature", "Horeca", "Ambacht"],
-    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Lamsshoarma.png",
+    category: "Döner",
+    title: "Kombidöner",
+    eyebrow: "Eigen productie",
+    blurb:
+      "Geselecteerd kalfs- en kalkoenvlees, afwisselend gelegd met een kruidenmengsel speciaal voor deze combinatie.",
+    traits: ["Kalf & kalkoen", "Horeca", "Retail"],
+    image: eindKombiDonerImage,
     stickerSrc: HERO_STICKERS.lamsvlees,
+    href: "/producten/doner",
   },
   {
-    category: "Rundvlees",
-    title: "Sucuk",
-    eyebrow: "Luxury deli classic",
-    blurb: "Diepe kruiding en uitgesproken karakter voor premium halal delicatessen en ontbijtmomenten.",
-    traits: ["Deli", "Kruidig", "Premium"],
-    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Turkse-Worst-Sucuk.png",
-    stickerSrc: HERO_STICKERS.rundvlees,
-  },
-  {
-    category: "Kip",
-    title: "Kip Burger",
-    eyebrow: "Packaged burger line",
-    blurb: "Ontwikkeld voor retail en snelle service met sappige textuur en nette vormvastheid.",
-    traits: ["Burger", "Retail", "Fast service"],
-    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Kip-burger.png",
+    category: "Döner",
+    title: "Kipdöner",
+    eyebrow: "Hartige klassieker",
+    blurb:
+      "Stukjes kip van de dij, ideaal gekruid voor de onmiskenbaar hartige smaak van kipdöner.",
+    traits: ["Kip", "Spit", "Consistent"],
+    image: eindKipDonerImage,
     stickerSrc: HERO_STICKERS.kip,
+    href: "/producten/doner",
   },
   {
-    category: "Rundvlees",
-    title: "Hamburger",
-    eyebrow: "Classic premium format",
-    blurb: "Stevig van structuur en direct inzetbaar voor supermarkten, slagerijen en restaurants.",
-    traits: ["Classic", "Retail", "Restaurant"],
-    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Hamburger.png",
+    category: "Döner",
+    title: "Gehaktdöner",
+    eyebrow: "Populair in NL",
+    blurb:
+      "Vleespasteitjes van kalfsgehakt en vleesplakken afwisselend aan de spies — de meest populaire döner in Nederland.",
+    traits: ["Gehakt", "Spit", "Volume"],
+    image: eindGehaktDonerImage,
+    stickerSrc: HERO_STICKERS.lamsvlees,
+    href: "/producten/doner",
+  },
+  {
+    category: "Döner",
+    title: "Kalfsdöner",
+    eyebrow: "Puur kalfsvlees",
+    blurb:
+      "Puur kalfsvlees in dunne plakjes, gekruid met geselecteerde natuurlijke kruiden en op maat op de spies gelegd.",
+    traits: ["Kalf", "Premium", "Natuurlijk"],
+    image: eindKalfsDonerImage,
     stickerSrc: HERO_STICKERS.rundvlees,
+    href: "/producten/doner",
   },
   {
-    category: "Kip",
-    title: "Kip Merquez",
-    eyebrow: "Spiced sausage edit",
-    blurb: "Halal premium worst met levendige kruiding, ontworpen voor onderscheidend assortiment.",
-    traits: ["Spiced", "Counter", "Distinctive"],
-    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Kip-Merquez-1.png",
+    category: "Shoarma",
+    title: "Kalkoen Shoarma",
+    eyebrow: "Smaakvolle twist",
+    blurb:
+      "Malse stukjes kalkoenvlees, perfect gekruid en snel te bereiden — een gezonde, smaakvolle shoarma-optie.",
+    traits: ["Kalkoen", "Snel", "Horeca"],
+    image: eindKalkoenShoarmaImage,
     stickerSrc: HERO_STICKERS.kip,
+    href: "/producten/shoarma",
   },
   {
-    category: "Rundvlees",
-    title: "Adana Kebab",
-    eyebrow: "Chef driven favourite",
-    blurb: "Intens gekruid en visueel krachtig, perfect voor premium fast casual en grillconcepten.",
-    traits: ["Chef line", "Grill", "Bold taste"],
-    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/Adana-Kebab.png",
+    category: "Shoarma",
+    title: "Kip Shoarma",
+    eyebrow: "Sappig & snel",
+    blurb:
+      "Sappige stukjes gekruide kip, klaar om te grillen of te bakken — ideaal voor wraps, broodjes en hot counters.",
+    traits: ["Kip", "Grill", "Snack"],
+    image: eindKipShoarmaImage,
+    stickerSrc: HERO_STICKERS.kip,
+    href: "/producten/shoarma",
+  },
+  {
+    category: "Shoarma",
+    title: "Mix Shoarma",
+    eyebrow: "Lam & kalkoen",
+    blurb:
+      "Verrukkelijke combinatie van mals lamsvlees en sappige kalkoen, authentiek gekruid voor wraps en hoofdgerechten.",
+    traits: ["Mix", "Authentiek", "Horeca"],
+    image: eindMixShoarmaImage,
+    stickerSrc: HERO_STICKERS.lamsvlees,
+    href: "/producten/shoarma",
+  },
+  {
+    category: "Shoarma",
+    title: "Kalfs Shoarma",
+    eyebrow: "Verfijnde variant",
+    blurb:
+      "Mals kalfsvlees, subtiel gekruid met komijn, paprika en knoflook — een luxe shoarma voor snelle bereiding.",
+    traits: ["Kalf", "Luxe", "Specerijen"],
+    image: eindKalfsShoarmaImage,
     stickerSrc: HERO_STICKERS.rundvlees,
+    href: "/producten/shoarma",
   },
   {
-    category: "Kip",
-    title: "Kip döner",
-    eyebrow: "Vertical carve range",
-    blurb: "Zacht gekruid en ontwikkeld voor hoog volume met consistente sappigheid en kleur.",
-    traits: ["Doner", "High volume", "Consistent"],
-    image: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/placeholder.webp",
+    category: "Diepvries",
+    title: "Gegrilde Kipdoner",
+    eyebrow: "Bevroren & voorgegaard",
+    blurb:
+      "Bevroren gegrilde kipdöner — voorgegaard en eenvoudig op te warmen voor een snelle, authentieke döner-ervaring.",
+    traits: ["Diepvries", "Voorgegaard", "Flexibel"],
+    image: eindDiepvriesDonerImage,
     stickerSrc: HERO_STICKERS.kip,
+    href: "/producten",
   },
 ] as const;
 
@@ -1120,7 +1151,7 @@ const EINDPRODUCTEN_REVEAL_EASE = [0.22, 1, 0.36, 1] as const;
 
 /* Drop-shadow that lifts product PNG on the bright display case. */
 const EINDPRODUCTEN_PRODUCT_SHADOW =
-  "drop-shadow(0 20px 32px rgba(0,0,0,0.18)) drop-shadow(0 8px 16px rgba(0,0,0,0.12)) drop-shadow(0 0 24px rgba(179,18,23,0.08))";
+  "brightness(1.08) contrast(1.14) saturate(1.12) drop-shadow(0 28px 44px rgba(0,0,0,0.32)) drop-shadow(0 12px 22px rgba(0,0,0,0.18)) drop-shadow(0 0 40px rgba(179,18,23,0.14))";
 
 function PremiumTypewriter({
   text,
@@ -1189,13 +1220,13 @@ function PremiumTypewriter({
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Ipekçi Slachterij — Groots in premium halalvlees" },
+      { title: "Ayat Food — Premium Halal Vleesgroothandel" },
       {
         name: "description",
         content:
-          "Premium Nederlands halalvlees: lamsvlees, rundvlees en eindproducten voor slagerijen, groothandels, supermarkten en restaurants.",
+          "Ayat Food produceert hoogwaardige Halal producten voor restaurants, supermarkten en retail — 100% Halal, NVWA-normen, snelle levering.",
       },
-      { property: "og:title", content: "Ipekçi Slachterij — Premium halalvlees" },
+      { property: "og:title", content: "Ayat Food — Premium Halal Vleesgroothandel" },
       { property: "og:image", content: IPEKCI_HERO_IMAGE },
     ],
   }),
@@ -1215,7 +1246,9 @@ function HomePage() {
   const [eindproductenCanScrollRight, setEindproductenCanScrollRight] = useState(false);
   const [eindproductenDragging, setEindproductenDragging] = useState(false);
   const [eindproductenProgress, setEindproductenProgress] = useState(0);
-  const [eindproductenIntroComplete, setEindproductenIntroComplete] = useState(Boolean(reduceMotion));
+  const [eindproductenIntroComplete, setEindproductenIntroComplete] = useState(
+    Boolean(reduceMotion),
+  );
   const eindproductenShowcaseRevealed = useInView(eindproductenShowcaseRef, {
     once: true,
     margin: "-120px",
@@ -1310,7 +1343,7 @@ function HomePage() {
   useMotionValueEvent(eindproductenX, "change", (latest) => {
     const loop = eindproductenLoopWidthRef.current;
     if (loop <= 0) return;
-    const progress = ((-latest % loop) + loop) % loop / loop;
+    const progress = (((-latest % loop) + loop) % loop) / loop;
     setEindproductenProgress((prev) =>
       Math.abs(prev - progress) < 0.003 ? prev : Math.max(0, Math.min(1, progress)),
     );
@@ -1330,8 +1363,7 @@ function HomePage() {
       const epsilon = 2;
       const canScrollRight = nextEl.scrollLeft < maxScrollLeft - epsilon;
       const atRightEdge =
-        maxScrollLeft > 0 &&
-        (isSegmentsAtRight(nextEl) || nextEl.scrollLeft >= maxScrollLeft - 48);
+        maxScrollLeft > 0 && (isSegmentsAtRight(nextEl) || nextEl.scrollLeft >= maxScrollLeft - 48);
       setSegmentsCanScrollLeft(nextEl.scrollLeft > epsilon);
       setSegmentsCanScrollRight(canScrollRight);
       segmentsAtRightRef.current = atRightEdge;
@@ -1734,674 +1766,560 @@ function HomePage() {
   return (
     <SiteLayout>
       <div className="home-story">
-      <HomeHeroSection />
+        <HomeHeroSection />
 
-      <EnterpriseTrustSection />
+        <EnterpriseTrustSection />
 
-      <StoryBridge tone="dark-dark" line="Waar premium begint bij de snede" />
+        <StoryBridge tone="light-dark" line="Snelheid · kwaliteit · klantgerichtheid" />
 
-      <StoryMoment emphasis>
-        <PremiumMeatShowcase />
-      </StoryMoment>
+        <SpeerpuntenSection />
 
-      <StoryBridge tone="light-light" line="Vakmanschap begint met kennis en respect" />
+        <StoryBridge tone="dark-dark" line="Waar premium begint bij de snede" />
 
-      <section
-        data-story-chapter="heritage"
-        aria-labelledby="story-heritage-heading"
-        className="story-section story-section--editorial story-surface-light relative overflow-hidden px-6 grain md:px-10 lg:px-[80px]"
-      >
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-1/3 top-1/4 h-[480px] w-[480px] rounded-full bg-[radial-gradient(circle,rgba(200,164,107,0.14),transparent_70%)]" />
-          <div className="absolute right-0 top-0 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(179,18,23,0.08),transparent_70%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(1200px_820px_at_35%_30%,rgba(255,255,255,0.65)_0%,rgba(245,241,235,0)_58%)]" />
-        </div>
+        <StoryMoment emphasis>
+          <PremiumMeatShowcase />
+        </StoryMoment>
 
-        <StoryReveal className="relative mx-auto max-w-[1440px]">
-          <div className="grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-12">
-            <StoryItem className="lg:col-span-4">
-                <div className="ipek-label text-primary">
-                  ONS VERHAAL
-                </div>
-                <h2
-                  id="story-heritage-heading"
-                  className="ipek-h2 mt-6 text-[#141414]"
-                >
-                  Passie, vakmanschap
-                  <br />
-                  en halal integriteit
+        <StoryBridge tone="light-light" line="Vakmanschap begint met kennis en respect" />
+
+        <HomeOverOnsSection />
+
+        <StoryBridge tone="light-light" line="Waar selectie transformeert in excellentie" />
+
+        <section
+          id="ons-assortiment"
+          data-story-chapter="quality"
+          aria-labelledby="assortiment-heading"
+          className="story-moment story-surface-light relative isolate overflow-hidden px-6 py-20 grain lg:px-10 lg:py-28"
+        >
+          <div className="pointer-events-none absolute inset-0">
+            <div className="absolute -left-32 top-0 h-[480px] w-[480px] rounded-full bg-[radial-gradient(circle,rgba(226,192,141,0.14),transparent_68%)]" />
+            <div className="absolute -right-24 bottom-0 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(177,18,23,0.05),transparent_70%)]" />
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(200,164,107,0.38)] to-transparent" />
+          </div>
+
+          <div className="relative mx-auto w-full max-w-[1320px]">
+            <div className="relative z-0 grid gap-10 lg:grid-cols-12 lg:items-stretch lg:gap-8">
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-120px" }}
+                transition={{ duration: DS_DURATION.section, ease: DS_EASE_REVEAL }}
+                className="flex flex-col justify-center lg:col-span-4"
+              >
+                <AyatSectionBadge kicker="Selectie" title="Premium Halal" />
+                <h2 id="assortiment-heading" className="ipek-h2 mt-5 text-[#141414]">
+                  Ons Halal assortiment,
+                  <span className="mt-1.5 block ipek-heading-accent">voor elke keuken</span>
                 </h2>
-                <p className="mt-6 max-w-lg text-[15px] leading-[1.7] text-[#141414]/72">
-                  Ipekçi Slachterij staat voor premium halalvlees van Nederlandse bodem. Met respect
-                  voor islamitische normen en oog voor kwaliteit, leveren wij sinds 2012 aan
-                  tevreden klanten in heel Nederland.
+
+                <div className="relative mt-8 h-px w-24 bg-[linear-gradient(90deg,rgba(200,164,107,0),rgba(200,164,107,0.55),rgba(200,164,107,0))]">
+                  <div className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#B31217]" />
+                </div>
+
+                <p className="mt-6 max-w-[520px] text-[15px] leading-[1.75] text-[#141414]/62">
+                  Vers en bewerkt, zorgvuldig geselecteerd en 100% Halal.
+                  <span className="mt-0.5 block">
+                    Voor restaurants, supermarkten, retailers en foodservice.
+                  </span>
                 </p>
 
-                <div className="mt-10 space-y-3 text-sm text-[#141414]/75">
-                  {[
-                    "Eigen slachterij in Harderwijk",
-                    "Halal gecertificeerd",
-                    "Nederlandse lammeren",
-                    "Kwaliteit zonder compromis",
-                  ].map((t) => (
-                    <div key={t} className="flex items-start gap-3">
-                      <div className="mt-0.5 grid h-5 w-5 place-items-center rounded-full border border-[#141414]/10 bg-white/70">
-                        <Check size={13} className="text-[rgba(200,164,107,0.92)]" />
-                      </div>
-                      <div className="leading-relaxed">{t}</div>
+                <div className="mt-6 space-y-3">
+                  <PremiumTrustPoint
+                    icon={ShieldCheck}
+                    label="100% Halal Gecertificeerd"
+                    index={0}
+                  />
+                  <PremiumTrustPoint
+                    icon={DutchCraftIcon}
+                    label="Nederlandse Kwaliteit"
+                    index={1}
+                  />
+                  <PremiumTrustPoint icon={Truck} label="Dagelijks Vers Geleverd" index={2} />
+                </div>
+              </motion.div>
+
+              <div className="grid gap-6 lg:col-span-8 lg:grid-cols-3 lg:items-stretch">
+                <AssortimentProductCard
+                  label="De beste van smaak"
+                  title="Döner"
+                  description="Verschillende soorten en smaken döner kebab — Halal, exclusief en klaar voor de professionele keuken."
+                  image={assortmentDonerImage}
+                  imagePosition="40% 30%"
+                  stickerSrc={HERO_STICKERS.lamsvlees}
+                  href="/producten/doner"
+                  index={0}
+                />
+                <AssortimentProductCard
+                  label="Rund, kip, lam of mix"
+                  title="Shoarma"
+                  description="Verticaal opgestelde spit van rundvlees, kip, lamsvlees, kalkoen of mix — authentiek gekruid."
+                  image={assortmentShoarmaImage}
+                  imagePosition="52% 28%"
+                  stickerSrc={HERO_STICKERS.rundvlees}
+                  href="/producten/shoarma"
+                  index={1}
+                />
+                <AssortimentProductCard
+                  label="Heerlijk smaakvol"
+                  title="Gevogelte"
+                  description="Dankzij onze eigen productie bieden wij u de heerlijkste kipproducten, breed inzetbaar."
+                  image={assortmentGevogelteImage}
+                  imagePosition="50% 30%"
+                  stickerSrc={HERO_STICKERS.kip}
+                  href="/producten/gevogelte"
+                  index={2}
+                />
+              </div>
+            </div>
+
+            <div className="relative z-20 mt-8 border-t border-black/[0.06] pt-6 lg:mt-10 lg:pt-8">
+              <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.32em] text-[#141414]/38">
+                Verder in ons assortiment
+              </div>
+              <EindproductenStrip
+                title={endProducts.title}
+                text={endProducts.text}
+                image={endProducts.image}
+              />
+            </div>
+          </div>
+        </section>
+
+        <StoryBridge tone="light-light" line="Vertrouwd door professionals in de horeca" />
+
+        <section
+          id="segments"
+          data-story-chapter="partnership"
+          aria-labelledby="segments-heading"
+          className="story-section story-section--information story-surface-light relative overflow-hidden px-6 grain lg:px-10"
+        >
+          <div className="pointer-events-none absolute inset-0">
+            <div className="absolute left-0 top-1/4 h-[460px] w-[460px] rounded-full bg-[radial-gradient(circle,rgba(200,164,107,0.18),transparent_70%)]" />
+            <div className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle,rgba(179,18,23,0.09),transparent_70%)]" />
+            <div className="absolute bottom-1/4 left-1/3 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(226,192,141,0.18),transparent_70%)]" />
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(200,164,107,0.35)] to-transparent" />
+          </div>
+          <div className="relative mx-auto w-full max-w-[1320px]">
+            <div className="grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-12">
+              <StoryReveal className="lg:col-span-5">
+                <StoryItem>
+                  <AyatSectionBadge kicker={VOOR_WIE_HOME.kicker} title={VOOR_WIE_HOME.title} />
+                </StoryItem>
+                <PremiumTypewriter
+                  text={VOOR_WIE_HOME.headline}
+                  className="ipek-h2 mt-5 text-[#1A1A1A]"
+                  startDelay={0.28}
+                  charMs={40}
+                />
+                <StoryItem>
+                  <p
+                    id="segments-heading"
+                    className="mt-7 max-w-lg text-base leading-relaxed text-[#1A1A1A]/82"
+                  >
+                    {VOOR_WIE_HOME.lede}
+                  </p>
+                </StoryItem>
+              </StoryReveal>
+
+              <div className="min-w-0 lg:col-span-7 lg:-mr-10">
+                <div className="relative min-w-0">
+                  <div aria-hidden className="pointer-events-none absolute inset-0 z-10">
+                    {[
+                      { left: "12%", top: "18%", size: 2, o: 0.26, d: 0 },
+                      { left: "22%", top: "72%", size: 2, o: 0.2, d: 0.2 },
+                      { left: "44%", top: "28%", size: 3, o: 0.22, d: 0.35 },
+                      { left: "64%", top: "18%", size: 2, o: 0.18, d: 0.55 },
+                      { left: "78%", top: "66%", size: 3, o: 0.2, d: 0.7 },
+                      { left: "92%", top: "34%", size: 2, o: 0.16, d: 0.9 },
+                    ].map((p) => (
+                      <motion.span
+                        key={`${p.left}-${p.top}`}
+                        className="absolute rounded-full bg-white"
+                        style={{
+                          left: p.left,
+                          top: p.top,
+                          width: `${p.size}px`,
+                          height: `${p.size}px`,
+                          opacity: p.o,
+                          filter: "blur(0.2px)",
+                        }}
+                        animate={
+                          reduceMotion
+                            ? undefined
+                            : { y: [0, -9, 0], opacity: [p.o, p.o + 0.06, p.o] }
+                        }
+                        transition={
+                          reduceMotion
+                            ? undefined
+                            : { duration: 8.5, ease: "easeInOut", repeat: Infinity, delay: p.d }
+                        }
+                      />
+                    ))}
+                  </div>
+
+                  <div className="pointer-events-none absolute inset-0 z-10">
+                    <div
+                      aria-hidden
+                      className={`pointer-events-none absolute inset-y-0 right-0 z-10 w-28 transition-opacity duration-700 ease-[cubic-bezier(.22,1,.36,1)] sm:w-32 ${
+                        segmentsCanScrollRight ? "opacity-100" : "opacity-0"
+                      }`}
+                    >
+                      <div className="absolute inset-0 bg-[linear-gradient(270deg,rgba(245,241,235,0.98)_0%,rgba(245,241,235,0.72)_18%,rgba(245,241,235,0.18)_56%,rgba(245,241,235,0)_100%)]" />
                     </div>
-                  ))}
-                </div>
 
-                <div className="mt-12">
-                  <Link
-                    to="/ons-verhaal"
-                    className="group inline-flex items-center gap-3 rounded-2xl bg-[#8B0E11] px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-white shadow-[0_0_40px_-18px_rgba(177,18,23,0.45)] transition-all duration-300 hover:bg-[#B11217] hover:shadow-[0_0_58px_-18px_rgba(177,18,23,0.60)] active:translate-y-px"
-                  >
-                    Lees ons verhaal
-                    <ArrowRight
-                      size={14}
-                      className="transition-transform duration-300 group-hover:translate-x-1"
-                    />
-                  </Link>
-                </div>
-            </StoryItem>
-
-            <StoryItem className="lg:col-span-8">
-              <CardContainer
-                containerClassName="py-0 flex items-stretch justify-start"
-                className="w-full"
-              >
-                <CardBody className="relative h-auto w-full rounded-3xl border border-black/10 bg-white/70 p-0 shadow-[0_36px_120px_-80px_rgba(0,0,0,0.55)]">
-                  <div className="grid gap-3 p-3 sm:gap-4 sm:p-4 md:grid-cols-12">
-                    <CardItem
-                      translateZ={24}
-                      className="relative w-full overflow-hidden rounded-2xl md:col-span-7 md:row-span-2"
-                    >
-                      <video
-                        src={brandmovie1}
-                        muted
-                        loop
-                        playsInline
-                        autoPlay
-                        preload="metadata"
-                        aria-hidden
-                        className="h-[340px] w-full object-cover md:h-full"
-                        style={{ filter: "brightness(0.9) contrast(1.06) saturate(1.02)" }}
-                      />
-                      <div className="absolute inset-0 bg-[radial-gradient(800px_520px_at_30%_25%,rgba(255,255,255,0.18)_0%,transparent_62%)]" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-black/5" />
-                    </CardItem>
-
-                    <CardItem
-                      translateZ={18}
-                      className="relative w-full overflow-hidden rounded-2xl md:col-span-5"
-                    >
-                      <video
-                        src={brandmovie2}
-                        muted
-                        loop
-                        playsInline
-                        autoPlay
-                        preload="metadata"
-                        aria-hidden
-                        className="h-[170px] w-full object-cover md:h-[210px]"
-                        style={{ filter: "brightness(0.9) contrast(1.06) saturate(1.02)" }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-black/5" />
-                    </CardItem>
-
-                    <CardItem
-                      translateZ={18}
-                      className="relative w-full overflow-hidden rounded-2xl md:col-span-5"
-                    >
-                      <video
-                        src={brandmovie3}
-                        muted
-                        loop
-                        playsInline
-                        autoPlay
-                        preload="metadata"
-                        aria-hidden
-                        className="h-[170px] w-full object-cover md:h-[210px]"
-                        style={{ filter: "brightness(0.9) contrast(1.06) saturate(1.02)" }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/38 via-transparent to-black/5" />
-                    </CardItem>
-                  </div>
-                </CardBody>
-              </CardContainer>
-            </StoryItem>
-          </div>
-        </StoryReveal>
-      </section>
-
-      <StoryBridge tone="light-light" line="Waar selectie transformeert in excellentie" />
-
-      <section
-        id="ons-assortiment"
-        data-story-chapter="quality"
-        aria-labelledby="assortiment-heading"
-        className="story-moment story-surface-light relative isolate overflow-hidden px-6 py-20 grain lg:px-10 lg:py-28"
-      >
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -left-32 top-0 h-[480px] w-[480px] rounded-full bg-[radial-gradient(circle,rgba(226,192,141,0.14),transparent_68%)]" />
-          <div className="absolute -right-24 bottom-0 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(177,18,23,0.05),transparent_70%)]" />
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgba(200,164,107,0.38)] to-transparent" />
-        </div>
-
-        <div className="relative mx-auto w-full max-w-[1320px]">
-          <div className="relative z-0 grid gap-10 lg:grid-cols-12 lg:items-stretch lg:gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-120px" }}
-              transition={{ duration: DS_DURATION.section, ease: DS_EASE_REVEAL }}
-              className="flex flex-col justify-center lg:col-span-4"
-            >
-              <div className="flex items-center gap-3">
-                <span className="h-2 w-2 rotate-45 bg-[#B31217]" aria-hidden />
-                <span className="ipek-heading-label text-[10px] font-semibold uppercase tracking-[0.32em]">
-                  Premium kwaliteit
-                </span>
-              </div>
-              <h2
-                id="assortiment-heading"
-                className="mt-6 font-display text-[clamp(2rem,3.5vw,3rem)] font-semibold leading-[0.98] tracking-[-0.04em] text-[#141414]"
-              >
-                Vlees van topkwaliteit,
-                <span className="mt-2 block ipek-heading-accent">
-                  voor elke behoefte
-                </span>
-              </h2>
-
-              <div className="relative mt-8 h-px w-24 bg-[linear-gradient(90deg,rgba(200,164,107,0),rgba(200,164,107,0.55),rgba(200,164,107,0))]">
-                <div className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#B31217]" />
-              </div>
-
-              <p className="mt-6 max-w-[520px] text-[15px] leading-[1.75] text-[#141414]/62">
-                Dagelijks vers, halal gecertificeerd en met zorg geselecteerd.
-                <span className="mt-0.5 block">Ontdek ons uitgebreide assortiment premium vlees.</span>
-              </p>
-
-              <div className="mt-6 space-y-3">
-                <PremiumTrustPoint icon={ShieldCheck} label="100% Halal Gecertificeerd" index={0} />
-                <PremiumTrustPoint icon={DutchCraftIcon} label="Nederlandse Kwaliteit" index={1} />
-                <PremiumTrustPoint icon={Truck} label="Dagelijks Vers Geleverd" index={2} />
-              </div>
-            </motion.div>
-
-            <div className="grid gap-6 lg:col-span-8 lg:grid-cols-3 lg:items-stretch">
-              <AssortimentProductCard
-                label="Premium lamsvlees"
-                title="Lamsvlees"
-                description="Mals, smaakvol en zorgvuldig geselecteerd lamsvlees van topkwaliteit."
-                image={assortmentLamsvleesImage}
-                imagePosition="24% 26%"
-                stickerSrc={HERO_STICKERS.lamsvlees}
-                href="/assortiment/lamsvlees"
-                index={0}
-              />
-              <AssortimentProductCard
-                label="Premium rundvlees"
-                title="Rundvlees"
-                description="Premium rundvlees, perfect voor elke professionele keuken."
-                image={assortmentRundvleesImage}
-                imagePosition="52% 28%"
-                stickerSrc={HERO_STICKERS.rundvlees}
-                href="/assortiment/rundvlees"
-                index={1}
-              />
-              <AssortimentProductCard
-                label="Premium kip"
-                title="Kip"
-                description="Halal kip van hoge kwaliteit, dagvers en breed inzetbaar in elk gerecht."
-                image={assortmentKipImage}
-                imagePosition="72% 30%"
-                stickerSrc={HERO_STICKERS.kip}
-                href="/assortiment/kip"
-                index={2}
-              />
-            </div>
-          </div>
-
-          <div className="relative z-20 mt-8 border-t border-black/[0.06] pt-6 lg:mt-10 lg:pt-8">
-            <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.32em] text-[#141414]/38">
-              Verder in ons assortiment
-            </div>
-            <EindproductenStrip
-              title={endProducts.title}
-              text={endProducts.text}
-              image={endProducts.image}
-            />
-          </div>
-        </div>
-      </section>
-
-      <StoryBridge tone="light-light" line="Vertrouwd door keukens die het verschil kennen" />
-
-      <section
-        id="segments"
-        data-story-chapter="partnership"
-        aria-labelledby="segments-heading"
-        className="story-section story-section--information story-surface-light relative overflow-hidden px-6 grain lg:px-10"
-      >
-        <div className="pointer-events-none absolute inset-0 opacity-70">
-          <div className="absolute left-0 top-1/4 h-[460px] w-[460px] rounded-full bg-[radial-gradient(circle,rgba(200,164,107,0.14),transparent_70%)]" />
-          <div className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle,rgba(179,18,23,0.08),transparent_70%)]" />
-          <div className="absolute bottom-1/4 left-1/3 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(226,192,141,0.16),transparent_70%)]" />
-        </div>
-        <div className="mx-auto max-w-[1480px]">
-          <div className="grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-12">
-            <StoryReveal className="lg:col-span-5">
-              <StoryItem>
-                <div className="ipek-label text-primary">
-                  VOOR WIE WIJ WERKEN
-                </div>
-              </StoryItem>
-              <PremiumTypewriter
-                text="Halalvlees voor verkoop en bereiding"
-                className="ipek-h2 mt-6 text-[#1A1A1A]"
-                startDelay={0.28}
-                charMs={40}
-              />
-              <StoryItem>
-                <p
-                  id="segments-heading"
-                  className="mt-7 max-w-lg text-base leading-relaxed text-[#1A1A1A]/82"
-                >
-                  Ipekçi levert premium halalvlees en eindproducten aan slagerijen, groothandels,
-                  supermarkten en restaurants, met constante kwaliteit, hygiënische verwerking en
-                  betrouwbare levering.
-                </p>
-              </StoryItem>
-            </StoryReveal>
-
-            <div className="min-w-0 lg:col-span-7 lg:-mr-10">
-              <div className="relative min-w-0">
-                <div aria-hidden className="pointer-events-none absolute inset-0 z-10">
-                  {[
-                    { left: "12%", top: "18%", size: 2, o: 0.26, d: 0 },
-                    { left: "22%", top: "72%", size: 2, o: 0.20, d: 0.2 },
-                    { left: "44%", top: "28%", size: 3, o: 0.22, d: 0.35 },
-                    { left: "64%", top: "18%", size: 2, o: 0.18, d: 0.55 },
-                    { left: "78%", top: "66%", size: 3, o: 0.20, d: 0.7 },
-                    { left: "92%", top: "34%", size: 2, o: 0.16, d: 0.9 },
-                  ].map((p) => (
-                    <motion.span
-                      key={`${p.left}-${p.top}`}
-                      className="absolute rounded-full bg-white"
-                      style={{
-                        left: p.left,
-                        top: p.top,
-                        width: `${p.size}px`,
-                        height: `${p.size}px`,
-                        opacity: p.o,
-                        filter: "blur(0.2px)",
-                      }}
-                      animate={reduceMotion ? undefined : { y: [0, -9, 0], opacity: [p.o, p.o + 0.06, p.o] }}
-                      transition={
-                        reduceMotion
-                          ? undefined
-                          : { duration: 8.5, ease: "easeInOut", repeat: Infinity, delay: p.d }
-                      }
-                    />
-                  ))}
-                </div>
-
-                <div className="pointer-events-none absolute inset-0 z-10">
-                  <div
-                    aria-hidden
-                    className={`pointer-events-none absolute inset-y-0 right-0 z-10 w-28 transition-opacity duration-700 ease-[cubic-bezier(.22,1,.36,1)] sm:w-32 ${
-                      segmentsCanScrollRight ? "opacity-100" : "opacity-0"
-                    }`}
-                  >
-                    <div className="absolute inset-0 bg-[linear-gradient(270deg,rgba(245,241,235,0.98)_0%,rgba(245,241,235,0.72)_18%,rgba(245,241,235,0.18)_56%,rgba(245,241,235,0)_100%)]" />
-                  </div>
-
-                  <div className="absolute left-2 top-1/2 -translate-y-1/2">
-                    {segmentsCanScrollLeft ? (
+                    <div className="absolute left-2 top-1/2 -translate-y-1/2">
+                      {segmentsCanScrollLeft ? (
+                        <button
+                          type="button"
+                          aria-label="Scroll links"
+                          onClick={() => {
+                            scrollSegments("left");
+                          }}
+                          className="pointer-events-auto group grid h-10 w-10 place-items-center rounded-2xl border border-black/10 bg-white/55 shadow-[0_22px_70px_-46px_rgba(0,0,0,0.52)] backdrop-blur-xl transition-all duration-300 hover:bg-white/75 hover:shadow-[0_30px_90px_-52px_rgba(0,0,0,0.60)] active:scale-[0.98] sm:h-11 sm:w-11 lg:h-12 lg:w-12"
+                        >
+                          <ArrowRight
+                            size={16}
+                            className="rotate-180 text-black/70 transition-transform duration-300 group-hover:-translate-x-0.5"
+                          />
+                        </button>
+                      ) : null}
+                    </div>
+                    <div className="absolute right-2 top-1/2 -translate-y-1/2">
                       <button
                         type="button"
-                        aria-label="Scroll links"
+                        aria-label="Scroll rechts"
+                        data-disabled={segmentsCanScrollRight ? "false" : "true"}
                         onClick={() => {
-                          scrollSegments("left");
+                          scrollSegments("right");
                         }}
-                        className="pointer-events-auto group grid h-10 w-10 place-items-center rounded-2xl border border-black/10 bg-white/55 shadow-[0_22px_70px_-46px_rgba(0,0,0,0.52)] backdrop-blur-xl transition-all duration-300 hover:bg-white/75 hover:shadow-[0_30px_90px_-52px_rgba(0,0,0,0.60)] active:scale-[0.98] sm:h-11 sm:w-11 lg:h-12 lg:w-12"
+                        className={`pointer-events-auto group grid h-10 w-10 place-items-center rounded-2xl border border-black/10 bg-white/55 shadow-[0_22px_70px_-46px_rgba(0,0,0,0.52)] backdrop-blur-xl transition-all duration-300 hover:bg-white/75 hover:shadow-[0_30px_90px_-52px_rgba(0,0,0,0.60)] active:scale-[0.98] sm:h-11 sm:w-11 lg:h-12 lg:w-12 ${
+                          segmentsCanScrollRight ? "" : "opacity-70"
+                        }`}
                       >
                         <ArrowRight
                           size={16}
-                          className="rotate-180 text-black/70 transition-transform duration-300 group-hover:-translate-x-0.5"
+                          className={`text-black/70 transition-transform duration-300 ${
+                            segmentsCanScrollRight ? "group-hover:translate-x-0.5" : ""
+                          }`}
                         />
                       </button>
-                    ) : null}
-                  </div>
-                  <div className="absolute right-2 top-1/2 -translate-y-1/2">
-                    <button
-                      type="button"
-                      aria-label="Scroll rechts"
-                      data-disabled={segmentsCanScrollRight ? "false" : "true"}
-                      onClick={() => {
-                        scrollSegments("right");
-                      }}
-                      className={`pointer-events-auto group grid h-10 w-10 place-items-center rounded-2xl border border-black/10 bg-white/55 shadow-[0_22px_70px_-46px_rgba(0,0,0,0.52)] backdrop-blur-xl transition-all duration-300 hover:bg-white/75 hover:shadow-[0_30px_90px_-52px_rgba(0,0,0,0.60)] active:scale-[0.98] sm:h-11 sm:w-11 lg:h-12 lg:w-12 ${
-                        segmentsCanScrollRight ? "" : "opacity-70"
-                      }`}
-                    >
-                      <ArrowRight
-                        size={16}
-                        className={`text-black/70 transition-transform duration-300 ${
-                          segmentsCanScrollRight ? "group-hover:translate-x-0.5" : ""
-                        }`}
-                      />
-                    </button>
-                  </div>
-                </div>
-
-                <motion.div
-                  ref={segmentsScrollerRef}
-                  initial={reduceMotion ? false : "hidden"}
-                  whileInView={reduceMotion ? undefined : "visible"}
-                  viewport={{ once: true, amount: 0.28, margin: "0px 0px -8% 0px" }}
-                  variants={reduceMotion ? undefined : segmentsCarouselRevealVariants}
-                  onMouseLeave={() => {
-                    segmentsCardHoveredRef.current = false;
-                  }}
-                  onPointerDown={handleSegmentsPointerDown}
-                  onPointerMove={handleSegmentsPointerMove}
-                  onPointerUp={handleSegmentsPointerUp}
-                  onPointerCancel={handleSegmentsPointerUp}
-                  onTouchStart={markSegmentsUserInteract}
-                  onWheel={markSegmentsUserInteract}
-                  data-dragging={segmentsDragging ? "true" : "false"}
-                  className={`relative flex min-h-[440px] w-full min-w-0 snap-x snap-mandatory gap-6 overflow-x-auto px-2 pb-4 pt-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden sm:gap-7 sm:px-4 lg:px-0 lg:pb-0 ${
-                    segmentsDragging ? "cursor-grabbing" : "cursor-grab"
-                  }`}
-                  style={{
-                    scrollPaddingLeft: "22px",
-                    scrollPaddingRight: "0px",
-                    WebkitOverflowScrolling: "touch",
-                    touchAction: "pan-x",
-                  }}
-                >
-                  {segments.map((s, idx) => (
-                    <SegmentCard
-                      key={s.title}
-                      {...s}
-                      index={idx}
-                      revealVariants={reduceMotion ? undefined : segmentCardRevealVariants}
-                      onHoverChange={handleSegmentCardHover}
-                    />
-                  ))}
-                </motion.div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <StoryBridge tone="light-dark" line="Van rauwe excellentie tot verfijnd eindproduct" />
-
-      <StoryMoment emphasis>
-      <section
-        id="products"
-        data-story-chapter="finished-products"
-        aria-labelledby="products-heading"
-        className="relative isolate overflow-hidden px-6 py-28 text-[#1c1c1c] grain lg:px-10 lg:py-36"
-      >
-        <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <img
-            src={backgroundWhite1}
-            alt=""
-            className="h-full w-full object-cover"
-            loading="lazy"
-            decoding="async"
-          />
-          <div className="absolute left-0 right-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.32),transparent)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(1200px_760px_at_50%_0%,rgba(255,255,255,0.55)_0%,transparent_62%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(900px_640px_at_82%_72%,rgba(179,18,23,0.04)_0%,transparent_58%)]" />
-        </div>
-
-        <div className="relative z-10 mx-auto max-w-[1480px]">
-          <StoryReveal className="text-center">
-            <StoryItem>
-              <div className="ipek-label ipek-heading-label">
-                ONS ASSORTIMENT
-              </div>
-              <h2
-                id="products-heading"
-                className="ipek-h2-lg mt-6 text-[#1c1c1c]"
-              >
-                Slacht van Ipekçi
-              </h2>
-
-              <div className="relative mx-auto mt-8 h-px w-[220px] bg-[rgba(198,160,98,0.55)]">
-                <div className="absolute left-1/2 top-1/2 grid h-7 w-7 -translate-x-1/2 -translate-y-1/2 place-items-center bg-[#f8f6f3]">
-                  <div className="h-2 w-2 rotate-45 bg-[#B31217]" />
-                </div>
-              </div>
-            </StoryItem>
-
-            <StoryItem>
-              <p className="mx-auto mt-9 max-w-[720px] text-sm leading-relaxed text-[#5a5a5a] sm:text-base">
-                Al ons vlees is 100% halal, met zorg geselecteerd en met vakmanschap verwerkt. Puur,
-                vers en van de hoogste kwaliteit.
-              </p>
-            </StoryItem>
-          </StoryReveal>
-
-          <div className="mt-14 grid gap-6 lg:mt-16 lg:grid-cols-3 lg:gap-7">
-            {[
-              {
-                id: "lamsvlees",
-                title: "Lamsvlees",
-                description:
-                  "Premium Nederlands lamsvlees, onbedwelmd halalgeslacht in ons eigen slachthuis. Leverbaar als complete karkassen of versgesneden delen.",
-                image: assortimentLamsvleesHeroImage,
-                stickerSrc: HERO_STICKERS.lamsvlees,
-              },
-              {
-                id: "rundvlees",
-                title: "Rundvlees",
-                description:
-                  "Ons rundvlees komt van Nederlandse runderen en vaste partners. Altijd halalgeslacht en leverbaar als ribeye, entrecote, gehakt en andere delen.",
-                image: assortimentRundvleesHeroImage,
-                stickerSrc: HERO_STICKERS.rundvlees,
-              },
-              {
-                id: "kip",
-                title: "Kip",
-                description:
-                  "Op aanvraag van bestaande klanten leveren wij ook halalgeslachte kip. Premium kwaliteit uit Nederland en beschikbaar in alle standaarddelen.",
-                image: assortimentKipHeroImage,
-                stickerSrc: HERO_STICKERS.kip,
-              },
-            ].map((c, idx) => (
-              <AssortimentUnifiedCard key={c.id} {...c} index={idx} />
-            ))}
-          </div>
-
-          <div className="relative mt-16 h-px w-full bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.35),transparent)]" />
-
-          <div className="relative mt-14 grid gap-12 lg:mt-16 lg:grid-cols-12 lg:items-start lg:gap-14 xl:gap-16">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-140px" }}
-              transition={{ duration: DS_DURATION.section, ease: DS_EASE_REVEAL }}
-              className="lg:col-span-4 lg:sticky lg:top-28 lg:self-start"
-            >
-              <div className="ipek-label ipek-heading-label">Eindproducten</div>
-              <h3 className="ipek-h2-lg mt-5 text-[#1c1c1c]">
-                Premium
-                <span className="mt-1 block ipek-heading-accent">
-                  Finished Products
-                </span>
-              </h3>
-
-              <div className="relative mt-7 h-px w-20 bg-[linear-gradient(90deg,rgba(226,192,141,0.0),rgba(226,192,141,0.55),rgba(226,192,141,0.0))]">
-                <div className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-[#B31217]" />
-              </div>
-
-              <p className="mt-6 max-w-[42ch] text-[15px] leading-[1.75] text-[#5a5a5a]">
-                Een zorgvuldig samengestelde halal collectie voor retail, slagerij,
-                horeca en moderne foodconcepten — van shoarma en kebab tot burgers en
-                verpakte specialiteiten.
-              </p>
-
-              <div className="mt-7 flex flex-wrap gap-2">
-                {["Shoarma", "Kebab", "Burgers", "Verpakt"].map((item) => (
-                  <span
-                    key={item}
-                    className="rounded-full border border-[rgba(198,160,98,0.28)] bg-white/70 px-3.5 py-1.5 text-[9px] font-medium uppercase tracking-[0.24em] text-[#666]"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-
-              <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
-                <a
-                  href="/assortiment/eindproducten"
-                  className="group inline-flex items-center gap-3 rounded-2xl border border-[rgba(226,192,141,0.22)] bg-[linear-gradient(135deg,rgba(179,18,23,0.98),rgba(92,8,10,0.96))] px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#F5F2ED] shadow-[0_26px_92px_-64px_rgba(0,0,0,0.90)] transition-all duration-500 hover:border-[rgba(226,192,141,0.38)] active:translate-y-px"
-                >
-                  Alle producten
-                  <ArrowRight
-                    size={14}
-                    className="transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-1"
-                  />
-                </a>
-                <span className="text-[10px] uppercase tracking-[0.28em] text-[#999]">
-                  {EINDPRODUCTEN_PRODUCTS.length} signature selecties
-                </span>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 88 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-140px" }}
-              transition={{ duration: 1.15, ease: EINDPRODUCTEN_REVEAL_EASE, delay: 0.06 }}
-              className="relative min-w-0 lg:col-span-8"
-              ref={eindproductenShowcaseRef}
-            >
-              <div
-                className="relative"
-                onMouseEnter={() => {
-                  eindproductenAutoPausedRef.current = true;
-                }}
-                onMouseLeave={() => {
-                  eindproductenAutoPausedRef.current = false;
-                }}
-                onTouchStart={() => {
-                  eindproductenAutoPausedRef.current = true;
-                  markEindproductenUserInteract(4200);
-                }}
-                onTouchEnd={() => {
-                  eindproductenAutoPausedRef.current = false;
-                }}
-              >
-                <div className="relative overflow-hidden pb-2 pt-1">
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-y-0 left-0 z-20 w-14 sm:w-24 lg:w-36"
-                  >
-                    <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(248,246,243,0.98)_0%,rgba(248,246,243,0.72)_28%,rgba(248,246,243,0.18)_62%,rgba(248,246,243,0)_100%)]" />
-                  </div>
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-y-0 right-0 z-20 w-14 sm:w-24 lg:w-36"
-                  >
-                    <div className="absolute inset-0 bg-[linear-gradient(270deg,rgba(248,246,243,0.98)_0%,rgba(248,246,243,0.72)_28%,rgba(248,246,243,0.18)_62%,rgba(248,246,243,0)_100%)]" />
+                    </div>
                   </div>
 
                   <motion.div
-                    ref={eindproductenTrackRef}
-                    onPointerDown={handleEindproductenPointerDown}
-                    onPointerMove={handleEindproductenPointerMove}
-                    onPointerUp={handleEindproductenPointerUp}
-                    onPointerCancel={handleEindproductenPointerUp}
-                    data-dragging={eindproductenDragging ? "true" : "false"}
-                    className={`relative flex w-max gap-5 sm:gap-6 lg:gap-7 ${
-                      eindproductenDragging ? "cursor-grabbing" : "cursor-grab"
+                    ref={segmentsScrollerRef}
+                    initial={reduceMotion ? false : "hidden"}
+                    whileInView={reduceMotion ? undefined : "visible"}
+                    viewport={{ once: true, amount: 0.28, margin: "0px 0px -8% 0px" }}
+                    variants={reduceMotion ? undefined : segmentsCarouselRevealVariants}
+                    onMouseLeave={() => {
+                      segmentsCardHoveredRef.current = false;
+                    }}
+                    onPointerDown={handleSegmentsPointerDown}
+                    onPointerMove={handleSegmentsPointerMove}
+                    onPointerUp={handleSegmentsPointerUp}
+                    onPointerCancel={handleSegmentsPointerUp}
+                    onTouchStart={markSegmentsUserInteract}
+                    onWheel={markSegmentsUserInteract}
+                    data-dragging={segmentsDragging ? "true" : "false"}
+                    className={`relative flex min-h-[440px] w-full min-w-0 snap-x snap-mandatory gap-6 overflow-x-auto px-2 pb-4 pt-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden sm:gap-7 sm:px-4 lg:px-0 lg:pb-0 ${
+                      segmentsDragging ? "cursor-grabbing" : "cursor-grab"
                     }`}
                     style={{
-                      x: eindproductenX,
-                      willChange: "transform",
-                      touchAction: "pan-y",
+                      scrollPaddingLeft: "22px",
+                      scrollPaddingRight: "0px",
+                      WebkitOverflowScrolling: "touch",
+                      touchAction: "pan-x",
                     }}
                   >
-                  {EINDPRODUCTEN_LOOP_PRODUCTS.map((p, idx) => (
-                    <EindproductenShowcaseCard
-                      key={`eind-${p.title}-${idx}`}
-                      product={p}
-                      index={idx % EINDPRODUCTEN_PRODUCTS.length}
-                      skipReveal={idx >= EINDPRODUCTEN_PRODUCTS.length}
-                      isRevealed={eindproductenShowcaseRevealed}
-                    />
-                  ))}
-
-                  <div className="w-2 shrink-0 sm:w-4" />
+                    {segments.map((s, idx) => (
+                      <SegmentCard
+                        key={s.title}
+                        {...s}
+                        index={idx}
+                        revealVariants={reduceMotion ? undefined : segmentCardRevealVariants}
+                        onHoverChange={handleSegmentCardHover}
+                      />
+                    ))}
                   </motion.div>
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
 
-              <div className="pointer-events-none absolute inset-y-0 left-0 right-0 z-10 hidden sm:block">
-                <div className="absolute left-0 top-1/2 -translate-y-1/2">
-                  {eindproductenCanScrollLeft ? (
-                    <button
-                      type="button"
-                      aria-label="Vorige"
-                      onClick={() => {
-                        markEindproductenUserInteract();
-                        nudgeEindproducten("left");
-                      }}
-                      className="pointer-events-auto group grid h-10 w-10 place-items-center rounded-2xl border border-black/10 bg-white/70 shadow-[0_22px_70px_-46px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all duration-400 hover:border-[rgba(198,160,98,0.35)] hover:bg-white hover:shadow-[0_28px_80px_-48px_rgba(0,0,0,0.42)] active:scale-[0.98] lg:h-11 lg:w-11"
-                    >
-                      <ArrowRight
-                        size={16}
-                        className="rotate-180 text-[#333] transition-transform duration-400 group-hover:-translate-x-0.5"
-                      />
-                    </button>
-                  ) : null}
-                </div>
-                <div className="absolute right-0 top-1/2 -translate-y-1/2">
-                  {eindproductenCanScrollRight ? (
-                    <button
-                      type="button"
-                      aria-label="Volgende"
-                      onClick={() => {
-                        markEindproductenUserInteract();
-                        nudgeEindproducten("right");
-                      }}
-                      className="pointer-events-auto group grid h-10 w-10 place-items-center rounded-2xl border border-black/10 bg-white/70 shadow-[0_22px_70px_-46px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all duration-400 hover:border-[rgba(198,160,98,0.35)] hover:bg-white hover:shadow-[0_28px_80px_-48px_rgba(0,0,0,0.42)] active:scale-[0.98] lg:h-11 lg:w-11"
-                    >
-                      <ArrowRight
-                        size={16}
-                        className="text-[#333] transition-transform duration-400 group-hover:translate-x-0.5"
-                      />
-                    </button>
-                  ) : null}
-                </div>
+        <StoryBridge
+          tone="light-dark"
+          line="Van verse selectie tot kant-en-klare Halal specialiteiten"
+        />
+
+        <StoryMoment emphasis>
+          <section
+            id="products"
+            data-story-chapter="finished-products"
+            aria-labelledby="products-heading"
+            className="relative isolate overflow-hidden px-6 py-28 text-[#0a0a0a] grain lg:px-10 lg:py-36"
+          >
+            <div className="pointer-events-none absolute inset-0" aria-hidden>
+              <img
+                src={backgroundWhite1}
+                alt=""
+                className="h-full w-full scale-[1.05] object-cover opacity-[0.55]"
+                loading="lazy"
+                decoding="async"
+                style={{ filter: "brightness(1.08) contrast(0.92) saturate(0.78) blur(1.5px)" }}
+              />
+              {/* Frosted veil — atmosphere without competing for focus */}
+              <div className="absolute inset-0 bg-[rgba(248,246,243,0.68)]" />
+              {/* Header spotlight */}
+              <div className="absolute inset-0 bg-[radial-gradient(1100px_680px_at_50%_6%,rgba(255,255,255,0.88)_0%,rgba(248,246,243,0.4)_40%,transparent_70%)]" />
+              {/* Soft vignette for cinematic depth */}
+              <div className="absolute inset-0 bg-[radial-gradient(135%_110%_at_50%_42%,transparent_36%,rgba(20,20,20,0.16)_100%)]" />
+              {/* Warm gold ambient */}
+              <div className="absolute inset-0 bg-[radial-gradient(880px_520px_at_14%_68%,rgba(198,160,98,0.11)_0%,transparent_62%)]" />
+              {/* Brand red breath */}
+              <div className="absolute inset-0 bg-[radial-gradient(820px_500px_at_88%_78%,rgba(179,18,23,0.065)_0%,transparent_58%)]" />
+              {/* Bottom stage — lift product focus */}
+              <div className="absolute inset-x-0 bottom-0 h-[48%] bg-gradient-to-t from-[rgba(248,246,243,0.92)] via-[rgba(248,246,243,0.35)] to-transparent" />
+              <div className="absolute left-0 right-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.38),transparent)]" />
+            </div>
+
+            <div className="relative z-10 mx-auto w-full max-w-[1320px]">
+              <StoryReveal className="text-center">
+                <StoryItem>
+                  <AyatSectionBadge kicker="Producten" title="Ons assortiment" align="center" />
+                  <h2
+                    id="products-heading"
+                    className="ipek-h2-lg mt-5 text-[#0a0a0a]"
+                    style={{
+                      textShadow:
+                        "0 1px 0 rgba(255,255,255,0.55), 0 8px 32px rgba(248,246,243,0.8)",
+                    }}
+                  >
+                    Premium Halal productassortiment
+                  </h2>
+
+                  <div className="relative mx-auto mt-8 h-px w-[220px] bg-[rgba(198,160,98,0.6)]">
+                    <div className="absolute left-1/2 top-1/2 grid h-7 w-7 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-sm bg-[#f8f6f3]/95 shadow-[0_0_0_1px_rgba(198,160,98,0.12)]">
+                      <div className="h-2 w-2 rotate-45 bg-[#B31217]" />
+                    </div>
+                  </div>
+                </StoryItem>
+
+                <StoryItem>
+                  <p className="mx-auto mt-9 max-w-[720px] text-sm leading-relaxed text-[#2c2c2c]/82 sm:text-base">
+                    Hoogwaardige en exclusieve Halal vleesproducten — vers en bewerkt — zorgvuldig
+                    geselecteerd voor restaurants, supermarkten, retailers en foodservice. 100%
+                    Halal onder toezicht van ECC Halal.
+                  </p>
+                </StoryItem>
+              </StoryReveal>
+
+              <div className="mt-14 grid gap-6 lg:mt-16 lg:grid-cols-3 lg:gap-7">
+                {[
+                  {
+                    id: "lamsvlees",
+                    title: "Döner",
+                    description:
+                      "Wij produceren verschillende soorten en smaken döner kebab producten — van kombidöner tot kalfsdöner.",
+                    image: assortimentDonerHeroImage,
+                    stickerSrc: HERO_STICKERS.lamsvlees,
+                  },
+                  {
+                    id: "rundvlees",
+                    title: "Shoarma",
+                    description:
+                      "Verticaal opgestelde spit van rundvlees, kip, lamsvlees, kalkoen of mix — authentiek gekruid.",
+                    image: assortimentShoarmaHeroImage,
+                    stickerSrc: HERO_STICKERS.rundvlees,
+                  },
+                  {
+                    id: "kip",
+                    title: "Gevogelte",
+                    description:
+                      "Dankzij onze eigen productie bieden wij u de heerlijkste kipproducten — smaakvol en breed inzetbaar.",
+                    image: assortimentGevogelteHeroImage,
+                    stickerSrc: HERO_STICKERS.kip,
+                  },
+                ].map((c, idx) => (
+                  <AssortimentUnifiedCard key={c.id} {...c} index={idx} />
+                ))}
               </div>
 
-              <div className="relative mt-8 hidden h-[2px] overflow-hidden rounded-full bg-black/[0.06] sm:block">
-                <div
-                  className="h-full rounded-full bg-[linear-gradient(90deg,rgba(226,192,141,0.0),rgba(226,192,141,0.75),rgba(226,192,141,0.0))] transition-[width] duration-700 ease-[cubic-bezier(.22,1,.36,1)]"
-                  style={{ width: `${Math.round(eindproductenProgress * 100)}%` }}
-                />
-                <div
-                  className="absolute top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full border border-[rgba(226,192,141,0.45)] bg-[rgba(245,242,237,0.9)] transition-[left] duration-700 ease-[cubic-bezier(.22,1,.36,1)]"
-                  style={{ left: `calc(${Math.max(0, Math.min(1, eindproductenProgress)) * 100}% - 5px)` }}
-                />
-              </div>
-            </motion.div>
-        </div>
-      </div>
-      </section>
-      </StoryMoment>
+              <div className="relative mt-16 h-px w-full bg-[linear-gradient(90deg,transparent,rgba(198,160,98,0.42),transparent)]" />
 
-      <StoryBridge tone="dark-dark" />
+              <div className="relative mt-14 grid gap-12 lg:mt-16 lg:grid-cols-12 lg:items-start lg:gap-14 xl:gap-16">
+                <motion.div
+                  initial={{ opacity: 0, y: 28 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-140px" }}
+                  transition={{ duration: 0.95, ease: DS_EASE_REVEAL }}
+                  className="relative lg:col-span-4 lg:sticky lg:top-28 lg:self-start"
+                >
+                  <AyatSectionBadge kicker="Specialiteiten" title="Döner & Shoarma" />
+                  <h3 className="ipek-h2-lg mt-5 text-[#070707]">
+                    Halal
+                    <span className="mt-1.5 block font-display text-[clamp(1.85rem,3.2vw,2.65rem)] font-semibold italic leading-[1.05] tracking-[-0.02em] text-[#B31217]">
+                      met passie bereid
+                    </span>
+                  </h3>
+
+                  <div className="relative mt-7 h-px w-24 bg-[linear-gradient(90deg,rgba(226,192,141,0.85),rgba(226,192,141,0.2),transparent)]">
+                    <div className="absolute left-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rotate-45 bg-[#B31217] shadow-[0_0_12px_rgba(179,18,23,0.45)]" />
+                  </div>
+
+                  <p className="mt-6 max-w-[40ch] text-[15px] leading-[1.8] text-[#1a1a1a]/80">
+                    Ayat Food is het adres waar afnemers en kebab-liefhebbers Halal döner kebab en
+                    shoarma kunnen afnemen — van verse spitproducten tot handige diepvriesvarianten.
+                  </p>
+
+                  <div className="mt-8 flex flex-wrap gap-2">
+                    {["Döner", "Shoarma", "Diepvries", "Gegrild"].map((item) => (
+                      <span
+                        key={item}
+                        className="border-b border-[rgba(198,160,98,0.45)] px-1 pb-1 text-[9px] font-semibold uppercase tracking-[0.28em] text-[#333]"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
+                    <a
+                      href="/producten"
+                      className="group relative inline-flex items-center gap-3 overflow-hidden rounded-2xl border border-[rgba(226,192,141,0.38)] bg-[linear-gradient(145deg,#B31217_0%,#7a0c10_55%,#4a080a_100%)] px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#F8F4EE] shadow-[0_28px_80px_-48px_rgba(0,0,0,0.95),0_0_0_1px_rgba(255,255,255,0.08)_inset] transition-all duration-550 ease-[cubic-bezier(.22,1,.36,1)] hover:-translate-y-1 hover:border-[rgba(226,192,141,0.65)] hover:shadow-[0_36px_100px_-48px_rgba(0,0,0,0.95),0_0_48px_-12px_rgba(179,18,23,0.55)] active:translate-y-px"
+                    >
+                      <span
+                        aria-hidden
+                        className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(105deg,transparent_30%,rgba(255,255,255,0.16)_48%,transparent_62%)] transition-transform duration-700 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-full"
+                      />
+                      <span className="relative">Alle producten</span>
+                      <ArrowRight
+                        size={14}
+                        className="relative transition-transform duration-550 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-1"
+                      />
+                    </a>
+                    <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-[#555]">
+                      {EINDPRODUCTEN_PRODUCTS.length} signature selecties
+                    </span>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, x: 88 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-140px" }}
+                  transition={{ duration: 1.15, ease: EINDPRODUCTEN_REVEAL_EASE, delay: 0.06 }}
+                  className="relative min-w-0 lg:col-span-8"
+                  ref={eindproductenShowcaseRef}
+                >
+                  <div
+                    className="relative"
+                    onMouseEnter={() => {
+                      eindproductenAutoPausedRef.current = true;
+                    }}
+                    onMouseLeave={() => {
+                      eindproductenAutoPausedRef.current = false;
+                    }}
+                    onTouchStart={() => {
+                      eindproductenAutoPausedRef.current = true;
+                      markEindproductenUserInteract(4200);
+                    }}
+                    onTouchEnd={() => {
+                      eindproductenAutoPausedRef.current = false;
+                    }}
+                  >
+                    <div className="relative overflow-hidden pb-10 pt-6">
+                      <motion.div
+                        ref={eindproductenTrackRef}
+                        onPointerDown={handleEindproductenPointerDown}
+                        onPointerMove={handleEindproductenPointerMove}
+                        onPointerUp={handleEindproductenPointerUp}
+                        onPointerCancel={handleEindproductenPointerUp}
+                        data-dragging={eindproductenDragging ? "true" : "false"}
+                        className={`relative flex w-max gap-5 sm:gap-6 lg:gap-7 ${
+                          eindproductenDragging ? "cursor-grabbing" : "cursor-grab"
+                        }`}
+                        style={{
+                          x: eindproductenX,
+                          willChange: "transform",
+                          touchAction: "pan-y",
+                        }}
+                      >
+                        {EINDPRODUCTEN_LOOP_PRODUCTS.map((p, idx) => (
+                          <EindproductenShowcaseCard
+                            key={`eind-${p.title}-${idx}`}
+                            product={p}
+                            index={idx % EINDPRODUCTEN_PRODUCTS.length}
+                            skipReveal={idx >= EINDPRODUCTEN_PRODUCTS.length}
+                            isRevealed={eindproductenShowcaseRevealed}
+                          />
+                        ))}
+
+                        <div className="w-2 shrink-0 sm:w-4" />
+                      </motion.div>
+                    </div>
+                  </div>
+
+                  <div className="pointer-events-none absolute inset-y-0 left-0 right-0 z-10 hidden sm:block">
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2">
+                      {eindproductenCanScrollLeft ? (
+                        <button
+                          type="button"
+                          aria-label="Vorige"
+                          onClick={() => {
+                            markEindproductenUserInteract();
+                            nudgeEindproducten("left");
+                          }}
+                          className="pointer-events-auto group grid h-10 w-10 place-items-center rounded-2xl border border-[rgba(198,160,98,0.22)] bg-white/80 shadow-[0_22px_70px_-46px_rgba(0,0,0,0.4)] backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(.22,1,.36,1)] hover:-translate-y-0.5 hover:border-[rgba(198,160,98,0.45)] hover:bg-white hover:shadow-[0_28px_80px_-48px_rgba(0,0,0,0.48),0_0_28px_-12px_rgba(179,18,23,0.2)] active:scale-[0.98] lg:h-11 lg:w-11"
+                        >
+                          <ArrowRight
+                            size={16}
+                            className="rotate-180 text-[#333] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:-translate-x-0.5"
+                          />
+                        </button>
+                      ) : null}
+                    </div>
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2">
+                      {eindproductenCanScrollRight ? (
+                        <button
+                          type="button"
+                          aria-label="Volgende"
+                          onClick={() => {
+                            markEindproductenUserInteract();
+                            nudgeEindproducten("right");
+                          }}
+                          className="pointer-events-auto group grid h-10 w-10 place-items-center rounded-2xl border border-[rgba(198,160,98,0.22)] bg-white/80 shadow-[0_22px_70px_-46px_rgba(0,0,0,0.4)] backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(.22,1,.36,1)] hover:-translate-y-0.5 hover:border-[rgba(198,160,98,0.45)] hover:bg-white hover:shadow-[0_28px_80px_-48px_rgba(0,0,0,0.48),0_0_28px_-12px_rgba(179,18,23,0.2)] active:scale-[0.98] lg:h-11 lg:w-11"
+                        >
+                          <ArrowRight
+                            size={16}
+                            className="text-[#333] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-0.5"
+                          />
+                        </button>
+                      ) : null}
+                    </div>
+                  </div>
+
+                  <div className="relative mt-8 hidden h-[2px] overflow-hidden rounded-full bg-black/[0.06] sm:block">
+                    <div
+                      className="h-full rounded-full bg-[linear-gradient(90deg,rgba(226,192,141,0.0),rgba(226,192,141,0.75),rgba(226,192,141,0.0))] transition-[width] duration-700 ease-[cubic-bezier(.22,1,.36,1)]"
+                      style={{ width: `${Math.round(eindproductenProgress * 100)}%` }}
+                    />
+                    <div
+                      className="absolute top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full border border-[rgba(226,192,141,0.45)] bg-[rgba(245,242,237,0.9)] transition-[left] duration-700 ease-[cubic-bezier(.22,1,.36,1)]"
+                      style={{
+                        left: `calc(${Math.max(0, Math.min(1, eindproductenProgress)) * 100}% - 5px)`,
+                      }}
+                    />
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </section>
+        </StoryMoment>
+
+        <StoryBridge tone="dark-dark" />
       </div>
     </SiteLayout>
   );
@@ -2478,11 +2396,7 @@ function SegmentCard({
         className="pointer-events-none absolute -left-24 top-0 h-[140%] w-[55%] rotate-[18deg] opacity-35"
         initial={false}
         animate={
-          reduceMotion
-            ? undefined
-            : hovered
-              ? { x: 120, opacity: 0.55 }
-              : { x: 0, opacity: 0.28 }
+          reduceMotion ? undefined : hovered ? { x: 120, opacity: 0.55 } : { x: 0, opacity: 0.28 }
         }
         transition={reduceMotion ? undefined : { duration: 1.25, ease: DS_EASE }}
         style={{
@@ -2516,7 +2430,7 @@ function SegmentCard({
           </div>
 
           <div className="mt-6 flex items-center justify-between">
-            <a href={`/#${id}`} className="group/btn inline-flex items-center gap-3">
+            <a href={`/voor-wie/${id}`} className="group/btn inline-flex items-center gap-3">
               <span className="relative grid h-12 w-12 place-items-center overflow-hidden rounded-2xl border border-white/20 bg-white/[0.04] backdrop-blur-sm transition-all duration-500 group-hover/btn:border-white/35 group-hover/btn:bg-white/[0.10] group-hover/btn:shadow-[0_0_0_1px_rgba(226,192,141,0.24),0_16px_44px_-28px_rgba(0,0,0,0.9)]">
                 <span className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover/btn:opacity-100 bg-[radial-gradient(140px_140px_at_30%_30%,rgba(226,192,141,0.22)_0%,transparent_60%)]" />
                 <ArrowUpRight
@@ -2557,126 +2471,181 @@ function EindproductenShowcaseCard({
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       initial={reduceMotion || skipReveal ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-      animate={
-        reduceMotion || skipReveal || isRevealed ? { opacity: 1, y: 0 } : undefined
-      }
+      animate={reduceMotion || skipReveal || isRevealed ? { opacity: 1, y: 0 } : undefined}
       transition={{
         duration: 0.7,
         ease: EINDPRODUCTEN_REVEAL_EASE,
         delay: reduceMotion || skipReveal ? 0 : 0.06 + index * 0.05,
       }}
-      whileHover={reduceMotion ? undefined : { y: -6 }}
-      className="group relative w-[272px] shrink-0 overflow-hidden rounded-[24px] border border-white/80 bg-[#FAF8F5] shadow-[0_28px_70px_-32px_rgba(0,0,0,0.45),0_0_0_1px_rgba(255,255,255,0.65)] transition-[border-color,box-shadow] duration-500 hover:border-white hover:shadow-[0_36px_90px_-30px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.9),0_0_48px_-16px_rgba(179,18,23,0.18)] sm:w-[288px] lg:w-[296px]"
+      whileHover={reduceMotion ? undefined : { y: -12 }}
+      className="group relative w-[272px] shrink-0 sm:w-[288px] lg:w-[300px]"
     >
-      <div className="relative flex h-full min-h-[468px] flex-col">
-        <div className="relative flex flex-1 flex-col overflow-hidden bg-[linear-gradient(180deg,#FFFFFF_0%,#F5F0E8_52%,#EDE6DC_100%)]">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 opacity-[0.35]"
-            style={{
-              backgroundImage: `url(${cardProductenImage})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center 40%",
-            }}
-          />
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_70%_at_50%_38%,rgba(255,255,255,0.95)_0%,rgba(247,241,232,0.55)_52%,rgba(237,230,220,0.2)_100%)]" />
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(179,18,23,0.18),transparent)]" />
+      {/* Soft floor contact shadow — makes the card float */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-[8%] -bottom-5 z-0 h-14 rounded-[50%] bg-[radial-gradient(closest-side,rgba(0,0,0,0.42),rgba(0,0,0,0.12)_55%,transparent_78%)] blur-[10px] transition-all duration-600 ease-[cubic-bezier(.22,1,.36,1)] group-hover:inset-x-[4%] group-hover:h-16 group-hover:blur-[14px]"
+      />
+      {/* Warm ambient glow halo */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-5 z-0 rounded-[36px] bg-[radial-gradient(ellipse_at_50%_40%,rgba(226,192,141,0.22)_0%,rgba(179,18,23,0.08)_42%,transparent_70%)] opacity-55 blur-2xl transition-opacity duration-600 ease-[cubic-bezier(.22,1,.36,1)] group-hover:opacity-95"
+      />
+      {/* Red brand bloom on hover */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-3 z-0 rounded-[32px] bg-[radial-gradient(circle_at_50%_110%,rgba(179,18,23,0.35)_0%,transparent_58%)] opacity-0 blur-xl transition-opacity duration-600 ease-[cubic-bezier(.22,1,.36,1)] group-hover:opacity-80"
+      />
 
-          <span
-            aria-hidden
-            className="pointer-events-none absolute right-4 top-3 z-10 select-none font-display text-[3.5rem] font-semibold leading-none tracking-[-0.06em] text-[rgba(179,18,23,0.07)]"
-          >
-            {String(index + 1).padStart(2, "0")}
-          </span>
+      <div
+        className="relative z-10 overflow-hidden rounded-[26px] border border-[rgba(226,192,141,0.32)] bg-[#0c0c0c] transition-[border-color] duration-600 ease-[cubic-bezier(.22,1,.36,1)] group-hover:border-[rgba(226,192,141,0.62)]"
+        style={{
+          boxShadow: hovered
+            ? [
+                "0 2px 0 rgba(255,255,255,0.07) inset",
+                "0 -1px 0 rgba(0,0,0,0.55) inset",
+                "0 1px 2px rgba(0,0,0,0.35)",
+                "0 12px 28px -8px rgba(0,0,0,0.55)",
+                "0 32px 64px -20px rgba(0,0,0,0.58)",
+                "0 64px 120px -36px rgba(0,0,0,0.5)",
+                "0 0 0 1px rgba(226,192,141,0.18)",
+                "0 0 48px -10px rgba(226,192,141,0.35)",
+                "0 0 80px -20px rgba(179,18,23,0.32)",
+              ].join(", ")
+            : [
+                "0 1px 0 rgba(255,255,255,0.06) inset",
+                "0 -1px 0 rgba(0,0,0,0.45) inset",
+                "0 1px 2px rgba(0,0,0,0.28)",
+                "0 8px 20px -6px rgba(0,0,0,0.42)",
+                "0 22px 48px -16px rgba(0,0,0,0.48)",
+                "0 48px 96px -32px rgba(0,0,0,0.42)",
+                "0 0 0 1px rgba(226,192,141,0.1)",
+                "0 0 36px -14px rgba(226,192,141,0.2)",
+              ].join(", "),
+        }}
+      >
+        <div className="relative flex h-full min-h-[488px] flex-col">
+          {/* Luxury product theater */}
+          <div className="relative flex flex-1 flex-col overflow-hidden bg-[radial-gradient(ellipse_90%_80%_at_50%_30%,#2a221c_0%,#14110f_48%,#0a0908_100%)]">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 opacity-[0.18]"
+              style={{
+                backgroundImage: `url(${cardProductenImage})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center 40%",
+                filter: "saturate(0.7) brightness(0.7)",
+              }}
+            />
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_70%_at_50%_40%,rgba(226,192,141,0.12)_0%,transparent_58%)]" />
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_100%,rgba(179,18,23,0.18)_0%,transparent_55%)]" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(226,192,141,0.5),transparent)]" />
 
-          <div className="relative z-10 flex items-center justify-between gap-3 px-5 pt-5">
-            <div className="flex items-center gap-2">
-              <img
-                src={product.stickerSrc}
-                alt=""
-                aria-hidden
-                loading="lazy"
-                decoding="async"
-                className="h-4 w-4 select-none opacity-90"
-                style={{ filter: STICKER_GOLD_FILTER }}
-              />
-              <span className="text-[8px] font-semibold uppercase tracking-[0.28em] text-[#B31217]/80">
-                {product.category}
+            <span
+              aria-hidden
+              className="pointer-events-none absolute right-4 top-3 z-10 select-none font-display text-[3.6rem] font-semibold leading-none tracking-[-0.06em] text-[rgba(226,192,141,0.1)]"
+            >
+              {String(index + 1).padStart(2, "0")}
+            </span>
+
+            <div className="relative z-10 flex items-center justify-between gap-3 px-5 pt-5">
+              <div className="flex items-center gap-2">
+                <img
+                  src={product.stickerSrc}
+                  alt=""
+                  aria-hidden
+                  loading="lazy"
+                  decoding="async"
+                  className="h-4 w-4 select-none opacity-95"
+                  style={{ filter: STICKER_GOLD_FILTER }}
+                />
+                <span className="text-[8px] font-semibold uppercase tracking-[0.28em] text-[rgba(226,192,141,0.88)]">
+                  {product.category}
+                </span>
+              </div>
+              <span className="rounded-full border border-[rgba(226,192,141,0.35)] bg-black/40 px-2.5 py-1 text-[7px] font-semibold uppercase tracking-[0.2em] text-[rgba(245,242,237,0.92)] shadow-[0_8px_24px_-12px_rgba(0,0,0,0.6)] backdrop-blur-[2px]">
+                Halal
               </span>
             </div>
-            <span className="rounded-full border border-[rgba(179,18,23,0.18)] bg-white/90 px-2.5 py-1 text-[7px] font-semibold uppercase tracking-[0.2em] text-[#141414]/72 shadow-sm">
-              Halal
-            </span>
-          </div>
 
-          <div className="relative flex flex-1 items-center justify-center px-5 py-4">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute left-1/2 top-1/2 h-[170px] w-[170px] -translate-x-1/2 -translate-y-[54%] rounded-full border border-[rgba(179,18,23,0.1)] sm:h-[182px] sm:w-[182px]"
-            />
-            <div
-              aria-hidden
-              className="pointer-events-none absolute left-1/2 top-1/2 h-[132px] w-[132px] -translate-x-1/2 -translate-y-[54%] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.95)_0%,rgba(245,238,226,0.45)_58%,transparent_72%)]"
-            />
-            <div
-              aria-hidden
-              className="pointer-events-none absolute bottom-2 left-1/2 h-5 w-[50%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(closest-side,rgba(0,0,0,0.14),transparent)]"
-            />
-            <motion.img
-              src={product.image}
-              alt={product.title}
-              loading="lazy"
-              decoding="async"
-              className="relative z-10 h-[176px] w-full object-contain sm:h-[188px]"
-              style={{ filter: EINDPRODUCTEN_PRODUCT_SHADOW }}
-              animate={
-                reduceMotion
-                  ? undefined
-                  : hovered
-                    ? { scale: 1.05, y: -4 }
-                    : { scale: 1, y: 0 }
-              }
-              transition={reduceMotion ? undefined : { duration: 0.9, ease: EINDPRODUCTEN_REVEAL_EASE }}
-            />
-          </div>
-        </div>
-
-        <div className="relative border-t border-black/[0.06] bg-white px-5 pb-5 pt-4">
-          <div className="text-[7.5px] font-semibold uppercase tracking-[0.28em] text-[#B31217]/70">
-            {product.eyebrow}
-          </div>
-          <h3 className="mt-2 font-display text-[1.75rem] font-semibold leading-[0.98] tracking-[-0.04em] text-[#141414] sm:text-[1.85rem]">
-            {product.title}
-          </h3>
-          <p className="mt-2.5 text-[12px] leading-[1.65] text-[#141414]/62">
-            {product.blurb}
-          </p>
-
-          <div className="mt-3.5 flex flex-wrap gap-1.5">
-            {product.traits.map((trait) => (
-              <span
-                key={trait}
-                className="rounded-full border border-black/[0.08] bg-[#FAF8F5] px-2.5 py-1 text-[6.5px] font-medium uppercase tracking-[0.18em] text-[#141414]/58 sm:text-[7px]"
-              >
-                {trait}
-              </span>
-            ))}
-          </div>
-
-          <div className="mt-4 flex items-center justify-between gap-3 border-t border-black/[0.06] pt-3.5">
-            <span className="text-[7px] font-medium uppercase tracking-[0.24em] text-[#141414]/42 sm:text-[7.5px]">
-              Signature selectie
-            </span>
-            <a
-              href="/assortiment/eindproducten"
-              className="group/cta inline-flex items-center gap-2 rounded-xl border border-[rgba(226,192,141,0.22)] bg-[linear-gradient(135deg,rgba(147,24,28,0.95),rgba(78,13,15,0.96))] px-3.5 py-2 text-[7.5px] font-semibold uppercase tracking-[0.2em] text-[rgba(250,241,230,0.96)] transition-all duration-400 hover:border-[rgba(226,192,141,0.38)] sm:text-[8px]"
-            >
-              Bekijk
-              <ArrowUpRight
-                size={13}
-                className="transition-transform duration-400 ease-[cubic-bezier(.22,1,.36,1)] group-hover/cta:-translate-y-0.5 group-hover/cta:translate-x-0.5"
+            <div className="relative flex flex-1 items-center justify-center px-5 py-5">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute left-1/2 top-1/2 h-[196px] w-[196px] -translate-x-1/2 -translate-y-[52%] rounded-full border border-[rgba(226,192,141,0.22)] sm:h-[208px] sm:w-[208px]"
               />
-            </a>
+              <div
+                aria-hidden
+                className="pointer-events-none absolute left-1/2 top-1/2 h-[150px] w-[150px] -translate-x-1/2 -translate-y-[52%] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.14)_0%,rgba(226,192,141,0.08)_42%,transparent_70%)]"
+              />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute bottom-3 left-1/2 h-7 w-[58%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(closest-side,rgba(0,0,0,0.55),transparent)]"
+              />
+              <motion.div
+                className="relative z-10 w-full overflow-hidden rounded-2xl border border-[rgba(226,192,141,0.22)] bg-[#080808] p-1.5 transition-[box-shadow] duration-600 ease-[cubic-bezier(.22,1,.36,1)]"
+                style={{
+                  boxShadow: hovered
+                    ? "0 28px 56px -18px rgba(0,0,0,0.9), 0 0 40px -12px rgba(226,192,141,0.28), inset 0 1px 0 rgba(255,255,255,0.08)"
+                    : "0 20px 44px -16px rgba(0,0,0,0.82), 0 0 28px -14px rgba(226,192,141,0.14), inset 0 1px 0 rgba(255,255,255,0.05)",
+                }}
+                animate={
+                  reduceMotion ? undefined : hovered ? { scale: 1.04, y: -6 } : { scale: 1, y: 0 }
+                }
+                transition={
+                  reduceMotion ? undefined : { duration: 0.95, ease: EINDPRODUCTEN_REVEAL_EASE }
+                }
+              >
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-[168px] w-full rounded-[14px] object-cover sm:h-[180px]"
+                  style={{
+                    filter: EINDPRODUCTEN_PRODUCT_SHADOW,
+                    objectPosition: "center 42%",
+                  }}
+                />
+              </motion.div>
+            </div>
+          </div>
+
+          <div className="relative border-t border-[rgba(226,192,141,0.14)] bg-[linear-gradient(180deg,#14110f_0%,#0d0c0b_100%)] px-5 pb-5 pt-4">
+            <div className="text-[7.5px] font-semibold uppercase tracking-[0.28em] text-[rgba(226,192,141,0.82)]">
+              {product.eyebrow}
+            </div>
+            <h3 className="mt-2 font-display text-[1.75rem] font-semibold leading-[0.98] tracking-[-0.04em] text-[#F7F2EA] sm:text-[1.9rem]">
+              {product.title}
+            </h3>
+            <p className="mt-2.5 text-[12px] leading-[1.65] text-[rgba(245,242,237,0.62)]">
+              {product.blurb}
+            </p>
+
+            <div className="mt-3.5 flex flex-wrap gap-1.5">
+              {product.traits.map((trait) => (
+                <span
+                  key={trait}
+                  className="rounded-full border border-[rgba(226,192,141,0.18)] bg-white/[0.04] px-2.5 py-1 text-[6.5px] font-medium uppercase tracking-[0.18em] text-[rgba(245,242,237,0.58)] sm:text-[7px]"
+                >
+                  {trait}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-4 flex items-center justify-between gap-3 border-t border-[rgba(226,192,141,0.12)] pt-3.5">
+              <span className="text-[7px] font-medium uppercase tracking-[0.24em] text-[rgba(245,242,237,0.4)] sm:text-[7.5px]">
+                Signature selectie
+              </span>
+              <a
+                href={product.href}
+                className="group/cta inline-flex items-center gap-2 rounded-xl border border-[rgba(226,192,141,0.4)] bg-[linear-gradient(135deg,#B31217_0%,#6e0a0d_100%)] px-3.5 py-2 text-[7.5px] font-semibold uppercase tracking-[0.2em] text-[#F8F4EE] shadow-[0_12px_32px_-14px_rgba(0,0,0,0.7),0_0_24px_-10px_rgba(179,18,23,0.4)] transition-all duration-500 ease-[cubic-bezier(.22,1,.36,1)] hover:-translate-y-px hover:border-[rgba(226,192,141,0.7)] hover:shadow-[0_16px_40px_-12px_rgba(0,0,0,0.75),0_0_36px_-8px_rgba(179,18,23,0.55)] active:translate-y-0 sm:text-[8px]"
+              >
+                Bekijk
+                <ArrowUpRight
+                  size={13}
+                  className="transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover/cta:-translate-y-0.5 group-hover/cta:translate-x-0.5"
+                />
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -2712,7 +2681,7 @@ function AssortmentCategoryCard({
       transition={{ duration: DS_DURATION.reveal, delay: index * 0.1, ease: DS_EASE_REVEAL }}
       className="group relative overflow-hidden rounded-3xl border border-[rgba(226,192,141,0.22)] bg-[#070707] shadow-[0_40px_120px_-95px_rgba(0,0,0,0.98)] transition-shadow duration-700 hover:shadow-[0_56px_170px_-120px_rgba(0,0,0,0.98)]"
     >
-      <a href={`/assortiment/${id}`} className="relative block">
+      <a href={productHref(id)} className="relative block">
         <div className="pointer-events-none absolute inset-0">
           <motion.img
             src={image}
@@ -2733,7 +2702,11 @@ function AssortmentCategoryCard({
         </div>
 
         <div className="pointer-events-none absolute left-7 top-7 grid h-[86px] w-[86px] place-items-center rounded-full border border-[rgba(226,192,141,0.26)] bg-black/35 backdrop-blur-[2px]">
-          <svg viewBox="0 0 112 112" className="absolute inset-0 h-full w-full spin-ring" aria-hidden="true">
+          <svg
+            viewBox="0 0 112 112"
+            className="absolute inset-0 h-full w-full spin-ring"
+            aria-hidden="true"
+          >
             <defs>
               <path id={pathId} d="M56,56 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0" />
             </defs>
@@ -2900,7 +2873,7 @@ function AssortmentTile({
           </p>
           <div className="mt-8 flex items-center justify-between">
             <a
-              href={`/assortiment/${id}`}
+              href={productHref(id)}
               className="inline-flex items-center gap-3 rounded-2xl border border-white/15 bg-white/[0.04] px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground/85 transition-colors hover:border-white/25 hover:bg-white/[0.07]"
             >
               Lees meer
@@ -3127,7 +3100,9 @@ function ProcessQualitySection() {
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div
           className="absolute -left-[8%] top-[12%] h-[36rem] w-[36rem] rounded-full blur-[120px]"
-          style={{ background: "radial-gradient(closest-side, rgba(184,137,58,0.18), transparent 70%)" }}
+          style={{
+            background: "radial-gradient(closest-side, rgba(184,137,58,0.18), transparent 70%)",
+          }}
         />
         <div
           className="absolute right-[-10%] bottom-[8%] h-[34rem] w-[34rem] rounded-full blur-[140px]"
@@ -3164,11 +3139,14 @@ function ProcessQualitySection() {
               className="mc-sans mt-8 max-w-sm text-[13.5px] leading-relaxed"
               style={{ color: "var(--mc-ink-dim)" }}
             >
-              Drie zorgvuldige fasen. Een bewaakte keten van begin tot eind, van de halal
-              slacht tot het openen van de levering in uw keuken.
+              Drie zorgvuldige fasen. Een bewaakte keten van begin tot eind, van de halal slacht tot
+              het openen van de levering in uw keuken.
             </motion.p>
 
-            <motion.div variants={fade} className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-3">
+            <motion.div
+              variants={fade}
+              className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-3"
+            >
               <span className="mc-eyebrow text-[10px]" style={{ color: "var(--mc-ink-dim)" }}>
                 Gecertificeerd door
               </span>
@@ -3245,7 +3223,8 @@ function ProcessQualitySection() {
                 className="relative h-full overflow-hidden rounded-full"
                 style={{
                   width: timelineProgressWidth,
-                  background: "linear-gradient(90deg, rgba(138,102,32,0.85), rgba(184,137,58,0.95))",
+                  background:
+                    "linear-gradient(90deg, rgba(138,102,32,0.85), rgba(184,137,58,0.95))",
                   boxShadow: "0 0 14px rgba(184,137,58,0.22)",
                 }}
               >
@@ -3294,7 +3273,10 @@ function ProcessQualitySection() {
               {processSteps.map((item, idx) => {
                 const isActive = idx === active;
                 return (
-                  <li key={item.index} className="min-w-[min(88vw,280px)] shrink-0 snap-start md:min-w-0">
+                  <li
+                    key={item.index}
+                    className="min-w-[min(88vw,280px)] shrink-0 snap-start md:min-w-0"
+                  >
                     <motion.button
                       type="button"
                       onClick={() => goToStep(idx)}
@@ -3375,7 +3357,9 @@ function ProcessQualitySection() {
             <div
               aria-hidden
               className="absolute inset-x-8 top-0 h-px"
-              style={{ background: "linear-gradient(90deg, transparent, var(--mc-gold), transparent)" }}
+              style={{
+                background: "linear-gradient(90deg, transparent, var(--mc-gold), transparent)",
+              }}
             />
 
             <div
@@ -3424,12 +3408,18 @@ function ProcessQualitySection() {
                 <div
                   aria-hidden
                   className="pointer-events-none absolute -left-20 -top-20 h-80 w-80 rounded-full blur-3xl"
-                  style={{ background: "radial-gradient(closest-side, rgba(163,36,24,0.45), transparent 70%)" }}
+                  style={{
+                    background:
+                      "radial-gradient(closest-side, rgba(163,36,24,0.45), transparent 70%)",
+                  }}
                 />
                 <div
                   aria-hidden
                   className="pointer-events-none absolute -bottom-16 -right-16 h-72 w-72 rounded-full blur-3xl"
-                  style={{ background: "radial-gradient(closest-side, rgba(184,137,58,0.35), transparent 70%)" }}
+                  style={{
+                    background:
+                      "radial-gradient(closest-side, rgba(184,137,58,0.35), transparent 70%)",
+                  }}
                 />
 
                 <AnimatePresence mode="wait">
@@ -3450,7 +3440,8 @@ function ProcessQualitySection() {
                         background: "linear-gradient(160deg, rgba(50,38,28,1), rgba(20,16,12,1))",
                         border: "1px solid rgba(217,184,120,0.4)",
                         color: "var(--mc-gold-soft)",
-                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.1), 0 0 28px rgba(184,137,58,0.25)",
+                        boxShadow:
+                          "inset 0 1px 0 rgba(255,255,255,0.1), 0 0 28px rgba(184,137,58,0.25)",
                       }}
                     >
                       {step.icon}
@@ -3544,7 +3535,8 @@ function ProcessQualitySection() {
                             aria-hidden
                             className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full"
                             style={{
-                              background: "linear-gradient(160deg, var(--mc-gold-soft), var(--mc-gold-deep))",
+                              background:
+                                "linear-gradient(160deg, var(--mc-gold-soft), var(--mc-gold-deep))",
                               boxShadow: "0 0 0 3px rgba(184,137,58,0.12)",
                             }}
                           >
@@ -3580,8 +3572,14 @@ function ProcessQualitySection() {
                           transition={reveal(0.44 + idx * 0.07)}
                           className="flex flex-col gap-1"
                         >
-                          <dt className="mc-eyebrow flex items-center gap-1.5 text-[9.5px]" style={{ color: "var(--mc-ink-dim)" }}>
-                            <Check className="h-2.5 w-2.5 shrink-0" style={{ color: "var(--mc-gold-deep)" }} />
+                          <dt
+                            className="mc-eyebrow flex items-center gap-1.5 text-[9.5px]"
+                            style={{ color: "var(--mc-ink-dim)" }}
+                          >
+                            <Check
+                              className="h-2.5 w-2.5 shrink-0"
+                              style={{ color: "var(--mc-gold-deep)" }}
+                            />
                             {meta.k}
                           </dt>
                           <dd
@@ -3686,12 +3684,16 @@ function ProcessQualitySection() {
             <div
               aria-hidden
               className="pointer-events-none absolute -left-24 -top-24 h-80 w-80 rounded-full blur-3xl"
-              style={{ background: "radial-gradient(closest-side, rgba(184,137,58,0.22), transparent 70%)" }}
+              style={{
+                background: "radial-gradient(closest-side, rgba(184,137,58,0.22), transparent 70%)",
+              }}
             />
             <div
               aria-hidden
               className="pointer-events-none absolute -bottom-20 -right-20 h-72 w-72 rounded-full blur-3xl"
-              style={{ background: "radial-gradient(closest-side, rgba(163,36,24,0.12), transparent 70%)" }}
+              style={{
+                background: "radial-gradient(closest-side, rgba(163,36,24,0.12), transparent 70%)",
+              }}
             />
 
             <div className="relative grid items-end gap-12 px-8 py-14 md:grid-cols-12 md:px-14 md:py-20">
@@ -3726,9 +3728,9 @@ function ProcessQualitySection() {
                   className="mc-sans mt-6 max-w-xl text-[14.5px] leading-relaxed"
                   style={{ color: "var(--mc-ink-dim)" }}
                 >
-                  U heeft onze werkwijze gezien — van herkomst tot levering. Nieuwe
-                  samenwerkingen worden per kwartaal beoordeeld. Vraag discreet ons private
-                  dossier aan met certificeringen, een atelierpresentatie en het actuele assortiment.
+                  U heeft onze werkwijze gezien — van herkomst tot levering. Nieuwe samenwerkingen
+                  worden per kwartaal beoordeeld. Vraag discreet ons private dossier aan met
+                  certificeringen, een atelierpresentatie en het actuele assortiment.
                 </motion.p>
               </div>
 
@@ -3740,7 +3742,8 @@ function ProcessQualitySection() {
                     background: "linear-gradient(180deg, #cf4334 0%, var(--mc-ember) 100%)",
                     color: "var(--mc-paper)",
                     border: "1px solid rgba(163,36,24,0.38)",
-                    boxShadow: "0 24px 44px -18px rgba(163,36,24,0.4), 0 0 0 1px rgba(184,137,58,0.14)",
+                    boxShadow:
+                      "0 24px 44px -18px rgba(163,36,24,0.4), 0 0 0 1px rgba(184,137,58,0.14)",
                   }}
                 >
                   <span className="mc-sweep" />
@@ -3751,7 +3754,8 @@ function ProcessQualitySection() {
                     style={{
                       background:
                         "radial-gradient(circle at 30% 30%, #e7c887, #b78a3c 60%, #6e4f1f 100%)",
-                      boxShadow: "0 0 24px rgba(184,137,58,0.35), inset 0 1px 0 rgba(255,255,255,0.5)",
+                      boxShadow:
+                        "0 0 24px rgba(184,137,58,0.35), inset 0 1px 0 rgba(255,255,255,0.5)",
                     }}
                   >
                     <svg

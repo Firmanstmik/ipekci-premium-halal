@@ -157,7 +157,7 @@ function SegmentDetailShowcase({ segment }: { segment: VoorWieSegment }) {
               <ArrowUpRight size={14} />
             </MagneticButton>
             <Link
-              to="/assortiment"
+              to="/producten"
               className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#777] transition-colors hover:text-[rgba(179,18,23,0.9)]"
             >
               Bekijk assortiment
@@ -204,7 +204,7 @@ function SegmentDetailShowcase({ segment }: { segment: VoorWieSegment }) {
               <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-4 p-7 sm:p-9">
                 <div>
                   <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[rgba(226,192,141,0.9)]">
-                    Ipekçi Slachterij
+                    Ayat Food
                   </p>
                   <p className="mt-2 font-display text-2xl text-white md:text-3xl">
                     Premium B2B partner
@@ -494,7 +494,7 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
 
         <motion.div
           style={{ y: reduceMotion ? 0 : heroContentY, opacity: reduceMotion ? 1 : heroOpacity }}
-          className="relative mx-auto flex min-h-[88vh] max-w-[1480px] flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-24 lg:pt-48"
+          className="relative mx-auto flex min-h-[88vh] max-w-[1200px] flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-24 lg:pt-48"
         >
           <motion.nav
             aria-label="Breadcrumb"
@@ -615,7 +615,7 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
           />
         </motion.div>
 
-        <div className="relative mx-auto max-w-[1480px]">
+        <div className="relative mx-auto max-w-[1200px]">
           <motion.div
             initial={{ opacity: 0, x: -32 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -637,7 +637,7 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
             </p>
             <h2 className="mt-4 font-display text-3xl text-[#1c1c1c] md:text-4xl">
               {activeSegment === "all"
-                ? "Halalvlees voor elke schakel in de keten"
+                ? "Halal partner voor elke professional"
                 : `Oplossingen voor ${segmentMeta?.label?.toLowerCase()}`}
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[#5a5a5a] md:text-base">

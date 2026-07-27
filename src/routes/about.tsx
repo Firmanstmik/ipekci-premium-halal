@@ -3,16 +3,17 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { OnsVerhaalPage } from "@/components/ons-verhaal/OnsVerhaalPage";
 import { ONS_VERHAAL_HERO_FALLBACK } from "@/lib/ons-verhaal-content";
 
+const TITLE = "Over ons — Ayat Food Vleesgroothandel";
+const DESCRIPTION =
+  "Ayat Food Vleesgroothandel is het adres voor Halal döner kebab producten. 24/7 service, een modern wagenpark, NVWA-normen en ECC Halal-toezicht.";
+
 export const Route = createFileRoute("/ons-verhaal")({
   head: () => ({
     meta: [
-      { title: "Ons verhaal — Ipekçi Slachterij" },
-      {
-        name: "description",
-        content:
-          "Het verhaal van Ipekçi Slachterij: een familiebedrijf in Harderwijk met NVWA-erkenning, onbedwelmd halalslacht en premium Nederlands vlees sinds 2012.",
-      },
-      { property: "og:title", content: "Ons verhaal — Ipekçi Slachterij" },
+      { title: TITLE },
+      { name: "description", content: DESCRIPTION },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESCRIPTION },
       { property: "og:image", content: ONS_VERHAAL_HERO_FALLBACK },
     ],
   }),

@@ -6,12 +6,12 @@ import { VOOR_WIE_MEGA_MENU } from "@/lib/voor-wie-content";
 export const Route = createFileRoute("/voor-wie")({
   head: () => ({
     meta: [
-      { title: "Voor wie — Ipekçi Slachterij" },
+      { title: "Voor wie — Ayat Food" },
       {
         name: "description",
         content: VOOR_WIE_MEGA_MENU.pageDescription,
       },
-      { property: "og:title", content: "Voor wie — Ipekçi Slachterij" },
+      { property: "og:title", content: "Voor wie — Ayat Food" },
       { property: "og:image", content: VOOR_WIE_MEGA_MENU.featuredImage },
     ],
   }),

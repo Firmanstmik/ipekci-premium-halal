@@ -32,3 +32,27 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+
+# ── WordPress theme ──
+# ipekci-theme/ is deliberately untracked: git holds the React source only, and
+# the theme carries ~90 MB of media plus an 85 MB deployable zip. It is mirrored
+# to the WP host directly (see MIGRATION_STATUS.md).
+ipekci-theme/
+ipekci-theme.zip
+
+# ── QA / automation artefacts ──
+.visual-qa/
+.pw-profile/
+.playwright-mcp/
+
+# Audit + comparison dumps written by scripts/*.mjs
+audit-sweep.json
+qa-audit.json
+lcp-manifest.json
+responsive-audit.json
+react-*.json
+wp-*.json
+
+# Screenshot leftovers in the repo root only
+/*.jpeg
+/*.png

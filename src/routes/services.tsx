@@ -1,30 +1,15 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { SiteLayout } from "@/components/SiteLayout";
-import { AssortimentCatalogPage } from "@/components/assortiment/AssortimentCatalogPage";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
-const heroImage =
-  "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Ook-klant-worden.webp";
-
+/**
+ * Legacy route: /assortiment.
+ *
+ * Phase 9 rebuilt the catalogue around Ayat Food's own eight categories under
+ * /producten, matching ayatfood.nl's hierarchy. This route is kept purely so
+ * older links — internal or external — never dead-end. It redirects in
+ * beforeLoad, so nothing renders first.
+ */
 export const Route = createFileRoute("/assortiment")({
-  head: () => ({
-    meta: [
-      { title: "Assortiment — Ipekçi Slachterij" },
-      {
-        name: "description",
-        content:
-          "Assortiment premium halalvlees: lamsvlees, rundvlees, kip (op aanvraag) en eindproducten voor B2B-klanten.",
-      },
-      { property: "og:title", content: "Assortiment — Ipekçi Slachterij" },
-      { property: "og:image", content: heroImage },
-    ],
-  }),
-  component: AssortimentIndexPage,
+  beforeLoad: () => {
+    throw redirect({ to: "/producten", replace: true });
+  },
 });
-
-function AssortimentIndexPage() {
-  return (
-    <SiteLayout>
-      <AssortimentCatalogPage activeCategory="all" />
-    </SiteLayout>
-  );
-}

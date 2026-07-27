@@ -85,7 +85,7 @@ export function AssortimentKlantCta() {
         className="pointer-events-none absolute bottom-[12%] left-[6%] h-24 w-24 rounded-full border border-dashed border-[rgba(177,18,23,0.15)]"
       />
 
-      <div className="relative mx-auto max-w-[1480px]">
+      <div className="relative mx-auto max-w-[1200px]">
         <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
           <motion.div
             initial={{ opacity: 0, x: -40, filter: "blur(8px)" }}
@@ -98,18 +98,18 @@ export function AssortimentKlantCta() {
               Ook klant worden?
             </p>
             <h2 className="mt-5 font-display text-4xl font-semibold leading-[0.98] tracking-[-0.04em] text-[#141414] md:text-5xl lg:text-[3.25rem]">
-              Ipekçi Slachterij
+              Ayat Food Vleesgroothandel
             </h2>
             <p className="mt-6 max-w-xl text-base leading-[1.8] text-[#141414]/68 md:text-[17px]">
-              Kies voor de zekerheid van een volwaardig halalslachthuis met Nederlandse
-              premiumkwaliteit. Snelle leveringen, eigen koeltransport en persoonlijke service.
+              Kies voor de zekerheid van een Halal vleesgroothandel die werkt volgens NVWA-normen en
+              onder toezicht van ECC Halal. Snelle levering via ons moderne wagenpark en 24/7 service.
             </p>
             <p className="mt-4 max-w-lg text-sm leading-relaxed text-[#141414]/50">
-              Word klant van Ipekçi. Vers halalvlees, dagelijks geleverd aan uw bedrijf.
+              Word klant van Ayat Food. Hoogwaardige Halal producten, op tijd geleverd aan uw bedrijf.
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <MagneticButton href="/contact">
-                Word klant bij Ipekçi
+                Word klant bij Ayat Food
                 <ArrowUpRight size={14} />
               </MagneticButton>
               <Link
@@ -156,7 +156,7 @@ export function AssortimentKlantCta() {
                   <div className="group/if relative aspect-[4/3] overflow-hidden">
                     <img
                       src={KLANT_IMAGE}
-                      alt="Word klant bij Ipekçi Slachterij"
+                      alt="Word klant bij Ayat Food"
                       className="h-full w-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]"
                       loading="lazy"
                       decoding="async"
@@ -171,7 +171,7 @@ export function AssortimentKlantCta() {
                       B2B partnership
                     </p>
                     <p className="mt-2 font-display text-xl leading-snug text-white">
-                      Vers halalvlees, wekelijks geleverd
+                      Halal producten, op tijd geleverd
                     </p>
                     <a
                       href="/contact"

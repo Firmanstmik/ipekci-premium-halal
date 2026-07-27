@@ -13,7 +13,7 @@ const MEAT_CUES = [
 ] as const;
 
 const STICKER_ACTIVE =
-  "sepia(1) saturate(500%) hue-rotate(352deg) brightness(0.72) contrast(1.08) drop-shadow(0 2px 8px rgba(194,139,82,0.35))";
+  "sepia(1) saturate(500%) hue-rotate(352deg) brightness(0.72) contrast(1.08) drop-shadow(0 2px 8px rgba(218,41,42,0.28))";
 
 export function HeroMeatScrollCue() {
   const reduceMotion = useReducedMotion();

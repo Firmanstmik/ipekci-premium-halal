@@ -2,15 +2,19 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useId, useMemo, useState } from "react";
 import { DS_EASE } from "@/lib/design-system";
 
+import stickerAyam from "@/assets/stiker-ayam.svg";
+import stickerKambing from "@/assets/stiker-kambing.svg";
+import stickerSapi from "@/assets/stiker-sapi.svg";
+
 const STICKER_FILTER =
-  "sepia(1) saturate(520%) hue-rotate(352deg) brightness(0.66) contrast(1.12) drop-shadow(0 8px 18px rgba(194,139,82,0.28))";
+  "sepia(1) saturate(520%) hue-rotate(352deg) brightness(0.66) contrast(1.12) drop-shadow(0 8px 18px rgba(218,41,42,0.28))";
 
 const STICKER_KEYS = ["lamsvlees", "rundvlees", "kip"] as const;
 
 const STICKER_SRC: Record<(typeof STICKER_KEYS)[number], string> = {
-  lamsvlees: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_lamsvlees.svg",
-  rundvlees: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_rundvlees.svg",
-  kip: "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11/sticker_gevogelte.svg",
+  lamsvlees: stickerKambing,
+  rundvlees: stickerSapi,
+  kip: stickerAyam,
 };
 
 export function HalalStamp({
@@ -92,7 +96,7 @@ export function HalalStamp({
           textAnchor="middle"
         >
           <textPath href={`#${pathId}`} startOffset="50%">
-            PREMIUM HALAL PREMIUM KWALITEIT IPEKCI SLACHTERIJ
+            PREMIUM HALAL · 100% HALAL · AYAT FOOD · NVWA ·
           </textPath>
         </text>
       </svg>

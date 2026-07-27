@@ -17,23 +17,22 @@ import { HeroOriginBadge } from "@/components/home/HeroOriginBadge";
 import { HeroShowcaseCard } from "@/components/home/HeroShowcaseCard";
 import { DS_DURATION, DS_EASE } from "@/lib/design-system";
 import {
+  HERO_BG_AUTOPLAY_MS,
+  HERO_BG_SLIDES,
   HERO_SHOWCASE_AUTOPLAY_MS,
   HERO_SHOWCASE_SLIDES,
   HERO_TRUST_ITEMS,
-  IPEKCI_HERO_IMAGE,
 } from "@/lib/home-hero-content";
-import ipekciIntroVideo from "@/assets/videos/Ipekci_introductie.webm";
 
 const TRUST_ICONS = [ShieldTick, Award, Buildings, TruckTick] as const;
 
 export function HomeHeroSection() {
   const reduceMotion = useReducedMotion();
   const heroRef = useRef<HTMLDivElement>(null);
-  const heroVideoRef = useRef<HTMLVideoElement>(null);
-  const [heroPoster, setHeroPoster] = useState<string | null>(null);
-  const [heroVideoActive, setHeroVideoActive] = useState(false);
+  const [bgActive, setBgActive] = useState(0);
   const [showcaseActive, setShowcaseActive] = useState(0);
   const [showcasePaused, setShowcasePaused] = useState(false);
+  const [entered, setEntered] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -42,74 +41,17 @@ export function HomeHeroSection() {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
 
   useEffect(() => {
-    let cancelled = false;
-    const v = document.createElement("video");
-    v.src = ipekciIntroVideo;
-    v.muted = true;
-    v.playsInline = true;
-    v.preload = "auto";
-
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    function finalize() {
-      v.removeEventListener("loadedmetadata", handleLoaded);
-      v.removeEventListener("loadeddata", handleLoaded);
-      v.removeEventListener("seeked", handleSeeked);
-      v.src = "";
-    }
-
-    function handleSeeked() {
-      if (!ctx || cancelled) {
-        finalize();
-        return;
-      }
-      const w = v.videoWidth || 1920;
-      const h = v.videoHeight || 1080;
-      canvas.width = w;
-      canvas.height = h;
-      ctx.drawImage(v, 0, 0, w, h);
-      try {
-        const data = canvas.toDataURL("image/jpeg", 0.86);
-        if (!cancelled) setHeroPoster(data);
-      } catch {
-        if (!cancelled) setHeroPoster(null);
-      }
-      finalize();
-    }
-
-    function handleLoaded() {
-      if (cancelled) return;
-      try {
-        v.currentTime = Math.min(0.2, (v.duration || 0.2) / 10);
-      } catch {
-        handleSeeked();
-      }
-    }
-
-    v.addEventListener("loadedmetadata", handleLoaded, { once: true });
-    v.addEventListener("loadeddata", handleLoaded, { once: true });
-    v.addEventListener("seeked", handleSeeked);
-
-    return () => {
-      cancelled = true;
-      finalize();
-    };
+    const frame = window.requestAnimationFrame(() => setEntered(true));
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {
-    const ms = reduceMotion ? 0 : 1500;
-    const t = window.setTimeout(() => setHeroVideoActive(true), ms);
-    return () => window.clearTimeout(t);
+    if (reduceMotion) return;
+    const t = window.setInterval(() => {
+      setBgActive((i) => (i + 1) % HERO_BG_SLIDES.length);
+    }, HERO_BG_AUTOPLAY_MS);
+    return () => window.clearInterval(t);
   }, [reduceMotion]);
-
-  useEffect(() => {
-    if (!heroVideoActive) return;
-    const v = heroVideoRef.current;
-    if (!v) return;
-    const p = v.play();
-    if (p) p.catch(() => {});
-  }, [heroVideoActive]);
 
   useEffect(() => {
     if (reduceMotion || showcasePaused) return;
@@ -126,134 +68,197 @@ export function HomeHeroSection() {
       aria-label="Introductie"
       className="relative min-h-[100svh] w-full overflow-hidden bg-background grain lg:h-[100svh] lg:max-h-[100svh]"
     >
+      {/* Modern full-bleed background slider */}
       <div className="absolute inset-0">
-        <motion.img
-          src={heroPoster ?? IPEKCI_HERO_IMAGE}
-          alt=""
-          aria-hidden
-          className="absolute inset-0 h-full w-full object-cover"
-          style={{ filter: "brightness(0.78) contrast(1.06) saturate(1.02)" }}
-          initial={false}
-          animate={{
-            opacity: heroVideoActive ? 0 : 1,
-            scale: heroVideoActive ? 1.02 : 1,
-          }}
-          transition={{ duration: 1.15, ease: DS_EASE }}
-        />
-        <motion.div
-          className="absolute inset-0 overflow-hidden"
-          initial={false}
-          animate={{
-            opacity: heroVideoActive ? 1 : 0,
-            clipPath: heroVideoActive ? "inset(0% 0% 0% 0%)" : "inset(54% 0% 54% 0%)",
-            filter: heroVideoActive ? "blur(0px)" : "blur(14px)",
-          }}
-          transition={{ duration: 1.6, ease: DS_EASE }}
-          aria-hidden
-        >
-          <motion.video
-            ref={heroVideoRef}
-            src={ipekciIntroVideo}
-            muted
-            loop
-            playsInline
-            preload="auto"
-            className="absolute inset-0 h-full w-full object-cover"
-            initial={false}
-            animate={{ scale: heroVideoActive ? 1 : 1.035 }}
-            transition={{ duration: 1.85, ease: DS_EASE }}
-            style={{ filter: "brightness(1.02) contrast(1.02) saturate(1.06)" }}
-          />
-        </motion.div>
+        <div className="absolute inset-0" aria-hidden>
+          {HERO_BG_SLIDES.map((slide, i) => {
+            const active = i === bgActive;
+            return (
+              <motion.div
+                key={slide.id}
+                className="absolute inset-0"
+                initial={false}
+                animate={{
+                  opacity: active ? 1 : 0,
+                  scale: active ? (reduceMotion ? 1 : 1.045) : 1.02,
+                }}
+                transition={{
+                  opacity: { duration: reduceMotion ? 0.35 : 1.15, ease: DS_EASE },
+                  scale: {
+                    duration: active && !reduceMotion ? HERO_BG_AUTOPLAY_MS / 1000 : 1.15,
+                    ease: active ? "linear" : DS_EASE,
+                  },
+                }}
+                style={{ zIndex: active ? 2 : 1, pointerEvents: "none" }}
+              >
+                <img
+                  src={slide.image}
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-cover"
+                  style={{
+                    objectPosition: slide.objectPosition,
+                    filter: "brightness(1.02) contrast(1.04) saturate(1.08)",
+                  }}
+                  decoding="async"
+                />
+              </motion.div>
+            );
+          })}
 
-        <div className="absolute inset-0 bg-gradient-to-b from-background/28 via-background/06 to-background/38" />
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-black/42 via-black/10 to-transparent" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(6,6,6,0.62)_0%,rgba(6,6,6,0.28)_42%,rgba(6,6,6,0.06)_68%,transparent_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(720px_480px_at_18%_8%,rgba(226,192,141,0.05)_0%,transparent_70%)]" />
+          <div className="absolute inset-0 z-[3] bg-gradient-to-b from-background/22 via-transparent to-background/35" />
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-[3] h-32 bg-gradient-to-b from-black/38 via-black/08 to-transparent" />
+          <div className="absolute inset-0 z-[3] bg-[linear-gradient(to_right,rgba(6,6,6,0.55)_0%,rgba(6,6,6,0.22)_38%,rgba(6,6,6,0.04)_62%,transparent_100%)]" />
+          <div className="absolute inset-0 z-[3] bg-[radial-gradient(720px_480px_at_18%_8%,rgba(226,192,141,0.04)_0%,transparent_70%)]" />
+        </div>
+
+        <div
+          className="absolute bottom-7 left-1/2 z-30 hidden -translate-x-1/2 items-center gap-2.5 sm:flex"
+          role="tablist"
+          aria-label="Hero achtergrond"
+        >
+          {HERO_BG_SLIDES.map((slide, i) => (
+            <button
+              key={slide.id}
+              type="button"
+              role="tab"
+              aria-selected={i === bgActive}
+              aria-label={`Achtergrond ${slide.label}`}
+              onClick={() => setBgActive(i)}
+              className="group relative h-[2px] w-10 overflow-hidden rounded-full bg-white/15 transition-opacity hover:opacity-100"
+            >
+              {i === bgActive && !reduceMotion ? (
+                <motion.span
+                  key={`bg-progress-${slide.id}-${bgActive}`}
+                  className="absolute inset-y-0 left-0 bg-gradient-to-r from-[var(--gold-champagne)] to-[var(--primary)]"
+                  initial={{ width: "0%" }}
+                  animate={{ width: "100%" }}
+                  transition={{
+                    duration: HERO_BG_AUTOPLAY_MS / 1000,
+                    ease: "linear",
+                  }}
+                />
+              ) : (
+                <span
+                  className={`absolute inset-y-0 left-0 ${
+                    i === bgActive ? "w-full bg-[var(--gold-champagne)]" : "w-0"
+                  }`}
+                />
+              )}
+            </button>
+          ))}
+        </div>
       </div>
 
       <motion.div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_30%_40%,rgba(0,0,0,0.22),transparent_62%)]"
+        initial={reduceMotion ? false : { opacity: 0.7 }}
+        animate={{ opacity: entered ? 0.2 : 0.7 }}
+        transition={{ duration: 1.4, ease: DS_EASE }}
+      />
+
+      <motion.div
         style={{ opacity: heroOpacity }}
-        className="relative z-10 mx-auto flex h-[100svh] max-h-[100svh] min-h-0 max-w-[1520px] flex-col px-5 pb-4 pt-[8.5rem] sm:px-8 sm:pt-[9rem] lg:px-10 lg:pb-5 lg:pt-[10rem] xl:px-12 xl:pt-[10.25rem]"
+        className="relative z-10 mx-auto flex h-[100svh] max-h-[100svh] min-h-0 max-w-[1480px] flex-col px-6 pb-4 pt-[8.5rem] sm:px-10 sm:pt-[9rem] lg:px-14 lg:pb-5 lg:pt-[10rem] xl:px-16 xl:pt-[10.25rem]"
       >
-        <div className="grid min-h-0 flex-1 items-center gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.06fr)] lg:gap-10 xl:gap-14">
-          <div className="relative z-20 min-w-0 lg:pr-4">
+        <motion.div
+          className="grid min-h-0 flex-1 items-center gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:gap-12 xl:gap-16"
+          initial={
+            reduceMotion
+              ? false
+              : { opacity: 0, clipPath: "inset(10% 8% 14% 8% round 32px)" }
+          }
+          animate={
+            entered
+              ? { opacity: 1, clipPath: "inset(0% 0% 0% 0% round 0px)" }
+              : undefined
+          }
+          transition={{ duration: 1.2, ease: DS_EASE }}
+        >
+          <div className="relative z-20 min-w-0 overflow-visible lg:pr-6 xl:pr-10">
             <span
-              className="pointer-events-none absolute -left-3 top-2 hidden h-24 w-px bg-gradient-to-b from-transparent via-[rgba(226,192,141,0.45)] to-transparent lg:block"
+              className="pointer-events-none absolute -left-4 top-2 hidden h-28 w-px bg-gradient-to-b from-transparent via-[rgba(226,192,141,0.45)] to-transparent lg:block"
               aria-hidden
             />
 
             <HeroOriginBadge reduceMotion={reduceMotion} />
 
-            <motion.h1 className="mt-4 font-display text-[clamp(2.4rem,5.1vw,4.15rem)] font-semibold leading-[0.98] tracking-[-0.04em] text-foreground">
+            <motion.h1 className="mt-5 overflow-visible font-display text-[clamp(2.35rem,4.8vw,3.85rem)] font-semibold leading-[1.02] tracking-[-0.03em] text-foreground">
               <motion.span
-                initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: DS_DURATION.reveal, ease: DS_EASE }}
+                initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 22, filter: "blur(8px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ delay: 0.22, duration: DS_DURATION.reveal, ease: DS_EASE }}
                 className="block"
               >
-                Groots in premium
+                Premium Halal
               </motion.span>
               <motion.span
-                initial={reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.32, duration: 0.88, ease: DS_EASE }}
-                className="mt-0.5 block ipek-hero-halalvlees"
+                initial={
+                  reduceMotion
+                    ? { opacity: 1, y: 0 }
+                    : { opacity: 0, y: 28, clipPath: "inset(0 100% 0 0)" }
+                }
+                animate={{ opacity: 1, y: 0, clipPath: "inset(0 0% 0 0)" }}
+                transition={{ delay: 0.38, duration: 1.05, ease: DS_EASE }}
+                className="mt-1.5 block overflow-visible ipek-hero-halalvlees"
               >
-                halalvlees
+                vleesgroothandel
               </motion.span>
             </motion.h1>
 
             <motion.p
-              initial={{ opacity: 0, y: 10 }}
+              initial={reduceMotion ? false : { opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.44, duration: 0.8 }}
-              className="mt-3.5 max-w-[480px] text-[14px] leading-[1.68] text-foreground/64 sm:text-[15px]"
+              transition={{ delay: 0.58, duration: 0.85, ease: DS_EASE }}
+              className="mt-5 max-w-[34rem] text-[14px] leading-[1.72] text-foreground/64 sm:text-[15px]"
             >
-              Ipekçi is een van de grootste halal-lammerenslachthuizen van Nederland. Sinds 2012
-              leveren wij premium halal vlees aan slagerijen, groothandels, supermarkten en
-              restaurants.
+              Ayat Food is gespecialiseerd in het produceren van hoogwaardige Halal producten.
+              Wij leveren aan restaurants, supermarkten en retail — 100% Halal, volgens NVWA-normen,
+              met snelle en betrouwbare levering.
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
+              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.64, duration: 0.8 }}
-              className="relative z-30 mt-4 flex flex-wrap items-center gap-2 sm:gap-2.5"
+              transition={{ delay: 0.72, duration: 0.8, ease: DS_EASE }}
+              className="relative z-30 mt-5 flex flex-wrap items-center gap-2.5 sm:gap-3"
             >
-              <HeroCtaButton to="/ons-verhaal" variant="primary">
-                Ontdek ons verhaal
+              <HeroCtaButton to="/producten" variant="primary">
+                Bekijk Producten
               </HeroCtaButton>
-              <HeroCtaButton to="/assortiment" variant="ghost">
-                Bekijk assortiment
+              <HeroCtaButton to="/contact" variant="ghost">
+                Vraag Offerte Aan
               </HeroCtaButton>
             </motion.div>
 
             <motion.div
-              initial={{ opacity: 0, y: 8 }}
+              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.76, duration: 0.75 }}
-              className="mt-3.5 flex flex-wrap gap-1.5 sm:mt-4"
+              transition={{ delay: 0.86, duration: 0.75, ease: DS_EASE }}
+              className="mt-4 flex flex-wrap gap-2 sm:mt-5"
             >
               {HERO_TRUST_ITEMS.map((item, i) => {
                 const Icon = TRUST_ICONS[i];
                 return (
-                  <div
+                  <motion.div
                     key={item.title}
+                    initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.9 + i * 0.06, duration: 0.55, ease: DS_EASE }}
                     className="flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-black/30 px-2.5 py-1 backdrop-blur-sm"
                   >
                     <Icon size={12} variant="Linear" color="var(--primary)" />
                     <span className="text-[8px] font-semibold uppercase tracking-[0.1em] text-foreground/68">
                       {item.title}
                     </span>
-                  </div>
+                  </motion.div>
                 );
               })}
             </motion.div>
           </div>
 
           <div
-            className="relative z-10 lg:justify-self-end lg:pl-2"
+            className="relative z-10 lg:justify-self-end lg:pl-4"
             onMouseEnter={() => setShowcasePaused(true)}
             onMouseLeave={() => setShowcasePaused(false)}
           >
@@ -264,15 +269,10 @@ export function HomeHeroSection() {
               reduceMotion={reduceMotion}
             />
           </div>
-        </div>
+        </motion.div>
 
         <HeroMeatScrollCue />
       </motion.div>
-
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-16 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/22 to-transparent"
-        aria-hidden
-      />
     </section>
   );
 }

@@ -498,7 +498,7 @@ export function ContactPage() {
       <section className="relative overflow-hidden bg-[#f8f6f3] pt-36 text-[#1c1c1c] md:pt-40 lg:pt-[148px]">
         <ContactBackdrop />
 
-        <div className="relative mx-auto max-w-[1480px] px-6 pb-20 lg:px-10 lg:pb-28">
+        <div className="relative mx-auto max-w-[1200px] px-6 pb-20 lg:px-10 lg:pb-28">
           <motion.nav
             aria-label="Breadcrumb"
             initial={{ opacity: 0, y: 12 }}
@@ -614,7 +614,7 @@ export function ContactPage() {
         </div>
 
         <div className="relative mt-4 border-t border-[#ebe7e1] bg-[linear-gradient(180deg,#ffffff_0%,#faf8f5_100%)]">
-          <div className="mx-auto grid max-w-[1480px] gap-4 px-6 py-10 sm:grid-cols-2 lg:grid-cols-4 lg:px-10 lg:py-12">
+          <div className="mx-auto grid max-w-[1200px] gap-4 px-6 py-10 sm:grid-cols-2 lg:grid-cols-4 lg:px-10 lg:py-12">
             {CONTACT_TRUST.map((item, index) => {
               const Icon = item.icon;
               return (
@@ -657,7 +657,7 @@ export function ContactPage() {
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_70%_at_0%_50%,rgba(226,192,141,0.08),transparent_55%)]"
         />
-        <div className="relative mx-auto grid max-w-[1480px] items-center gap-12 lg:grid-cols-12 lg:gap-16">
+        <div className="relative mx-auto grid max-w-[1200px] items-center gap-12 lg:grid-cols-12 lg:gap-16">
           <motion.div
             initial={{ opacity: 0, x: -28 }}
             whileInView={{ opacity: 1, x: 0 }}

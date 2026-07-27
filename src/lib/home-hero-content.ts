@@ -1,13 +1,36 @@
-import heroKip from "@/assets/hero/hero-kip.webp";
-import heroLam from "@/assets/hero/hero-lam.webp";
-import heroProducten from "@/assets/hero/hero-producten.webp";
-import heroRund from "@/assets/hero/hero-rund.webp";
-import heroSlachterij from "@/assets/hero/hero-slachterij.webp";
+import heroDoner from "@/assets/ayat/hero-doner.jpg";
+import heroShoarma from "@/assets/ayat/hero-shoarma.jpg";
+import heroGevogelte from "@/assets/ayat/hero-gevogelte.jpg";
+import heroVleessoorten from "@/assets/ayat/hero-vleessoorten.jpg";
+import heroProcessing from "@/assets/ayat/hero-processing.jpg";
+import heroBackdrop from "@/assets/ayat/hero-backdrop.jpeg";
+import heroSlide1 from "@/assets/ayat/hero-slide-1-premium.jpg";
+import heroSlide3 from "@/assets/ayat/hero-slide-3-premium.jpg";
 
-const CDN = "https://www.ipekcislachterij.nl/wp-content/uploads/2025/11";
+/** AI-upgraded + official Ayat Food hero backgrounds (modern slide) */
+export const HERO_BG_SLIDES = [
+  {
+    id: "gourmet",
+    image: heroSlide1,
+    objectPosition: "72% 48%",
+    label: "Premium Halal",
+  },
+  {
+    id: "signature",
+    image: heroBackdrop,
+    objectPosition: "70% 45%",
+    label: "Signature producten",
+  },
+  {
+    id: "fresh",
+    image: heroSlide3,
+    objectPosition: "58% 40%",
+    label: "Verse kwaliteit",
+  },
+] as const;
 
-export const IPEKCI_HERO_IMAGE =
-  "https://www.ipekcislachterij.nl/wp-content/uploads/2025/12/Ook-klant-worden.webp";
+/** @deprecated Prefer HERO_BG_SLIDES — kept for legacy imports */
+export const AYAT_HERO_IMAGE = heroSlide1;
 
 export type HeroShowcaseSlide = {
   id: string;
@@ -18,67 +41,71 @@ export type HeroShowcaseSlide = {
   sticker: string;
 };
 
-/** Official Ipekçi photography — assortiment & slachterij */
+/** Official Ayat Food product photography */
 export const HERO_SHOWCASE_SLIDES: readonly HeroShowcaseSlide[] = [
   {
-    id: "lam",
-    label: "Lamsvlees",
-    title: "Nederlandse lammeren van topkwaliteit",
-    image: heroLam,
-    objectPosition: "50% 32%",
-    sticker: `${CDN}/sticker_lamsvlees.svg`,
-  },
-  {
-    id: "rund",
-    label: "Rundvlees",
-    title: "Premium halal rundvlees",
-    image: heroRund,
-    objectPosition: "52% 28%",
-    sticker: `${CDN}/sticker_rundvlees.svg`,
-  },
-  {
-    id: "kip",
-    label: "Gevogelte",
-    title: "Verse kip & kalkoen",
-    image: heroKip,
-    objectPosition: "50% 24%",
-    sticker: `${CDN}/sticker_gevogelte.svg`,
-  },
-  {
-    id: "slachterij",
-    label: "Eigen slachterij",
-    title: "Volledige regie over elke stap",
-    image: heroSlachterij,
+    id: "doner",
+    label: "Döner",
+    title: "Halal döner kebab met passie",
+    image: heroDoner,
     objectPosition: "50% 40%",
-    sticker: `${CDN}/sticker_lamsvlees.svg`,
+    sticker: heroDoner,
   },
   {
-    id: "producten",
-    label: "Eindproducten",
-    title: "Gemaakt van eigen halalvlees",
-    image: heroProducten,
-    objectPosition: "50% 45%",
-    sticker: `${CDN}/sticker_rundvlees.svg`,
+    id: "shoarma",
+    label: "Shoarma",
+    title: "Rund, kip, lam of mix",
+    image: heroShoarma,
+    objectPosition: "50% 35%",
+    sticker: heroShoarma,
+  },
+  {
+    id: "gevogelte",
+    label: "Gevogelte",
+    title: "Heerlijke kipproducten",
+    image: heroGevogelte,
+    objectPosition: "50% 40%",
+    sticker: heroGevogelte,
+  },
+  {
+    id: "vleessoorten",
+    label: "Vleessoorten",
+    title: "Premium rundvlees",
+    image: heroVleessoorten,
+    objectPosition: "50% 40%",
+    sticker: heroVleessoorten,
+  },
+  {
+    id: "productie",
+    label: "Productie",
+    title: "Hoogwaardige Halal verwerking",
+    image: heroProcessing,
+    objectPosition: "50% 35%",
+    sticker: heroProcessing,
   },
 ] as const;
 
 export const HERO_TRUST_ITEMS = [
   {
-    title: "Halal gecertificeerd",
-    subtitle: "100% volgens islamitische normen",
+    title: "100% Halal",
+    subtitle: "Onder toezicht van ECC Halal",
   },
   {
-    title: "Nederlandse kwaliteit",
-    subtitle: "Premium vlees van Nederlandse bodem",
+    title: "NVWA Normen",
+    subtitle: "Volgens Nederlandse voedselveiligheid",
   },
   {
-    title: "Eigen slachterij",
-    subtitle: "Volledige controle over kwaliteit",
+    title: "Snelle Levering",
+    subtitle: "Modern wagenpark, betrouwbaar",
   },
   {
-    title: "Snelle levering",
-    subtitle: "Eigen gekoeld transport",
+    title: "Hoge Kwaliteit",
+    subtitle: "Exclusieve Halal producten",
   },
 ] as const;
 
 export const HERO_SHOWCASE_AUTOPLAY_MS = 5200;
+export const HERO_BG_AUTOPLAY_MS = 6500;
+
+/** @deprecated Use AYAT_HERO_IMAGE */
+export const IPEKCI_HERO_IMAGE = AYAT_HERO_IMAGE;

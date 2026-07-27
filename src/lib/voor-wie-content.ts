@@ -1,8 +1,10 @@
-const CDN = "https://www.ipekcislachterij.nl/wp-content/uploads";
-
-const STICKER_LAMS = `${CDN}/2025/11/sticker_lamsvlees.svg`;
-const STICKER_RUND = `${CDN}/2025/11/sticker_rundvlees.svg`;
-const STICKER_KIP = `${CDN}/2025/11/sticker_gevogelte.svg`;
+import segmentSlagerijen from "@/assets/ayat/ayat-segment-slagerijen.webp";
+import segmentGroothandels from "@/assets/ayat/ayat-segment-groothandels.webp";
+import segmentSupermarkten from "@/assets/ayat/ayat-segment-supermarkten.webp";
+import segmentRestaurants from "@/assets/ayat/ayat-segment-restaurants.webp";
+import stickerLams from "@/assets/stiker-kambing.svg";
+import stickerRund from "@/assets/stiker-sapi.svg";
+import stickerKip from "@/assets/stiker-ayam.svg";
 
 export type VoorWieSegmentId = "slagerijen" | "groothandels" | "supermarkten" | "restaurants";
 
@@ -19,98 +21,103 @@ export type VoorWieSegment = {
   benefits: readonly string[];
 };
 
-/** Official copy from ipekcislachterij.nl */
+/**
+ * Industries We Serve — copy grounded in https://ayatfood.nl/
+ * (afnemers, horeca/restaurants testimonials, snelle levering, klant centraal,
+ * ECC Halal, NVWA, eigen productie van döner/shoarma/gevogelte e.d.)
+ * Route IDs preserved for CMS /voor-wie/{slug} parity.
+ */
 export const VOOR_WIE_SEGMENTS: readonly VoorWieSegment[] = [
   {
     id: "slagerijen",
     label: "Slagerijen",
-    eyebrow: "Voor wie slagerijen",
+    eyebrow: "Partnerschap voor de toonbank",
     description:
-      "Dagelijks vers halalvlees van hoge Nederlandse kwaliteit, snel geleverd.",
+      "Premium Halal producten voor een betrouwbare toonbank — met snelle levering en consistente kwaliteit.",
     longDescription:
-      "Onze slagerijen ontvangen dagelijks vers halalvlees van de hoogste Nederlandse kwaliteit. Van complete lammeren tot versgesneden delen, altijd snel geleverd en volledig volgens islamitische normen en waarden.",
-    image: `${CDN}/2025/11/Voor-wie-slagerijen.webp`,
-    previewImage: `${CDN}/2025/11/Voor-wie-slagerijen.webp`,
-    stickerSrc: STICKER_LAMS,
+      "Slagerijen werken met Ayat Food als betrouwbare Halal-partner: hoogwaardige vleesproducten, zorgvuldig verwerkt en verpakt, met snelle levering via ons moderne wagenpark. Wij helpen u bij het kiezen van de juiste producten — altijd onder toezicht van ECC Halal en volgens NVWA-normen.",
+    image: segmentSlagerijen,
+    previewImage: segmentSlagerijen,
+    stickerSrc: stickerLams,
     href: "/voor-wie/slagerijen",
     benefits: [
-      "Dagelijks vers geleverd",
-      "Complete lammeren en delen",
-      "Halal volgens islamitische normen",
-      "Eigen slachthuis in Harderwijk",
+      "Snelle & betrouwbare levering",
+      "Consistente Halal-kwaliteit",
+      "ECC Halal & NVWA-normen",
+      "Persoonlijke productadvies",
     ],
   },
   {
     id: "groothandels",
     label: "Groothandels",
-    eyebrow: "Voor wie groothandels",
+    eyebrow: "Stabiele B2B-aanvoer",
     description:
-      "Stabiele aanvoer in grotere volumes, direct uit ons eigen slachthuis.",
+      "Stabiele volumes en betrouwbare logistiek — rechtstreeks vanuit onze productie in Watergang.",
     longDescription:
-      "Groothandels kunnen rekenen op een stabiele aanvoer van Nederlands halalvlees, direct uit ons eigen slachthuis. Ontvang grote aantallen op vaste momenten, zodat uw klantenbestand altijd efficiënt bediend wordt.",
-    image: `${CDN}/2025/11/Voor-wie-groothandels.webp`,
-    previewImage: `${CDN}/2025/11/Voor-wie-groothandels.webp`,
-    stickerSrc: STICKER_RUND,
+      "Als vleesgroothandel begrijpen wij de eisen van groothandelspartners. Reken op stabiele aanvoer van hoogwaardige Halal producten — waaronder döner, shoarma, gevogelte en diepvries — met punctuele levering en vaste afspraken, zodat u uw klanten efficiënt kunt bedienen.",
+    image: segmentGroothandels,
+    previewImage: segmentGroothandels,
+    stickerSrc: stickerRund,
     href: "/voor-wie/groothandels",
     benefits: [
-      "Stabiele wekelijkse aanvoer",
-      "Grote volumes op vaste momenten",
-      "Direct uit eigen slachthuis",
-      "Efficiënte B2B logistiek",
+      "Stabiele volumeleveringen",
+      "Direct uit eigen productie",
+      "Modern koeltransport",
+      "Vaste B2B-afspraken",
     ],
   },
   {
     id: "supermarkten",
     label: "Supermarkten",
-    eyebrow: "Ipekci voor supermarkten",
+    eyebrow: "Retail-klaar assortiment",
     description:
-      "Halalvlees en eindproducten voor vers en diepvries, direct verkoopklaar.",
+      "Vers en diepvries Halal producten — zorgvuldig verpakt en klaar voor de schappen.",
     longDescription:
-      "Aan supermarkten leveren we halalvlees én eindproducten die geschikt zijn voor zowel de versafdeling als de diepvries. Een breed assortiment dat direct verkoopklaar is en aansluit op de vraag van uw klanten.",
-    image: `${CDN}/2025/11/Ipekci-voor-supermarkten.webp`,
-    previewImage: `${CDN}/2025/11/Ipekci-voor-supermarkten.webp`,
-    stickerSrc: STICKER_RUND,
+      "Voor supermarkten leveren wij Halal vleesproducten die geschikt zijn voor vers én diepvries. Producten worden zorgvuldig verwerkt, verpakt en op temperatuur gehouden — zodat versheid en smaak behouden blijven tot in uw schappen. Betrouwbare levering, constante kwaliteit.",
+    image: segmentSupermarkten,
+    previewImage: segmentSupermarkten,
+    stickerSrc: stickerRund,
     href: "/voor-wie/supermarkten",
     benefits: [
-      "Versafdeling en diepvries",
-      "Breed assortiment eindproducten",
-      "Direct verkoopklaar",
-      "Consistente premium kwaliteit",
+      "Vers én diepvries",
+      "Zorgvuldig verpakt",
+      "Consistente kwaliteit",
+      "Betrouwbare levertijden",
     ],
   },
   {
     id: "restaurants",
     label: "Restaurants",
-    eyebrow: "Voor restaurants",
+    eyebrow: "Voor de professionele keuken",
     description:
-      "Geselecteerde delen en grillproducten, afgestemd op menukaart en keuken.",
+      "Halal döner, shoarma en meer — vers, goed verpakt en afgestemd op de horecakeuken.",
     longDescription:
-      "Voor restaurants leveren we geselecteerde delen zoals koteletten, gehakt en grillproducten, precies afgestemd op uw menukaart. Altijd halal, vers en klaar voor directe bereiding in de keuken.",
-    image: `${CDN}/2025/11/Voor-restaurants.webp`,
-    previewImage: `${CDN}/2025/11/Voor-restaurants.webp`,
-    stickerSrc: STICKER_KIP,
+      "Restaurants en chefs in de horeca vertrouwen op Ayat Food voor Halal producten van consistente kwaliteit. Van döner en shoarma tot gevogelte: altijd vers, goed verpakt en op tijd geleverd. Wij helpen u bij productkeuze en het ontwikkelen van nieuwe smaken — zodat uw keuken kan blijven excelleren.",
+    image: segmentRestaurants,
+    previewImage: segmentRestaurants,
+    stickerSrc: stickerKip,
     href: "/voor-wie/restaurants",
     benefits: [
-      "Delen op maat van uw menu",
-      "Grillproducten en gehakt",
-      "Vers en direct bereidbaar",
-      "Halal gecertificeerd",
+      "Döner, shoarma & gevogelte",
+      "Punctuele leveringen",
+      "Hulp bij productkeuze",
+      "100% Halal (ECC Halal)",
     ],
   },
 ] as const;
 
 export const VOOR_WIE_MEGA_MENU = {
   eyebrow: "Voor wie",
-  title: "Onze klanten",
+  title: "Onze partners",
   subtitle:
-    "Levering op afspraak, vaste lijnen en constante kwaliteit voor uw bedrijf.",
+    "Betrouwbare Halal-levering voor professionele foodbedrijven — met focus op kwaliteit, snelheid en samenwerking.",
   ctaLabel: "Lees meer",
   overviewHref: "/voor-wie",
-  featuredImage: `${CDN}/2025/12/Ook-klant-worden.webp`,
-  pageEyebrow: "Halalvlees voor verkoop en bereiding",
-  pageTitle: "Onze klanten",
+  featuredImage: segmentRestaurants,
+  pageEyebrow: "Industries we serve",
+  pageTitle: "Voor wie wij werken",
   pageDescription:
-    "Ipekçi levert premium halalvlees en eindproducten aan slagerijen, groothandels, supermarkten en restaurants in heel Nederland. Met eigen slachthuis, koeltransport en persoonlijke service.",
+    "Ayat Food is een vertrouwde Halal vleesgroothandel voor restaurants, horeca en professionele foodbedrijven in Nederland — met snelle levering, ECC Halal-borging en persoonlijke begeleiding.",
 } as const;
 
 export const VOOR_WIE_SEGMENT_IDS = [
@@ -127,3 +134,19 @@ export function isVoorWieSegmentId(value: string): value is VoorWieSegmentId {
 export function getSegmentHref(id: VoorWieSegmentId | "all") {
   return id === "all" ? "/voor-wie" : `/voor-wie/${id}`;
 }
+
+export const VOOR_WIE_PAGE = {
+  eyebrow: "Voor wie",
+  title: "Halal partner voor professionals",
+  intro:
+    "Ayat Food levert premium Halal vleesproducten aan professionele foodbedrijven — van restaurants en horeca tot retailpartners — met focus op kwaliteit, betrouwbare levering en klantgerichtheid.",
+} as const;
+
+/** Homepage section intro — Industries We Serve */
+export const VOOR_WIE_HOME = {
+  kicker: "Partners",
+  title: "Voor wie wij werken",
+  headline: "Vertrouwde Halal-partner voor professionals",
+  lede:
+    "Ayat Food is de betrouwbare leverancier voor professionele foodbedrijven in Nederland. Wij ondersteunen restaurants, horeca en retailpartners met premium Halal producten, snelle levering en persoonlijke begeleiding.",
+} as const;

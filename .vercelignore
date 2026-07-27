@@ -1,0 +1,39 @@
+# What Vercel should NOT upload when deploying from the CLI.
+#
+# Without this file the CLI falls back to .gitignore, which does not exclude the
+# WordPress theme, its build zip or the QA artefacts — together ~230 MB, which
+# aborts the upload. Vercel only needs the Vite sources; it runs `npm run build`
+# itself, so the local dist/ is not uploaded either.
+
+# WordPress theme + its deployable zip (mirrored separately, never served here)
+ipekci-theme/
+ipekci-theme.zip
+
+# Local build output — Vercel rebuilds from source
+dist/
+.output/
+
+# QA / automation artefacts
+.visual-qa/
+.pw-profile/
+.playwright-mcp/
+scripts/
+
+# Screenshot leftovers in the repo root ONLY — the leading slash matters, or this
+# would also drop src/assets/ayat/hero-backdrop.jpeg and break the build.
+/*.jpeg
+
+# Audit + comparison dumps left by the QA scripts
+audit-sweep.json
+qa-audit.json
+lcp-manifest.json
+responsive-audit.json
+react-*.json
+wp-*.json
+
+# Docs / notes
+MIGRATION_STATUS.md
+
+# Tooling that plays no part in the build
+eslint.config.js
+wrangler.jsonc

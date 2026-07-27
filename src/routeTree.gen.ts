@@ -13,6 +13,9 @@ import { Route as ServicesRouteImport } from './routes/services'
 import { Route as VoorWieRouteImport } from './routes/voor-wie'
 import { Route as VoorWieSegmentRouteImport } from './routes/voor-wie.$segment'
 import { Route as AssortimentCategoryRouteImport } from './routes/assortiment.$category'
+import { Route as ProductenRouteImport } from './routes/producten'
+import { Route as ProductenCategoryRouteImport } from './routes/producten.$category'
+import { Route as VacaturesRouteImport } from './routes/vacatures'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -37,6 +40,21 @@ const AssortimentCategoryRoute = AssortimentCategoryRouteImport.update({
   path: '/assortiment/$category',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProductenRoute = ProductenRouteImport.update({
+  id: '/producten',
+  path: '/producten',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductenCategoryRoute = ProductenCategoryRouteImport.update({
+  id: '/producten/$category',
+  path: '/producten/$category',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VacaturesRoute = VacaturesRouteImport.update({
+  id: '/vacatures',
+  path: '/vacatures',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -56,6 +74,9 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ons-verhaal': typeof AboutRoute
+  '/producten': typeof ProductenRoute
+  '/producten/$category': typeof ProductenCategoryRoute
+  '/vacatures': typeof VacaturesRoute
   '/contact': typeof ContactRoute
   '/assortiment': typeof ServicesRoute
   '/assortiment/$category': typeof AssortimentCategoryRoute
@@ -65,6 +86,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ons-verhaal': typeof AboutRoute
+  '/producten': typeof ProductenRoute
+  '/producten/$category': typeof ProductenCategoryRoute
+  '/vacatures': typeof VacaturesRoute
   '/contact': typeof ContactRoute
   '/assortiment': typeof ServicesRoute
   '/assortiment/$category': typeof AssortimentCategoryRoute
@@ -75,6 +99,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/ons-verhaal': typeof AboutRoute
+  '/producten': typeof ProductenRoute
+  '/producten/$category': typeof ProductenCategoryRoute
+  '/vacatures': typeof VacaturesRoute
   '/contact': typeof ContactRoute
   '/assortiment': typeof ServicesRoute
   '/assortiment/$category': typeof AssortimentCategoryRoute
@@ -83,15 +110,18 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/ons-verhaal' | '/contact' | '/assortiment' | '/assortiment/$category' | '/voor-wie' | '/voor-wie/$segment'
+  fullPaths: '/' | '/ons-verhaal' | '/producten' | '/producten/$category' | '/vacatures' | '/contact' | '/assortiment' | '/assortiment/$category' | '/voor-wie' | '/voor-wie/$segment'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ons-verhaal' | '/contact' | '/assortiment' | '/assortiment/$category' | '/voor-wie' | '/voor-wie/$segment'
-  id: '__root__' | '/' | '/ons-verhaal' | '/contact' | '/assortiment' | '/assortiment/$category' | '/voor-wie' | '/voor-wie/$segment'
+  to: '/' | '/ons-verhaal' | '/producten' | '/producten/$category' | '/vacatures' | '/contact' | '/assortiment' | '/assortiment/$category' | '/voor-wie' | '/voor-wie/$segment'
+  id: '__root__' | '/' | '/ons-verhaal' | '/producten' | '/producten/$category' | '/vacatures' | '/contact' | '/assortiment' | '/assortiment/$category' | '/voor-wie' | '/voor-wie/$segment'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ProductenRoute: typeof ProductenRoute
+  ProductenCategoryRoute: typeof ProductenCategoryRoute
+  VacaturesRoute: typeof VacaturesRoute
   ContactRoute: typeof ContactRoute
   ServicesRoute: typeof ServicesRoute
   AssortimentCategoryRoute: typeof AssortimentCategoryRoute
@@ -129,6 +159,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VoorWieSegmentRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/producten': {
+      id: '/producten'
+      path: '/producten'
+      fullPath: '/producten'
+      preLoaderRoute: typeof ProductenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/producten/$category': {
+      id: '/producten/$category'
+      path: '/producten/$category'
+      fullPath: '/producten/$category'
+      preLoaderRoute: typeof ProductenCategoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vacatures': {
+      id: '/vacatures'
+      path: '/vacatures'
+      fullPath: '/vacatures'
+      preLoaderRoute: typeof VacaturesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -156,6 +207,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ProductenRoute: ProductenRoute,
+  ProductenCategoryRoute: ProductenCategoryRoute,
+  VacaturesRoute: VacaturesRoute,
   ContactRoute: ContactRoute,
   ServicesRoute: ServicesRoute,
   AssortimentCategoryRoute: AssortimentCategoryRoute,

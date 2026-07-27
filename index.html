@@ -3,20 +3,48 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--
+      Everything between the seo markers is regenerated per route by
+      scripts/build-seo.mjs after `vite build`. WhatsApp, Facebook, LinkedIn and
+      Google do NOT execute JavaScript, so the meta the router sets at runtime is
+      invisible to them — each route needs its own real HTML head.
+      What is committed here is the homepage head, which is also what `vite dev`
+      serves. Do not hand-edit the block below; edit the ROUTES table instead.
+    -->
+    <!--seo:start-->
     <title>Ayat Food — Premium Halal Vleesgroothandel</title>
     <meta
       name="description"
       content="Hoogwaardige Halal vleesproducten: döner, shoarma, gevogelte en vleessoorten. 100% Halal, volgens NVWA-normen. Snelle levering voor horeca, retail en supermarkten."
     />
+    <link rel="canonical" href="https://ayatfood.vercel.app/" />
+    <meta property="og:site_name" content="Ayat Food" />
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:type" content="website" />
     <meta property="og:title" content="Ayat Food — Premium Halal Vleesgroothandel" />
     <meta
       property="og:description"
       content="Hoogwaardige Halal vleesproducten voor restaurants, supermarkten en retail. 100% Halal · NVWA · Snelle levering."
     />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://ayatfood.nl/" />
-    <meta property="og:image" content="/ayat-logo.png" />
+    <meta property="og:url" content="https://ayatfood.vercel.app/" />
+    <meta property="og:image" content="https://ayatfood.vercel.app/og/home.jpg" />
+    <meta property="og:image:secure_url" content="https://ayatfood.vercel.app/og/home.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Ayat Food — premium Halal vleesproducten" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Ayat Food — Premium Halal Vleesgroothandel" />
+    <meta
+      name="twitter:description"
+      content="Hoogwaardige Halal vleesproducten voor restaurants, supermarkten en retail. 100% Halal · NVWA · Snelle levering."
+    />
+    <meta name="twitter:image" content="https://ayatfood.vercel.app/og/home.jpg" />
+    <!--seo:end-->
+
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#050505" />
     <link rel="icon" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />

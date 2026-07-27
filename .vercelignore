@@ -17,7 +17,14 @@ dist/
 .visual-qa/
 .pw-profile/
 .playwright-mcp/
-scripts/
+
+# The QA scripts stay out, but the build needs its own scripts. Note the `/*`:
+# excluding `scripts/` outright makes the directory unreachable and the `!`
+# re-includes below are ignored — which is exactly how a deploy once failed
+# with "Cannot find module '/vercel/path0/scripts/build-seo.mjs'".
+scripts/*
+!scripts/build-seo.mjs
+!scripts/build-og-cards.mjs
 
 # Screenshot leftovers in the repo root ONLY — the leading slash matters, or this
 # would also drop src/assets/ayat/hero-backdrop.jpeg and break the build.

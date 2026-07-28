@@ -11,7 +11,7 @@ export const Route = createFileRoute("/producten/$category")({
   },
   head: ({ params }) => {
     const category = getProductCategory(params.category);
-    const title = category ? `${category.label} — Producten | Ayat Food` : "Producten — Ayat Food";
+    const title = category ? `${category.label} | Producten | Ayat Food` : "Producten | Ayat Food";
     const description =
       category?.summary ?? "Het volledige Halal assortiment van Ayat Food Vleesgroothandel.";
 

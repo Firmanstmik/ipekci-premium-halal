@@ -199,7 +199,7 @@ export function HomeHeroSection() {
               className="mt-5 max-w-[34rem] text-[14px] leading-[1.72] text-foreground/64 sm:text-[15px]"
             >
               Ayat Food is gespecialiseerd in het produceren van hoogwaardige Halal producten. Wij
-              leveren aan restaurants, supermarkten en retail — 100% Halal, volgens NVWA-normen, met
+              leveren aan restaurants, supermarkten en retail. 100% Halal, volgens NVWA-normen, met
               snelle en betrouwbare levering.
             </motion.p>
 

@@ -138,7 +138,7 @@ const categories = [
   {
     id: "eindproducten",
     title: "Vleessoorten",
-    text: "Een breed assortiment aan vleessoorten — daar staan wij om bekend.",
+    text: "Een breed assortiment aan vleessoorten. Daar staan wij om bekend.",
     icon: ShieldCheck,
     image: productenImage,
   },
@@ -155,7 +155,7 @@ const homeAssortment = [
   {
     id: "rundvlees",
     title: "Shoarma",
-    text: "Verticaal opgestelde spit van rundvlees, kip, lamsvlees, kalkoen of mix — authentiek gekruid.",
+    text: "Verticaal opgestelde spit van rundvlees, kip, lamsvlees, kalkoen of mix, authentiek gekruid.",
     image: assortmentShoarmaImage,
     icon: Beef,
   },
@@ -171,7 +171,7 @@ const homeAssortment = [
 const endProducts = {
   title: "Döner & Shoarma",
   eyebrow: "Eigen productie",
-  text: "Ayat Food produceert hoogwaardige Halal döner kebab en shoarma — exclusief, smaakvol en klaar voor restaurants, snackbars en retail.",
+  text: "Ayat Food produceert hoogwaardige Halal döner kebab en shoarma: exclusief, smaakvol en klaar voor restaurants, snackbars en retail.",
   image: productenImage,
 } as const;
 
@@ -1071,7 +1071,7 @@ const EINDPRODUCTEN_PRODUCTS = [
     title: "Gehaktdöner",
     eyebrow: "Populair in NL",
     blurb:
-      "Vleespasteitjes van kalfsgehakt en vleesplakken afwisselend aan de spies — de meest populaire döner in Nederland.",
+      "Vleespasteitjes van kalfsgehakt en vleesplakken afwisselend aan de spies. De meest populaire döner in Nederland.",
     traits: ["Gehakt", "Spit", "Volume"],
     image: eindGehaktDonerImage,
     stickerSrc: HERO_STICKERS.lamsvlees,
@@ -1093,7 +1093,7 @@ const EINDPRODUCTEN_PRODUCTS = [
     title: "Kalkoen Shoarma",
     eyebrow: "Smaakvolle twist",
     blurb:
-      "Malse stukjes kalkoenvlees, perfect gekruid en snel te bereiden — een gezonde, smaakvolle shoarma-optie.",
+      "Malse stukjes kalkoenvlees, perfect gekruid en snel te bereiden. Een gezonde, smaakvolle shoarma-optie.",
     traits: ["Kalkoen", "Snel", "Horeca"],
     image: eindKalkoenShoarmaImage,
     stickerSrc: HERO_STICKERS.kip,
@@ -1104,7 +1104,7 @@ const EINDPRODUCTEN_PRODUCTS = [
     title: "Kip Shoarma",
     eyebrow: "Sappig & snel",
     blurb:
-      "Sappige stukjes gekruide kip, klaar om te grillen of te bakken — ideaal voor wraps, broodjes en hot counters.",
+      "Sappige stukjes gekruide kip, klaar om te grillen of te bakken, ideaal voor wraps, broodjes en hot counters.",
     traits: ["Kip", "Grill", "Snack"],
     image: eindKipShoarmaImage,
     stickerSrc: HERO_STICKERS.kip,
@@ -1126,7 +1126,7 @@ const EINDPRODUCTEN_PRODUCTS = [
     title: "Kalfs Shoarma",
     eyebrow: "Verfijnde variant",
     blurb:
-      "Mals kalfsvlees, subtiel gekruid met komijn, paprika en knoflook — een luxe shoarma voor snelle bereiding.",
+      "Mals kalfsvlees, subtiel gekruid met komijn, paprika en knoflook. Een luxe shoarma voor snelle bereiding.",
     traits: ["Kalf", "Luxe", "Specerijen"],
     image: eindKalfsShoarmaImage,
     stickerSrc: HERO_STICKERS.rundvlees,
@@ -1137,7 +1137,7 @@ const EINDPRODUCTEN_PRODUCTS = [
     title: "Gegrilde Kipdoner",
     eyebrow: "Bevroren & voorgegaard",
     blurb:
-      "Bevroren gegrilde kipdöner — voorgegaard en eenvoudig op te warmen voor een snelle, authentieke döner-ervaring.",
+      "Bevroren gegrilde kipdöner, voorgegaard en eenvoudig op te warmen voor een snelle, authentieke döner-ervaring.",
     traits: ["Diepvries", "Voorgegaard", "Flexibel"],
     image: eindDiepvriesDonerImage,
     stickerSrc: HERO_STICKERS.kip,
@@ -1220,13 +1220,13 @@ function PremiumTypewriter({
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Ayat Food — Premium Halal Vleesgroothandel" },
+      { title: "Ayat Food | Premium Halal Vleesgroothandel" },
       {
         name: "description",
         content:
-          "Ayat Food produceert hoogwaardige Halal producten voor restaurants, supermarkten en retail — 100% Halal, NVWA-normen, snelle levering.",
+          "Ayat Food produceert hoogwaardige Halal producten voor restaurants, supermarkten en retail. 100% Halal, NVWA-normen, snelle levering.",
       },
-      { property: "og:title", content: "Ayat Food — Premium Halal Vleesgroothandel" },
+      { property: "og:title", content: "Ayat Food | Premium Halal Vleesgroothandel" },
       { property: "og:image", content: IPEKCI_HERO_IMAGE },
     ],
   }),
@@ -1843,7 +1843,7 @@ function HomePage() {
                 <AssortimentProductCard
                   label="De beste van smaak"
                   title="Döner"
-                  description="Verschillende soorten en smaken döner kebab — Halal, exclusief en klaar voor de professionele keuken."
+                  description="Verschillende soorten en smaken döner kebab: Halal, exclusief en klaar voor de professionele keuken."
                   image={assortmentDonerImage}
                   imagePosition="40% 30%"
                   stickerSrc={HERO_STICKERS.lamsvlees}
@@ -1853,7 +1853,7 @@ function HomePage() {
                 <AssortimentProductCard
                   label="Rund, kip, lam of mix"
                   title="Shoarma"
-                  description="Verticaal opgestelde spit van rundvlees, kip, lamsvlees, kalkoen of mix — authentiek gekruid."
+                  description="Verticaal opgestelde spit van rundvlees, kip, lamsvlees, kalkoen of mix, authentiek gekruid."
                   image={assortmentShoarmaImage}
                   imagePosition="52% 28%"
                   stickerSrc={HERO_STICKERS.rundvlees}
@@ -2109,7 +2109,7 @@ function HomePage() {
 
                 <StoryItem>
                   <p className="mx-auto mt-9 max-w-[720px] text-sm leading-relaxed text-[#2c2c2c]/82 sm:text-base">
-                    Hoogwaardige en exclusieve Halal vleesproducten — vers en bewerkt — zorgvuldig
+                    Hoogwaardige en exclusieve Halal vleesproducten, vers en bewerkt, zorgvuldig
                     geselecteerd voor restaurants, supermarkten, retailers en foodservice. 100%
                     Halal onder toezicht van ECC Halal.
                   </p>
@@ -2122,7 +2122,7 @@ function HomePage() {
                     id: "lamsvlees",
                     title: "Döner",
                     description:
-                      "Wij produceren verschillende soorten en smaken döner kebab producten — van kombidöner tot kalfsdöner.",
+                      "Wij produceren verschillende soorten en smaken döner kebab producten, van kombidöner tot kalfsdöner.",
                     image: assortimentDonerHeroImage,
                     stickerSrc: HERO_STICKERS.lamsvlees,
                   },
@@ -2130,7 +2130,7 @@ function HomePage() {
                     id: "rundvlees",
                     title: "Shoarma",
                     description:
-                      "Verticaal opgestelde spit van rundvlees, kip, lamsvlees, kalkoen of mix — authentiek gekruid.",
+                      "Verticaal opgestelde spit van rundvlees, kip, lamsvlees, kalkoen of mix, authentiek gekruid.",
                     image: assortimentShoarmaHeroImage,
                     stickerSrc: HERO_STICKERS.rundvlees,
                   },
@@ -2138,7 +2138,7 @@ function HomePage() {
                     id: "kip",
                     title: "Gevogelte",
                     description:
-                      "Dankzij onze eigen productie bieden wij u de heerlijkste kipproducten — smaakvol en breed inzetbaar.",
+                      "Dankzij onze eigen productie bieden wij u de heerlijkste kipproducten, smaakvol en breed inzetbaar.",
                     image: assortimentGevogelteHeroImage,
                     stickerSrc: HERO_STICKERS.kip,
                   },
@@ -2171,7 +2171,7 @@ function HomePage() {
 
                   <p className="mt-6 max-w-[40ch] text-[15px] leading-[1.8] text-[#1a1a1a]/80">
                     Ayat Food is het adres waar afnemers en kebab-liefhebbers Halal döner kebab en
-                    shoarma kunnen afnemen — van verse spitproducten tot handige diepvriesvarianten.
+                    shoarma kunnen afnemen, van verse spitproducten tot handige diepvriesvarianten.
                   </p>
 
                   <div className="mt-8 flex flex-wrap gap-2">
@@ -3236,7 +3236,7 @@ function ProcessQualitySection() {
               className="mc-sans mt-4 text-[11px] uppercase tracking-[0.22em] md:mt-5"
               style={{ color: "var(--mc-ink-dim)" }}
             >
-              Hoofdstuk {active + 1} · {PROCESS_CHAPTERS[active]} — {step.navLabel}
+              Hoofdstuk {active + 1} · {PROCESS_CHAPTERS[active]} · {step.navLabel}
             </motion.p>
           </div>
         </motion.header>
@@ -3728,7 +3728,7 @@ function ProcessQualitySection() {
                   className="mc-sans mt-6 max-w-xl text-[14.5px] leading-relaxed"
                   style={{ color: "var(--mc-ink-dim)" }}
                 >
-                  U heeft onze werkwijze gezien — van herkomst tot levering. Nieuwe samenwerkingen
+                  U heeft onze werkwijze gezien, van herkomst tot levering. Nieuwe samenwerkingen
                   worden per kwartaal beoordeeld. Vraag discreet ons private dossier aan met
                   certificeringen, een atelierpresentatie en het actuele assortiment.
                 </motion.p>

@@ -95,7 +95,7 @@ function ProductSpecCard({ product, index }: { product: Product; index: number }
         </div>
       ) : (
         <p className="mt-5 text-[13.5px] leading-[1.75] text-[#141414]/50">
-          Op aanvraag leverbaar — neem contact op voor specificaties en hoeveelheden.
+          Op aanvraag leverbaar. Neem contact op voor specificaties en hoeveelheden.
         </p>
       )}
 

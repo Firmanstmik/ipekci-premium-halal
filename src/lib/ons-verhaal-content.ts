@@ -111,7 +111,7 @@ export const ONS_VERHAAL_HALAL = {
   paragraphs: [
     "Halal en kwaliteit zijn twee belangrijke kernbegrippen binnen Ayat Food Vleesgroothandel. Wij werken volledig volgens de normen en standaarden van de Nederlandse Voedsel- en Warenautoriteit (NVWA).",
     "Daarnaast zijn al onze producten onder een strikte toezicht van de European Certification Centre for Halal (ECC Halal). Zo weet u zeker dat elk product dat onze deur verlaat voldoet aan de eisen die u en uw klanten daaraan stellen.",
-    "Ons succesgeheim ligt in de ambitie om onze afnemers Halal, hoogwaardige en exclusieve producten aan te bieden — en onze controle op die producten is zeer hoog.",
+    "Ons succesgeheim ligt in de ambitie om onze afnemers Halal, hoogwaardige en exclusieve producten aan te bieden. Onze controle op die producten is zeer hoog.",
   ],
   badges: ["NVWA-normen", "ECC Halal", "Strikte controle", "100% Halal"],
 } as const;
@@ -123,7 +123,7 @@ export const ONS_VERHAAL_INTRO = {
   paragraphs: [
     "Ayat Food Vleesgroothandel is het adres waar de afnemers en kebab-liefhebbers Halal en gezonde döner kebab producten kunnen vinden. Wij produceren verschillende soorten en smaken döner kebab producten en ondersteunen onze klanten bij het ontwikkelen van nieuwe smaken.",
     "Onze medewerkers en bezorgers staan 24/7 klaar om uw vragen te beantwoorden en uw bestellingen op tijd te leveren. Bij Ayat Food Vleesgroothandel worden uw bestellingen op tijd geleverd.",
-    "Door ons moderne wagenpark zijn wij in staat u een snelle en betrouwbare levering te garanderen — aan restaurants, supermarkten, slagerijen en groothandels door heel Nederland.",
+    "Door ons moderne wagenpark zijn wij in staat u een snelle en betrouwbare levering te garanderen aan restaurants, supermarkten, slagerijen en groothandels door heel Nederland.",
   ],
   badges: ["Watergang", "Vleesgroothandel", "24/7 service"],
 } as const;
@@ -146,7 +146,7 @@ export const ONS_VERHAAL_WORKFLOW = {
     {
       n: "Stap 3",
       title: "Wij bezorgen",
-      text: "Na ontvangst en verpakken van je bestelling bezorgen wij deze — snel en betrouwbaar dankzij ons moderne wagenpark.",
+      text: "Na ontvangst en verpakken van je bestelling bezorgen wij deze, snel en betrouwbaar dankzij ons moderne wagenpark.",
     },
     {
       n: "Stap 4",
@@ -187,7 +187,7 @@ export const ONS_VERHAAL_PRODUCTGROEPEN = PRODUCTEN_MEGA_ITEMS;
 export const ONS_VERHAAL_CAREERS = {
   eyebrow: "Werken bij Ayat Food",
   title: "De leukste banen voor jou",
-  text: "Ben je op zoek naar een uitdagende baan in het hoogstaande vleessegment? Bij Ayat Food werk je in een hecht team van zes collega's dat elke dag samen hetzelfde doel nastreeft: hoogwaardige Halal producten leveren aan onze afnemers. Van magazijn en orderpicking tot verkoop en klantadvies — bekijk de openstaande vacatures van Ayat Food.",
+  text: "Ben je op zoek naar een uitdagende baan in het hoogstaande vleessegment? Bij Ayat Food werk je in een hecht team van zes collega's dat elke dag samen hetzelfde doel nastreeft: hoogwaardige Halal producten leveren aan onze afnemers. Van magazijn en orderpicking tot verkoop en klantadvies. Bekijk de openstaande vacatures van Ayat Food.",
   cta: "Bekijk onze vacatures",
   ctaTo: "/vacatures" as const,
 } as const;

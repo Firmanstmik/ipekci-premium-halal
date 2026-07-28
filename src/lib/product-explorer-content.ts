@@ -139,7 +139,7 @@ export const PRODUCT_EXPLORER_ITEMS: readonly ExplorerProduct[] = [
     label: "DÖNER",
     name: "Döner",
     description:
-      "De meest voorkomende kebabsoort staat bij ons bekend als ‘döner kebab’ — bereid op de gekende verticale spies, met passie voor smaak.",
+      "De meest voorkomende kebabsoort staat bij ons bekend als ‘döner kebab’, bereid op de gekende verticale spies, met passie voor smaak.",
     bestFor: "Kombidöner, kipdöner, gehaktdöner en kalfsdöner voor horeca en retail.",
     image: productDoner,
     href: "/producten/doner",
@@ -161,7 +161,7 @@ export const PRODUCT_EXPLORER_ITEMS: readonly ExplorerProduct[] = [
     label: "SHOARMA",
     name: "Shoarma",
     description:
-      "Verticaal opgestelde spit van rundvlees, kip, lamsvlees, kalkoen of mix — authentiek gekruid en klaar voor snelle bereiding.",
+      "Verticaal opgestelde spit van rundvlees, kip, lamsvlees, kalkoen of mix, authentiek gekruid en klaar voor snelle bereiding.",
     bestFor: "Kalkoen-, kip-, mix- en kalfsshoarma voor wraps, broodjes en hot counters.",
     image: productShoarma,
     href: "/producten/shoarma",
@@ -183,7 +183,7 @@ export const PRODUCT_EXPLORER_ITEMS: readonly ExplorerProduct[] = [
     label: "GEVOGELTE",
     name: "Gevogelte",
     description:
-      "Dankzij onze eigen productie bieden wij u de heerlijkste kipproducten — smaakvol en breed inzetbaar.",
+      "Dankzij onze eigen productie bieden wij u de heerlijkste kipproducten, smaakvol en breed inzetbaar.",
     bestFor: "Kipfilet, kipburgers, kip merquez en andere gevogelte voor professionele keukens.",
     image: productGevogelte,
     href: "/producten/gevogelte",
@@ -205,7 +205,7 @@ export const PRODUCT_EXPLORER_ITEMS: readonly ExplorerProduct[] = [
     label: "VLEESSOORTEN",
     name: "Vleessoorten",
     description:
-      "Een breed assortiment aan vleessoorten — daar staan wij om bekend. Wij focussen op premium rundvleesproducten voor de professionele keuken.",
+      "Een breed assortiment aan vleessoorten. Daar staan wij om bekend. Wij focussen op premium rundvleesproducten voor de professionele keuken.",
     bestFor: "Gehakt, hamburgers, spareribs, köfte en meer voor restaurants en retail.",
     image: productVleessoorten,
     href: "/producten/vleessoorten",
@@ -227,7 +227,7 @@ export const PRODUCT_EXPLORER_ITEMS: readonly ExplorerProduct[] = [
     label: "DIEPVRIES",
     name: "Diepvriesproducten",
     description:
-      "Producten vers ingevroren zodat deze een latere periode alsnog vers gebruikt kunnen worden — praktisch voor voorraad en piekmomenten.",
+      "Producten vers ingevroren zodat deze een latere periode alsnog vers gebruikt kunnen worden. Praktisch voor voorraad en piekmomenten.",
     bestFor: "Stabiele voorraad voor groothandel, retail en foodservice.",
     image: productDiepvries,
     href: "/producten",
@@ -248,7 +248,7 @@ export const PRODUCT_EXPLORER_ITEMS: readonly ExplorerProduct[] = [
     label: "TURKSE PIZZA",
     name: "Turkse pizza",
     description:
-      "De lekkerste Turkse pizza’s — wij leveren alle ingrediënten voor een consistente, smaakvolle bereiding.",
+      "De lekkerste Turkse pizza’s. Wij leveren alle ingrediënten voor een consistente, smaakvolle bereiding.",
     bestFor: "Snackbars, pizzeria’s en foodconcepts met Turkse specialiteiten.",
     image: productTurksePizza,
     href: "/producten",
@@ -269,7 +269,7 @@ export const PRODUCT_EXPLORER_ITEMS: readonly ExplorerProduct[] = [
     label: "GEGRILD",
     name: "Gegrilde producten",
     description:
-      "Heerlijk gegrilde producten, direct leverbaar en vol van smaak — klaar voor snelle service.",
+      "Heerlijk gegrilde producten, direct leverbaar en vol van smaak. Klaar voor snelle service.",
     bestFor: "Warm counters, catering en snelle bereiding in de horeca.",
     image: productGegrild,
     href: "/producten",
@@ -290,7 +290,7 @@ export const PRODUCT_EXPLORER_ITEMS: readonly ExplorerProduct[] = [
     label: "DÜRÜM",
     name: "Tortilla Durum",
     description:
-      "Een lekkere dürüm-döner. Dürüm betekent letterlijk ‘opgerold’ in het Turks — ideaal voor wraps en streetfood.",
+      "Een lekkere dürüm-döner. Dürüm betekent letterlijk ‘opgerold’ in het Turks, ideaal voor wraps en streetfood.",
     bestFor: "Dürüm, wraps en snelle streetfood-formules.",
     image: productDurum,
     href: "/producten",

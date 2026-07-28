@@ -54,7 +54,7 @@ export function Footer() {
 
             <p className="mt-7 max-w-md text-[15px] leading-[1.75] text-[#141414]/74">
               Ayat Food Vleesgroothandel produceert hoogwaardige Halal producten voor restaurants,
-              supermarkten en retail — met focus op kwaliteit, snelheid en klantgerichtheid.
+              supermarkten en retail, met focus op kwaliteit, snelheid en klantgerichtheid.
             </p>
 
             <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[#141414]/50">

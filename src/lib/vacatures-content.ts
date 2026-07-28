@@ -38,7 +38,7 @@ export const VACATURES_INTRO = {
   title: "Een hecht team achter elk product",
   paragraphs: [
     "Ayat Food Vleesgroothandel is het adres waar afnemers en kebab-liefhebbers Halal en gezonde döner kebab producten vinden. Wij produceren verschillende soorten en smaken döner kebab producten en ondersteunen onze klanten bij het ontwikkelen van nieuwe smaken.",
-    "Ons team van zes collega's staat 24/7 klaar om vragen te beantwoorden en bestellingen op tijd te leveren. Van het magazijn tot de verkoop: iedereen draagt bij aan hetzelfde doel — hoogwaardige Halal producten, met zorg ingepakt en betrouwbaar bezorgd.",
+    "Ons team van zes collega's staat 24/7 klaar om vragen te beantwoorden en bestellingen op tijd te leveren. Van het magazijn tot de verkoop: iedereen draagt bij aan hetzelfde doel: hoogwaardige Halal producten, met zorg ingepakt en betrouwbaar bezorgd.",
   ],
   highlights: [
     {
@@ -123,8 +123,8 @@ export const VACATURES: readonly Vacature[] = [
 /** Builds the pre-filled sollicitatie-mail for a given vacancy. */
 export function sollicitatieMailto(vacatureTitle?: string) {
   const subject = vacatureTitle
-    ? `Sollicitatie — ${vacatureTitle}`
-    : "Open sollicitatie — Ayat Food";
+    ? `Sollicitatie: ${vacatureTitle}`
+    : "Open sollicitatie bij Ayat Food";
   const body = [
     vacatureTitle
       ? `Beste Ayat Food,\n\nGraag solliciteer ik op de vacature ${vacatureTitle}.`
@@ -148,7 +148,7 @@ export const VACATURES_SOLLICITEREN = {
     {
       n: "01",
       title: "Stuur je sollicitatie",
-      text: "Mail je naam, telefoonnummer, motivatie en cv naar ons — vermeld de vacature waarop je reageert.",
+      text: "Mail je naam, telefoonnummer, motivatie en cv naar ons. Vermeld de vacature waarop je reageert.",
     },
     {
       n: "02",
@@ -168,6 +168,6 @@ export const VACATURES_SOLLICITEREN = {
 export const VACATURES_CLOSING = {
   eyebrow: "Geen passende vacature?",
   title: "Stuur ons een open sollicitatie",
-  text: "Ons team groeit mee met onze klanten. Stel jezelf voor en vertel waar jouw kracht ligt — we nemen contact op zodra er een passende rol vrijkomt.",
+  text: "Ons team groeit mee met onze klanten. Stel jezelf voor en vertel waar jouw kracht ligt. We nemen contact op zodra er een passende rol vrijkomt.",
   ctaLabel: "Open sollicitatie sturen",
 } as const;

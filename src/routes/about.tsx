@@ -3,7 +3,7 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { OnsVerhaalPage } from "@/components/ons-verhaal/OnsVerhaalPage";
 import { ONS_VERHAAL_HERO_FALLBACK } from "@/lib/ons-verhaal-content";
 
-const TITLE = "Over ons — Ayat Food Vleesgroothandel";
+const TITLE = "Over ons | Ayat Food Vleesgroothandel";
 const DESCRIPTION =
   "Ayat Food Vleesgroothandel is het adres voor Halal döner kebab producten. 24/7 service, een modern wagenpark, NVWA-normen en ECC Halal-toezicht.";
 

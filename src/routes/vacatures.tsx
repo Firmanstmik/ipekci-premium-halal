@@ -3,7 +3,7 @@ import { SiteLayout } from "@/components/SiteLayout";
 import { VacaturesPage } from "@/components/vacatures/VacaturesPage";
 import { VACATURES_HERO_IMAGE } from "@/lib/vacatures-content";
 
-const TITLE = "Vacatures — Ayat Food Vleesgroothandel";
+const TITLE = "Vacatures | Ayat Food Vleesgroothandel";
 const DESCRIPTION =
   "Ben je op zoek naar een uitdagende baan in het hoogstaande vleessegment? Bekijk de openstaande vacatures van Ayat Food in Watergang.";
 

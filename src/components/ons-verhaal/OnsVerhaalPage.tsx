@@ -675,7 +675,7 @@ export function OnsVerhaalPage() {
               </h2>
               <p className="mt-4 max-w-xl text-[14px] leading-relaxed text-[#5a5a5a]">
                 Van döner en shoarma tot gevogelte, vleessoorten, diepvriesproducten, Turkse pizza,
-                gegrilde producten en tortilla durum — Halal geproduceerd voor restaurants,
+                gegrilde producten en tortilla durum, Halal geproduceerd voor restaurants,
                 supermarkten en retail.
               </p>
             </div>

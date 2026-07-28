@@ -127,7 +127,7 @@ export const PRODUCT_CATEGORIES: readonly ProductCategory[] = [
       {
         src: explorerDoner,
         alt: "Döner kebab aan de verticale spies",
-        caption: "De verticale spies — laagje voor laagje geroosterd.",
+        caption: "De verticale spies, laagje voor laagje geroosterd.",
       },
       {
         src: heroDonerBak,
@@ -178,7 +178,7 @@ export const PRODUCT_CATEGORIES: readonly ProductCategory[] = [
     breadcrumbLabel: "Shoarma",
     eyebrow: "Rund, kip, lam of mix",
     summary:
-      "De benaming ‘kebab’ betekent in het Turks zoveel als ‘gebakken vlees’ — in de praktijk is het vaak een mix.",
+      "De benaming ‘kebab’ betekent in het Turks zoveel als ‘gebakken vlees’. In de praktijk is het vaak een mix.",
     intro: [
       "De eerste verwarring die we uitklaren is die tussen kebab en shoarma. De benaming ‘kebab‘ betekent in het Turks zoveel als ‘gebakken vlees‘. Het vlees dat bij ‘kebab’ gebakken wordt kan zowel lamsvlees, kip, kalkoen als kalfsvlees zijn. In de praktijk is het vaak een mix.",
       "Het woord ‘shoarma‘ is dan weer een Arabisch afleiding van het Turkse woord ‘çevirme’, wat ‘draaien‘ betekent. Onder het Ottomaans imperium heeft de Turkse eetcultuur zich namelijk over het hele Midden-Oosten verspreid en aangepast aan de plaatselijke keuken. In Israël en Libanon kon de bereiding van het gemarineerd vlees op veel bijval rekenen, maar dan met lokale kruiding en onder de benaming ‘shoarma’.",
@@ -252,7 +252,7 @@ export const PRODUCT_CATEGORIES: readonly ProductCategory[] = [
       {
         src: explorerGevogelte,
         alt: "Gevogelte assortiment",
-        caption: "Kip en kalkoen — mager, mals en veelzijdig.",
+        caption: "Kip en kalkoen: mager, mals en veelzijdig.",
       },
       {
         src: heroHome2,
@@ -521,7 +521,7 @@ export const PRODUCT_CATEGORIES: readonly ProductCategory[] = [
       {
         src: explorerGegrild,
         alt: "Gegrilde producten",
-        caption: "Voorgegaard en gegrild — direct leverbaar.",
+        caption: "Voorgegaard en gegrild, direct leverbaar.",
       },
       { src: eindMerquez, alt: "Merquez worstjes", caption: "Rokerig aroma, sappige textuur." },
       { src: eindSucuk, alt: "Sucuk", caption: "Klaar om op te warmen en te serveren." },
@@ -602,7 +602,7 @@ export const PRODUCT_CATEGORIES: readonly ProductCategory[] = [
       {
         src: explorerDurum,
         alt: "Tortilla dürüm",
-        caption: "Dun, flexibel platbrood — letterlijk ‘opgerold’.",
+        caption: "Dun, flexibel platbrood. Letterlijk ‘opgerold’.",
       },
       {
         src: heroDonerBak,
@@ -734,6 +734,6 @@ export const PRODUCT_HELP_CTA = {
 export const PRODUCT_QUOTE_CTA = {
   eyebrow: "Beste producten",
   title: "Offerte aanvragen",
-  text: "Vraag vrijblijvend een offerte aan voor dit assortiment — wij denken met u mee over hoeveelheden, smaken en verpakking.",
+  text: "Vraag vrijblijvend een offerte aan voor dit assortiment. Wij denken met u mee over hoeveelheden, smaken en verpakking.",
   cta: "Offerte aanvragen",
 } as const;

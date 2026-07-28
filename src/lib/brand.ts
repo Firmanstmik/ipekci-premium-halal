@@ -21,7 +21,7 @@ export const BRAND = {
 } as const;
 
 export const BRAND_SEO = {
-  title: "Ayat Food — Premium Halal Vleesgroothandel",
+  title: "Ayat Food | Premium Halal Vleesgroothandel",
   description:
     "Hoogwaardige Halal vleesproducten: döner, shoarma, gevogelte en vleessoorten. 100% Halal, volgens NVWA-normen. Snelle levering voor horeca, retail en supermarkten.",
 } as const;

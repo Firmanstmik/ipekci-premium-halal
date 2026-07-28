@@ -82,7 +82,7 @@ function ContactBackdrop() {
         loading="eager"
         decoding="async"
         referrerPolicy="no-referrer"
-        className="absolute inset-0 h-full w-full object-cover opacity-[0.11]"
+        className="absolute inset-0 h-full w-full object-cover opacity-[0.07]"
         style={{ filter: "brightness(0.94) contrast(1.04) saturate(0.95)" }}
       />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_60%_at_12%_18%,rgba(179,18,23,0.06),transparent_58%)]" />
@@ -92,38 +92,51 @@ function ContactBackdrop() {
   );
 }
 
+/**
+ * Service promises.
+ *
+ * These were three boxed cards in a `sm:grid-cols-3` inside the 5/12 column,
+ * which left each card about 110px wide and broke "Binnen één werkdag
+ * persoonlijk antwoord" across five lines. An editorial list uses the full
+ * column width instead: numeral, hairline, copy — no boxes competing with the
+ * detail cards directly below.
+ */
 function ReassuranceStrip() {
   return (
-    <motion.div
+    <motion.ul
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.44, ease: DS_EASE }}
-      className="mt-8 grid gap-3 sm:grid-cols-3"
+      className="mt-9 border-t border-[#e8e4de]"
     >
       {CONTACT_REASSURANCE.map((item, index) => {
         const Icon = item.icon;
         return (
-          <div
+          <li
             key={item.title}
-            className="group flex items-start gap-3 rounded-2xl border border-[#ebe7e1] bg-white/85 px-4 py-4 shadow-[0_12px_40px_-32px_rgba(0,0,0,0.18)] backdrop-blur-sm transition-all duration-500 hover:border-[rgba(179,18,23,0.2)] hover:shadow-[0_18px_48px_-28px_rgba(179,18,23,0.12)]"
+            className="group flex items-start gap-4 border-b border-[#e8e4de] py-4 transition-colors duration-[var(--ipek-duration-ui)]"
           >
-            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[rgba(179,18,23,0.08)] text-[#B31217] transition-colors duration-500 group-hover:bg-[rgba(179,18,23,0.12)]">
-              <Icon size={17} strokeWidth={1.75} />
-            </div>
-            <div>
-              <p className="text-[12px] font-semibold text-[#1c1c1c]">{item.title}</p>
-              <p className="mt-1 text-[12px] leading-relaxed text-[#6f6a63]">{item.text}</p>
-            </div>
             <span
               aria-hidden
-              className="ml-auto hidden text-[10px] font-semibold tabular-nums text-[#e0dbd4] sm:block"
+              className="mt-[3px] font-display text-[11px] font-semibold tabular-nums tracking-[0.2em] text-[#B31217]/45 transition-colors duration-[var(--ipek-duration-ui)] group-hover:text-[#B31217]"
             >
               {String(index + 1).padStart(2, "0")}
             </span>
-          </div>
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-[rgba(179,18,23,0.12)] bg-[rgba(179,18,23,0.05)] text-[#B31217] transition-colors duration-[var(--ipek-duration-ui)] group-hover:bg-[rgba(179,18,23,0.1)]">
+              <Icon size={16} strokeWidth={1.75} />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[13.5px] font-semibold tracking-[-0.01em] text-[#1c1c1c]">
+                {item.title}
+              </span>
+              <span className="mt-1 block text-[13px] leading-[1.65] text-[#6f6a63]">
+                {item.text}
+              </span>
+            </span>
+          </li>
         );
       })}
-    </motion.div>
+    </motion.ul>
   );
 }
 
@@ -439,7 +452,7 @@ function ContactFormPanel() {
                         <FormLabel className="cursor-pointer text-[13px] font-normal leading-6 text-[#555]">
                           Ik ga akkoord met de{" "}
                           <a
-                            href="https://www.ipekcislachterij.nl/privacy-policy/"
+                            href="/contact"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-[#B31217] underline underline-offset-4 transition-colors hover:text-[#8e0e12]"
@@ -478,7 +491,7 @@ function ContactFormPanel() {
                   </span>
                 </div>
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#b0aaa2]">
-                  Ipekçi B2B · Harderwijk
+                  Ayat Food B2B · Watergang
                 </p>
               </div>
             </form>
@@ -500,7 +513,7 @@ export function ContactPage() {
       <section className="relative overflow-hidden bg-[#f8f6f3] pt-36 text-[#1c1c1c] md:pt-40 lg:pt-[148px]">
         <ContactBackdrop />
 
-        <div className="relative ipek-container px-6 pb-20 lg:px-10 lg:pb-28">
+        <div className="relative ipek-container pb-20 lg:pb-28">
           <motion.nav
             aria-label="Breadcrumb"
             initial={{ opacity: 0, y: 12 }}
@@ -547,7 +560,7 @@ export function ContactPage() {
                 className="mt-6 max-w-md text-[15px] leading-[1.85] text-[#5a5a5a]"
               >
                 Heeft u een vraag over levering, assortiment of samenwerking? Ons team staat
-                persoonlijk voor u klaar — met korte lijnen en duidelijke afspraken.
+                persoonlijk voor u klaar, met korte lijnen en duidelijke afspraken.
               </motion.p>
 
               <motion.div
@@ -556,7 +569,7 @@ export function ContactPage() {
                 transition={{ duration: 0.7, delay: 0.46, ease: DS_EASE }}
                 className="mt-6 flex flex-wrap gap-2"
               >
-                {["B2B partner", "Halal gecertificeerd", "Harderwijk"].map((badge) => (
+                {["B2B partner", "ECC Halal gecertificeerd", "Watergang"].map((badge) => (
                   <span
                     key={badge}
                     className="inline-flex items-center rounded-full border border-[rgba(179,18,23,0.14)] bg-white/90 px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#666] shadow-sm"
@@ -619,7 +632,7 @@ export function ContactPage() {
         </div>
 
         <div className="relative mt-4 border-t border-[#ebe7e1] bg-[linear-gradient(180deg,#ffffff_0%,#faf8f5_100%)]">
-          <div className="mx-auto grid ipek-container gap-4 px-6 py-10 sm:grid-cols-2 lg:grid-cols-4 lg:px-10 lg:py-12">
+          <div className="ipek-container grid gap-4 py-10 sm:grid-cols-2 lg:grid-cols-4 lg:py-12">
             {CONTACT_TRUST.map((item, index) => {
               const Icon = item.icon;
               return (
@@ -664,7 +677,7 @@ export function ContactPage() {
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_70%_at_0%_50%,rgba(226,192,141,0.08),transparent_55%)]"
         />
-        <div className="relative mx-auto grid ipek-container items-center gap-12 lg:grid-cols-12 lg:gap-16">
+        <div className="relative ipek-container grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
           <motion.div
             initial={{ opacity: 0, x: -28 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -711,22 +724,22 @@ export function ContactPage() {
               />
               <img
                 src={CONTACT_HERO_IMAGE}
-                alt="Ipekçi Slachterij contact"
+                alt="Ayat Food Vleesgroothandel in Watergang"
                 loading="lazy"
                 decoding="async"
                 referrerPolicy="no-referrer"
                 className="aspect-[4/5] w-full object-cover transition-transform duration-[1.35s] ease-[cubic-bezier(.22,.61,.36,1)] group-hover:scale-[1.03]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a]/45 via-[#1a1a1a]/5 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/82 via-[#0a0a0a]/22 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 z-10 p-7 md:p-8">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-white/75">
-                  Ipekçi Slachterij
+                <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[rgba(240,226,202,0.95)]">
+                  Ayat Food Vleesgroothandel
                 </p>
                 <p className="mt-2 font-display text-2xl leading-tight text-white">
                   Persoonlijk contact, professionele service
                 </p>
                 <p className="mt-2 max-w-sm text-[13px] leading-relaxed text-white/80">
-                  Bezoek ons in Harderwijk of neem direct contact op — wij denken graag met u mee.
+                  Bezoek ons in Watergang of neem direct contact op. Wij denken graag met u mee.
                 </p>
               </div>
             </div>

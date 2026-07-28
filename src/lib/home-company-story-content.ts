@@ -47,7 +47,7 @@ export const HOME_OVER_ONS = {
   customerText:
     "Wij helpen onze klanten met het kiezen van de juiste vleesproducten en het ontwikkelen van nieuwe smaken.",
   /** Attribution under the customer promise — signs the statement */
-  customerAttribution: "Ayat Food — Vleesgroothandel",
+  customerAttribution: "Ayat Food Vleesgroothandel",
   experience: {
     value: "10+",
     /** Split value so the numeral can count up while the suffix stays fixed */
@@ -70,7 +70,7 @@ export const HOME_OVER_ONS = {
       title: "Snelle levertijd",
       text: "Dankzij ons moderne wagenpark zijn wij in staat een snelle en betrouwbare levering te garanderen.",
       image: levertijdImage,
-      imageAlt: "Slager bereidt premium rundvlees — snelle en zorgvuldige levering",
+      imageAlt: "Slager bereidt premium rundvlees voor snelle en zorgvuldige levering",
       caption: "Zorgvuldig versneden, betrouwbaar uitgeleverd.",
       meta: ["Modern wagenpark", "Betrouwbare levering"],
     },

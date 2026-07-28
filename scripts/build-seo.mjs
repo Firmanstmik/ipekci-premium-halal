@@ -41,7 +41,7 @@ const CATEGORIES = [
   [
     "doner",
     "Döner",
-    "Kombidöner, kipdöner, gehaktdöner en kalfsdöner — verschillende soorten en smaken döner kebab.",
+    "Kombidöner, kipdöner, gehaktdöner en kalfsdöner: verschillende soorten en smaken döner kebab.",
   ],
   [
     "shoarma",
@@ -66,7 +66,7 @@ const CATEGORIES = [
   [
     "turkse-pizza",
     "Turkse pizza",
-    "Lahmacun — flinterdun deeg met gekruid gehakt. Wij leveren alle ingrediënten.",
+    "Lahmacun met flinterdun deeg en gekruid gehakt. Wij leveren alle ingrediënten.",
   ],
   [
     "gegrilde-producten",
@@ -81,7 +81,7 @@ const ROUTES = [
   {
     url: "/",
     file: "index.html",
-    title: "Ayat Food — Premium Halal Vleesgroothandel",
+    title: "Ayat Food | Premium Halal Vleesgroothandel",
     description:
       "Hoogwaardige Halal vleesproducten: döner, shoarma, gevogelte en vleessoorten. 100% Halal, volgens NVWA-normen. Snelle levering voor horeca, retail en supermarkten.",
     og: "home",
@@ -90,16 +90,16 @@ const ROUTES = [
   {
     url: "/producten",
     file: "producten.html",
-    title: "Producten — Ayat Food Vleesgroothandel",
+    title: "Producten | Ayat Food Vleesgroothandel",
     description:
-      "Het volledige Halal assortiment: döner, shoarma, gevogelte, vleessoorten, diepvriesproducten, Turkse pizza, gegrilde producten en tortilla dürüm — 34 producten onder ECC Halal-toezicht.",
+      "Het volledige Halal assortiment: döner, shoarma, gevogelte, vleessoorten, diepvriesproducten, Turkse pizza, gegrilde producten en tortilla dürüm. In totaal 34 producten onder ECC Halal-toezicht.",
     og: "producten",
     crumbs: [["Producten", "/producten"]],
   },
   ...CATEGORIES.map(([slug, label, description]) => ({
     url: `/producten/${slug}`,
     file: path.join("producten", `${slug}.html`),
-    title: `${label} — Producten | Ayat Food`,
+    title: `${label} | Producten | Ayat Food`,
     description,
     og: slug,
     crumbs: [
@@ -110,7 +110,7 @@ const ROUTES = [
   {
     url: "/ons-verhaal",
     file: "ons-verhaal.html",
-    title: "Over ons — Ayat Food Vleesgroothandel",
+    title: "Over ons | Ayat Food Vleesgroothandel",
     description:
       "Ayat Food Vleesgroothandel is het adres voor Halal döner kebab producten. 24/7 service, een modern wagenpark, NVWA-normen en ECC Halal-toezicht.",
     og: "ons-verhaal",
@@ -119,7 +119,7 @@ const ROUTES = [
   {
     url: "/vacatures",
     file: "vacatures.html",
-    title: "Vacatures — Ayat Food Vleesgroothandel",
+    title: "Vacatures | Ayat Food Vleesgroothandel",
     description:
       "Ben je op zoek naar een uitdagende baan in het hoogstaande vleessegment? Bekijk de openstaande vacatures van Ayat Food in Watergang.",
     og: "vacatures",
@@ -128,7 +128,7 @@ const ROUTES = [
   {
     url: "/contact",
     file: "contact.html",
-    title: "Contact — Ayat Food Vleesgroothandel",
+    title: "Contact | Ayat Food Vleesgroothandel",
     description:
       "Neem contact op met Ayat Food Vleesgroothandel in Watergang. De Dollard 3, 1454 AT · +31 (0) 20 334 5115 · info@ayatfood.nl.",
     og: "contact",
@@ -137,9 +137,9 @@ const ROUTES = [
   {
     url: "/voor-wie",
     file: "voor-wie.html",
-    title: "Voor wie — Ayat Food Vleesgroothandel",
+    title: "Voor wie | Ayat Food Vleesgroothandel",
     description:
-      "Halal vleesproducten voor slagerijen, groothandels, supermarkten en restaurants — met snelle levering en persoonlijke begeleiding.",
+      "Halal vleesproducten voor slagerijen, groothandels, supermarkten en restaurants, met snelle levering en persoonlijke begeleiding.",
     og: "voor-wie",
     crumbs: [["Voor wie", "/voor-wie"]],
   },
@@ -277,7 +277,7 @@ const shell = await fs.readFile(path.join(DIST, "index.html"), "utf8");
 const START = "<!--seo:start-->";
 const END = "<!--seo:end-->";
 if (!shell.includes(START) || !shell.includes(END)) {
-  throw new Error("SEO markers missing from dist/index.html — did index.html change?");
+  throw new Error("SEO markers missing from dist/index.html. Did index.html change?");
 }
 const before = shell.slice(0, shell.indexOf(START) + START.length);
 const after = shell.slice(shell.indexOf(END));

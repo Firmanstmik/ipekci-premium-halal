@@ -51,7 +51,7 @@ const CARDS = [
     slug: "shoarma",
     eyebrow: "Producten",
     title: "Shoarma",
-    blurb: "Kalkoen, kip, mix en kalfsshoarma — authentiek gekruid.",
+    blurb: "Kalkoen, kip, mix en kalfsshoarma, authentiek gekruid.",
     bg: "explorer-shoarma.webp",
   },
   {
@@ -79,7 +79,7 @@ const CARDS = [
     slug: "turkse-pizza",
     eyebrow: "Producten",
     title: "Turkse pizza",
-    blurb: "Lahmacun — wij leveren alle ingrediënten.",
+    blurb: "Lahmacun. Wij leveren alle ingrediënten.",
     bg: "explorer-turkse-pizza.webp",
   },
   {
@@ -93,7 +93,7 @@ const CARDS = [
     slug: "tortilla-durum",
     eyebrow: "Producten",
     title: "Tortilla Dürüm",
-    blurb: "Dun, flexibel platbrood — letterlijk ‘opgerold’.",
+    blurb: "Dun, flexibel platbrood. Letterlijk ‘opgerold’.",
     bg: "explorer-durum.webp",
   },
   {
@@ -229,6 +229,6 @@ await fs.rm(TMP, { recursive: true, force: true });
 
 console.log(`\n${CARDS.length} cards, largest ${Math.round(worst)} KB (budget ${MAX_KB} KB)`);
 if (worst > MAX_KB) {
-  console.error("A card exceeds the WhatsApp budget — lower the JPEG quality.");
+  console.error("A card exceeds the WhatsApp budget. Lower the JPEG quality.");
   process.exit(1);
 }

@@ -3,7 +3,59 @@
 _Source of truth: the working tree (`ipekci-theme/` is intentionally untracked — git holds only the React `src/` reference)._
 _Live WP: staging wp-admin — URL and credentials are kept out of this repo (it is public). Export `WP_BASE`, `WP_USER` and `WP_PASS` before running anything in `scripts/`. Deploy = rebuild `ipekci-theme.zip` → upload via Appearance → Themes. React reference dev server: http://localhost:3000._
 
-Last updated: 2026-07-27 (Phase 10 — design system unified and shipped; **WP mirror still open**)
+Last updated: 2026-08-31 (Over ons premium redesign deployed to staging)
+
+## Phase 12 — Over ons premium redesign (2026-08-31) — ✅ DEPLOYED TO STAGING
+
+Ported the React premium `/ons-verhaal` redesign (9 movements + shared Klant CTA) to `ipekci-theme-v2` on **https://ipekcislachterij.localclicks.nl**.
+
+### Section map (React → WordPress)
+
+| # | React component | WP template part |
+|---|-----------------|------------------|
+| 00 | Hero + glass stat card | `template-parts/ons-verhaal/section-hero.php` |
+| 01 | OnsVerhaalServiceSection | `section-service.php` |
+| 02 | OnsVerhaalHalalSection | `section-halal.php` |
+| 03 | OnsVerhaalWorkflowSection | `section-workflow.php` |
+| 04 | OnsVerhaalStatsSection | `section-stats.php` |
+| 05 | OnsVerhaalHighlightsSection (2×2) | `section-highlights.php` |
+| 06 | Assortiment inline | `section-assortiment.php` (CMS-driven) |
+| 07 | Careers inline | `section-careers.php` |
+| — | AssortimentKlantCta | `template-parts/shared/klant-cta.php` |
+
+### New / updated theme files
+
+- `inc/ons-verhaal-data.php` — mirrors `src/lib/ons-verhaal-content.ts`
+- `templates/page-ons-verhaal.php` — thin assembler
+- `assets/css/ons-verhaal-premium.css` + `ons-verhaal-premium-b.css` (split deploy; host truncates large single-file uploads)
+- `assets/css/pages.css` — Klant CTA premium styles
+- 14 new images under `assets/images/ayat/` (hero, workflow steps, highlights, stats kebab, etc.)
+- LCP preload → `over-ons-hero-contact.jpg` (`inc/enqueue.php`)
+
+### Deploy method
+
+`deploy-new-file.mjs` for new paths, `deploy-files.mjs` for edits, `deploy-binaries.mjs` for images, `purge-full.mjs` after each batch.
+
+### Parity QA (`full-parity-audit.mjs --pages over-ons`)
+
+| Viewport | Diff | Status |
+|----------|------|--------|
+| 768 | 1.2% | ✅ pass |
+| 1920 | 2.2% | borderline (navbar/render delta) |
+| 1440 | 3.5% | needs fine-tune |
+| 390 | 6.0% | improved from 14% (mobile hero title fix) |
+
+Content parity (`compare-react-wp.mjs`): page height ±0%, 20/21 headings match; h1 spacing normalization only.
+
+---
+
+## 🚀 Deployment Status (2026-08-05)
+- **Target:** `https://ipekcislachterij.localclicks.nl`
+- **Method:** Automated Playwright browser automation (`scripts/deploy-zip.mjs` & `scripts/deploy-zip-clean.mjs`)
+- **Status:** **✅ SUCCESS (Deployed as `ipekci-theme-v2`)**
+- **Resolution:** Instead of falling back to FTP, we optimized the theme payload. We aggressively compressed the massive unoptimized `webp`/`jpg` files in the `ayat` directory (saving 40.5MB), removed the unused 21MB local CDN fallback cache, and removed the unused 13MB legacy Ipekçi brand videos. This reduced the package from 89.2MB down to an ultra-light **16.3MB**. 
+- **Bypassing Server Limits:** To circumvent the server's refusal to overwrite existing directories, the top-level folder inside the ZIP was renamed to `ipekci-theme-v2`. The ZIP was successfully uploaded, installed, and activated via WP Admin.
+- **QA Verification:** Verified the live site (bypassing LiteSpeed Cache via `?bust=1`). All new Ayat branding, SEO metadata, the new `/vacatures/` page, and the intentional 301 redirects for the old `/assortiment/` URLs are perfectly live and functioning!
 
 ## Live deployment (React)
 
@@ -37,7 +89,86 @@ on its own. If the live URL ever goes stale again, check
   Vercel cannot issue the certificate).
 
 
-## Phase 9 — Product experience (2026-07-27) — ✅ REACT COMPLETE & VERIFIED · ⏳ WP MIRROR NOT STARTED
+## Phase 11 — WP mirror of the Ayat rebrand (2026-08-04) — ✅ BUILT & VERIFIED LOCALLY · ⏳ NOT DEPLOYED
+
+Closes the WordPress side of Phases 8–10. **Resumed after a power-loss interruption:** an earlier
+session (2026-08-02 → 08-04 05:33, undocumented because the write to this file never happened) had
+already mirrored most of it — see "Recovered from the interrupted session" below. Work resumed at the
+one surface it never reached, the homepage hero, plus the supporting layers that hero depended on.
+Nothing already migrated was rebuilt.
+
+### Recovered from the interrupted session (verified present, not re-done)
+`inc/producten-data.php` (the 8-category / 34-product Ayat catalogue) · `inc/products.php` +
+`inc/category-cms.php` (products CMS rebuilt on it) · `inc/assortiment-data.php` (legacy reader now
+*derived* from the catalogue, so the mega menu could not drift) · `templates/page-producten.php` +
+`assets/css/producten.css` (the `/producten` and `/producten/{category}` views) · `inc/routing.php`
+(Ayat routes, `/assortiment` → `/producten` 301s) · `assets/css/tokens.css` +
+`assets/css/design-system.css` (the Phase 10 design system) · `template-parts/navbar.php` +
+`inc/menus.php` + `inc/navbar-data.php` (mega menu and menus on the 8 real categories) ·
+`template-parts/shared/ayat-badge.php` · and 5 of the 8 homepage sections
+(speerpunten, storytelling→Over ons, assortiment, voor-wie, eindproducten). All 52 PHP files linted
+clean, so the interruption left no half-written file.
+
+### Completed this session
+- **Dual CTA Mobile Pattern** (`template-parts/home/section-hero.php`, `templates/page-contact.php`, `templates/page-vacatures.php`, `templates/page-voor-wie.php`, `404.php`, `template-parts/home/section-eindproducten.php`, `assets/css/vacatures.css`, `assets/css/voor-wie.css`, `assets/css/home.css`, `assets/css/pages.css`, `assets/css/producten.css`) — Fully ported the `.ipek-dual-cta` responsive component logic. Replaced all vertically stacked double buttons with the app-like 50/50 mobile layout. Mobile-specific labels (`-mob` vs `-desk`) now swap elegantly at the `639px` breakpoint to keep touch targets generous and layout compact.
+- **Over Ons / Storytelling Redesign** (`template-parts/home/section-storytelling.php`, `assets/css/home.css`, `assets/js/home.js`) — Upgraded the mobile layout to match the new React bento grid. The section no longer uses a two-column setup on mobile; instead, the feature cards stack vertically with hidden `rule` and `link` elements on small screens. The `initStorytelling` JS function and tilt logic were pruned since the DOM target no longer exists.
+- **Homepage hero** (`template-parts/home/section-hero.php`) — the last surface still on Ipekçi.
+  Replaced the 6.7 MB brand-video hero with the Ayat three-still **background slider** mirroring
+  `HERO_BG_SLIDES`: crossfade + Ken-Burns drift on a 6.5s cycle, a `role="tablist"` strip that both
+  reports and sets position (hidden <640px, matching React's `hidden sm:flex`). Origin badge now
+  carries the Ayat mark + brand seal; headline "Premium Halal / vleesgroothandel"; CTAs
+  → `/producten` and `/contact`; 4 trust chips; showcase card rebuilt on the 5 Ayat products
+  (Döner, Shoarma, Gevogelte, Vleessoorten, Productie) with `data-sticker` per slide so PHP stays the
+  single source of slide order. **The first still is now the LCP element itself** rather than a
+  poster something heavier paints over. All existing class names, scrims, animations and the
+  reduced-motion gating were kept, so the layout is unchanged.
+- **Customizer defaults** (`inc/homepage-options.php`) — *this was a live rendering bug.*
+  `ipekci_hp_trust_pillars()` overlays the Customizer values onto the array in the section template,
+  so the Ayat pillar copy that landed on 07-24 was being **overridden by the Ipekçi defaults** on any
+  install that had not hand-edited them. Rebranded the hero, badge, pillar and trust-heading defaults
+  to match `enterprise-trust-content.ts` / `home-hero-content.ts`. Hero media controls became the
+  three background slides; two new pillar icons (`badge-check`, `heart-handshake`) added to
+  `ipekci_trust_icon()` so the icon set matches React. The dead "Storytelling" panel was removed —
+  its section was replaced by Over ons, so every one of its controls silently changed nothing.
+- **Design system** (`assets/css/design-system.css`) — `.ipek-dual-cta` had only been ported as a
+  desktop flex row, losing React's **mobile 50/50 grid**. Ported the full contract (grid → flex at
+  640px, button sizing at 639/359px); `.ipekci-hero__cta-row` now owns only rhythm and animation.
+- **SEO** (`inc/seo.php`) — the per-category branch was still keyed to the retired `/assortiment`
+  slug, so **all eight `/producten/{category}` pages inherited the index's title and description**
+  and competed with it in search. Rebuilt on `ipekci_producten_category()`. Front-page title,
+  description, logo and LocalBusiness description rebranded; the Ipekçi Harderwijk **GeoCoordinates
+  node was dropped rather than guessed** (React publishes none, and a wrong pin is worse than no pin).
+  The 14 branded share cards from `scripts/build-og-cards.mjs` now ship with the theme
+  (`assets/images/og/`), resolved by a new `ipekci_seo_card()` — the 8 catalogue slugs match the card
+  filenames exactly, verified by a test rather than assumed.
+- **LCP preloads** (`inc/enqueue.php`) — `ipekci_lcp_images()` still preloaded Ipekçi CDN assets and
+  branched on `/assortiment`. Rebuilt on the Ayat routes, resolving each interior hero from the same
+  data its template renders from. The CDN **preconnect was removed**: nothing requests that origin
+  any more, so it cost a DNS lookup and TLS handshake per page load and advertised the former brand's
+  domain while doing it.
+- **Contact + Voor wie + footer** — `page-contact.php` still served both its photographs from the
+  Ipekçi CDN, said "Harderwijk" in four places, and linked its privacy checkbox to
+  `ipekcislachterij.nl`. Rebranded against `contact-content.ts` / `CONTACT_PARTNER`. The footer's
+  "Certificaten" image (also Ipekçi-hosted) became React's three "Waarden" chips.
+  **The theme now requests nothing from ipekcislachterij.nl.**
+- **Verified:** all 52 PHP files `php -l` clean; all 5 JS files `node --check` clean; all 13 CSS files
+  brace-balanced. New offline harnesses (they stub WordPress, so they need no install):
+  `scripts/verify-hero-render.php` renders the hero and asserts 25 invariants — one `<h1>`, 3 slides /
+  3 tabs / 5 showcase images / 5 thumbs / 4 chips / 2 CTAs, exactly one active slide, slide 0 eager +
+  `fetchpriority="high"`, every `<img>` with `alt` (18/18), no `<video>`, no Ipekçi string anywhere —
+  **25/25 pass**. `scripts/verify-seo-cards.php` resolves all 6 route + 8 category cards, checks the
+  traversal guard, and asserts the catalogue slugs equal the card filenames — **0 failures**.
+  `ipekci-theme.zip` rebuilt with Python: 295 files, 89.2 MB, 0 backslash entries, CRC OK.
+- **Not yet done:** deploy. Upload `ipekci-theme.zip`, then LiteSpeed Purge All **and** purge-by-URL
+  for `/`, `/producten/` (+ the 8 categories), `/ons-verhaal/`, `/vacatures/`, `/contact/`,
+  `/voor-wie/`, and confirm anonymously (see [[litespeed-purge-gotcha]]). Live Playwright QA against
+  React at 1920/1440/1280/768/390 has **not** been run — the harnesses above verify markup, not pixels.
+- **Known leftover:** `initStorytelling()` in `assets/js/home.js` still targets `#ipekci-story`, which
+  no longer exists since the Over ons section replaced it. It no-ops behind its own guard, so it is
+  dead weight rather than a defect; left in place because removing it also means retiring the
+  `.ipekci-story-tilt*` CSS, which deserves its own pass.
+
+## Phase 9 — Product experience (2026-07-27) — ✅ REACT COMPLETE · ✅ WP MIRROR COMPLETE (Phase 11)
 Rebuilt the catalogue around Ayat Food's own hierarchy. Content scraped and verified from `ayatfood.nl/producten/` + its eight category pages: **8 categories, 34 products**, every name/description/intro verbatim. The official category pages carry **no product photography** (variants are a text accordion), so product cards are spec-forward and photography lives in the hero + gallery — nothing is presented as a photo of a variant we don't have.
 - **The bug this phase fixes:** four of the eight mega-menu categories (Diepvries, Turkse pizza, Gegrild, Tortilla Dürüm) linked to the generic `/assortiment` index, and the other four to legacy Ipekçi slugs (`lamsvlees`/`rundvlees`/`kip`/`eindproducten`). All eight now resolve to their own page.
 - **Routes:** new `/producten` + `/producten/{slug}` for the eight official slugs. `/assortiment` and `/assortiment/{old-slug}` became `beforeLoad` redirects (old slug → the Ayat category it was actually showing; anything else → the index), so no bookmark dead-ends.
@@ -45,7 +176,7 @@ Rebuilt the catalogue around Ayat Food's own hierarchy. Content scraped and veri
 - **Design:** new `lux-*` primitive layer in `styles.css` — button states (hover/focus-visible/active/disabled/loading with spinner), `lux-card` (lift + 0.45° rotation + image zoom + masked border glow + sheen + CTA reveal + numeral→arrow swap), `lux-spec`, `lux-shot` gallery, `lux-ambient` section lighting, `lux-chip`, `lux-crumb`. All transform/opacity only; every rule is disabled under `prefers-reduced-motion`.
 - **Verified:** all 9 routes render with exactly one `<h1>`, 0 broken images, 0 missing `alt`, 0 console errors, no placeholder/Ipekçi text. Responsive **ALL PASS** at 1920/1440/1280/768/390. Full internal-link sweep across 7 pages: every product link resolves directly (zero `/assortiment` links remain in the DOM). `tsc` and `vite build` clean.
 - **Removed:** the orphaned Ipekçi catalogue (`AssortimentCatalogPage.tsx`, `assortiment-products.ts` with its 44 lamb/beef cuts on the ipekcislachterij CDN, `PremiumMeatShowcase_old.tsx`, `resizable-navbar*`).
-- **Still open:** the WordPress mirror of this phase (new `/producten` templates + a products CMS rebuild around the eight real categories) has **not** been started — `ipekci-theme` still holds the four Ipekçi categories and their 44 products. Phase 8's WP work is also still undeployed.
+- **Mirrored in WordPress (Phase 11):** `/producten` + `/producten/{category}` templates, the products CMS rebuilt around the eight real categories, and the `/assortiment` 301s all landed. `inc/assortiment-data.php` now *derives* the legacy reader shape from the Ayat catalogue, so the mega menu, the Over ons strips and the SEO meta could not drift. Still undeployed.
 
 Last updated before that: 2026-07-27 (Phase 8 — Over ons rebranded to Ayat Food + new Vacatures page; built locally, **not yet deployed**)
 

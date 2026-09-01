@@ -5,6 +5,7 @@ import { HeroCtaButton } from "@/components/home/HeroCtaButton";
 import { HeroMeatScrollCue } from "@/components/home/HeroMeatScrollCue";
 import { HeroOriginBadge } from "@/components/home/HeroOriginBadge";
 import { HeroShowcaseCard } from "@/components/home/HeroShowcaseCard";
+import { DualCtaRow } from "@/components/ui/DualCtaRow";
 import { DS_DURATION, DS_EASE } from "@/lib/design-system";
 import {
   HERO_BG_AUTOPLAY_MS,
@@ -149,7 +150,7 @@ export function HomeHeroSection() {
 
       <motion.div
         style={{ opacity: heroOpacity }}
-        className="ipek-container relative z-10 flex h-[100svh] max-h-[100svh] min-h-0 flex-col pb-4 pt-[8.5rem] sm:pt-[9rem] lg:pb-5 lg:pt-[10rem] xl:pt-[10.25rem]"
+        className="ipek-container relative z-10 flex h-[100svh] max-h-[100svh] min-h-0 flex-col pb-4 pt-[7.75rem] sm:pt-[9rem] lg:pb-5 lg:pt-[10rem] xl:pt-[10.25rem]"
       >
         <motion.div
           className="grid min-h-0 flex-1 items-center gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:gap-12 xl:gap-16"
@@ -207,14 +208,18 @@ export function HomeHeroSection() {
               initial={reduceMotion ? false : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.72, duration: 0.8, ease: DS_EASE }}
-              className="relative z-30 mt-5 flex flex-wrap items-center gap-2.5 sm:gap-3"
+              className="relative z-30 mt-5"
             >
-              <HeroCtaButton to="/producten" variant="primary">
-                Bekijk Producten
-              </HeroCtaButton>
-              <HeroCtaButton to="/contact" variant="ghost">
-                Vraag Offerte Aan
-              </HeroCtaButton>
+              <DualCtaRow wide>
+                <HeroCtaButton to="/producten" variant="primary">
+                  <span className="hidden sm:inline">Bekijk Producten</span>
+                  <span className="sm:hidden">Producten</span>
+                </HeroCtaButton>
+                <HeroCtaButton to="/contact" variant="ghost">
+                  <span className="hidden sm:inline">Vraag Offerte Aan</span>
+                  <span className="sm:hidden">Offerte</span>
+                </HeroCtaButton>
+              </DualCtaRow>
             </motion.div>
 
             <motion.div

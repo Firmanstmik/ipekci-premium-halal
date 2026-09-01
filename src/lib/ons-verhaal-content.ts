@@ -10,150 +10,264 @@
  */
 
 import { PRODUCTEN_MEGA_ITEMS } from "@/lib/assortiment-content";
-import heroOverOns from "@/assets/ayat/hero-slide-1-premium.jpg";
+import overOnsHero from "@/assets/ayat/over-ons-hero-contact.jpg";
+import overOnsBackground from "@/assets/ayat/over-ons-background.jpg";
+import overOnsRawMeat from "@/assets/ayat/over-ons-raw-meat.png";
+import workflowHeroMeat from "@/assets/ayat/workflow-hero-meat.webp";
+import workflowStepZoek from "@/assets/ayat/workflow-step-zoek.webp";
+import workflowStepBestel from "@/assets/ayat/workflow-step-bestel.webp";
+import workflowStepBezorgen from "@/assets/ayat/workflow-step-bezorgen.webp";
+import workflowStepGeniet from "@/assets/ayat/workflow-step-geniet.webp";
+import statsHeroKebab from "@/assets/ayat/stats-hero-kebab.webp";
+import overOnsLevertijd from "@/assets/ayat/over-ons-levertijd.jpg";
+import heroVlees from "@/assets/ayat/hero-vlees.jpg";
+import heroColdstorage from "@/assets/ayat/hero-coldstorage.jpg";
 import heroProcessing from "@/assets/ayat/hero-processing.jpg";
-import coldStorage from "@/assets/ayat/hero-coldstorage.jpg";
-import storyPrimary from "@/assets/ayat/story-primary-ayat.webp";
-import storySecondary from "@/assets/ayat/story-secondary-ayat.webp";
-import storyTertiary from "@/assets/ayat/story-tertiary-ayat.webp";
-import trustHalal from "@/assets/ayat/trust-pillar-halal.webp";
-import trustNvwa from "@/assets/ayat/trust-pillar-nvwa.webp";
-import trustKwaliteit from "@/assets/ayat/trust-pillar-kwaliteit.webp";
-import trustLevering from "@/assets/ayat/trust-pillar-levering.webp";
-import trustKlant from "@/assets/ayat/trust-pillar-klant.webp";
-import trustProductie from "@/assets/ayat/trust-pillar-productie.webp";
+import trustPillarKwaliteit from "@/assets/ayat/trust-pillar-kwaliteit.webp";
+import trustPillarLevering from "@/assets/ayat/trust-pillar-levering.webp";
+import trustPillarHalal from "@/assets/ayat/trust-pillar-halal.webp";
+import highlightBesteVlees from "@/assets/ayat/highlight-beste-vlees.webp";
+import highlightKwaliteit from "@/assets/ayat/highlight-kwaliteit.webp";
+import highlightVerzending from "@/assets/ayat/highlight-verzending.webp";
+import highlightHalal from "@/assets/ayat/highlight-halal.webp";
+import halalCertSeal from "@/assets/trust/trust-halal-certificaat.webp";
 import contactHero from "@/assets/ayat/hero-vlees.jpg";
-import statsBackground from "@/assets/ayat/speerpunten-background.jpg";
 
-export const ONS_VERHAAL_HERO_FALLBACK = heroOverOns;
-export const ONS_VERHAAL_HALAL_IMAGE = trustHalal;
-export const ONS_VERHAAL_HALAL_NORMEN_IMAGE = storyTertiary;
-export const ONS_VERHAAL_INTRO_IMAGE = storyPrimary;
-export const ONS_VERHAAL_CAREERS_IMAGE = heroProcessing;
+export const ONS_VERHAAL_HERO_FALLBACK = overOnsHero;
+export const ONS_VERHAAL_SECTION_BACKGROUND = overOnsBackground;
+export const ONS_VERHAAL_HALAL_IMAGE = overOnsRawMeat;
+export const ONS_VERHAAL_HALAL_NORMEN_IMAGE = overOnsLevertijd;
+export const ONS_VERHAAL_SERVICE_IMAGE = overOnsLevertijd;
+export const ONS_VERHAAL_CAREERS_IMAGE = overOnsHero;
 
-/** Hero — official positioning line from ayatfood.nl/over-ons */
+/** Hero — copy from https://ayatfood.nl/over-ons/ */
 export const ONS_VERHAAL_HERO = {
-  eyebrow: "Over ons · Watergang",
-  /** Split across words for the staggered reveal */
+  eyebrow: "Over ons",
   title: "Ayat Food Vleesgroothandel",
-  lede: "Het adres waar afnemers en kebab-liefhebbers Halal en gezonde döner kebab producten vinden. Wij produceren verschillende soorten en smaken döner kebab producten en ondersteunen onze klanten bij het ontwikkelen van nieuwe smaken.",
+  paragraphs: [
+    "Wij produceren verschillende soorten en smaken döner kebab producten en ondersteunen onze klanten bij het ontwikkelen van nieuwe smaken.",
+    "Ayat Food Vleesgroothandel is het adres waar de afnemers en kebab-liefhebbers Halal en gezonde döner kebab producten kunnen vinden.",
+  ],
   breadcrumb: "Over ons",
 } as const;
 
-export type OnsVerhaalHighlight = {
+export type OnsVerhaalHighlightPill = {
   id: string;
   title: string;
-  description: string;
-  image: string;
+  subtitle: string;
 };
 
-/** Official service claims & value propositions from ayatfood.nl/over-ons */
-export const ONS_VERHAAL_HIGHLIGHTS: readonly OnsVerhaalHighlight[] = [
-  {
-    id: "service",
-    title: "24/7 service",
-    description:
-      "Onze medewerkers en bezorgers staan 24/7 klaar om uw vragen te beantwoorden en uw bestellingen op tijd te leveren.",
-    image: trustKlant,
-  },
-  {
-    id: "wagenpark",
+export type OnsVerhaalHighlight = {
+  id: string;
+  eyebrow: string;
+  titlePrefix: string;
+  titleAccent: string;
+  description: string;
+  image: string;
+  pills: readonly OnsVerhaalHighlightPill[];
+  href: string;
+};
+
+/** 24/7 service + wagenpark — https://ayatfood.nl/over-ons/ */
+export const ONS_VERHAAL_SERVICE = {
+  title: "24/7 service",
+  titleAccent: "24/7",
+  titleRest: "service",
+  /** Derived from official copy: "worden uw bestellingen op tijd geleverd" */
+  tagline: "Uw bestellingen op tijd geleverd",
+  paragraphs: [
+    "Onze medewerkers en bezorgers staan 24/7 klaar om uw vragen te beantwoorden en uw bestellingen op tijd te leveren. Bij Ayat Food Vleesgroothandel worden uw bestellingen op tijd geleverd.",
+    "Door ons moderne wagenpark zijn wij in staat u een snelle en betrouwbare leveringen te garanderen.",
+  ],
+  pillars: [
+    {
+      id: "halal",
+      title: "100% Halal",
+      description:
+        "Al onze producten zijn onder strikte toezicht van de European Certification Centre for Halal (ECC Halal).",
+    },
+    {
+      id: "nvwa",
+      title: "NVWA-normen",
+      description:
+        "Wij werken volledig volgens de normen en standaarden van de Nederlandse Voedsel- en Warenautoriteit (NVWA).",
+    },
+    {
+      id: "levering",
+      title: "Snelle levering",
+      description:
+        "Door ons moderne wagenpark zijn wij in staat u een snelle en betrouwbare leveringen te garanderen.",
+    },
+  ],
+  wagenpark: {
     title: "Modern wagenpark",
     description:
-      "Door ons moderne wagenpark zijn wij in staat u een snelle en betrouwbare levering te garanderen.",
-    image: trustLevering,
+      "Door ons moderne wagenpark zijn wij in staat u een snelle en betrouwbare leveringen te garanderen.",
+    thumbnails: [heroColdstorage, heroProcessing, trustPillarLevering] as const,
   },
-  {
-    id: "nvwa",
-    title: "NVWA-normen",
-    description:
-      "Wij werken volledig volgens de normen en standaarden van de Nederlandse Voedsel- en Warenautoriteit (NVWA).",
-    image: trustNvwa,
+  ctas: {
+    primary: { label: "Bekijk onze producten", to: "/producten" as const },
+    secondary: { label: "Neem contact op", to: "/contact" as const },
   },
-  {
-    id: "ecc-halal",
-    title: "100% halal",
-    description:
-      "Al onze producten zijn onder strikte toezicht van de European Certification Centre for Halal (ECC Halal).",
-    image: trustHalal,
-  },
+} as const;
+
+/** Four value cards at the bottom of https://ayatfood.nl/over-ons/ */
+export const ONS_VERHAAL_HIGHLIGHTS: readonly OnsVerhaalHighlight[] = [
   {
     id: "beste-vlees",
-    title: "Beste vlees",
+    eyebrow: "Premium kwaliteit",
+    titlePrefix: "Beste",
+    titleAccent: "vlees",
     description: "Wij leveren altijd het beste van het beste vlees.",
-    image: trustKwaliteit,
+    image: highlightBesteVlees,
+    pills: [
+      { id: "halal", title: "100% Halal", subtitle: "Strikte richtlijnen" },
+      { id: "nvwa", title: "NVWA-normen", subtitle: "Gecertificeerd" },
+      { id: "levering", title: "Snelle levering", subtitle: "Op tijd geleverd" },
+    ],
+    href: "/producten",
   },
   {
     id: "controle",
-    title: "Kwaliteitscontrole",
-    description: "Onze controle op onze producten is zeer hoog.",
-    image: trustProductie,
+    eyebrow: "Kwaliteits controle",
+    titlePrefix: "Kwaliteits",
+    titleAccent: "controle",
+    description: "Onze controle op onze producten is zeer hoog!",
+    image: highlightKwaliteit,
+    pills: [
+      { id: "controle", title: "Strikte controle", subtitle: "Elke batch" },
+      { id: "halal", title: "100% Halal", subtitle: "ECC Halal" },
+    ],
+    href: "/producten",
   },
   {
     id: "verzendservice",
-    title: "Verzendservice",
-    description: "Bestellingen worden met zorg ingepakt en bezorgd.",
-    image: coldStorage,
+    eyebrow: "Verzendservice",
+    titlePrefix: "Verzend",
+    titleAccent: "service",
+    description: "Bestelling worden met zorg ingepakt en bezorgd.",
+    image: highlightVerzending,
+    pills: [
+      { id: "koel", title: "Koel transport", subtitle: "Gekoeld" },
+      { id: "veilig", title: "Veilig verpakt", subtitle: "Met zorg" },
+      { id: "tijd", title: "Op tijd", subtitle: "Betrouwbaar" },
+    ],
+    href: "/contact",
   },
   {
-    id: "smaken",
-    title: "Nieuwe smaken",
+    id: "halal",
+    eyebrow: "100% halal",
+    titlePrefix: "100%",
+    titleAccent: "halal",
     description:
-      "Wij ondersteunen onze klanten bij het ontwikkelen van nieuwe smaken binnen ons döner kebab assortiment.",
-    image: storySecondary,
+      "Al onze producten zijn onder strikte toezicht van de European Certification Centre for Halal (ECC Halal).",
+    image: highlightHalal,
+    pills: [
+      { id: "ecc", title: "ECC Halal", subtitle: "Gecertificeerd" },
+      { id: "halal", title: "100% Halal", subtitle: "Strikte richtlijnen" },
+    ],
+    href: "/producten",
   },
 ] as const;
 
-/** "Halal en kwaliteit" — verbatim positioning from ayatfood.nl/over-ons */
+/** "Halal en kwaliteit" — https://ayatfood.nl/over-ons/ */
 export const ONS_VERHAAL_HALAL = {
   eyebrow: "Halal en kwaliteit",
-  title: "Twee kernbegrippen",
+  titlePrefix: "Halal en",
+  titleAccent: "kwaliteit",
   paragraphs: [
-    "Halal en kwaliteit zijn twee belangrijke kernbegrippen binnen Ayat Food Vleesgroothandel. Wij werken volledig volgens de normen en standaarden van de Nederlandse Voedsel- en Warenautoriteit (NVWA).",
-    "Daarnaast zijn al onze producten onder een strikte toezicht van de European Certification Centre for Halal (ECC Halal). Zo weet u zeker dat elk product dat onze deur verlaat voldoet aan de eisen die u en uw klanten daaraan stellen.",
-    "Ons succesgeheim ligt in de ambitie om onze afnemers Halal, hoogwaardige en exclusieve producten aan te bieden. Onze controle op die producten is zeer hoog.",
+    "Halal en kwaliteit zijn twee belangrijke kernbegrippen binnen Ayat Food Vleesgroothandel. Wij werken volledig volgens de normen en standaarden van de Nederlandse Voedsel- en Warenautoriteit (NVWA). Daarnaast zijn al onze producten onder een strikte toezicht van de European Certification Centre for Halal (ECC Halal).",
   ],
-  badges: ["NVWA-normen", "ECC Halal", "Strikte controle", "100% Halal"],
+  quote:
+    "Halal en kwaliteit zijn twee belangrijke kernbegrippen binnen Ayat Food Vleesgroothandel.",
+  pillars: [
+    {
+      id: "halal",
+      title: "100% Halal",
+      description: "Al onze producten zijn onder strikte toezicht van ECC Halal.",
+    },
+    {
+      id: "nvwa",
+      title: "NVWA-normen",
+      description: "Volgens normen en standaarden van de NVWA.",
+    },
+    {
+      id: "ecc",
+      title: "ECC Halal",
+      description: "European Certification Centre for Halal.",
+    },
+    {
+      id: "kwaliteit",
+      title: "Kwaliteits controle",
+      description: "Onze controle op onze producten is zeer hoog!",
+    },
+  ],
+  certification: {
+    label: "European Certification Centre for Halal (ECC Halal)",
+    text: "Al onze producten zijn onder strikte toezicht van de European Certification Centre for Halal (ECC Halal).",
+    seal: halalCertSeal,
+  },
 } as const;
 
-/** Company introduction — official Ayat Food positioning */
-export const ONS_VERHAAL_INTRO = {
-  eyebrow: "Ayat Food Vleesgroothandel",
-  title: "Het adres voor Halal döner kebab",
-  paragraphs: [
-    "Ayat Food Vleesgroothandel is het adres waar de afnemers en kebab-liefhebbers Halal en gezonde döner kebab producten kunnen vinden. Wij produceren verschillende soorten en smaken döner kebab producten en ondersteunen onze klanten bij het ontwikkelen van nieuwe smaken.",
-    "Onze medewerkers en bezorgers staan 24/7 klaar om uw vragen te beantwoorden en uw bestellingen op tijd te leveren. Bij Ayat Food Vleesgroothandel worden uw bestellingen op tijd geleverd.",
-    "Door ons moderne wagenpark zijn wij in staat u een snelle en betrouwbare levering te garanderen aan restaurants, supermarkten, slagerijen en groothandels door heel Nederland.",
-  ],
-  badges: ["Watergang", "Vleesgroothandel", "24/7 service"],
-} as const;
-
-/** "Hoe vlees te bestellen" — the official four-step ordering process */
+/** "Hoe vlees te bestellen" — https://ayatfood.nl/over-ons/ */
 export const ONS_VERHAAL_WORKFLOW = {
   eyebrow: "Hoe we werken",
   title: "Hoe vlees te bestellen",
+  lede:
+    "Wij hebben het bestelproces eenvoudig en efficiënt gemaakt. Zo weet je altijd waar je aan toe bent.",
+  heroImage: workflowHeroMeat,
   steps: [
     {
       n: "Stap 1",
       title: "Zoek jouw vlees",
-      text: "Bekijk ons assortiment: döner, shoarma, gevogelte, vleessoorten, diepvriesproducten, Turkse pizza, gegrilde producten en tortilla durum.",
+      text: "Bekijk ons assortiment en vind het vlees dat bij jouw keuken past.",
+      image: workflowStepZoek,
     },
     {
       n: "Stap 2",
       title: "Bestel je vlees",
-      text: "Plaats je bestelling per mail of telefoon. Onze medewerkers denken met je mee over hoeveelheden, smaken en verpakking.",
+      text: "Plaats je bestelling per mail of telefoon. Wij bevestigen snel en duidelijk.",
+      image: workflowStepBestel,
     },
     {
       n: "Stap 3",
       title: "Wij bezorgen",
-      text: "Na ontvangst en verpakken van je bestelling bezorgen wij deze, snel en betrouwbaar dankzij ons moderne wagenpark.",
+      text: "Na ontvangst en verpakken van je bestelling bezorgen wij deze op tijd en gekoeld.",
+      image: workflowStepBezorgen,
     },
     {
       n: "Stap 4",
       title: "Geniet van je vlees",
       text: "Controleer je bestelling bij ontvangst en geniet van onze mooie producten.",
+      image: workflowStepGeniet,
     },
   ],
+  trust: {
+    title: "Kwaliteit & betrouwbaarheid in elke stap",
+    description: "Van selectie tot levering, wij staan voor halal kwaliteit en service.",
+    items: [
+      {
+        id: "halal",
+        title: "100% Halal",
+        description: "Strikte richtlijnen",
+      },
+      {
+        id: "nvwa",
+        title: "NVWA-normen",
+        description: "Gecertificeerde productie",
+      },
+      {
+        id: "levering",
+        title: "Snelle levering",
+        description: "Op tijd en gekoeld",
+      },
+      {
+        id: "contact",
+        title: "Persoonlijk contact",
+        description: "Wij denken met je mee",
+      },
+    ],
+  },
 } as const;
 
 export type OnsVerhaalStat = {
@@ -161,20 +275,56 @@ export type OnsVerhaalStat = {
   value: number;
   suffix: string;
   label: string;
+  description: string;
 };
 
 /** "We zijn klaar om perfectie te dienen" — official counters from ayatfood.nl/over-ons */
 export const ONS_VERHAAL_STATS = {
   eyebrow: "Wij zijn er voor u",
-  title: "We zijn klaar om perfectie te dienen",
-  lede: "Jaren ervaring in het hoogstaande vleessegment, vertaald naar producten en service waar onze afnemers dagelijks op bouwen.",
-  backgroundImage: statsBackground,
+  titlePrefix: "We zijn klaar om",
+  titleAccent: "perfectie te dienen",
+  lede:
+    "Met jarenlange ervaring, een gepassioneerd team en de hoogste standaarden leveren wij halal vlees van topkwaliteit — elke dag opnieuw.",
+  heroImage: statsHeroKebab,
+  backgroundImage: overOnsBackground,
   items: [
-    { id: "ervaring", value: 10, suffix: "+", label: "jaar ervaring" },
-    { id: "kilos", value: 751, suffix: "+", label: "verkochte kilo's" },
-    { id: "klanten", value: 989, suffix: "", label: "tevreden klanten" },
-    { id: "team", value: 6, suffix: "", label: "teamleden" },
+    {
+      id: "ervaring",
+      value: 10,
+      suffix: "+",
+      label: "jaar ervaring",
+      description: "Een decennium aan expertise in halal vlees en service.",
+    },
+    {
+      id: "kilos",
+      value: 751,
+      suffix: "+",
+      label: "verkochte kilo's",
+      description: "Dagelijks vertrouwen honderden klanten op onze kwaliteit.",
+    },
+    {
+      id: "klanten",
+      value: 989,
+      suffix: "",
+      label: "tevreden klanten",
+      description: "Relaties gebouwd op vertrouwen, kwaliteit en consistentie.",
+    },
+    {
+      id: "team",
+      value: 6,
+      suffix: "",
+      label: "teamleden",
+      description: "Een hecht team van specialisten met passie voor perfectie.",
+    },
   ] as const satisfies readonly OnsVerhaalStat[],
+  trust: {
+    items: [
+      { id: "halal", title: "100% Halal", description: "Strikte richtlijnen" },
+      { id: "nvwa", title: "NVWA-normen", description: "Gecertificeerde productie" },
+      { id: "levering", title: "Snelle levering", description: "Op tijd en gekoeld" },
+      { id: "contact", title: "Persoonlijk contact", description: "Wij denken met je mee" },
+    ],
+  },
 } as const;
 
 /** The three lead categories shown on Over ons (Döner, Shoarma, Gevogelte) */

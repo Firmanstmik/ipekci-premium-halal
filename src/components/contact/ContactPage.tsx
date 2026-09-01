@@ -159,7 +159,7 @@ function DetailCard({ item, index }: { item: ContactDetail; index: number }) {
     >
       <Wrapper
         {...linkProps}
-        className="group relative flex h-full flex-col overflow-hidden rounded-[24px] border border-[#ebe7e1] bg-[linear-gradient(165deg,#ffffff_0%,#faf8f5_100%)] p-6 shadow-[0_18px_50px_-36px_rgba(0,0,0,0.14)] transition-all duration-500 hover:-translate-y-1 hover:border-[rgba(179,18,23,0.22)] hover:shadow-[0_28px_70px_-30px_rgba(179,18,23,0.14)]"
+        className="contact-detail-card group relative flex h-full flex-col overflow-hidden rounded-[24px] border border-[#ebe7e1] bg-[linear-gradient(165deg,#ffffff_0%,#faf8f5_100%)] p-6 shadow-[0_18px_50px_-36px_rgba(0,0,0,0.14)] transition-all duration-500 hover:-translate-y-1 hover:border-[rgba(179,18,23,0.22)] hover:shadow-[0_28px_70px_-30px_rgba(179,18,23,0.14)]"
       >
         <span
           aria-hidden
@@ -260,7 +260,7 @@ function ContactFormPanel() {
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, ease: DS_EASE }}
-        className="flex min-h-[520px] flex-col items-center justify-center rounded-[32px] border border-[rgba(198,160,98,0.28)] bg-white px-8 py-16 text-center shadow-[0_32px_90px_-44px_rgba(0,0,0,0.14)]"
+        className="contact-success-panel flex min-h-0 flex-col items-center justify-center rounded-[32px] border border-[rgba(198,160,98,0.28)] bg-white px-6 py-12 text-center shadow-[0_32px_90px_-44px_rgba(0,0,0,0.14)] sm:min-h-[520px] sm:px-8 sm:py-16"
       >
         <div className="grid h-16 w-16 place-items-center rounded-full border border-[rgba(198,160,98,0.35)] bg-[rgba(198,160,98,0.1)] text-[rgba(179,18,23,0.9)]">
           <CheckCircle2 size={28} />
@@ -302,7 +302,7 @@ function ContactFormPanel() {
           className="pointer-events-none absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(198,160,98,0.08)_0%,transparent_68%)]"
         />
 
-        <div className="relative border-b border-[#ebe7e1]/80 px-7 py-8 md:px-9 md:py-9">
+        <div className="contact-form-shell relative border-b border-[#ebe7e1]/80 px-5 py-7 md:px-9 md:py-9">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <p className="ipek-label ipek-heading-label text-[10px] tracking-[0.28em]">
@@ -323,7 +323,7 @@ function ContactFormPanel() {
           </p>
         </div>
 
-        <div className="relative px-7 py-8 md:px-9 md:py-9">
+        <div className="contact-form-shell relative px-5 py-7 md:px-9 md:py-9">
           <Form {...form}>
             <form id="contact-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
               <div className="grid gap-5 sm:grid-cols-2">
@@ -472,7 +472,7 @@ function ContactFormPanel() {
                 <button
                   type="submit"
                   disabled={form.formState.isSubmitting}
-                  className="group relative flex h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-[#B31217] text-[12px] font-semibold uppercase tracking-[0.18em] text-white shadow-[0_20px_50px_-25px_rgba(177,18,23,0.55)] transition-all duration-500 hover:bg-[#C0181D] hover:shadow-[0_24px_60px_-22px_rgba(177,18,23,0.65)] disabled:opacity-50"
+                  className="contact-submit group relative flex min-h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-[#B31217] text-[12px] font-semibold uppercase tracking-[0.18em] text-white shadow-[0_20px_50px_-25px_rgba(177,18,23,0.55)] transition-all duration-500 active:scale-[0.98] hover:bg-[#C0181D] hover:shadow-[0_24px_60px_-22px_rgba(177,18,23,0.65)] disabled:opacity-50"
                 >
                   <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.14),transparent)] transition-transform duration-700 group-hover:translate-x-full" />
                   <SendHorizonal

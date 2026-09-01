@@ -4,7 +4,7 @@ import type { ProductCategorySlug } from "@/lib/producten-content";
 /**
  * Legacy route: /assortiment/{category}.
  *
- * The pre-Ayat catalogue used four Ipekçi slugs. Phase 9 replaced them with the
+ * The pre-Ayat catalogue used four legacy slugs. Phase 9 replaced them with the
  * eight real Ayat categories under /producten. Each old slug maps to the Ayat
  * category it was actually displaying, so an existing bookmark lands on the
  * right page instead of a 404; anything unrecognised falls back to the index.

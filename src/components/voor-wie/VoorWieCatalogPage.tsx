@@ -13,6 +13,7 @@ import { useId, useRef } from "react";
 import { ArrowDown, ArrowUpRight, Check, ChevronRight } from "lucide-react";
 import { AssortimentKlantCta } from "@/components/assortiment/AssortimentKlantCta";
 import { MagneticButton } from "@/components/MagneticButton";
+import { DualCtaRow } from "@/components/ui/DualCtaRow";
 import {
   VOOR_WIE_MEGA_MENU,
   VOOR_WIE_SEGMENTS,
@@ -151,19 +152,21 @@ function SegmentDetailShowcase({ segment }: { segment: VoorWieSegment }) {
             ))}
           </ul>
 
-          <div className="mt-10 flex flex-wrap items-center gap-4">
+          <DualCtaRow wide className="mt-10">
             <MagneticButton href="/contact">
-              Word klant
+              <span className="hidden sm:inline">Word klant</span>
+              <span className="sm:hidden">Klant worden</span>
               <ArrowUpRight size={14} />
             </MagneticButton>
             <Link
               to="/producten"
-              className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#777] transition-colors hover:text-[rgba(179,18,23,0.9)]"
+              className="ipek-dual-cta__secondary ipek-dual-cta__secondary--light inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#777] transition-colors hover:text-[rgba(179,18,23,0.9)]"
             >
-              Bekijk assortiment
+              <span className="hidden sm:inline">Bekijk assortiment</span>
+              <span className="sm:hidden">Assortiment</span>
               <ArrowUpRight size={14} />
             </Link>
-          </div>
+          </DualCtaRow>
         </motion.div>
 
         <motion.div
@@ -462,7 +465,7 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
 
   return (
     <>
-      <section ref={heroRef} className="relative min-h-[88vh] overflow-hidden bg-[#030303] grain">
+      <section ref={heroRef} className="product-hero-mobile relative min-h-[88vh] overflow-hidden bg-[#030303] grain">
         <AnimatePresence mode="wait">
           <motion.div
             key={heroImage}
@@ -494,7 +497,7 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
 
         <motion.div
           style={{ y: reduceMotion ? 0 : heroContentY, opacity: reduceMotion ? 1 : heroOpacity }}
-          className="relative mx-auto flex min-h-[88vh] ipek-container flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-24 lg:pt-48"
+          className="product-hero-mobile__inner relative mx-auto flex min-h-[88vh] ipek-container flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-24 lg:pt-48"
         >
           <motion.nav
             aria-label="Breadcrumb"
@@ -577,19 +580,23 @@ export function VoorWieCatalogPage({ activeSegment }: { activeSegment: VoorWieSe
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.85, delay: 0.68, ease: DS_EASE }}
-              className="mt-10 flex flex-wrap items-center gap-3"
+              className="mt-10"
             >
-              <a
-                href="#klantgroepen"
-                className="inline-flex items-center gap-2 rounded-full border border-[rgba(226,192,141,0.35)] bg-[rgba(226,192,141,0.08)] px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-[rgba(226,192,141,0.95)] transition-colors hover:bg-[rgba(226,192,141,0.14)]"
-              >
-                Ontdek klantgroepen
-                <ArrowDown size={14} />
-              </a>
-              <MagneticButton href="/contact">
-                Word klant
-                <ArrowUpRight size={14} />
-              </MagneticButton>
+              <DualCtaRow wide>
+                <a
+                  href="#klantgroepen"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-[rgba(226,192,141,0.35)] bg-[rgba(226,192,141,0.08)] px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-[rgba(226,192,141,0.95)] transition-colors hover:bg-[rgba(226,192,141,0.14)]"
+                >
+                  <span className="hidden sm:inline">Ontdek klantgroepen</span>
+                  <span className="sm:hidden">Klantgroepen</span>
+                  <ArrowDown size={14} />
+                </a>
+                <MagneticButton href="/contact">
+                  <span className="hidden sm:inline">Word klant</span>
+                  <span className="sm:hidden">Klant</span>
+                  <ArrowUpRight size={14} />
+                </MagneticButton>
+              </DualCtaRow>
             </motion.div>
           </div>
         </motion.div>

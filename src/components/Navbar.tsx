@@ -135,7 +135,7 @@ function MainCTA({ onClick, className = "" }: { onClick?: () => void; className?
     <Link
       to="/contact"
       onClick={onClick}
-      className={`group relative inline-flex items-center gap-2.5 overflow-hidden rounded-2xl border border-[#da292a]/80 bg-[#da292a] px-7 py-[13px] text-[12px] font-semibold tracking-[0.08em] text-white shadow-[0_12px_36px_-16px_rgba(218,41,42,0.7)] transition-all duration-300 hover:-translate-y-px hover:border-white hover:bg-white hover:text-[#da292a] hover:shadow-[0_16px_40px_-16px_rgba(255,255,255,0.35)] active:scale-[0.99] ${className}`}
+      className={`group relative inline-flex min-h-12 items-center gap-2.5 overflow-hidden rounded-2xl border border-[#da292a]/80 bg-[#da292a] px-7 py-[13px] text-[12px] font-semibold tracking-[0.08em] text-white shadow-[0_12px_36px_-16px_rgba(218,41,42,0.7)] transition-all duration-300 active:scale-[0.98] hover:-translate-y-px hover:border-white hover:bg-white hover:text-[#da292a] hover:shadow-[0_16px_40px_-16px_rgba(255,255,255,0.35)] ${className}`}
     >
       <span
         className="pointer-events-none absolute inset-x-0 top-0 h-px opacity-70 group-hover:opacity-0"
@@ -216,7 +216,8 @@ function MobileToggle({
     <button
       onClick={onClick}
       aria-label={isOpen ? "Sluit menu" : "Open menu"}
-      className={`relative grid h-9 w-9 place-items-center transition-colors ${
+      aria-expanded={isOpen}
+      className={`relative grid min-h-12 min-w-12 place-items-center rounded-xl transition-colors active:scale-[0.96] ${
         scrolled
           ? "text-[#141414]/88 hover:text-[#141414]"
           : "text-foreground/88 hover:text-foreground"
@@ -286,11 +287,11 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 
           {/* content */}
           <motion.div
-            initial={{ y: 10, filter: "blur(10px)" }}
-            animate={{ y: 0, filter: "blur(0px)" }}
-            exit={{ y: 10, filter: "blur(10px)" }}
-            transition={{ type: "spring", stiffness: 260, damping: 32 }}
-            className="relative z-10 flex h-full w-full flex-col overflow-y-auto px-6 pb-10 pt-10 sm:px-8"
+            initial={{ y: 16, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 12, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 320, damping: 34 }}
+            className="nav-mobile-drawer relative z-10 flex h-full w-full flex-col overflow-y-auto overscroll-contain pb-10 pt-10 sm:px-8"
           >
             {/* header */}
             <div className="flex items-center justify-between pb-8">
@@ -332,7 +333,7 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                   key={l.to}
                   to={l.to}
                   onClick={onClose}
-                  className="flex items-center justify-between border-b border-white/[0.08] py-5 text-[15px] font-medium tracking-[0.04em] text-white/85 transition-colors hover:text-white"
+                  className="nav-mobile-link flex items-center justify-between border-b border-white/[0.08] text-[15px] font-medium tracking-[0.04em] text-white/85 transition-colors active:bg-white/[0.04] hover:text-white"
                 >
                   <span>{l.label}</span>
                   <ArrowUpRight size={14} className="text-white/35" />
@@ -358,7 +359,7 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
                   key={l.to}
                   to={l.to}
                   onClick={onClose}
-                  className="flex items-center justify-between border-b border-white/[0.08] py-5 text-[15px] font-medium tracking-[0.04em] text-white/85 transition-colors hover:text-white last:border-0"
+                  className="nav-mobile-link flex items-center justify-between border-b border-white/[0.08] text-[15px] font-medium tracking-[0.04em] text-white/85 transition-colors active:bg-white/[0.04] hover:text-white last:border-0"
                 >
                   <span>{l.label}</span>
                   <ArrowUpRight size={14} className="text-white/35" />
@@ -368,10 +369,10 @@ function MobileDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 
             {/* bottom CTAs */}
             <div className="mt-7 w-full">
-              <MainCTA className="w-full justify-center" onClick={onClose} />
+              <MainCTA className="nav-mobile-cta w-full justify-center" onClick={onClose} />
               <a
                 href={`tel:${BRAND.phoneTel}`}
-                className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-6 py-3 text-[12px] font-medium tracking-[0.06em] text-white/75 transition-colors hover:bg-white/[0.06] hover:text-white/90"
+                className="nav-mobile-cta mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-6 py-3 text-[12px] font-medium tracking-[0.06em] text-white/75 transition-colors active:scale-[0.98] hover:bg-white/[0.06] hover:text-white/90"
               >
                 <Phone size={14} style={{ color: `${GOLD}0.90)` }} />
                 <span>Bel direct</span>
@@ -411,10 +412,16 @@ export function Navbar() {
 
   useEffect(() => {
     if (!mobileOpen) return;
-    const prev = document.body.style.overflow;
+    const prevOverflow = document.body.style.overflow;
+    const prevPadding = document.body.style.paddingRight;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
     document.body.style.overflow = "hidden";
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
     return () => {
-      document.body.style.overflow = prev;
+      document.body.style.overflow = prevOverflow;
+      document.body.style.paddingRight = prevPadding;
     };
   }, [mobileOpen]);
 

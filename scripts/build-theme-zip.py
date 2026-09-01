@@ -19,7 +19,7 @@ OUT = ROOT / "ipekci-theme.zip"
 
 # Never ship editor/OS noise into the theme.
 EXCLUDE_NAMES = {".DS_Store", "Thumbs.db", "desktop.ini"}
-EXCLUDE_DIRS = {".git", "node_modules", "__pycache__"}
+EXCLUDE_DIRS = {".git", "node_modules", "__pycache__", "cdn", "videos"}
 
 
 def main() -> None:
@@ -37,9 +37,9 @@ def main() -> None:
                 if filename in EXCLUDE_NAMES:
                     continue
                 abs_path = Path(dirpath) / filename
-                # Arcname is relative to the repo root, so the archive contains a
-                # single top-level `ipekci-theme/` folder as WordPress expects.
-                arcname = abs_path.relative_to(ROOT).as_posix()
+                # Arcname is relative to the repo root. Package as ipekci-theme-v4
+                # so WordPress can install alongside v2/v3 without the overwrite blocker.
+                arcname = abs_path.relative_to(ROOT).as_posix().replace("ipekci-theme/", "ipekci-theme-v4/", 1)
                 zf.write(abs_path, arcname)
                 count += 1
 

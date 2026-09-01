@@ -13,7 +13,7 @@ export const Route = createFileRoute("/producten")({
       { name: "description", content: DESCRIPTION },
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESCRIPTION },
-      { property: "og:image", content: PRODUCTEN_INDEX.heroImage },
+      { property: "og:image", content: PRODUCTEN_INDEX.backdrop },
     ],
   }),
   component: ProductenRoutePage,

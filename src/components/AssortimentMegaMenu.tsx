@@ -11,7 +11,7 @@ export function AssortimentMobileLinks({ onNavigate }: { onNavigate: () => void 
           key={item.id}
           href={item.href}
           onClick={onNavigate}
-          className="group flex gap-3.5 overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] p-2.5 transition-colors hover:border-white/14 hover:bg-white/[0.05]"
+          className="assortiment-mobile-link group flex gap-3.5 overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] p-3 transition-colors active:scale-[0.99] hover:border-white/14 hover:bg-white/[0.05]"
         >
           <div className="relative h-[64px] w-[64px] shrink-0 overflow-hidden rounded-xl">
             <img

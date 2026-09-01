@@ -49,10 +49,10 @@ export function MagneticButton({
       ref={ref}
       onMouseMove={handleMove}
       onMouseLeave={reset}
-      className={`inline-block ${className}`}
+      className={`min-w-0 w-full sm:inline-block sm:w-auto ${className}`}
     >
       {href ? (
-        <a href={href} className={`ipek-btn group ${variantCls}`}>
+        <a href={href} className={`ipek-btn group w-full sm:w-auto ${variantCls}`}>
           {inner}
         </a>
       ) : (

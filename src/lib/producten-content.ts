@@ -7,39 +7,28 @@
  * bevroren) and variant notes are parsed from the officially published product
  * names — nothing is inferred beyond what the name itself states.
  *
- * The official category pages carry NO product photography (the variants are a
- * text accordion), so product cards here are deliberately spec-forward and the
- * photography lives in the category hero and gallery, using Ayat's own imagery.
- * Nothing is presented as a photo of a specific variant that we do not have.
+ * Photography is sourced from the official ayatfood.nl media library: category
+ * heroes, index cards and the shared certification photograph match the live
+ * site. Variant rows stay text-only because the official pages publish no
+ * per-SKU photography.
  *
  * Cross-category duplicates are intentional and faithful: the four frozen grilled
  * döners are published under BOTH Diepvriesproducten and Gegrilde producten.
  */
 
 import heroDoner from "@/assets/ayat/hero-doner.jpg";
-import heroDonerBak from "@/assets/ayat/hero-doner-bak.jpg";
 import heroShoarma from "@/assets/ayat/hero-shoarma.jpg";
-import heroShoarmaBak from "@/assets/ayat/hero-shoarma-bak.jpg";
 import heroGevogelte from "@/assets/ayat/hero-gevogelte.jpg";
 import heroVleessoorten from "@/assets/ayat/hero-vleessoorten.jpg";
-import heroVlees from "@/assets/ayat/hero-vlees.jpg";
 import heroColdStorage from "@/assets/ayat/hero-coldstorage.jpg";
-import heroProcessing from "@/assets/ayat/hero-processing.jpg";
-import heroHome1 from "@/assets/ayat/hero-home1.jpg";
-import heroHome2 from "@/assets/ayat/hero-home2.jpg";
-import heroSlide1 from "@/assets/ayat/hero-slide-1-premium.jpg";
-import heroSlide2 from "@/assets/ayat/hero-slide-2-premium.jpg";
-import heroSlide3 from "@/assets/ayat/hero-slide-3-premium.jpg";
+import heroTurksePizza from "@/assets/ayat/hero-turkse-pizza.jpg";
+import heroGegrild from "@/assets/ayat/hero-gegrild.jpg";
+import heroTortillaDurum from "@/assets/ayat/hero-tortilla-durum.jpg";
 import heroBackdrop from "@/assets/ayat/hero-backdrop.jpeg";
-import explorerStage from "@/assets/ayat/explorer-stage.webp";
-import explorerDoner from "@/assets/ayat/explorer-doner.webp";
-import explorerShoarma from "@/assets/ayat/explorer-shoarma.webp";
-import explorerGevogelte from "@/assets/ayat/explorer-gevogelte.webp";
-import explorerVleessoorten from "@/assets/ayat/explorer-vleessoorten.webp";
-import explorerDiepvries from "@/assets/ayat/explorer-diepvries.webp";
-import explorerTurksePizza from "@/assets/ayat/explorer-turkse-pizza.webp";
-import explorerGegrild from "@/assets/ayat/explorer-gegrild.webp";
-import explorerDurum from "@/assets/ayat/explorer-durum.webp";
+import rawMeat from "@/assets/ayat/raw-meat-1.jpg";
+import spotlightMarbled from "@/assets/ayat/product-spotlight-marbled.jpg";
+import spotlightSteak from "@/assets/ayat/product-spotlight-steak.jpg";
+import spotlightRibs from "@/assets/ayat/product-spotlight-ribs.jpg";
 import productDoner from "@/assets/ayat/product-doner.jpg";
 import productShoarma from "@/assets/ayat/product-shoarma.jpg";
 import productGevogelte from "@/assets/ayat/product-gevogelte.jpg";
@@ -48,12 +37,14 @@ import productDiepvries from "@/assets/ayat/product-diepvries.jpg";
 import productTurksePizza from "@/assets/ayat/product-turkse-pizza.jpg";
 import productGegrild from "@/assets/ayat/product-gegrild.jpg";
 import productDurum from "@/assets/ayat/product-durum.jpg";
-import eindAdana from "@/assets/ayat/ayat-eind-adana.webp";
-import eindHamburger from "@/assets/ayat/ayat-eind-hamburger.webp";
-import eindKipburger from "@/assets/ayat/ayat-eind-kipburger.webp";
-import eindMerquez from "@/assets/ayat/ayat-eind-merquez.webp";
-import eindKipMerquez from "@/assets/ayat/ayat-eind-kip-merquez.webp";
-import eindSucuk from "@/assets/ayat/ayat-eind-sucuk.webp";
+import bgDoner from "@/assets/ayat/product-bg-doner.jpg";
+import bgShoarma from "@/assets/ayat/product-bg-shoarma.jpg";
+import bgGevogelte from "@/assets/ayat/product-bg-gevogelte.jpg";
+import bgVleessoorten from "@/assets/ayat/product-bg-vleessoorten.jpg";
+import bgDiepvries from "@/assets/ayat/product-bg-diepvriesproducten.jpg";
+import bgTurksePizza from "@/assets/ayat/product-bg-turkse-pizza.jpg";
+import bgGegrild from "@/assets/ayat/product-bg-gegrilde-producten.jpg";
+import bgDurum from "@/assets/ayat/product-bg-tortilla-durum.jpg";
 
 /* ── Types ──────────────────────────────────────────────────── */
 
@@ -82,13 +73,6 @@ export type Product = {
   variantNote?: string;
 };
 
-export type ProductGalleryItem = {
-  src: string;
-  alt: string;
-  /** Editorial caption — describes the photograph, never a product claim. */
-  caption: string;
-};
-
 export type ProductCategory = {
   slug: ProductCategorySlug;
   /** Card + page title, as published */
@@ -103,8 +87,19 @@ export type ProductCategory = {
   intro: readonly string[];
   heroImage: string;
   cardImage: string;
-  gallery: readonly ProductGalleryItem[];
   products: readonly Product[];
+};
+
+/** Landscape section backgrounds — one per category slug */
+export const PRODUCT_SECTION_BACKGROUNDS: Record<ProductCategorySlug, string> = {
+  doner: bgDoner,
+  shoarma: bgShoarma,
+  gevogelte: bgGevogelte,
+  vleessoorten: bgVleessoorten,
+  diepvriesproducten: bgDiepvries,
+  "turkse-pizza": bgTurksePizza,
+  "gegrilde-producten": bgGegrild,
+  "tortilla-durum": bgDurum,
 };
 
 /* ── Catalogue ──────────────────────────────────────────────── */
@@ -123,23 +118,6 @@ export const PRODUCT_CATEGORIES: readonly ProductCategory[] = [
     ],
     heroImage: heroDoner,
     cardImage: productDoner,
-    gallery: [
-      {
-        src: explorerDoner,
-        alt: "Döner kebab aan de verticale spies",
-        caption: "De verticale spies, laagje voor laagje geroosterd.",
-      },
-      {
-        src: heroDonerBak,
-        alt: "Gesneden döner in een bak",
-        caption: "Vers gesneden, direct verpakt voor levering.",
-      },
-      {
-        src: heroSlide1,
-        alt: "Döner geserveerd in pitabrood",
-        caption: "Van onze spies naar uw toonbank.",
-      },
-    ],
     products: [
       {
         id: "kombidoner",
@@ -185,23 +163,6 @@ export const PRODUCT_CATEGORIES: readonly ProductCategory[] = [
     ],
     heroImage: heroShoarma,
     cardImage: productShoarma,
-    gallery: [
-      {
-        src: explorerShoarma,
-        alt: "Shoarma aan de spies",
-        caption: "Gemarineerd, gestapeld, draaiend gegaard.",
-      },
-      {
-        src: heroShoarmaBak,
-        alt: "Gesneden shoarma in een bak",
-        caption: "Op maat gesneden voor de professionele keuken.",
-      },
-      {
-        src: heroSlide2,
-        alt: "Shoarma geserveerd met verse groenten",
-        caption: "Klaar voor wrap, broodje of schotel.",
-      },
-    ],
     products: [
       {
         id: "kalkoen-shoarma",
@@ -248,19 +209,6 @@ export const PRODUCT_CATEGORIES: readonly ProductCategory[] = [
     ],
     heroImage: heroGevogelte,
     cardImage: productGevogelte,
-    gallery: [
-      {
-        src: explorerGevogelte,
-        alt: "Gevogelte assortiment",
-        caption: "Kip en kalkoen: mager, mals en veelzijdig.",
-      },
-      {
-        src: heroHome2,
-        alt: "Gemarineerde kipreepjes",
-        caption: "Gemarineerd volgens ons eigen kruidenmengsel.",
-      },
-      { src: eindKipburger, alt: "Kipburger", caption: "Eigen productie, consistente kwaliteit." },
-    ],
     products: [
       {
         id: "kip-doner-spies",
@@ -345,19 +293,6 @@ export const PRODUCT_CATEGORIES: readonly ProductCategory[] = [
     ],
     heroImage: heroVleessoorten,
     cardImage: productVleessoorten,
-    gallery: [
-      {
-        src: explorerVleessoorten,
-        alt: "Assortiment vleessoorten",
-        caption: "Geselecteerd op versheid, textuur en marmering.",
-      },
-      {
-        src: heroVlees,
-        alt: "Rundvlees op een snijplank",
-        caption: "Zorgvuldig versneden in eigen productie.",
-      },
-      { src: eindHamburger, alt: "Hamburgers", caption: "Van gehakt tot köfte en burger." },
-    ],
     products: [
       {
         id: "gehakt-runder",
@@ -413,23 +348,6 @@ export const PRODUCT_CATEGORIES: readonly ProductCategory[] = [
     ],
     heroImage: heroColdStorage,
     cardImage: productDiepvries,
-    gallery: [
-      {
-        src: explorerDiepvries,
-        alt: "Diepvriesproducten",
-        caption: "Snel ingevroren op het hoogtepunt van versheid.",
-      },
-      {
-        src: heroProcessing,
-        alt: "Verwerking en verpakking",
-        caption: "Met zorg ingepakt voor de vriesketen.",
-      },
-      {
-        src: heroHome1,
-        alt: "Gekoelde opslag",
-        caption: "Op temperatuur gehouden tot aan uw deur.",
-      },
-    ],
     products: [
       {
         id: "gegrilde-kipdoner-bevroren-1kg",
@@ -479,21 +397,8 @@ export const PRODUCT_CATEGORIES: readonly ProductCategory[] = [
       "Dit geliefde gerecht wordt vaak gegeten als een snelle en smakelijke maaltijd, zowel als streetfood als in restaurants. Het is ook gebruikelijk om Turkse pizza te beleggen met verse groenten, zoals tomaten, komkommers en sla, en vervolgens op te rollen als een wrap.",
       "De basis van Turkse pizza is een flinterdun uitgerold deeg, dat vervolgens wordt besmeerd met een smaakvolle tomatensaus. Daarbovenop komt een vulling van gekruid en fijngehakt vlees, meestal lam of rund, dat wordt vermengd met verse kruiden zoals peterselie, munt en ui. Het resultaat is een geurige en hartige topping boordevol smaak.",
     ],
-    heroImage: productTurksePizza,
+    heroImage: heroTurksePizza,
     cardImage: productTurksePizza,
-    gallery: [
-      {
-        src: explorerTurksePizza,
-        alt: "Turkse pizza (lahmacun)",
-        caption: "Flinterdun deeg, hartige topping.",
-      },
-      {
-        src: heroSlide3,
-        alt: "Turkse pizza met verse groenten",
-        caption: "Opgerold als wrap of plat geserveerd.",
-      },
-      { src: eindAdana, alt: "Gekruid gehakt", caption: "Gekruid gehakt van lam of rund." },
-    ],
     products: [
       {
         id: "turkse-pizza-30stuks",
@@ -515,17 +420,8 @@ export const PRODUCT_CATEGORIES: readonly ProductCategory[] = [
       "Het grillen van vlees en kip voegt een unieke smaakdimensie toe aan het gerecht. Het brengt de natuurlijke smaken naar voren en zorgt voor een heerlijke textuur.",
       "Het grillen van vlees en kip is een populaire kookmethode die over de hele wereld wordt gebruikt. Het kan worden gedaan op een barbecue, grillpan, grillplaat of zelfs in de oven. Het resultaat is een sappig en mals stuk vlees of kip met een mooie bruine kleur en kenmerkende grillstrepen.",
     ],
-    heroImage: productGegrild,
+    heroImage: heroGegrild,
     cardImage: productGegrild,
-    gallery: [
-      {
-        src: explorerGegrild,
-        alt: "Gegrilde producten",
-        caption: "Voorgegaard en gegrild, direct leverbaar.",
-      },
-      { src: eindMerquez, alt: "Merquez worstjes", caption: "Rokerig aroma, sappige textuur." },
-      { src: eindSucuk, alt: "Sucuk", caption: "Klaar om op te warmen en te serveren." },
-    ],
     products: [
       {
         id: "gegrilde-kipdoner-bevroren-1kg",
@@ -596,25 +492,8 @@ export const PRODUCT_CATEGORIES: readonly ProductCategory[] = [
       "De Tortilla Durum wordt traditioneel bereid door het deeg te kneden en dun uit te rollen tot een cirkelvormige vorm. Vervolgens wordt het gebakken op een hete kookplaat, genaamd een comal, of gegrild tot het licht geblakerd is en een zachte, maar stevige textuur heeft.",
       "Tortilla Durum is geliefd over de hele wereld vanwege zijn heerlijke smaak en veelzijdigheid. Het biedt een geweldige manier om verschillende smaken en texturen samen te brengen in één hap.",
     ],
-    heroImage: productDurum,
+    heroImage: heroTortillaDurum,
     cardImage: productDurum,
-    gallery: [
-      {
-        src: explorerDurum,
-        alt: "Tortilla dürüm",
-        caption: "Dun, flexibel platbrood. Letterlijk ‘opgerold’.",
-      },
-      {
-        src: heroDonerBak,
-        alt: "Vulling voor de dürüm",
-        caption: "Elke vulling uit ons assortiment past erin.",
-      },
-      {
-        src: eindKipMerquez,
-        alt: "Kip merquez",
-        caption: "Van klassieke döner tot pittige merquez.",
-      },
-    ],
     products: [
       {
         id: "tortilla-durum-popolocco",
@@ -644,15 +523,62 @@ export const TOTAL_PRODUCT_COUNT = PRODUCT_CATEGORIES.reduce((n, c) => n + c.pro
 /* ── Page chrome (verified copy reused across the catalogue) ── */
 
 export const PRODUCTEN_INDEX = {
-  eyebrow: "Onze producten",
   breadcrumb: "Producten",
-  title: "Het volledige assortiment",
-  lede: "Ons assortiment omvat een breed scala aan vleesproducten. We selecteren zorgvuldig elk stuk vlees op basis van versheid, textuur, marmering en smaak, om ervoor te zorgen dat onze klanten een ongeëvenaarde culinaire ervaring beleven.",
-  heroImage: explorerStage,
-  /** Second lede, published under "Aanbevolen voor jou" */
+  /** Official /producten/ page title — text-only header, no hero photograph. */
+  title: "Producten",
+  /** Published under "Aanbevolen voor jou" on ayatfood.nl/producten/ */
   quality:
     "Om de hoogste kwaliteit te garanderen, werken we volgens strenge kwaliteitscontroleprocedures gedurende het hele leveringsproces. Ons vlees wordt zorgvuldig verwerkt, verpakt en op de juiste temperatuur gehouden om de versheid te behouden en de smaak te optimaliseren.",
   backdrop: heroBackdrop,
+} as const;
+
+/** Shared stats/certification photograph on every category page (ayatfood.nl). */
+export const PRODUCT_CATEGORY_CERT_IMAGE = rawMeat;
+
+/** "Speciale aanbiedingen" — exactly three photographs on the official index. */
+export const PRODUCTEN_SPOTLIGHT = {
+  eyebrow: "Speciale aanbiedingen",
+  title: "De beste vleesproducten en prijzen",
+  lede: "Ons assortiment omvat een breed scala aan vleesproducten, variërend van mals rundvlees en sappig gevogelte tot mals lamsvlees. We selecteren zorgvuldig elk stuk vlees op basis van versheid, textuur, marmering en smaak, om ervoor te zorgen dat onze klanten een ongeëvenaarde culinaire ervaring beleven.",
+  items: [
+    { src: spotlightMarbled, label: "Super mals" },
+    { src: spotlightSteak, label: "Ribeye Beef Steak" },
+    { src: spotlightRibs, label: "Spare Ribs" },
+  ],
+} as const;
+
+/** Official star rating shown on category cards (ayatfood.nl/producten/). */
+export const PRODUCTEN_RATING = {
+  score: 4.5,
+  max: 5,
+  label: "Waardering 4.5 van 5",
+} as const;
+
+/** B2B registration gate — prices visible after registration (official site). */
+export const PRODUCT_REGISTRATION = {
+  title: "Registratie",
+  lede: "Na registratie krijg je een wachtwoord om de prijzen te kunnen zien. Bewaar deze goed!",
+  pricingNote: "Na registratie zijn de prijzen zichtbaar.",
+  cta: "Registreren",
+  quoteCta: "Offerte aanvragen",
+  fields: [
+    { id: "company", label: "Bedrijfsnaam", type: "text", required: true, fullWidth: true },
+    { id: "name", label: "Uw naam", type: "text", required: true, fullWidth: false },
+    { id: "email", label: "E-mailadres", type: "email", required: true, fullWidth: false },
+    { id: "phone", label: "Telefoonnummer", type: "tel", required: true, fullWidth: false },
+  ],
+  success:
+    "Bedankt voor uw registratie. Ons team neemt contact met u op met uw toegangsgegevens.",
+} as const;
+
+/** Official counters on category pages (ayatfood.nl/producten/*). */
+export const PRODUCT_STATS = {
+  items: [
+    { id: "ervaring", value: 10, suffix: "+", label: "jaar ervaring" },
+    { id: "kilos", value: 751, suffix: "+", label: "verkochte kilo's" },
+    { id: "klanten", value: 989, suffix: "", label: "tevreden klanten" },
+    { id: "team", value: 6, suffix: "", label: "teamleden" },
+  ],
 } as const;
 
 /** The four official quality assurances published across the product pages. */
@@ -730,6 +656,30 @@ export const PRODUCT_HELP_CTA = {
   cta: "Neem contact met ons op",
 } as const;
 
+/** Horizontal trust bar shown below the intro on catalogue pages. */
+export const PRODUCT_TRUST_BAR = [
+  {
+    id: "halal",
+    title: "100% Halal",
+    subtitle: "Strikte richtlijnen",
+  },
+  {
+    id: "nvwa",
+    title: "NVWA Normen",
+    subtitle: "Gecertificeerde productie",
+  },
+  {
+    id: "levering",
+    title: "Snelle Levering",
+    subtitle: "Op tijd en gekoeld",
+  },
+  {
+    id: "contact",
+    title: "Persoonlijk Contact",
+    subtitle: "Wij denken met je mee",
+  },
+] as const;
+
 /** Quote CTA shown beside the variant list. */
 export const PRODUCT_QUOTE_CTA = {
   eyebrow: "Beste producten",
@@ -737,3 +687,58 @@ export const PRODUCT_QUOTE_CTA = {
   text: "Vraag vrijblijvend een offerte aan voor dit assortiment. Wij denken met u mee over hoeveelheden, smaken en verpakking.",
   cta: "Offerte aanvragen",
 } as const;
+
+/** Four feature pillars in the dark box on category "Beste producten" sections. */
+export const PRODUCT_CATEGORY_FEATURES: Record<
+  ProductCategorySlug,
+  readonly { id: string; title: string; text: string }[]
+> = {
+  doner: [
+    { id: "smaak", title: "Authentieke smaak", text: "Traditionele kruiding en verticale roostertechniek." },
+    { id: "kwaliteit", title: "Veilige kwaliteit", text: "100% halal onder NVWA- en ECC Halal-toezicht." },
+    { id: "vers", title: "Vers & consistent", text: "Constante sneden en betrouwbare levering." },
+    { id: "veelzijdig", title: "Culinair veelzijdig", text: "Perfect voor kebab, pita en durum." },
+  ],
+  shoarma: [
+    { id: "mix", title: "Rund, kip & lam", text: "Brede mix voor elke keukenstijl." },
+    { id: "kwaliteit", title: "Veilige kwaliteit", text: "Strikte controle van bron tot levering." },
+    { id: "vers", title: "Vers & smaakvol", text: "Mals vlees met authentieke kruiden." },
+    { id: "veelzijdig", title: "Culinair veelzijdig", text: "Grill, bakken of roerbakken." },
+  ],
+  gevogelte: [
+    { id: "mager", title: "Mager & gezond", text: "Hoog eiwitgehalte, mager en veelzijdig." },
+    { id: "kwaliteit", title: "Veilige kwaliteit", text: "100% halal onder NVWA- en ECC Halal-toezicht." },
+    { id: "vers", title: "Vers & smaakvol", text: "Eigen productie, vers en zorgvuldig verwerkt." },
+    { id: "veelzijdig", title: "Culinair veelzijdig", text: "Grill, oven, stoof of roerbak." },
+  ],
+  vleessoorten: [
+    { id: "breed", title: "Breed assortiment", text: "Rund, kalf en lam in diverse sneden." },
+    { id: "kwaliteit", title: "Veilige kwaliteit", text: "Strikte controle op elke levering." },
+    { id: "vers", title: "Vers & mals", text: "Zorgvuldig geselecteerd op textuur en smaak." },
+    { id: "veelzijdig", title: "Culinair veelzijdig", text: "Van gehakt tot spareribs en köfte." },
+  ],
+  diepvriesproducten: [
+    { id: "vers", title: "Vers ingevroren", text: "Snel ingevroren voor maximale versheid." },
+    { id: "kwaliteit", title: "Veilige kwaliteit", text: "Koelketen gegarandeerd tot levering." },
+    { id: "bewaar", title: "Lang houdbaar", text: "Flexibel voorraadbeheer in uw keuken." },
+    { id: "veelzijdig", title: "Culinair veelzijdig", text: "Direct op te warmen en te serveren." },
+  ],
+  "turkse-pizza": [
+    { id: "compleet", title: "Alle ingrediënten", text: "Deeg, vulling en kruiden in één levering." },
+    { id: "kwaliteit", title: "Veilige kwaliteit", text: "Halal gecertificeerde productie." },
+    { id: "vers", title: "Vers bereid", text: "Klaar voor de oven of grill." },
+    { id: "veelzijdig", title: "Culinair veelzijdig", text: "Streetfood en restaurantformaat." },
+  ],
+  "gegrilde-producten": [
+    { id: "klaar", title: "Direct leverbaar", text: "Voorgegaard en klaar voor opwarming." },
+    { id: "kwaliteit", title: "Veilige kwaliteit", text: "NVWA-normen en halal toezicht." },
+    { id: "smaak", title: "Rokerige smaak", text: "Perfect gegrild voor authentieke bite." },
+    { id: "veelzijdig", title: "Culinair veelzijdig", text: "Vers én bevroren beschikbaar." },
+  ],
+  "tortilla-durum": [
+    { id: "durum", title: "Dürüm-specialist", text: "Populaire wrap voor moderne keukens." },
+    { id: "kwaliteit", title: "Veilige kwaliteit", text: "Halal onder strikt toezicht." },
+    { id: "vers", title: "Vers & handig", text: "Ideaal voor snelle service." },
+    { id: "veelzijdig", title: "Culinair veelzijdig", text: "Vul met döner, shoarma of kip." },
+  ],
+};

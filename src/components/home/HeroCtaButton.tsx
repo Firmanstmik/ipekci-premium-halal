@@ -21,7 +21,7 @@ export function HeroCtaButton({ to, variant, children }: HeroCtaButtonProps) {
 
   return (
     <motion.div
-      className="relative"
+      className="relative min-w-0 w-full sm:w-auto"
       whileHover={{ y: -2 }}
       whileTap={{ y: 0, scale: 0.98 }}
       transition={{ type: "spring", stiffness: 420, damping: 26 }}
@@ -37,7 +37,7 @@ export function HeroCtaButton({ to, variant, children }: HeroCtaButtonProps) {
           mx.set(50);
           my.set(50);
         }}
-        className={`hero-cta group relative isolate inline-flex items-center justify-center gap-2 overflow-hidden rounded-[10px] px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.18em] ${
+        className={`hero-cta group relative isolate inline-flex min-h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-[10px] px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.18em] sm:w-auto ${
           isPrimary
             ? "hero-cta--primary text-[var(--primary-foreground)]"
             : "hero-cta--ghost text-foreground/92"

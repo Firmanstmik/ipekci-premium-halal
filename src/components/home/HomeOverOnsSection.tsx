@@ -1,9 +1,7 @@
 import {
   AnimatePresence,
-  animate,
   motion,
   useInView,
-  useMotionValue,
   useReducedMotion,
   useScroll,
   useTransform,
@@ -61,7 +59,7 @@ function OverOnsFeatureCard({
   return (
     <Reveal className="lg:col-span-5" delay={delay}>
       <article
-        className={`over-ons-icon-card group relative flex h-full flex-col overflow-hidden rounded-[1.25rem] border border-black/[0.06] bg-[linear-gradient(165deg,#ffffff_0%,#faf8f5_100%)] p-6 shadow-[0_28px_70px_-48px_rgba(0,0,0,0.28)] sm:p-7 lg:min-h-[248px]`}
+        className={`over-ons-icon-card group relative flex h-full flex-col overflow-hidden rounded-[1.25rem] border border-black/[0.06] bg-[linear-gradient(165deg,#ffffff_0%,#faf8f5_100%)] p-4 shadow-[0_28px_70px_-48px_rgba(0,0,0,0.28)] sm:p-7 lg:min-h-[248px]`}
         onPointerEnter={onActivate}
         onPointerLeave={onDeactivate}
         onFocusCapture={onActivate}
@@ -77,37 +75,39 @@ function OverOnsFeatureCard({
         />
         <span
           aria-hidden
-          className="absolute right-5 top-5 font-display text-[11px] font-semibold tabular-nums tracking-[0.22em] text-[#141414]/25 sm:right-6 sm:top-6"
+          className="absolute right-4 top-4 hidden font-display text-[11px] font-semibold tabular-nums tracking-[0.22em] text-[#141414]/25 sm:right-6 sm:top-6 sm:block"
         >
           {feature.index}
         </span>
 
-        <div className="relative flex gap-5">
-          <div className="over-ons-icon-card__tile flex h-[4.5rem] w-[4.5rem] shrink-0 items-center justify-center rounded-2xl border border-[rgba(179,18,23,0.12)] bg-[linear-gradient(145deg,rgba(179,18,23,0.06),rgba(255,255,255,0.9))] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+        <div className="relative flex min-w-0 gap-3.5 sm:gap-5">
+          <div className="over-ons-icon-card__tile flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[rgba(179,18,23,0.12)] bg-[linear-gradient(145deg,rgba(179,18,23,0.06),rgba(255,255,255,0.9))] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] sm:h-[4.5rem] sm:w-[4.5rem]">
             <img
               src={feature.icon}
               alt=""
               aria-hidden
               loading="lazy"
               decoding="async"
-              className="over-ons-icon-card__icon h-12 w-12 object-contain"
+              className="over-ons-icon-card__icon h-8 w-8 object-contain sm:h-12 sm:w-12"
             />
           </div>
-          <div className="min-w-0 pt-1">
-            <h3 className="pr-9 font-display text-[1.35rem] font-semibold tracking-[-0.02em] text-[#141414]">
+          <div className="min-w-0 flex-1 pt-0 sm:pt-1">
+            <h3 className="pr-0 font-display text-[1.05rem] font-semibold tracking-[-0.02em] text-[#141414] sm:pr-9 sm:text-[1.35rem]">
               {feature.title}
             </h3>
-            <p className="mt-2.5 text-[13px] leading-[1.7] text-[#141414]/66">{feature.text}</p>
+            <p className="mt-1.5 text-[12px] leading-[1.55] text-[#141414]/66 sm:mt-2.5 sm:text-[13px] sm:leading-[1.7]">
+              {feature.text}
+            </p>
           </div>
         </div>
 
         <div
           aria-hidden
-          className="over-ons-icon-card__rule relative mt-5 h-px w-full origin-left bg-[linear-gradient(90deg,rgba(179,18,23,0.34),rgba(20,20,20,0.08)_38%,transparent)]"
+          className="over-ons-icon-card__rule relative mt-5 hidden h-px w-full origin-left bg-[linear-gradient(90deg,rgba(179,18,23,0.34),rgba(20,20,20,0.08)_38%,transparent)] sm:block"
         />
 
         {(feature.certification || feature.meta) && (
-          <ul className="relative mt-4 flex flex-wrap items-center gap-2">
+          <ul className="relative mt-3 flex flex-wrap items-center gap-1.5 sm:mt-4 sm:gap-2">
             {feature.certification && (
               <li className="over-ons-chip over-ons-chip--cert inline-flex items-center gap-1.5 rounded-full border border-[rgba(179,18,23,0.22)] bg-white px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.2em] text-[#B31217] shadow-[0_8px_20px_-16px_rgba(179,18,23,0.7)]">
                 <AyatBrandSeal className="h-3 w-3 shrink-0" />
@@ -126,7 +126,7 @@ function OverOnsFeatureCard({
           </ul>
         )}
 
-        <div className="relative mt-auto flex items-end justify-between gap-4 pt-5">
+        <div className="relative mt-3 hidden items-end justify-between gap-4 pt-2 sm:mt-auto sm:flex sm:pt-5">
           {feature.linkLabel && feature.linkTo ? (
             <Link
               to={feature.linkTo}
@@ -149,38 +149,31 @@ function OverOnsFeatureCard({
   );
 }
 
-/** Years-of-experience figure — counts up once, in view, motion permitting. */
+/** Years-of-experience figure — always renders 10+ immediately; subtle emphasis on reveal. */
 function ExperienceCounter() {
   const reduceMotion = useReducedMotion();
   const ref = useRef<HTMLParagraphElement>(null);
   const inView = useInView(ref, { once: true, margin: "-15% 0px" });
-  /** Starts at the real value so SSR/no-JS render the fact, not a zero. */
-  const count = useMotionValue(HOME_OVER_ONS.experience.numeric);
-  const rounded = useTransform(count, (value) => Math.round(value).toString());
-
-  /* Reset to zero on the client while the section is still far off-screen. */
-  useEffect(() => {
-    if (!reduceMotion) count.set(0);
-  }, [count, reduceMotion]);
-
-  useEffect(() => {
-    if (!inView || reduceMotion) return;
-    const controls = animate(count, HOME_OVER_ONS.experience.numeric, {
-      duration: 1.4,
-      delay: 0.3,
-      ease: COUNT_EASE,
-    });
-    return () => controls.stop();
-  }, [count, inView, reduceMotion]);
+  const { numeric, suffix, label } = HOME_OVER_ONS.experience;
 
   return (
     <p
       ref={ref}
       className="mt-4 flex items-baseline font-display text-[3rem] font-semibold leading-none tracking-[-0.04em] sm:text-[3.25rem]"
+      aria-label={`${numeric}${suffix} ${label}`}
     >
-      <motion.span className="tabular-nums">{rounded}</motion.span>
-      <span className="text-[#DA292A]">{HOME_OVER_ONS.experience.suffix}</span>
-      <span className="sr-only"> {HOME_OVER_ONS.experience.label}</span>
+      <motion.span
+        className="tabular-nums"
+        initial={false}
+        animate={
+          reduceMotion || !inView ? undefined : { opacity: [0.88, 1], y: [3, 0] }
+        }
+        transition={{ duration: 0.55, ease: COUNT_EASE }}
+      >
+        {numeric}
+      </motion.span>
+      <span className="text-[#DA292A]">{suffix}</span>
+      <span className="sr-only"> {label}</span>
     </p>
   );
 }
@@ -221,7 +214,7 @@ export function HomeOverOnsSection() {
 
       <div className="relative w-full ipek-container">
         {/* Editorial header */}
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-10">
+        <div className="grid gap-5 lg:grid-cols-12 lg:items-end lg:gap-10">
           <div className="lg:col-span-7">
             <Reveal>
               <AyatSectionBadge kicker={HOME_OVER_ONS.kicker} title={HOME_OVER_ONS.badgeTitle} />
@@ -264,13 +257,13 @@ export function HomeOverOnsSection() {
         </div>
 
         {/* Premium bento theater */}
-        <div className="mt-12 grid gap-4 sm:mt-14 sm:gap-5 lg:grid-cols-12 lg:grid-rows-[auto_auto] lg:gap-5">
+        <div className="over-ons-bento mt-8 grid gap-3 sm:mt-14 sm:gap-5 lg:grid-cols-12 lg:grid-rows-[auto_auto] lg:gap-5">
           {/* Hero image — levertijd */}
           <Reveal className="lg:col-span-7 lg:row-span-2" delay={0.06}>
             <article
               ref={heroRef}
               data-linked={activeFeature ? "true" : "false"}
-              className={`over-ons-hero group relative isolate flex h-full min-h-[340px] flex-col overflow-hidden bg-[#0a0a0a] shadow-[0_40px_100px_-48px_rgba(0,0,0,0.55)] sm:min-h-[420px] lg:min-h-[520px] ${SHELL}`}
+              className={`over-ons-bento__hero over-ons-hero group relative isolate flex h-full min-h-[260px] flex-col overflow-hidden bg-[#0a0a0a] shadow-[0_40px_100px_-48px_rgba(0,0,0,0.55)] sm:min-h-[420px] lg:min-h-[520px] ${SHELL}`}
             >
               {/* Media + cinematic grade */}
               <motion.div
@@ -377,18 +370,20 @@ export function HomeOverOnsSection() {
             </article>
           </Reveal>
 
-          <OverOnsFeatureCard
-            feature={kwaliteit}
-            delay={0.12}
-            onActivate={() => setActiveId(kwaliteit.id)}
-            onDeactivate={() => setActiveId(null)}
-          />
-          <OverOnsFeatureCard
-            feature={halal}
-            delay={0.18}
-            onActivate={() => setActiveId(halal.id)}
-            onDeactivate={() => setActiveId(null)}
-          />
+          <div className="over-ons-bento__icons lg:contents">
+            <OverOnsFeatureCard
+              feature={kwaliteit}
+              delay={0.12}
+              onActivate={() => setActiveId(kwaliteit.id)}
+              onDeactivate={() => setActiveId(null)}
+            />
+            <OverOnsFeatureCard
+              feature={halal}
+              delay={0.18}
+              onActivate={() => setActiveId(halal.id)}
+              onDeactivate={() => setActiveId(null)}
+            />
+          </div>
         </div>
 
         {/* Lower editorial panel */}

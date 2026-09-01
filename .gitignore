@@ -43,7 +43,10 @@ ipekci-theme.zip
 # ── QA / automation artefacts ──
 .visual-qa/
 .pw-profile/
+.pw-profile-audit/
 .playwright-mcp/
+.tmp-audit/
+scripts/tmp-*.mjs
 
 # Audit + comparison dumps written by scripts/*.mjs
 audit-sweep.json
@@ -52,6 +55,9 @@ lcp-manifest.json
 responsive-audit.json
 react-*.json
 wp-*.json
+
+# Markup dump from scripts/verify-hero-render.php
+hero-output.html
 
 # Screenshot leftovers in the repo root only
 /*.jpeg

@@ -40,6 +40,7 @@ import {
 import { SiteLayout } from "@/components/SiteLayout";
 import { SectionHeader } from "@/components/SectionHeader";
 import { MagneticButton } from "@/components/MagneticButton";
+import { DualCtaRow } from "@/components/ui/DualCtaRow";
 import { EnterpriseTrustSection } from "@/components/home/EnterpriseTrustSection";
 import { SpeerpuntenSection } from "@/components/home/SpeerpuntenSection";
 import { HomeOverOnsSection } from "@/components/home/HomeOverOnsSection";
@@ -217,12 +218,13 @@ function EindproductenBanner({
             {text}
           </p>
 
-          <div className="mt-10 flex flex-wrap items-center gap-5">
+          <DualCtaRow wide className="mt-10">
             <Link
               to="/producten"
-              className="group inline-flex items-center gap-3 rounded-2xl bg-[#9D0208] px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-white shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_24px_90px_-60px_rgba(0,0,0,0.85)] transition-all duration-500 hover:bg-[#B11217] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.18),0_0_58px_-24px_rgba(177,18,23,0.70),0_34px_110px_-70px_rgba(0,0,0,0.90)] active:translate-y-px"
+              className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-[#9D0208] px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-white shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_24px_90px_-60px_rgba(0,0,0,0.85)] transition-all duration-500 hover:bg-[#B11217] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.18),0_0_58px_-24px_rgba(177,18,23,0.70),0_34px_110px_-70px_rgba(0,0,0,0.90)] active:translate-y-px"
             >
-              Alle producten
+              <span className="hidden sm:inline">Alle producten</span>
+              <span className="sm:hidden">Producten</span>
               <ArrowRight
                 size={14}
                 className="transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-1"
@@ -230,15 +232,16 @@ function EindproductenBanner({
             </Link>
             <a
               href="/producten/vleessoorten"
-              className="group inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.26em] text-[rgba(226,192,141,0.92)] transition-colors duration-500 hover:text-[rgba(245,241,235,0.90)]"
+              className="ipek-dual-cta__secondary ipek-dual-cta__secondary--gold group inline-flex items-center justify-center gap-2 text-[11px] font-medium uppercase tracking-[0.26em] transition-colors duration-500 hover:text-[rgba(245,241,235,0.90)]"
             >
-              Lees meer
+              <span className="hidden sm:inline">Lees meer</span>
+              <span className="sm:hidden">Meer</span>
               <ArrowUpRight
                 size={15}
                 className="text-[rgba(226,192,141,0.95)] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
               />
             </a>
-          </div>
+          </DualCtaRow>
         </div>
 
         <div className="relative z-10 flex items-center justify-center lg:col-span-7 lg:justify-end">
@@ -374,7 +377,7 @@ function AssortimentProductCard({
         href={href}
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
-        className="group relative flex h-[340px] flex-col overflow-hidden rounded-[24px] border border-[rgba(226,192,141,0.14)] bg-[#080808] shadow-[0_40px_120px_-88px_rgba(0,0,0,0.98)] transition-[border-color,box-shadow] duration-700 hover:border-[rgba(226,192,141,0.38)] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.22),0_0_56px_-18px_rgba(226,192,141,0.22),0_52px_150px_-96px_rgba(0,0,0,0.98)] lg:h-[400px]"
+        className="assortiment-product-card group relative flex h-[240px] flex-col overflow-hidden rounded-[24px] border border-[rgba(226,192,141,0.14)] bg-[#080808] shadow-[0_40px_120px_-88px_rgba(0,0,0,0.98)] transition-[border-color,box-shadow] duration-700 hover:border-[rgba(226,192,141,0.38)] hover:shadow-[0_0_0_1px_rgba(226,192,141,0.22),0_0_56px_-18px_rgba(226,192,141,0.22),0_52px_150px_-96px_rgba(0,0,0,0.98)] sm:h-[340px] lg:h-[400px]"
       >
         <motion.img
           src={image}
@@ -541,7 +544,7 @@ function AssortimentUnifiedCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-120px" }}
       transition={{ duration: 0.85, delay: index * 0.12, ease: DS_EASE_REVEAL }}
-      className="group relative overflow-hidden rounded-3xl border border-[rgba(198,160,98,0.32)] bg-[#070707] shadow-[0_36px_100px_-72px_rgba(0,0,0,0.95),0_0_0_1px_rgba(255,255,255,0.04)] transition-all duration-700 ease-[cubic-bezier(.22,.61,.36,1)] hover:-translate-y-2 hover:border-[rgba(226,192,141,0.62)] hover:shadow-[0_48px_140px_-80px_rgba(0,0,0,0.98),0_0_60px_-28px_rgba(179,18,23,0.35),0_0_0_1px_rgba(226,192,141,0.28)]"
+      className="assortiment-unified-card group relative overflow-hidden rounded-3xl border border-[rgba(198,160,98,0.32)] bg-[#070707] shadow-[0_36px_100px_-72px_rgba(0,0,0,0.95),0_0_0_1px_rgba(255,255,255,0.04)] transition-all duration-700 ease-[cubic-bezier(.22,.61,.36,1)] hover:-translate-y-2 hover:border-[rgba(226,192,141,0.62)] hover:shadow-[0_48px_140px_-80px_rgba(0,0,0,0.98),0_0_60px_-28px_rgba(179,18,23,0.35),0_0_0_1px_rgba(226,192,141,0.28)]"
     >
       <a href={productHref(id)} className="relative block h-full">
         <div className="pointer-events-none absolute inset-0">
@@ -562,7 +565,7 @@ function AssortimentUnifiedCard({
           <div className="absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,transparent,rgba(226,192,141,0.35),transparent)] opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
         </div>
 
-        <div className="pointer-events-none absolute left-6 top-6 grid h-[82px] w-[82px] place-items-center rounded-full border border-[rgba(198,160,98,0.32)] bg-black/40 shadow-[0_12px_40px_-18px_rgba(0,0,0,0.8)] backdrop-blur-[3px] transition-colors duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:border-[rgba(226,192,141,0.58)] group-hover:bg-black/50">
+        <div className="assortiment-unified-card__badge pointer-events-none absolute left-6 top-6 grid h-[82px] w-[82px] place-items-center rounded-full border border-[rgba(198,160,98,0.32)] bg-black/40 shadow-[0_12px_40px_-18px_rgba(0,0,0,0.8)] backdrop-blur-[3px] transition-colors duration-700 ease-[cubic-bezier(.22,.61,.36,1)] group-hover:border-[rgba(226,192,141,0.58)] group-hover:bg-black/50">
           <svg
             viewBox="0 0 112 112"
             className="absolute inset-0 h-full w-full spin-ring"
@@ -597,7 +600,7 @@ function AssortimentUnifiedCard({
           ) : null}
         </div>
 
-        <div className="relative flex min-h-[460px] flex-col justify-end p-7 sm:min-h-[520px]">
+        <div className="assortiment-unified-card__body relative flex min-h-[280px] flex-col justify-end p-5 sm:min-h-[460px] sm:p-7 lg:min-h-[520px]">
           <h3
             className="font-display text-3xl font-semibold leading-[0.98] tracking-[-0.04em] text-[#F8F4EE] transition-transform duration-[320ms] ease-[cubic-bezier(.22,.61,.36,1)] will-change-transform group-hover:-translate-y-1"
             style={{ textShadow: "0 2px 24px rgba(0,0,0,0.45)" }}
@@ -1790,7 +1793,7 @@ function HomePage() {
           id="ons-assortiment"
           data-story-chapter="quality"
           aria-labelledby="assortiment-heading"
-          className="story-moment story-surface-light relative isolate overflow-hidden py-20 grain lg:py-28"
+          className="home-assortiment-section story-moment story-surface-light relative isolate overflow-hidden py-12 grain sm:py-16 lg:py-28"
         >
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute -left-32 top-0 h-[480px] w-[480px] rounded-full bg-[radial-gradient(circle,rgba(226,192,141,0.14),transparent_68%)]" />
@@ -2059,7 +2062,7 @@ function HomePage() {
             id="products"
             data-story-chapter="finished-products"
             aria-labelledby="products-heading"
-            className="relative isolate overflow-hidden py-28 text-[#0a0a0a] grain lg:py-36"
+            className="relative isolate overflow-hidden home-products-section py-14 text-[#0a0a0a] grain sm:py-20 lg:py-36"
           >
             <div className="pointer-events-none absolute inset-0" aria-hidden>
               <img
@@ -2364,7 +2367,7 @@ function SegmentCard({
       }}
       variants={revealVariants}
       whileHover={reduceMotion ? undefined : { y: -4 }}
-      className="group relative w-[270px] shrink-0 snap-center scroll-mt-28 overflow-hidden rounded-2xl border border-black/10 bg-[#0B0B0B] shadow-[0_28px_110px_-65px_rgba(0,0,0,0.82)] transition-[box-shadow,border-color] duration-700 hover:border-black/20 hover:shadow-[0_40px_150px_-75px_rgba(0,0,0,0.92)] sm:w-[300px] lg:w-[310px]"
+      className="voorwie-segment-card group relative w-[248px] shrink-0 snap-center scroll-mt-28 overflow-hidden rounded-2xl border border-black/10 bg-[#0B0B0B] shadow-[0_28px_110px_-65px_rgba(0,0,0,0.82)] transition-[box-shadow,border-color] duration-700 hover:border-black/20 hover:shadow-[0_40px_150px_-75px_rgba(0,0,0,0.92)] sm:w-[300px] lg:w-[310px]"
     >
       <motion.img
         src={image}
@@ -2411,7 +2414,7 @@ function SegmentCard({
         <div className="absolute inset-0 bg-black/45 backdrop-blur-[2px]" />
       </div>
 
-      <div className="relative flex min-h-[440px] flex-col justify-end p-8 text-white">
+      <div className="voorwie-segment-card__body relative flex min-h-[280px] flex-col justify-end p-5 text-white sm:min-h-[440px] sm:p-8">
         <div className="absolute right-6 top-6 grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/[0.04]">
           <Icon size={18} className="text-[rgba(226,192,141,0.78)]" />
         </div>
@@ -2478,7 +2481,7 @@ function EindproductenShowcaseCard({
         delay: reduceMotion || skipReveal ? 0 : 0.06 + index * 0.05,
       }}
       whileHover={reduceMotion ? undefined : { y: -12 }}
-      className="group relative w-[272px] shrink-0 sm:w-[288px] lg:w-[300px]"
+      className="eindproducten-showcase-card group relative w-[228px] shrink-0 sm:w-[288px] lg:w-[300px]"
     >
       {/* Soft floor contact shadow — makes the card float */}
       <div
@@ -2497,7 +2500,7 @@ function EindproductenShowcaseCard({
       />
 
       <div
-        className="relative z-10 overflow-hidden rounded-[26px] border border-[rgba(226,192,141,0.32)] bg-[#0c0c0c] transition-[border-color] duration-600 ease-[cubic-bezier(.22,1,.36,1)] group-hover:border-[rgba(226,192,141,0.62)]"
+        className="eindproducten-showcase-card__shell relative z-10 overflow-hidden rounded-[26px] border border-[rgba(226,192,141,0.32)] bg-[#0c0c0c] transition-[border-color] duration-600 ease-[cubic-bezier(.22,1,.36,1)] group-hover:border-[rgba(226,192,141,0.62)]"
         style={{
           boxShadow: hovered
             ? [
@@ -2523,7 +2526,7 @@ function EindproductenShowcaseCard({
               ].join(", "),
         }}
       >
-        <div className="relative flex h-full min-h-[488px] flex-col">
+        <div className="eindproducten-showcase-card__body relative flex h-full min-h-[340px] flex-col sm:min-h-[488px]">
           {/* Luxury product theater */}
           <div className="relative flex flex-1 flex-col overflow-hidden bg-[radial-gradient(ellipse_90%_80%_at_50%_30%,#2a221c_0%,#14110f_48%,#0a0908_100%)]">
             <div
@@ -2542,12 +2545,12 @@ function EindproductenShowcaseCard({
 
             <span
               aria-hidden
-              className="pointer-events-none absolute right-4 top-3 z-10 select-none font-display text-[3.6rem] font-semibold leading-none tracking-[-0.06em] text-[rgba(226,192,141,0.1)]"
+              className="pointer-events-none absolute right-4 top-3 z-10 select-none font-display text-[2.4rem] font-semibold leading-none tracking-[-0.06em] text-[rgba(226,192,141,0.1)] sm:text-[3.6rem]"
             >
               {String(index + 1).padStart(2, "0")}
             </span>
 
-            <div className="relative z-10 flex items-center justify-between gap-3 px-5 pt-5">
+            <div className="relative z-10 flex items-center justify-between gap-3 px-4 pt-4 sm:px-5 sm:pt-5">
               <div className="flex items-center gap-2">
                 <img
                   src={product.stickerSrc}
@@ -2567,14 +2570,14 @@ function EindproductenShowcaseCard({
               </span>
             </div>
 
-            <div className="relative flex flex-1 items-center justify-center px-5 py-5">
+            <div className="relative flex flex-1 items-center justify-center px-4 py-3 sm:px-5 sm:py-5">
               <div
                 aria-hidden
-                className="pointer-events-none absolute left-1/2 top-1/2 h-[196px] w-[196px] -translate-x-1/2 -translate-y-[52%] rounded-full border border-[rgba(226,192,141,0.22)] sm:h-[208px] sm:w-[208px]"
+                className="pointer-events-none absolute left-1/2 top-1/2 h-[140px] w-[140px] -translate-x-1/2 -translate-y-[52%] rounded-full border border-[rgba(226,192,141,0.22)] sm:h-[208px] sm:w-[208px]"
               />
               <div
                 aria-hidden
-                className="pointer-events-none absolute left-1/2 top-1/2 h-[150px] w-[150px] -translate-x-1/2 -translate-y-[52%] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.14)_0%,rgba(226,192,141,0.08)_42%,transparent_70%)]"
+                className="pointer-events-none absolute left-1/2 top-1/2 h-[110px] w-[110px] -translate-x-1/2 -translate-y-[52%] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.14)_0%,rgba(226,192,141,0.08)_42%,transparent_70%)] sm:h-[150px] sm:w-[150px]"
               />
               <div
                 aria-hidden
@@ -2599,7 +2602,7 @@ function EindproductenShowcaseCard({
                   alt={product.title}
                   loading="lazy"
                   decoding="async"
-                  className="h-[168px] w-full rounded-[14px] object-cover sm:h-[180px]"
+                  className="h-[112px] w-full rounded-[14px] object-cover sm:h-[180px]"
                   style={{
                     filter: EINDPRODUCTEN_PRODUCT_SHADOW,
                     objectPosition: "center 42%",
@@ -2609,14 +2612,14 @@ function EindproductenShowcaseCard({
             </div>
           </div>
 
-          <div className="relative border-t border-[rgba(226,192,141,0.14)] bg-[linear-gradient(180deg,#14110f_0%,#0d0c0b_100%)] px-5 pb-5 pt-4">
+          <div className="relative border-t border-[rgba(226,192,141,0.14)] bg-[linear-gradient(180deg,#14110f_0%,#0d0c0b_100%)] px-4 pb-4 pt-3 sm:px-5 sm:pb-5 sm:pt-4">
             <div className="text-[7.5px] font-semibold uppercase tracking-[0.28em] text-[rgba(226,192,141,0.82)]">
               {product.eyebrow}
             </div>
-            <h3 className="mt-2 font-display text-[1.75rem] font-semibold leading-[0.98] tracking-[-0.04em] text-[#F7F2EA] sm:text-[1.9rem]">
+            <h3 className="mt-1.5 font-display text-[1.35rem] font-semibold leading-[0.98] tracking-[-0.04em] text-[#F7F2EA] sm:mt-2 sm:text-[1.9rem]">
               {product.title}
             </h3>
-            <p className="mt-2.5 text-[12px] leading-[1.65] text-[rgba(245,242,237,0.62)]">
+            <p className="mt-1.5 line-clamp-2 text-[11px] leading-[1.55] text-[rgba(245,242,237,0.62)] sm:mt-2.5 sm:line-clamp-none sm:text-[12px] sm:leading-[1.65]">
               {product.blurb}
             </p>
 

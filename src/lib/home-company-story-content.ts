@@ -38,7 +38,7 @@ export const HOME_OVER_ONS = {
   badgeTitle: "Ayat Food",
   title: "Welkom bij Ayat Food",
   paragraphs: [
-    "Kwaliteit is een kern begrip binnen Ayat Food Vleesgroothandel. Wij werken volledig volgens de normen en standaarden van de Nederlandse Voedsel- en Warenautoriteit (NVWA). Daarnaast zijn al onze producten onder strikte toezicht van de European Certification Centre for Halal (ECC Halal).",
+    "Kwaliteit is een kernbegrip binnen Ayat Food Vleesgroothandel. Wij werken volledig volgens de normen en standaarden van de Nederlandse Voedsel- en Warenautoriteit (NVWA). Daarnaast zijn al onze producten onder strikte toezicht van de European Certification Centre for Halal (ECC Halal).",
     "Ons succesgeheim ligt in de ambitie om onze afnemers Halal, hoogwaardige en exclusieve producten aan te bieden.",
   ],
   /** Kicker above the closing story paragraph */

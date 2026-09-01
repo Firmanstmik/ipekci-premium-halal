@@ -28,16 +28,21 @@ if (!existsSync(ZIP)) {
 }
 console.log(`uploading ${(statSync(ZIP).size / 1024 / 1024).toFixed(1)} MB ...`);
 
-const ctx = await chromium.launchPersistentContext(PROFILE, { headless: true });
+const ctx = await chromium.launchPersistentContext(PROFILE, { headless: false });
 ctx.setDefaultTimeout(300000);
 ctx.setDefaultNavigationTimeout(300000);
 const page = ctx.pages()[0] ?? (await ctx.newPage());
 
 await page.goto(`${BASE}/wp-admin/theme-install.php?browse=upload`, { waitUntil: 'domcontentloaded' });
 if (!(await page.$('#wpadminbar'))) {
-  console.error('not authenticated (profile session expired) — cannot deploy');
-  await ctx.close();
-  process.exit(2);
+  console.error('not authenticated (profile session expired) — pausing for login...');
+  await page.waitForSelector('#wpadminbar', { state: 'visible', timeout: 300000 });
+  console.log('Login successful. Resuming deployment...');
+  // Navigate back to the upload page if login redirects elsewhere
+  if (!page.url().includes('theme-install.php')) {
+    console.log('Navigating back to theme install page...');
+    await page.goto(`${BASE}/wp-admin/theme-install.php?browse=upload`, { waitUntil: 'domcontentloaded' });
+  }
 }
 
 // This host drops large upload POSTs (net::ERR_CONNECTION_CLOSED) intermittently —
@@ -55,26 +60,35 @@ for (let attempt = 1; attempt <= ATTEMPTS && !uploaded; attempt++) {
   };
   page.on('requestfailed', onFailed);
 
+  console.log(`Starting attempt ${attempt}...`);
   await page.goto(`${BASE}/wp-admin/theme-install.php?browse=upload`, { waitUntil: 'domcontentloaded' });
 
-  // The .upload-theme form is display:none until the "Upload Theme" button opens
-  // it, and #install-theme-submit stays disabled until a file is actually chosen —
-  // so the order here (toggle, then file, then submit) is load-bearing.
+  console.log('Waiting for upload toggle...');
   await page.waitForSelector('button.upload-view-toggle', { state: 'visible', timeout: 60000 });
   await page.click('button.upload-view-toggle');
+  
+  console.log('Waiting for upload form...');
   await page.waitForSelector('.upload-theme', { state: 'visible', timeout: 30000 });
 
+  console.log('Setting file input...');
   await page.setInputFiles('#themezip', ZIP);
+  
+  console.log('Waiting for submit button to be enabled...');
   await page.waitForFunction(() => !document.querySelector('#install-theme-submit')?.disabled, { timeout: 30000 });
+  
+  console.log('Clicking submit...');
   await page.click('#install-theme-submit', { noWaitAfter: true });
 
-  for (let i = 0; i < 48; i++) {
+  for (let i = 0; i < 60; i++) {
     await page.waitForTimeout(5000);
-    if (postFailed) break;
+    if (postFailed) {
+      console.log('POST failed detected:', postFailed);
+      break;
+    }
     text = await page.evaluate(() => document.body.innerText || '').catch(() => '');
-    if (/already installed|Theme installed successfully|Theme updated successfully|destination folder already exists/i.test(text)) {
+    if (/already installed|Theme installed successfully|Theme updated successfully|destination folder already exists|succesvol geïnstalleerd|al geïnstalleerd|bestaat al/i.test(text)) {
       uploaded = true;
-      console.log(`  attempt ${attempt}: upload accepted after ${(i + 1) * 5}s`);
+      console.log(`  attempt ${attempt}: upload accepted after ${(i + 1) * 5}s. Match found in text:`, text.match(/already installed|Theme installed successfully|Theme updated successfully|destination folder already exists|succesvol geïnstalleerd|al geïnstalleerd|bestaat al/i)[0]);
       break;
     }
   }
@@ -93,14 +107,15 @@ if (!uploaded) {
   process.exit(4);
 }
 
-if (/already installed|destination folder already exists/i.test(text)) {
+if (/already installed|destination folder already exists|al geïnstalleerd|bestaat al/i.test(text)) {
   console.log('theme already installed — using WP overwrite flow');
 
   const overwrite = await page.$(
-    'a.button:has-text("Replace current with uploaded"), a:has-text("Replace current with uploaded")'
-  );
+    'a.button:has-text("Replace current with uploaded"), a:has-text("Replace current with uploaded"), a.button:has-text("Huidige vervangen met geüploade"), a.button:has-text("Replace active with uploaded"), a.button:has-text("Vervang huidige")'
+  ) || await page.$('.update-from-upload-actions .button-primary, a.button-primary');
   if (!overwrite) {
-    console.error('WP did not offer "Replace current with uploaded". Screen said:\n', text.slice(0, 600));
+    console.error('WP did not offer "Replace current with uploaded". HTML said:\n', await page.evaluate(() => document.querySelector('.wrap')?.innerHTML || document.body.innerHTML));
+    await page.screenshot({ path: 'upload-error.png', fullPage: true }).catch(() => {});
     await ctx.close();
     process.exit(3);
   }
@@ -108,7 +123,7 @@ if (/already installed|destination folder already exists/i.test(text)) {
   await overwrite.click({ noWaitAfter: true });
   await page
     .waitForFunction(
-      () => /Theme updated successfully|successfully installed|has been updated/i.test(document.body.innerText),
+      () => /Theme updated successfully|successfully installed|has been updated|succesvol bijgewerkt|succesvol geïnstalleerd|succesvol geüpload/i.test(document.body.innerText),
       { timeout: 300000 }
     )
     .catch(() => {});
@@ -131,7 +146,7 @@ console.log('active theme:', active);
 
 if (!/ipek/i.test(active || '')) {
   console.error('ipekci-theme is NOT active after deploy — activating');
-  const activate = await page.$('.theme[data-slug="ipekci-theme"] .activate, a.button.activate');
+  const activate = await page.$('.theme[data-slug="ipekci-theme-v2"] .activate, a.button.activate');
   if (activate) {
     await activate.click({ noWaitAfter: true });
     await page.waitForTimeout(15000);
@@ -149,11 +164,18 @@ const purge = await page.evaluate(async () => {
     '/voor-wie/supermarkten/', '/voor-wie/restaurants/',
   ];
   const all = [...document.querySelectorAll('a')].find((a) => /litespeed_type=purge_all(&|$)/.test(a.href));
+  const css = [...document.querySelectorAll('a')].find((a) => /litespeed_type=purge_all_css(&|$)/.test(a.href));
+  const js = [...document.querySelectorAll('a')].find((a) => /litespeed_type=purge_all_js(&|$)/.test(a.href));
+  const obj = [...document.querySelectorAll('a')].find((a) => /litespeed_type=purge_all_object(&|$)/.test(a.href));
+  
   if (all) {
     const r = await fetch(all.href, { credentials: 'include' });
     const d = new DOMParser().parseFromString(await r.text(), 'text/html');
     out.purgeAll = [...d.querySelectorAll('.notice')].map((n) => n.textContent.trim()).find((t) => /Purged/i.test(t)) ?? 'none';
   }
+  if (css) await fetch(css.href, { credentials: 'include' });
+  if (js) await fetch(js.href, { credentials: 'include' });
+  if (obj) await fetch(obj.href, { credentials: 'include' });
   const form = [...document.querySelectorAll('form')].find((f) =>
     [...f.querySelectorAll('input')].some((i) => i.value === 'PURGE_BY')
   );

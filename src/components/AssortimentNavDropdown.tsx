@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouterState } from "@tanstack/react-router";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 import {
   DropdownMenu,
@@ -18,6 +19,11 @@ const GOLD = "rgba(240,215,168,";
 const STICKER_FILTER = "sepia(1) saturate(520%) hue-rotate(352deg) brightness(0.66) contrast(1.12)";
 const RED = "rgba(218,41,42,";
 
+function activeProductenSlug(pathname: string): string | null {
+  const match = pathname.match(/^\/producten\/([^/]+)/);
+  return match?.[1] ?? null;
+}
+
 export function AssortimentNavDropdown({
   active,
   open,
@@ -29,11 +35,23 @@ export function AssortimentNavDropdown({
   onOpenChange: (open: boolean) => void;
   scrolled?: boolean;
 }) {
-  const [hovered, setHovered] = useState<ProductenMegaItem>(PRODUCTEN_MEGA_ITEMS[0]);
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const currentSlug = activeProductenSlug(pathname);
+
+  const defaultItem = useMemo(
+    () => PRODUCTEN_MEGA_ITEMS.find((item) => item.id === currentSlug) ?? PRODUCTEN_MEGA_ITEMS[0],
+    [currentSlug],
+  );
+
+  const [hovered, setHovered] = useState<ProductenMegaItem>(defaultItem);
 
   useEffect(() => {
-    if (open) setHovered(PRODUCTEN_MEGA_ITEMS[0]);
-  }, [open]);
+    setHovered(defaultItem);
+  }, [defaultItem]);
+
+  useEffect(() => {
+    if (open) setHovered(defaultItem);
+  }, [open, defaultItem]);
 
   return (
     <DropdownMenu open={open} onOpenChange={onOpenChange} modal={false}>
@@ -94,22 +112,22 @@ export function AssortimentNavDropdown({
 
             <div className="mt-5 grid gap-1.5 sm:grid-cols-2">
               {PRODUCTEN_MEGA_ITEMS.map((item) => {
-                const isHovered = hovered.id === item.id;
+                const isHighlighted = hovered.id === item.id;
                 return (
                   <DropdownMenuItem key={item.id} asChild className="p-0 focus:bg-transparent">
                     <a
                       href={item.href}
                       onMouseEnter={() => setHovered(item)}
                       className={`group flex items-start gap-3 rounded-xl border px-3 py-2.5 transition-all duration-300 ${
-                        isHovered
-                          ? "border-primary/25 bg-primary/[0.08]"
+                        isHighlighted
+                          ? "border-primary/35 bg-primary/[0.08] shadow-[0_12px_40px_-28px_rgba(218,41,42,0.35)]"
                           : "border-transparent bg-transparent hover:border-white/10 hover:bg-white/[0.04]"
                       }`}
                     >
                       <span
                         className={`grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-lg border transition-colors duration-300 ${
-                          isHovered
-                            ? "border-primary/35 bg-primary/15"
+                          isHighlighted
+                            ? "border-primary/45 bg-primary/15"
                             : "border-white/10 bg-white/[0.03]"
                         }`}
                       >
@@ -126,7 +144,7 @@ export function AssortimentNavDropdown({
                         <span className="flex items-center justify-between gap-2">
                           <span
                             className={`text-[12px] font-semibold tracking-[0.04em] transition-colors duration-300 ${
-                              isHovered
+                              isHighlighted
                                 ? "text-foreground"
                                 : "text-foreground/88 group-hover:text-foreground"
                             }`}
@@ -136,7 +154,7 @@ export function AssortimentNavDropdown({
                           <ArrowUpRight
                             size={13}
                             className={`shrink-0 transition-all duration-300 ${
-                              isHovered
+                              isHighlighted
                                 ? "translate-x-0.5 -translate-y-0.5 text-primary"
                                 : "text-foreground/40 group-hover:text-primary"
                             }`}

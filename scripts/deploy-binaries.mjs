@@ -30,16 +30,19 @@ import { createHash } from 'node:crypto';
 import { join, relative } from 'node:path';
 
 const BASE = 'https://ipekcislachterij.localclicks.nl';
-const THEME = 'ipekci-theme';
+const THEME = process.env.WP_THEME ?? 'ipekci-theme-v2';
 const HOST_FILE = 'inc/customizer.php';
 const IMAGES = 'ipekci-theme/assets/images';
+const ONLY = process.argv.slice(2).map((p) => p.split('\\').join('/'));
 const BATCH_BYTES = 700 * 1024; // keep each editor POST comfortably small
 const PROFILE =
   process.env.WP_PROFILE ??
   'C:\\Users\\HYPE AMD\\AppData\\Local\\ms-playwright-mcp\\mcp-chrome-0885b19';
 
 // Files that exist on the server but no longer in the theme (superseded formats).
-const REMOVE = [
+const REMOVE = ONLY.length
+  ? []
+  : [
   'cow-hero', 'cut-brisket', 'cut-chuck', 'cut-flank', 'cut-neck', 'cut-plate',
   'cut-ribeye', 'cut-round', 'cut-rump', 'cut-shank', 'cut-shortloin',
   'cut-sirloin', 'cut-tenderloin',
@@ -58,10 +61,13 @@ function walk(dir) {
 }
 
 // --- work out what actually differs from live ------------------------------
-const local = walk(IMAGES).map((p) => ({
+let local = walk(IMAGES).map((p) => ({
   rel: relative('ipekci-theme', p).split('\\').join('/'),
   buf: readFileSync(p),
 }));
+if (ONLY.length) {
+  local = local.filter((f) => ONLY.some((o) => f.rel === o || f.rel.startsWith(o.replace(/\/?$/, '/'))));
+}
 
 console.log(`comparing ${local.length} local images against live...`);
 
@@ -108,7 +114,7 @@ if (cur.length) batches.push(cur);
 
 const original = readFileSync('ipekci-theme/' + HOST_FILE, 'utf8');
 
-const ctx = await chromium.launchPersistentContext(PROFILE, { headless: true });
+const ctx = await chromium.launchPersistentContext(PROFILE, { headless: false });
 ctx.setDefaultTimeout(240000);
 ctx.setDefaultNavigationTimeout(240000);
 const page = ctx.pages()[0] ?? (await ctx.newPage());

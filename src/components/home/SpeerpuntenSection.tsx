@@ -141,7 +141,7 @@ export function SpeerpuntenSection() {
       aria-labelledby="speerpunten-heading"
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
-      className="story-section story-section--visual relative isolate overflow-hidden py-24 text-[#F5F2ED] lg:py-32"
+      className="story-section story-section--visual speerpunten-section relative isolate overflow-hidden py-14 text-[#F5F2ED] sm:py-20 lg:py-32"
     >
       {/* Atmosphere — existing bg + layered cinematic depth */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
@@ -243,7 +243,7 @@ export function SpeerpuntenSection() {
               <Link
                 to="/producten/$category"
                 params={{ category: card.category }}
-                className="relative block p-6 sm:p-7 lg:p-8"
+                className="relative block p-5 sm:p-7 lg:p-8"
               >
                 <div
                   aria-hidden

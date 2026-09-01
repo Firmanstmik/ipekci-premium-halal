@@ -3,6 +3,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import { useRef } from "react";
 import { ArrowUpRight, Check, ChevronRight, Clock, Mail, MapPin, Phone } from "lucide-react";
 import { AyatSectionBadge } from "@/components/home/AyatSectionBadge";
+import { DualCtaRow } from "@/components/ui/DualCtaRow";
 import { MagneticButton } from "@/components/MagneticButton";
 import { BRAND } from "@/lib/brand";
 import { DS_EASE, DS_EASE_REVEAL } from "@/lib/design-system";
@@ -72,7 +73,7 @@ function VacatureCard({ vacature, index }: { vacature: Vacature; index: number }
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-6%" }}
       transition={{ duration: 0.85, delay: index * 0.09, ease: DS_EASE_REVEAL }}
-      className="group relative flex h-full flex-col overflow-hidden rounded-[28px] border border-black/[0.08] bg-white/92 p-7 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.14)] backdrop-blur-sm transition-all duration-700 hover:-translate-y-1.5 hover:border-[rgba(198,160,98,0.34)] hover:shadow-[0_36px_96px_-38px_rgba(0,0,0,0.2)] lg:p-8"
+      className="vacature-card group relative flex h-full flex-col overflow-hidden rounded-[28px] border border-black/[0.08] bg-white/92 p-7 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.14)] backdrop-blur-sm transition-all duration-700 active:scale-[0.995] hover:-translate-y-1.5 hover:border-[rgba(198,160,98,0.34)] hover:shadow-[0_36px_96px_-38px_rgba(0,0,0,0.2)] lg:p-8"
     >
       <div
         aria-hidden
@@ -217,7 +218,7 @@ export function VacaturesPage() {
   return (
     <>
       {/* ── Hero ───────────────────────────────────────────── */}
-      <section ref={heroRef} className="relative min-h-[88vh] overflow-hidden bg-[#030303] grain">
+      <section ref={heroRef} className="product-hero-mobile relative min-h-[88vh] overflow-hidden bg-[#030303] grain">
         <div className="absolute inset-0">
           <motion.img
             src={VACATURES_HERO_IMAGE}
@@ -240,7 +241,7 @@ export function VacaturesPage() {
 
         <motion.div
           style={{ y: reduceMotion ? 0 : heroContentY, opacity: reduceMotion ? 1 : heroOpacity }}
-          className="relative mx-auto flex min-h-[88vh] ipek-container flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-24 lg:pt-48"
+          className="product-hero-mobile__inner relative mx-auto flex min-h-[88vh] ipek-container flex-col justify-end px-6 pb-20 pt-40 lg:px-10 lg:pb-24 lg:pt-48"
         >
           <motion.nav
             aria-label="Breadcrumb"
@@ -295,27 +296,31 @@ export function VacaturesPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.68, ease: DS_EASE }}
-            className="mt-10 flex flex-wrap items-center gap-3 sm:gap-4"
+            className="mt-10"
           >
-            <a
-              href={`#${VACATURES_ANCHOR}`}
-              className="ipek-btn-premium group px-7 py-3.5 text-[11px] tracking-[0.2em] sm:px-9 sm:py-4 sm:text-[12px]"
-            >
-              <span className="relative z-[1] inline-flex items-center gap-2.5">
-                {VACATURES_HERO.ctaPrimary}
-                <ArrowUpRight
-                  size={15}
-                  className="transition-transform duration-500 ease-[cubic-bezier(.16,1,.3,1)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                />
-              </span>
-            </a>
-            <a
-              href={`#${SOLLICITEREN_ANCHOR}`}
-              className="inline-flex items-center gap-2.5 rounded-2xl border border-white/14 bg-white/[0.05] px-6 py-3.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/82 backdrop-blur-md transition-all duration-300 hover:border-[rgba(226,192,141,0.4)] hover:bg-white/[0.09] hover:text-white sm:px-7 sm:py-4"
-            >
-              {VACATURES_HERO.ctaSecondary}
-              <ArrowUpRight size={14} />
-            </a>
+            <DualCtaRow wide>
+              <a
+                href={`#${VACATURES_ANCHOR}`}
+                className="ipek-btn-premium group px-7 py-3.5 text-[11px] tracking-[0.2em] sm:px-9 sm:py-4 sm:text-[12px]"
+              >
+                <span className="relative z-[1] inline-flex items-center gap-2.5">
+                  <span className="hidden sm:inline">{VACATURES_HERO.ctaPrimary}</span>
+                  <span className="sm:hidden">Vacatures</span>
+                  <ArrowUpRight
+                    size={15}
+                    className="transition-transform duration-500 ease-[cubic-bezier(.16,1,.3,1)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </span>
+              </a>
+              <a
+                href={`#${SOLLICITEREN_ANCHOR}`}
+                className="inline-flex items-center gap-2.5 rounded-2xl border border-white/14 bg-white/[0.05] px-6 py-3.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/82 backdrop-blur-md transition-all duration-300 hover:border-[rgba(226,192,141,0.4)] hover:bg-white/[0.09] hover:text-white sm:px-7 sm:py-4"
+              >
+                <span className="hidden sm:inline">{VACATURES_HERO.ctaSecondary}</span>
+                <span className="sm:hidden">Solliciteer</span>
+                <ArrowUpRight size={14} />
+              </a>
+            </DualCtaRow>
           </motion.div>
 
           <motion.dl
@@ -563,13 +568,14 @@ export function VacaturesPage() {
                   <ContactRow icon={Clock} label="Openingstijden" value={BRAND.hours} />
                 </div>
 
-                <div className="relative mt-auto flex flex-wrap gap-3 pt-8">
+                <DualCtaRow wide className="relative mt-auto pt-8">
                   <a
                     href={sollicitatieMailto()}
-                    className="ipek-btn-premium group flex-1 justify-center px-6 py-3.5 text-[11px] tracking-[0.18em]"
+                    className="ipek-btn-premium group justify-center px-6 py-3.5 text-[11px] tracking-[0.18em]"
                   >
                     <span className="relative z-[1] inline-flex items-center gap-2.5">
-                      {VACATURES_SOLLICITEREN.ctaLabel}
+                      <span className="hidden sm:inline">{VACATURES_SOLLICITEREN.ctaLabel}</span>
+                      <span className="sm:hidden">Mail ons</span>
                       <ArrowUpRight
                         size={14}
                         className="transition-transform duration-500 ease-[cubic-bezier(.16,1,.3,1)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
@@ -581,9 +587,10 @@ export function VacaturesPage() {
                     className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/12 bg-white/[0.04] px-5 py-3.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/78 transition-colors duration-300 hover:bg-white/[0.08] hover:text-white"
                   >
                     <Phone size={14} className="text-[rgba(226,192,141,0.9)]" />
-                    {VACATURES_SOLLICITEREN.callLabel}
+                    <span className="hidden sm:inline">{VACATURES_SOLLICITEREN.callLabel}</span>
+                    <span className="sm:hidden">Bellen</span>
                   </a>
-                </div>
+                </DualCtaRow>
               </div>
             </Reveal>
           </div>

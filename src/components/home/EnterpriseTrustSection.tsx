@@ -22,7 +22,7 @@ function TrustImageStage({
   const ActiveIcon = current.icon;
 
   return (
-    <div className="relative h-full min-h-[280px] lg:min-h-0">
+    <div className="trust-image-stage relative h-full min-h-[280px] lg:min-h-0">
       <div
         aria-hidden
         className={`pointer-events-none absolute -inset-[3px] border border-[rgba(179,18,23,0.1)] ${SHELL}`}

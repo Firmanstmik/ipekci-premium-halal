@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 
 interface Props {
   value: number;
@@ -8,29 +8,33 @@ interface Props {
   duration?: number;
 }
 
-export function RollingCounter({ value, suffix = "", decimals = 0, duration = 2.4 }: Props) {
+const COUNT_EASE = [0.33, 1, 0.68, 1] as const;
+
+/** Renders the final value immediately; subtle reveal on scroll — never flashes 0. */
+export function RollingCounter({
+  value,
+  suffix = "",
+  decimals = 0,
+}: Props) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-  const mv = useMotionValue(0);
-  const spring = useSpring(mv, { duration: duration * 1000, bounce: 0 });
-  const display = useTransform(spring, (latest) =>
-    latest.toLocaleString("nl-NL", {
-      minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals,
-    }),
-  );
-  const [text, setText] = useState("0");
+  const reduceMotion = useReducedMotion();
 
-  useEffect(() => {
-    if (inView) mv.set(value);
-  }, [inView, value, mv]);
-
-  useEffect(() => display.on("change", (v) => setText(v)), [display]);
+  const formatted = value.toLocaleString("nl-NL", {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
 
   return (
-    <span ref={ref} className="tabular-nums">
-      {text}
+    <motion.span
+      ref={ref}
+      className="tabular-nums"
+      initial={false}
+      animate={inView && !reduceMotion ? { opacity: [0.88, 1], y: [3, 0] } : undefined}
+      transition={{ duration: 0.55, ease: COUNT_EASE }}
+    >
+      {formatted}
       {suffix}
-    </span>
+    </motion.span>
   );
 }

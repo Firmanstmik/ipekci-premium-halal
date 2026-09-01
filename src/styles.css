@@ -195,6 +195,35 @@
   --foreground: #f5f1eb;
 }
 
+/* Unlayered so these beat the :root defaults (layered @media :root loses). */
+@media (max-width: 767px) {
+  :root {
+    --ipek-gutter: 1.125rem;
+    --ipek-section-y: clamp(2.5rem, 6.5vw, 3.5rem);
+    --ipek-section-y-lg: clamp(3rem, 7vw, 4rem);
+    --ipek-stack-md: 1rem;
+    --ipek-stack-lg: 1.25rem;
+    --ipek-radius-card: 18px;
+    --ipek-radius-panel: 20px;
+    --ipek-text-hero: clamp(2rem, 8.5vw, 2.75rem);
+    --ipek-text-h1: clamp(1.65rem, 6.4vw, 2.2rem);
+    --ipek-text-h2: clamp(1.3rem, 4.8vw, 1.65rem);
+    --ipek-text-h2-lg: clamp(1.3rem, 4.8vw, 1.65rem);
+    --ipek-text-h3: clamp(1.4rem, 5.2vw, 1.85rem);
+    --ipek-text-sub: clamp(1rem, 3.6vw, 1.2rem);
+    --ipek-text-body: 0.9375rem;
+    --ipek-leading-body: 1.62;
+    --ipek-tracking-label: 0.28em;
+    --ipek-tracking-btn: 0.2em;
+  }
+}
+
+@media (max-width: 359px) {
+  :root {
+    --ipek-gutter: 1rem;
+  }
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
@@ -245,6 +274,13 @@
   ::selection {
     background-color: var(--color-primary);
     color: var(--color-primary-foreground);
+  }
+
+  /* Premium tap feedback — no default grey flash */
+  button,
+  a,
+  [role="button"] {
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
@@ -3566,6 +3602,550 @@
     transform: scaleX(1);
   }
 
+  /* ── Cinematic product hero — desktop base + app shell hooks ───── */
+
+  .pr-cinematic-hero__stage {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .pr-cinematic-hero__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .pr-cinematic-hero__grades {
+    position: absolute;
+    inset: 0;
+  }
+
+  .pr-cinematic-hero__grade--scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      #030303 0%,
+      rgba(3, 3, 3, 0.88) 42%,
+      rgba(3, 3, 3, 0.15) 100%
+    );
+  }
+
+  @media (min-width: 1024px) {
+    .pr-cinematic-hero__grade--scrim {
+      background: linear-gradient(
+        to right,
+        #030303 0%,
+        rgba(3, 3, 3, 0.72) 48%,
+        transparent 100%
+      );
+    }
+  }
+
+  .pr-cinematic-hero__grade--warm {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 55% 45% at 12% 18%, rgba(179, 18, 23, 0.14), transparent 58%);
+  }
+
+  .pr-cinematic-hero__grade--bottom {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 45%;
+    background: linear-gradient(to top, #030303, rgba(3, 3, 3, 0.55), transparent);
+  }
+
+  .pr-cinematic-hero__grade--vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 90% 70% at 50% 100%, rgba(0, 0, 0, 0.55), transparent 55%);
+  }
+
+  .pr-cinematic-hero__shell {
+    position: relative;
+    z-index: 1;
+  }
+
+  .pr-cinematic-hero__handle {
+    display: none;
+  }
+
+  /* ── Beste producten — landscape bg + 2-column overlay (mockup) ─ */
+
+  .pr-beste-producten__backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .pr-beste-producten__backdrop-img {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: 72% center;
+  }
+
+  .pr-beste-producten__backdrop-fade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(243, 237, 228, 0.98) 0%,
+      rgba(243, 237, 228, 0.94) 28%,
+      rgba(243, 237, 228, 0.72) 44%,
+      rgba(243, 237, 228, 0.28) 58%,
+      transparent 72%
+    );
+  }
+
+  .pr-beste-producten__backdrop-scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 55% 45% at 88% 42%, rgba(0, 0, 0, 0.08), transparent 68%),
+      linear-gradient(to bottom, rgba(243, 237, 228, 0.12), transparent 18%, transparent 82%, rgba(243, 237, 228, 0.2));
+  }
+
+  @media (max-width: 1023px) {
+    .pr-beste-producten__backdrop-img {
+      object-position: 65% 38%;
+    }
+
+    .pr-beste-producten__backdrop-fade {
+      background: linear-gradient(
+        180deg,
+        rgba(243, 237, 228, 0.97) 0%,
+        rgba(243, 237, 228, 0.92) 42%,
+        rgba(243, 237, 228, 0.55) 68%,
+        rgba(243, 237, 228, 0.25) 100%
+      );
+    }
+  }
+
+  .pr-beste-producten__grid {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .pr-beste-producten__grid {
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.72fr);
+      gap: 2.5rem 3.5rem;
+      align-items: start;
+    }
+
+    .pr-beste-producten__catalog {
+      padding-top: 0.5rem;
+    }
+  }
+
+  .pr-beste-producten__catalog-label {
+    margin: 0 0 1rem;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(20, 20, 20, 0.42);
+  }
+
+  .pr-beste-producten__catalog-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.625rem;
+  }
+
+  .pr-beste-producten__catalog-card {
+    overflow: hidden;
+    border-radius: 16px;
+    border: 1px solid rgba(20, 20, 20, 0.06);
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 12px 40px -28px rgba(0, 0, 0, 0.16);
+    transition:
+      border-color 0.35s ease,
+      box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      background 0.35s ease;
+  }
+
+  .pr-beste-producten__catalog-item.is-open .pr-beste-producten__catalog-card {
+    border-color: rgba(179, 18, 23, 0.22);
+    background: #fff;
+    box-shadow:
+      0 22px 60px -28px rgba(179, 18, 23, 0.18),
+      0 0 0 1px rgba(198, 160, 98, 0.12) inset;
+  }
+
+  .pr-beste-producten__catalog-row {
+    display: flex;
+    width: 100%;
+    min-height: 44px;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .pr-beste-producten__catalog-row.is-open {
+    border-bottom: 1px solid rgba(20, 20, 20, 0.06);
+    background: linear-gradient(90deg, rgba(179, 18, 23, 0.04), transparent 55%);
+  }
+
+  .pr-beste-producten__catalog-row--static {
+    cursor: default;
+  }
+
+  @media (hover: hover) {
+    .pr-beste-producten__catalog-item:not(.is-open) .pr-beste-producten__catalog-card:hover {
+      border-color: rgba(179, 18, 23, 0.14);
+      box-shadow: 0 18px 52px -26px rgba(179, 18, 23, 0.14);
+    }
+  }
+
+  .pr-beste-producten__catalog-num {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    height: 1.75rem;
+    width: 1.75rem;
+    border-radius: 999px;
+    background: linear-gradient(145deg, #b31217, #da292a);
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    box-shadow: 0 6px 18px -6px rgba(179, 18, 23, 0.5);
+  }
+
+  .pr-beste-producten__catalog-name {
+    flex: 1;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    line-height: 1.3;
+    color: #141414;
+  }
+
+  .pr-beste-producten__catalog-chevron {
+    flex-shrink: 0;
+    color: rgba(20, 20, 20, 0.35);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .pr-beste-producten__catalog-chevron.is-open {
+    transform: rotate(180deg);
+  }
+
+  .pr-beste-producten__catalog-body-wrap {
+    overflow: hidden;
+  }
+
+  .pr-beste-producten__catalog-body {
+    position: relative;
+    padding: 1rem 1.15rem 1.15rem 3.15rem;
+  }
+
+  .pr-beste-producten__catalog-body-rule {
+    display: block;
+    height: 1px;
+    width: 2.5rem;
+    margin-bottom: 0.85rem;
+    background: linear-gradient(90deg, rgba(198, 160, 98, 0.85), rgba(179, 18, 23, 0.35));
+  }
+
+  .pr-beste-producten__catalog-body-eyebrow {
+    margin: 0 0 0.5rem;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(179, 18, 23, 0.72);
+  }
+
+  .pr-beste-producten__catalog-body-lead {
+    font-size: 14.5px;
+    line-height: 1.88;
+    color: #3a3a3a;
+  }
+
+  .pr-beste-producten__catalog-body p {
+    margin: 0 0 0.75rem;
+    font-size: 13.5px;
+    line-height: 1.82;
+    color: #5a5a5a;
+  }
+
+  .pr-beste-producten__catalog-body p:last-child {
+    margin-bottom: 0;
+  }
+
+  .pr-beste-producten__catalog-foot {
+    margin-top: 1.75rem;
+  }
+
+  .pr-beste-producten__foot-panel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 22px;
+    border: 1px solid rgba(198, 160, 98, 0.22);
+    background: linear-gradient(155deg, rgba(16, 16, 16, 0.96) 0%, rgba(6, 6, 6, 0.9) 100%);
+    box-shadow:
+      0 36px 90px -44px rgba(0, 0, 0, 0.72),
+      0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+      0 1px 0 rgba(198, 160, 98, 0.14) inset;
+    backdrop-filter: blur(22px) saturate(1.15);
+    -webkit-backdrop-filter: blur(22px) saturate(1.15);
+  }
+
+  .pr-beste-producten__foot-panel-glow {
+    position: absolute;
+    top: -35%;
+    right: -15%;
+    width: 55%;
+    height: 85%;
+    background: radial-gradient(circle, rgba(179, 18, 23, 0.22) 0%, transparent 68%);
+    pointer-events: none;
+  }
+
+  .pr-beste-producten__foot-panel-shine {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      118deg,
+      rgba(198, 160, 98, 0.08) 0%,
+      transparent 38%,
+      transparent 62%,
+      rgba(255, 255, 255, 0.03) 100%
+    );
+    pointer-events: none;
+  }
+
+  .pr-beste-producten__foot-panel-inner {
+    position: relative;
+    z-index: 1;
+    padding: 1.35rem 1.25rem 1.4rem;
+  }
+
+  @media (min-width: 640px) {
+    .pr-beste-producten__foot-panel-inner {
+      padding: 1.5rem 1.5rem 1.55rem;
+    }
+  }
+
+  .pr-beste-producten__packaging-head {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 1rem;
+  }
+
+  .pr-beste-producten__packaging-icon {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    height: 2rem;
+    width: 2rem;
+    border-radius: 11px;
+    border: 1px solid rgba(198, 160, 98, 0.28);
+    background: rgba(198, 160, 98, 0.1);
+    color: rgba(226, 192, 141, 0.95);
+    box-shadow: 0 8px 24px -14px rgba(198, 160, 98, 0.45);
+  }
+
+  .pr-beste-producten__packaging-label {
+    margin: 0;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.88);
+  }
+
+  .pr-beste-producten__packaging-rule {
+    flex: 1;
+    height: 1px;
+    margin-left: 0.35rem;
+    background: linear-gradient(90deg, rgba(198, 160, 98, 0.45), transparent 88%);
+  }
+
+  .pr-beste-producten__packaging-chips {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr));
+    gap: 0.625rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pr-beste-producten__pack-chip {
+    display: flex;
+    width: 100%;
+    min-height: 44px;
+    align-items: center;
+    gap: 0.625rem;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    padding: 0.625rem 0.875rem;
+    font: inherit;
+    text-align: left;
+    color: rgba(255, 255, 255, 0.9);
+    cursor: default;
+    transition:
+      border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      background 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .pr-beste-producten__pack-chip-icon {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    height: 1.75rem;
+    width: 1.75rem;
+    border-radius: 10px;
+    border: 1px solid rgba(198, 160, 98, 0.22);
+    background: rgba(198, 160, 98, 0.08);
+    color: rgba(226, 192, 141, 0.92);
+    transition:
+      border-color 0.4s ease,
+      background 0.4s ease,
+      color 0.4s ease,
+      transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .pr-beste-producten__pack-chip-label {
+    flex: 1;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    line-height: 1.35;
+  }
+
+  .pr-beste-producten__pack-chip-check {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    height: 1.25rem;
+    width: 1.25rem;
+    border-radius: 999px;
+    color: rgba(198, 160, 98, 0);
+    opacity: 0;
+    transform: scale(0.6);
+    transition:
+      opacity 0.35s ease,
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.35s ease;
+  }
+
+  @media (hover: hover) {
+    .pr-beste-producten__pack-chip:hover,
+    .pr-beste-producten__pack-chip.is-active,
+    .pr-beste-producten__pack-chip:focus-visible {
+      border-color: rgba(198, 160, 98, 0.48);
+      background: rgba(198, 160, 98, 0.1);
+      transform: translateY(-2px);
+      box-shadow: 0 14px 36px -18px rgba(198, 160, 98, 0.42);
+    }
+
+    .pr-beste-producten__pack-chip:hover .pr-beste-producten__pack-chip-icon,
+    .pr-beste-producten__pack-chip.is-active .pr-beste-producten__pack-chip-icon,
+    .pr-beste-producten__pack-chip:focus-visible .pr-beste-producten__pack-chip-icon {
+      border-color: rgba(198, 160, 98, 0.55);
+      background: rgba(198, 160, 98, 0.16);
+      color: #fff;
+      transform: scale(1.05);
+    }
+
+    .pr-beste-producten__pack-chip:hover .pr-beste-producten__pack-chip-check,
+    .pr-beste-producten__pack-chip.is-active .pr-beste-producten__pack-chip-check,
+    .pr-beste-producten__pack-chip:focus-visible .pr-beste-producten__pack-chip-check {
+      opacity: 1;
+      color: rgba(226, 192, 141, 0.95);
+      transform: scale(1);
+    }
+
+    .pr-beste-producten__pack-chip[data-accent="cold"]:hover,
+    .pr-beste-producten__pack-chip[data-accent="cold"].is-active {
+      border-color: rgba(140, 190, 255, 0.35);
+      background: rgba(100, 160, 255, 0.08);
+    }
+
+    .pr-beste-producten__pack-chip[data-accent="fresh"]:hover,
+    .pr-beste-producten__pack-chip[data-accent="fresh"].is-active {
+      border-color: rgba(120, 210, 150, 0.35);
+      background: rgba(90, 190, 130, 0.08);
+    }
+  }
+
+  .pr-beste-producten__pack-chip:focus-visible {
+    outline: 2px solid rgba(198, 160, 98, 0.55);
+    outline-offset: 2px;
+  }
+
+  .pr-beste-producten__foot-divider {
+    height: 1px;
+    margin: 1.25rem 0 1.15rem;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(198, 160, 98, 0.35) 18%,
+      rgba(179, 18, 23, 0.22) 50%,
+      rgba(198, 160, 98, 0.35) 82%,
+      transparent
+    );
+  }
+
+  .pr-beste-producten__catalog-cta {
+    margin-top: 0;
+  }
+
+  .pr-beste-producten__foot-panel .ipek-dual-cta {
+    gap: 0.625rem;
+  }
+
+  @media (min-width: 640px) {
+    .pr-beste-producten__foot-panel .ipek-dual-cta {
+      gap: 0.875rem 1rem;
+    }
+  }
+
+  .pr-beste-producten__feature-icon {
+    display: grid;
+    place-items: center;
+    height: 2.25rem;
+    width: 2.25rem;
+    margin-bottom: 0.75rem;
+    border-radius: 12px;
+    border: 1px solid rgba(198, 160, 98, 0.28);
+    color: rgba(198, 160, 98, 0.95);
+  }
+
+  .pr-beste-producten__feature-title {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(240, 226, 202, 0.95);
+  }
+
+  .pr-beste-producten__feature-text {
+    margin-top: 0.5rem;
+    font-size: 12px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.52);
+  }
+
   /* ── Reduced motion ────────────────────────────────────────────── */
 
   @media (prefers-reduced-motion: reduce) {
@@ -3592,7 +4172,10 @@
     .lux-shot img,
     .lux-shot__caption,
     .lux-chip,
-    .lux-crumb::after {
+    .lux-crumb::after,
+    .pr-beste-producten__pack-chip,
+    .pr-beste-producten__pack-chip-icon,
+    .pr-beste-producten__pack-chip-check {
       transition: none !important;
       animation: none !important;
     }
@@ -3632,5 +4215,2542 @@
     }
   }
 
+  /* ══════════════════════════════════════════════════════════════════
+     MOBILE FIRST PREMIUM POLISH — Ayat Food (React source of truth)
+     Handcrafted feel for 320–767 viewports. Refines; does not redesign.
+     ══════════════════════════════════════════════════════════════════ */
+
+  @media (max-width: 767px) {
+    /* Homepage story rhythm — app density, same hierarchy */
+    .home-story {
+      --story-pad-visual: clamp(2.25rem, 6vw, 3.25rem);
+      --story-pad-editorial: clamp(2.5rem, 6.5vw, 3.5rem);
+      --story-pad-information: clamp(2.75rem, 7vw, 3.75rem);
+    }
+
+    /* Hero halal word — sized for narrow screens, not shrunk desktop */
+    .ipek-hero-halalvlees {
+      font-size: clamp(1.65rem, 7.8vw, 2.35rem);
+      line-height: 1.14;
+      letter-spacing: 0.012em;
+    }
+
+    /* Buttons — 44–48px touch targets without oversized chrome */
+    .ipek-btn,
+    .ipek-btn-premium,
+    .ipek-btn-wipe,
+    .hero-cta,
+    .lux-btn {
+      min-height: 2.75rem;
+      padding-block: 0.75rem;
+    }
+
+    .ipek-btn-sm {
+      min-height: 2.5rem;
+    }
+
+    /* Cards — compact radii + padding (mobile-app density) */
+    .lux-card {
+      border-radius: var(--ipek-radius-card);
+    }
+
+    .lux-card .lux-card__body,
+    .lux-card [class*="p-7"] {
+      padding: 1.125rem !important;
+    }
+
+    .lux-spec {
+      padding: 1rem !important;
+      border-radius: 1.1rem;
+    }
+
+    .ipek-card {
+      border-radius: var(--ipek-radius-card);
+    }
+
+    /* Interior heroes — shorter fold, still cinematic */
+    .product-hero-mobile {
+      min-height: min(68svh, 520px);
+    }
+
+    .product-hero-mobile__inner {
+      min-height: min(68svh, 520px);
+      padding-top: 5.75rem;
+      padding-bottom: 3rem;
+    }
+
+    .product-hero-mobile__title {
+      font-size: clamp(1.75rem, 6.8vw, 2.4rem) !important;
+      line-height: 1.05 !important;
+    }
+
+    /* Producten cinematic hero — native app sheet on mobile */
+    .pr-cinematic-hero {
+      min-height: auto !important;
+      padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
+    }
+
+    .pr-cinematic-hero__stage {
+      position: relative;
+      height: min(44svh, 360px);
+      overflow: hidden;
+    }
+
+    .pr-cinematic-hero__media,
+    .pr-cinematic-hero__grades {
+      position: absolute;
+      inset: 0;
+    }
+
+    .pr-cinematic-hero__img {
+      object-position: 68% 32% !important;
+    }
+
+    .pr-cinematic-hero__grade--scrim {
+      background: linear-gradient(
+        180deg,
+        rgba(3, 3, 3, 0.35) 0%,
+        rgba(3, 3, 3, 0.08) 38%,
+        rgba(3, 3, 3, 0.72) 100%
+      ) !important;
+    }
+
+    .pr-cinematic-hero__grade--warm {
+      background: radial-gradient(ellipse 80% 55% at 18% 12%, rgba(179, 18, 23, 0.2), transparent 62%);
+    }
+
+    .pr-cinematic-hero__grade--bottom {
+      height: 58%;
+      background: linear-gradient(to top, #030303 8%, rgba(3, 3, 3, 0.82) 55%, transparent);
+    }
+
+    .pr-cinematic-hero__shell {
+      min-height: auto !important;
+      margin-top: -1.75rem;
+      padding-top: 0 !important;
+      justify-content: flex-start !important;
+    }
+
+    .pr-cinematic-hero__copy {
+      max-width: none;
+      padding: 1.15rem var(--ipek-gutter) 1.35rem;
+      margin-inline: calc(var(--ipek-gutter) * -1);
+      border-radius: 26px 26px 0 0;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 0;
+      background: linear-gradient(180deg, #0b0b0b 0%, #050505 100%);
+      box-shadow:
+        0 -28px 80px -24px rgba(0, 0, 0, 0.75),
+        0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+    }
+
+    .pr-cinematic-hero__handle {
+      display: block;
+      width: 2.25rem;
+      height: 4px;
+      margin: 0.15rem auto 1rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    .pr-cinematic-hero__crumb {
+      font-size: 9px !important;
+      letter-spacing: 0.2em !important;
+      gap: 0.375rem !important;
+      flex-wrap: nowrap;
+      overflow: hidden;
+    }
+
+    .pr-cinematic-hero__badges {
+      flex-wrap: nowrap !important;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 0.35rem;
+      margin-inline: calc(var(--ipek-gutter) * -0.25);
+      padding-inline: calc(var(--ipek-gutter) * 0.25);
+      mask-image: linear-gradient(90deg, transparent, #000 6%, #000 92%, transparent);
+    }
+
+    .pr-cinematic-hero__badges::-webkit-scrollbar {
+      display: none;
+    }
+
+    .pr-cinematic-hero__title {
+      font-size: clamp(1.75rem, 7.4vw, 2.35rem) !important;
+      line-height: 1.04 !important;
+      letter-spacing: -0.03em !important;
+      overflow-wrap: anywhere;
+    }
+
+    .pr-cinematic-hero__lede {
+      font-size: 14px !important;
+      line-height: 1.62 !important;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .pr-cinematic-hero__actions {
+      margin-top: 1.25rem !important;
+    }
+
+    .pr-cinematic-hero__actions .ipek-dual-cta {
+      gap: 0.625rem;
+    }
+
+    .pr-cinematic-hero__stats {
+      margin-inline: calc(var(--ipek-gutter) * -1);
+      padding-inline: var(--ipek-gutter);
+      background: rgba(255, 255, 255, 0.035);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .pr-cinematic-hero__stats > div {
+      padding-block: 0.875rem !important;
+      text-align: center;
+    }
+
+    .pr-cinematic-hero__stats dd {
+      font-size: clamp(1.15rem, 4.8vw, 1.35rem) !important;
+    }
+
+    .pr-cinematic-hero__stats p {
+      font-size: 8px !important;
+      letter-spacing: 0.2em !important;
+      margin-top: 0.4rem !important;
+    }
+
+    /* Beste producten — app product detail flow */
+    .pr-beste-producten {
+      min-height: auto !important;
+      padding-top: 1.25rem !important;
+    }
+
+    .pr-beste-producten__grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.35rem;
+      padding-bottom: 2.5rem !important;
+    }
+
+    .pr-beste-producten__catalog {
+      order: -1;
+    }
+
+    .pr-beste-producten__catalog-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.875rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(20, 20, 20, 0.08);
+      background: rgba(255, 255, 255, 0.88);
+      font-size: 9px;
+      letter-spacing: 0.24em;
+    }
+
+    .pr-beste-producten__catalog-list {
+      gap: 0.5rem;
+    }
+
+    .pr-beste-producten__catalog-card {
+      border-radius: 14px;
+    }
+
+    .pr-beste-producten__catalog-row {
+      padding: 0.875rem 0.875rem;
+    }
+
+    .pr-beste-producten__catalog-name {
+      font-size: 0.875rem;
+    }
+
+    .pr-beste-producten__copy h2 {
+      font-size: clamp(1.65rem, 6.8vw, 2.15rem) !important;
+    }
+
+    .pr-beste-producten__features {
+      border-radius: 18px !important;
+      padding: 1rem !important;
+    }
+
+    .pr-beste-producten__features .grid {
+      gap: 0.75rem !important;
+    }
+
+    .pr-beste-producten__feature-text {
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .pr-beste-producten__foot-panel {
+      border-radius: 18px;
+    }
+
+    .pr-beste-producten__foot-panel-inner {
+      padding: 1.15rem 1rem 1.2rem;
+    }
+
+    .pr-trust-ribbon {
+      margin-inline: 0.25rem;
+      border-radius: 18px !important;
+    }
+
+    /* Stats rail — horizontal snap carousel */
+    .pr-stats-rail__track {
+      display: flex !important;
+      grid-template-columns: none !important;
+      gap: 0.75rem !important;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 0.35rem;
+      margin-inline: calc(var(--ipek-gutter) * -1);
+      padding-inline: var(--ipek-gutter);
+    }
+
+    .pr-stats-rail__track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .pr-stats-rail__track > * {
+      flex: 0 0 min(74vw, 240px);
+      scroll-snap-align: start;
+    }
+
+    /* Related categories — horizontal app cards */
+    .pr-related__track {
+      display: flex !important;
+      grid-template-columns: none !important;
+      gap: 0.75rem !important;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      margin-inline: calc(var(--ipek-gutter) * -1);
+      padding-inline: var(--ipek-gutter);
+      padding-bottom: 0.35rem;
+    }
+
+    .pr-related__track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .pr-related__track > * {
+      flex: 0 0 min(78vw, 280px);
+      scroll-snap-align: start;
+    }
+
+    /* Sticky mobile action bar */
+    .pr-mobile-action-bar {
+      padding: 0.625rem var(--ipek-gutter);
+      padding-bottom: max(0.625rem, env(safe-area-inset-bottom, 0px));
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(8, 8, 8, 0.92);
+      backdrop-filter: blur(18px) saturate(1.2);
+      -webkit-backdrop-filter: blur(18px) saturate(1.2);
+      box-shadow: 0 -16px 48px -20px rgba(0, 0, 0, 0.65);
+    }
+
+    .pr-mobile-action-bar__inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 0.5rem;
+    }
+
+    .pr-category-page {
+      padding-bottom: max(0px, env(safe-area-inset-bottom, 0px));
+    }
+
+    body.pr-category-bar-visible {
+      padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+    }
+
+    body.ons-verhaal-bar-visible {
+      padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+    }
+
+    /* Shared horizontal snap tracks (app carousels) */
+    .app-hscroll-track {
+      display: flex !important;
+      grid-template-columns: none !important;
+      gap: 0.75rem !important;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 0.35rem;
+      margin-inline: calc(var(--ipek-gutter) * -1);
+      padding-inline: var(--ipek-gutter);
+    }
+
+    .app-hscroll-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .app-hscroll-track > * {
+      flex: 0 0 min(78vw, 280px);
+      scroll-snap-align: start;
+    }
+
+    .pr-spotlight__track > * {
+      flex: 0 0 min(72vw, 260px);
+    }
+
+    .pr-index__categories > * {
+      flex: 0 0 min(80vw, 300px);
+    }
+
+    .ons-assortiment__cats > * {
+      flex: 0 0 min(84vw, 320px);
+    }
+
+    .ons-assortiment__products > * {
+      flex: 0 0 min(46vw, 180px);
+    }
+
+    .ons-workflow__steps > * {
+      flex: 0 0 min(82vw, 300px);
+    }
+
+    .ons-stats__cards > * {
+      flex: 0 0 min(76vw, 250px);
+    }
+
+    .ons-highlights__track > * {
+      flex: 0 0 min(84vw, 320px);
+    }
+
+    /* Producten index — trust ribbon spacing */
+    .pr-index-page .pr-trust-ribbon {
+      margin-top: -0.75rem;
+      border-radius: 18px !important;
+    }
+
+    .pr-index-page #categorieen {
+      padding-top: 1.5rem !important;
+    }
+
+    .pr-index-page #categorieen h2 {
+      font-size: clamp(1.55rem, 6.2vw, 2rem) !important;
+    }
+
+    /* Over Ons — hero lede clamp */
+    .ons-verhaal-hero__lede p:first-child {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .ons-verhaal-hero__lede p:not(:first-child) {
+      display: none;
+    }
+
+    .ons-verhaal-hero__title {
+      font-size: clamp(1.85rem, 7.2vw, 2.45rem) !important;
+      line-height: 1.05 !important;
+    }
+
+    /* Over Ons — section density */
+    .ons-verhaal-service,
+    .ons-verhaal-halal,
+    .ons-verhaal-workflow,
+    .ons-verhaal-stats,
+    .ons-verhaal-page section[aria-label="Waarom Ayat Food"] {
+      padding-top: 2.75rem !important;
+      padding-bottom: 2.75rem !important;
+    }
+
+    .ons-verhaal-service h2,
+    .ons-verhaal-halal h2,
+    .ons-verhaal-workflow h2,
+    .ons-verhaal-stats h2 {
+      font-size: clamp(1.65rem, 6.4vw, 2.15rem) !important;
+      line-height: 1.06 !important;
+    }
+
+    /* ── Over Ons: 24/7 Service — luxury app modules ── */
+    .ons-service-app {
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+    }
+
+    .ons-service-app__sheet {
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(155deg, rgba(18, 18, 18, 0.98) 0%, rgba(8, 8, 8, 0.94) 100%);
+      padding: 1.25rem 1.15rem 1.35rem;
+      box-shadow:
+        0 24px 70px -40px rgba(0, 0, 0, 0.75),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .ons-service-app__title {
+      font-size: clamp(1.75rem, 7vw, 2.25rem) !important;
+    }
+
+    .ons-service-app__tagline {
+      line-height: 1.55;
+      max-width: 28ch;
+    }
+
+    .ons-service-app__lead {
+      display: flex;
+      gap: 0.875rem;
+      align-items: flex-start;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 1rem 1.05rem;
+    }
+
+    .ons-service-app__lead-icon {
+      display: grid;
+      flex-shrink: 0;
+      place-items: center;
+      height: 2.75rem;
+      width: 2.75rem;
+      border-radius: 14px;
+      background: linear-gradient(145deg, #b31217, #da292a);
+      color: #fff;
+      box-shadow: 0 12px 32px -14px rgba(218, 41, 42, 0.65);
+    }
+
+    .ons-service-app__lead p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.68;
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .ons-service-app__pillars {
+      display: flex;
+      gap: 0.625rem;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      margin-inline: calc(var(--ipek-gutter) * -1);
+      padding-inline: var(--ipek-gutter);
+      padding-bottom: 0.25rem;
+      list-style: none;
+    }
+
+    .ons-service-app__pillars::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ons-service-app__pillar {
+      flex: 0 0 min(76vw, 260px);
+      scroll-snap-align: start;
+      border-radius: 18px;
+      border: 1px solid rgba(226, 192, 141, 0.2);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 1rem 1.05rem 1.1rem;
+      box-shadow: 0 16px 40px -28px rgba(0, 0, 0, 0.55);
+    }
+
+    .ons-service-app__pillar-icon {
+      display: grid;
+      place-items: center;
+      height: 2.25rem;
+      width: 2.25rem;
+      border-radius: 12px;
+      border: 1px solid rgba(226, 192, 141, 0.28);
+      background: rgba(226, 192, 141, 0.1);
+      color: rgba(226, 192, 141, 0.95);
+    }
+
+    .ons-service-app__pillar-title {
+      margin: 0.75rem 0 0;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.92);
+      line-height: 1.35;
+    }
+
+    .ons-service-app__pillar-text {
+      margin: 0.5rem 0 0;
+      font-size: 12px;
+      line-height: 1.62;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .ons-service-app__media {
+      position: relative;
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      min-height: 240px;
+      box-shadow: 0 28px 80px -36px rgba(0, 0, 0, 0.65);
+    }
+
+    .ons-service-app__media-img {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      object-position: center 35%;
+    }
+
+    .ons-service-app__media-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(8, 8, 8, 0.92) 0%, rgba(8, 8, 8, 0.2) 55%, transparent 100%);
+    }
+
+    .ons-service-app__wagenpark {
+      position: absolute;
+      inset-inline: 0.75rem;
+      bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(8, 8, 8, 0.78);
+      padding: 0.65rem 0.75rem;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .ons-service-app__wagenpark-thumbs {
+      display: flex;
+      flex-shrink: 0;
+      gap: 0.375rem;
+    }
+
+    .ons-service-app__wagenpark-thumb {
+      height: 2.75rem;
+      width: 2.75rem;
+      overflow: hidden;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .ons-service-app__wagenpark-thumb img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .ons-service-app__wagenpark-label {
+      margin: 0;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(226, 192, 141, 0.92);
+    }
+
+    .ons-service-app__wagenpark-text {
+      margin: 0.25rem 0 0;
+      font-size: 11px;
+      line-height: 1.45;
+      color: rgba(255, 255, 255, 0.62);
+    }
+
+    .ons-service-app__wagenpark-badge {
+      display: grid;
+      flex-shrink: 0;
+      place-items: center;
+      height: 2.25rem;
+      width: 2.25rem;
+      border-radius: 999px;
+      border: 1px solid rgba(226, 192, 141, 0.35);
+      background: rgba(226, 192, 141, 0.1);
+      color: rgba(226, 192, 141, 0.95);
+    }
+
+    .ons-service-app__actions {
+      display: none;
+    }
+
+    /* ── Over Ons: Halal — luxury app modules ── */
+    .ons-halal-app {
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+    }
+
+    .ons-halal-app__header {
+      padding-inline: 0.15rem;
+    }
+
+    .ons-halal-app__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(179, 18, 23, 0.14);
+      background: rgba(179, 18, 23, 0.06);
+      padding: 0.4rem 0.85rem;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #da292a;
+    }
+
+    .ons-halal-app__title {
+      font-size: clamp(1.65rem, 6.6vw, 2.15rem) !important;
+    }
+
+    .ons-halal-app__lede {
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .ons-halal-app__pillars {
+      display: flex;
+      gap: 0.625rem;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      margin-inline: calc(var(--ipek-gutter) * -1);
+      padding-inline: var(--ipek-gutter);
+      padding-bottom: 0.25rem;
+      list-style: none;
+    }
+
+    .ons-halal-app__pillars::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ons-halal-app__pillar {
+      flex: 0 0 min(72vw, 240px);
+      scroll-snap-align: start;
+      border-radius: 18px;
+      border: 1px solid rgba(20, 20, 20, 0.08);
+      background: rgba(255, 255, 255, 0.92);
+      padding: 1rem 1.05rem 1.1rem;
+      box-shadow: 0 16px 48px -32px rgba(0, 0, 0, 0.14);
+    }
+
+    .ons-halal-app__pillar-icon {
+      display: grid;
+      place-items: center;
+      height: 2.25rem;
+      width: 2.25rem;
+      border-radius: 12px;
+      border: 1px solid rgba(179, 18, 23, 0.14);
+      background: rgba(179, 18, 23, 0.06);
+      color: #b31217;
+    }
+
+    .ons-halal-app__pillar-title {
+      margin: 0.7rem 0 0;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(20, 20, 20, 0.88);
+      line-height: 1.35;
+    }
+
+    .ons-halal-app__pillar-text {
+      margin: 0.45rem 0 0;
+      font-size: 12px;
+      line-height: 1.58;
+      color: rgba(20, 20, 20, 0.5);
+    }
+
+    .ons-halal-app__cert {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 0.875rem;
+      border-radius: 20px;
+      border: 1px solid rgba(20, 20, 20, 0.08);
+      background: linear-gradient(135deg, #121212 0%, #0a0a0a 100%);
+      padding: 1.15rem 1.1rem;
+      box-shadow: 0 24px 70px -40px rgba(0, 0, 0, 0.45);
+    }
+
+    .ons-halal-app__cert-seal {
+      flex-shrink: 0;
+    }
+
+    .ons-halal-app__cert-seal img {
+      height: 3.5rem;
+      width: 3.5rem;
+      border-radius: 999px;
+      object-fit: cover;
+      box-shadow: 0 0 0 2px rgba(226, 192, 141, 0.35);
+    }
+
+    .ons-halal-app__cert-copy {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .ons-halal-app__cert-label {
+      margin: 0;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      line-height: 1.45;
+      color: rgba(226, 192, 141, 0.92);
+    }
+
+    .ons-halal-app__cert-text {
+      margin: 0.5rem 0 0;
+      font-size: 13px;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.58);
+    }
+
+    .ons-halal-app__visual {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .ons-halal-app__plate {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+      border-radius: 22px;
+      border: 1px solid rgba(198, 160, 98, 0.22);
+      background: #0a0a0a;
+      box-shadow: 0 28px 80px -36px rgba(0, 0, 0, 0.35);
+    }
+
+    .ons-halal-app__plate img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      object-position: center 42%;
+    }
+
+    .ons-halal-app__plate-scrim {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.22) 100%);
+    }
+
+    .ons-halal-app__quote {
+      overflow: hidden;
+      border-radius: 20px;
+      border: 1px solid rgba(198, 160, 98, 0.28);
+      background: #0a0a0a;
+      box-shadow: 0 24px 70px -36px rgba(0, 0, 0, 0.4);
+    }
+
+    .ons-halal-app__quote-media {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+    }
+
+    .ons-halal-app__quote-media img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .ons-halal-app__quote-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10, 10, 10, 0.75), transparent 60%);
+    }
+
+    .ons-halal-app__quote-body {
+      padding: 1rem 1.1rem 1.15rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(180deg, #121212 0%, #0a0a0a 100%);
+    }
+
+    .ons-halal-app__quote-text {
+      margin: 0.65rem 0 0;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-style: italic;
+      line-height: 1.55;
+      color: rgba(255, 255, 255, 0.88);
+    }
+
+    .ons-halal-app__quote-by {
+      margin: 0.75rem 0 0;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(218, 41, 42, 0.85);
+    }
+
+    /* ── Over Ons: Workflow — luxury app modules ── */
+    .ons-workflow-app {
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+    }
+
+    .ons-workflow-app__sheet {
+      border-radius: 22px;
+      border: 1px solid rgba(20, 20, 20, 0.08);
+      background: rgba(255, 255, 255, 0.92);
+      padding: 1.25rem 1.15rem 1.35rem;
+      box-shadow: 0 20px 60px -36px rgba(0, 0, 0, 0.12);
+    }
+
+    .ons-workflow-app__title {
+      font-size: clamp(1.65rem, 6.4vw, 2.1rem) !important;
+    }
+
+    .ons-workflow-app__lede {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.68;
+      color: rgba(20, 20, 20, 0.58);
+    }
+
+    .ons-workflow-app__hero {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      border-radius: 22px;
+      border: 1px solid rgba(20, 20, 20, 0.08);
+      box-shadow: 0 24px 70px -36px rgba(0, 0, 0, 0.18);
+    }
+
+    .ons-workflow-app__hero-img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      object-position: center 38%;
+    }
+
+    .ons-workflow-app__hero-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(253, 251, 247, 0.35), transparent 55%);
+    }
+
+    .ons-workflow-app__steps {
+      display: flex;
+      gap: 0.625rem;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      margin-inline: calc(var(--ipek-gutter) * -1);
+      padding-inline: var(--ipek-gutter);
+      padding-bottom: 0.25rem;
+      list-style: none;
+    }
+
+    .ons-workflow-app__steps::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ons-workflow-app__step {
+      position: relative;
+      flex: 0 0 min(80vw, 280px);
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      background: #fff;
+      box-shadow: 0 20px 56px -28px rgba(0, 0, 0, 0.16);
+      padding: 1rem 1.05rem 0;
+      min-height: 320px;
+    }
+
+    .ons-workflow-app__step-num {
+      position: absolute;
+      right: 0.65rem;
+      top: 0.35rem;
+      font-family: var(--font-display);
+      font-size: 2.75rem;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -0.05em;
+      color: rgba(20, 20, 20, 0.05);
+    }
+
+    .ons-workflow-app__step-icon {
+      display: grid;
+      place-items: center;
+      height: 2.5rem;
+      width: 2.5rem;
+      border-radius: 999px;
+      background: #8b1a1a;
+      color: #fff;
+      box-shadow: 0 8px 22px -10px rgba(139, 26, 26, 0.55);
+    }
+
+    .ons-workflow-app__step-label {
+      margin: 0.85rem 0 0;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #b8955e;
+    }
+
+    .ons-workflow-app__step-title {
+      margin: 0.35rem 0 0;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 600;
+      line-height: 1.2;
+      color: #141414;
+    }
+
+    .ons-workflow-app__step-text {
+      margin: 0.5rem 0 0;
+      font-size: 13px;
+      line-height: 1.65;
+      color: rgba(20, 20, 20, 0.55);
+    }
+
+    .ons-workflow-app__step-img {
+      margin-top: auto;
+      display: flex;
+      height: 108px;
+      align-items: flex-end;
+      justify-content: center;
+      background: #fafaf8;
+      padding: 0.35rem 0.5rem 0;
+    }
+
+    .ons-workflow-app__step-img img {
+      max-height: 100%;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      object-position: bottom;
+    }
+
+    .ons-workflow-app__trust {
+      border-radius: 20px;
+      border: 1px solid rgba(20, 20, 20, 0.06);
+      background: #f0ede8;
+      padding: 1rem 1.05rem 1.1rem;
+    }
+
+    .ons-workflow-app__trust-head {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+
+    .ons-workflow-app__trust-badge {
+      display: grid;
+      flex-shrink: 0;
+      place-items: center;
+      height: 2.75rem;
+      width: 2.75rem;
+      border-radius: 14px;
+      border: 1px solid rgba(198, 160, 98, 0.32);
+      background: #fff;
+      color: #b8955e;
+    }
+
+    .ons-workflow-app__trust-heading {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 600;
+      line-height: 1.3;
+      color: #141414;
+    }
+
+    .ons-workflow-app__trust-lede {
+      margin: 0.35rem 0 0;
+      font-size: 12px;
+      line-height: 1.55;
+      color: rgba(20, 20, 20, 0.5);
+    }
+
+    .ons-workflow-app__trust-items {
+      display: flex;
+      gap: 0.625rem;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      margin: 0.875rem calc(var(--ipek-gutter) * -1) 0;
+      padding-inline: var(--ipek-gutter);
+      padding-bottom: 0.15rem;
+      list-style: none;
+    }
+
+    .ons-workflow-app__trust-items::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ons-workflow-app__trust-item {
+      flex: 0 0 min(68vw, 220px);
+      scroll-snap-align: start;
+      border-radius: 16px;
+      border: 1px solid rgba(20, 20, 20, 0.06);
+      background: rgba(255, 255, 255, 0.72);
+      padding: 0.85rem 0.9rem;
+    }
+
+    .ons-workflow-app__trust-icon {
+      display: grid;
+      place-items: center;
+      height: 2rem;
+      width: 2rem;
+      color: rgba(20, 20, 20, 0.65);
+    }
+
+    .ons-workflow-app__trust-title {
+      margin: 0.5rem 0 0;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(20, 20, 20, 0.85);
+    }
+
+    .ons-workflow-app__trust-text {
+      margin: 0.25rem 0 0;
+      font-size: 11px;
+      line-height: 1.45;
+      color: rgba(20, 20, 20, 0.48);
+    }
+
+    /* ── Over Ons: Stats — luxury app modules ── */
+    .ons-stats-app {
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+    }
+
+    .ons-stats-app__sheet {
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(155deg, rgba(18, 18, 18, 0.98) 0%, rgba(8, 8, 8, 0.94) 100%);
+      padding: 1.25rem 1.15rem 1.35rem;
+      box-shadow:
+        0 24px 70px -40px rgba(0, 0, 0, 0.75),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .ons-stats-app__title {
+      font-size: clamp(1.65rem, 6.4vw, 2.15rem) !important;
+    }
+
+    .ons-stats-app__lede {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.68;
+      color: rgba(255, 255, 255, 0.58);
+    }
+
+    .ons-stats-app__hero {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 28px 80px -36px rgba(0, 0, 0, 0.65);
+    }
+
+    .ons-stats-app__hero-img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      object-position: center 45%;
+      filter: brightness(0.78) contrast(1.06);
+    }
+
+    .ons-stats-app__hero-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(8, 8, 8, 0.88) 0%, rgba(8, 8, 8, 0.15) 55%, transparent 100%);
+    }
+
+    .ons-stats-app__cards {
+      display: flex;
+      gap: 0.625rem;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      margin-inline: calc(var(--ipek-gutter) * -1);
+      padding-inline: var(--ipek-gutter);
+      padding-bottom: 0.25rem;
+      list-style: none;
+    }
+
+    .ons-stats-app__cards::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ons-stats-app__card {
+      flex: 0 0 min(76vw, 250px);
+      scroll-snap-align: start;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(165deg, rgba(18, 18, 18, 0.92) 0%, rgba(10, 10, 10, 0.82) 100%);
+      padding: 1rem 1.05rem 1.1rem;
+      box-shadow: 0 20px 56px -28px rgba(0, 0, 0, 0.55);
+    }
+
+    .ons-stats-app__card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .ons-stats-app__card-index {
+      margin: 0;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.38);
+    }
+
+    .ons-stats-app__card-icon {
+      display: grid;
+      place-items: center;
+      height: 2rem;
+      width: 2rem;
+      border-radius: 10px;
+      border: 1px solid rgba(226, 192, 141, 0.28);
+      background: rgba(226, 192, 141, 0.08);
+      color: rgba(226, 192, 141, 0.92);
+    }
+
+    .ons-stats-app__card-value {
+      margin: 0.85rem 0 0;
+      display: flex;
+      align-items: baseline;
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 8vw, 2.65rem);
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: #f8f4ee;
+    }
+
+    .ons-stats-app__card-label {
+      margin: 0.65rem 0 0;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(226, 192, 141, 0.88);
+    }
+
+    .ons-stats-app__card-text {
+      margin: 0.45rem 0 0;
+      font-size: 12px;
+      line-height: 1.62;
+      color: rgba(255, 255, 255, 0.52);
+    }
+
+    .ons-stats-app__trust {
+      display: flex;
+      gap: 0.625rem;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      margin-inline: calc(var(--ipek-gutter) * -1);
+      padding-inline: var(--ipek-gutter);
+      padding-bottom: 0.25rem;
+      list-style: none;
+    }
+
+    .ons-stats-app__trust::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ons-stats-app__trust-item {
+      flex: 0 0 min(68vw, 220px);
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.85rem 0.9rem;
+    }
+
+    .ons-stats-app__trust-icon {
+      display: grid;
+      place-items: center;
+      height: 2rem;
+      width: 2rem;
+      border-radius: 10px;
+      border: 1px solid rgba(226, 192, 141, 0.22);
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(226, 192, 141, 0.88);
+    }
+
+    .ons-stats-app__trust-title {
+      margin: 0.25rem 0 0;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(226, 192, 141, 0.92);
+    }
+
+    .ons-stats-app__trust-text {
+      margin: 0;
+      font-size: 11px;
+      line-height: 1.45;
+      color: rgba(255, 255, 255, 0.48);
+    }
+
+    /* ── Over Ons: Highlights — luxury app modules ── */
+    .ons-highlights-app {
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+    }
+
+    .ons-highlights-app__header {
+      padding-inline: 0.15rem;
+    }
+
+    .ons-highlights-app__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(226, 192, 141, 0.28);
+      background: rgba(226, 192, 141, 0.08);
+      padding: 0.4rem 0.85rem;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(226, 192, 141, 0.92);
+    }
+
+    .ons-highlights-app__lede {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.52);
+      max-width: 34ch;
+    }
+
+    .ons-highlights-app__track {
+      display: flex;
+      gap: 0.75rem;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      margin-inline: calc(var(--ipek-gutter) * -1);
+      padding-inline: var(--ipek-gutter);
+      padding-bottom: 0.35rem;
+      list-style: none;
+    }
+
+    .ons-highlights-app__track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ons-highlights-app__card {
+      flex: 0 0 min(86vw, 320px);
+      scroll-snap-align: start;
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid rgba(226, 192, 141, 0.28);
+      background: #0a0a0a;
+      box-shadow: 0 28px 80px -36px rgba(0, 0, 0, 0.65);
+    }
+
+    .ons-highlights-app__card-media {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+    }
+
+    .ons-highlights-app__card-media img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .ons-highlights-app__card-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(8, 8, 8, 0.55), transparent 60%);
+    }
+
+    .ons-highlights-app__card-num {
+      position: absolute;
+      left: 0.75rem;
+      top: 0.75rem;
+      display: grid;
+      place-items: center;
+      height: 2rem;
+      width: 2rem;
+      border-radius: 999px;
+      border: 1px solid rgba(226, 192, 141, 0.45);
+      background: rgba(0, 0, 0, 0.5);
+      font-family: var(--font-display);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
+    }
+
+    .ons-highlights-app__card-body {
+      padding: 1rem 1.05rem 1.15rem;
+    }
+
+    .ons-highlights-app__card-eyebrow {
+      margin: 0;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(226, 192, 141, 0.9);
+    }
+
+    .ons-highlights-app__card-title {
+      margin: 0.45rem 0 0;
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.15;
+      color: #fff;
+    }
+
+    .ons-highlights-app__card-text {
+      margin: 0.5rem 0 0;
+      font-size: 13px;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.58);
+    }
+
+    .ons-highlights-app__pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.65rem;
+      margin: 0.85rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .ons-highlights-app__pill {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      min-width: 0;
+    }
+
+    .ons-highlights-app__pill-icon {
+      display: grid;
+      flex-shrink: 0;
+      place-items: center;
+      height: 1.65rem;
+      width: 1.65rem;
+      border-radius: 8px;
+      border: 1px solid rgba(226, 192, 141, 0.28);
+      background: rgba(0, 0, 0, 0.35);
+      color: rgba(226, 192, 141, 0.88);
+    }
+
+    .ons-highlights-app__pill-copy {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .ons-highlights-app__pill-title {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(226, 192, 141, 0.88);
+    }
+
+    .ons-highlights-app__pill-sub {
+      font-size: 9px;
+      color: rgba(255, 255, 255, 0.42);
+    }
+
+    .ons-highlights-app__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.85rem;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(226, 192, 141, 0.92);
+    }
+
+    /* ── Over Ons: Assortiment — luxury app modules ── */
+    .ons-assortiment-app {
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+    }
+
+    .ons-assortiment-app__sheet {
+      border-radius: 22px;
+      border: 1px solid rgba(20, 20, 20, 0.08);
+      background: rgba(255, 255, 255, 0.92);
+      padding: 1.25rem 1.15rem 1.35rem;
+      box-shadow: 0 20px 60px -36px rgba(0, 0, 0, 0.1);
+    }
+
+    .ons-assortiment-app__sheet--compact {
+      padding-top: 1rem;
+      padding-bottom: 1.1rem;
+    }
+
+    .ons-assortiment-app__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(179, 18, 23, 0.14);
+      background: rgba(179, 18, 23, 0.06);
+      padding: 0.4rem 0.85rem;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #da292a;
+    }
+
+    .ons-assortiment-app__eyebrow--muted {
+      border-color: rgba(20, 20, 20, 0.08);
+      background: rgba(20, 20, 20, 0.04);
+      color: rgba(20, 20, 20, 0.55);
+    }
+
+    .ons-assortiment-app__title {
+      font-size: clamp(1.65rem, 6.4vw, 2.1rem) !important;
+    }
+
+    .ons-assortiment-app__subtitle {
+      font-size: clamp(1.25rem, 5vw, 1.45rem) !important;
+    }
+
+    .ons-assortiment-app__lede {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.65;
+      color: rgba(20, 20, 20, 0.58);
+    }
+
+    .ons-assortiment-app__cats {
+      display: flex;
+      gap: 0.75rem;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      margin-inline: calc(var(--ipek-gutter) * -1);
+      padding-inline: var(--ipek-gutter);
+      padding-bottom: 0.25rem;
+    }
+
+    .ons-assortiment-app__cats::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ons-assortiment-app__cat {
+      flex: 0 0 min(84vw, 320px);
+      scroll-snap-align: start;
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid rgba(20, 20, 20, 0.08);
+      background: #0a0a0a;
+      box-shadow: 0 28px 80px -40px rgba(0, 0, 0, 0.45);
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .ons-assortiment-app__cat-img {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+    }
+
+    .ons-assortiment-app__cat-img img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .ons-assortiment-app__cat-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10, 10, 10, 0.92), transparent 55%);
+    }
+
+    .ons-assortiment-app__cat-body {
+      padding: 1rem 1.05rem 1.15rem;
+    }
+
+    .ons-assortiment-app__cat-eyebrow {
+      margin: 0;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(198, 160, 98, 0.88);
+    }
+
+    .ons-assortiment-app__cat-title {
+      margin: 0.45rem 0 0;
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 600;
+      line-height: 1.1;
+      color: #fff;
+    }
+
+    .ons-assortiment-app__cat-text {
+      margin: 0.5rem 0 0;
+      font-size: 13px;
+      line-height: 1.62;
+      color: rgba(255, 255, 255, 0.68);
+    }
+
+    .ons-assortiment-app__cat-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-top: 0.75rem;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(198, 160, 98, 0.92);
+    }
+
+    .ons-assortiment-app__link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      min-height: 44px;
+      border-radius: 16px;
+      border: 1px solid rgba(198, 160, 98, 0.45);
+      padding: 0.65rem 1rem;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #555;
+      text-decoration: none;
+    }
+
+    .ons-assortiment-app__link--solid {
+      border-color: rgba(218, 41, 42, 0.35);
+      background: linear-gradient(145deg, #b31217, #da292a);
+      color: #fff;
+      box-shadow: 0 16px 40px -16px rgba(218, 41, 42, 0.55);
+    }
+
+    .ons-assortiment-app__divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(198, 160, 98, 0.45), transparent);
+      margin-block: 0.25rem;
+    }
+
+    .ons-assortiment-app__products {
+      display: flex;
+      gap: 0.625rem;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      margin-inline: calc(var(--ipek-gutter) * -1);
+      padding-inline: var(--ipek-gutter);
+      padding-bottom: 0.25rem;
+    }
+
+    .ons-assortiment-app__products::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ons-assortiment-app__product {
+      position: relative;
+      flex: 0 0 min(58vw, 210px);
+      scroll-snap-align: start;
+      overflow: hidden;
+      border-radius: 18px;
+      border: 1px solid rgba(20, 20, 20, 0.08);
+      background: #fff;
+      box-shadow: 0 16px 48px -28px rgba(0, 0, 0, 0.14);
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .ons-assortiment-app__product-img {
+      position: relative;
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: linear-gradient(180deg, #fff 0%, #f5f0e8 100%);
+    }
+
+    .ons-assortiment-app__product-img img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .ons-assortiment-app__product-copy {
+      padding: 0.75rem 0.85rem 0.85rem;
+      padding-right: 2.5rem;
+    }
+
+    .ons-assortiment-app__product-eyebrow {
+      margin: 0;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(179, 18, 23, 0.8);
+    }
+
+    .ons-assortiment-app__product-label {
+      margin: 0.35rem 0 0;
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      line-height: 1.15;
+      color: #1c1c1c;
+    }
+
+    .ons-assortiment-app__product-sticker {
+      position: absolute;
+      right: 0.65rem;
+      bottom: 0.75rem;
+      height: 1.65rem;
+      width: 1.65rem;
+      opacity: 0.8;
+    }
+
+    /* ── Over Ons: Vacatures — luxury app modules ── */
+    .ons-careers-app {
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+    }
+
+    .ons-careers-app__sheet {
+      border-radius: 22px;
+      border: 1px solid rgba(20, 20, 20, 0.08);
+      background: rgba(255, 255, 255, 0.92);
+      padding: 1.25rem 1.15rem 1.35rem;
+      box-shadow: 0 20px 60px -36px rgba(0, 0, 0, 0.1);
+    }
+
+    .ons-careers-app__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(179, 18, 23, 0.14);
+      background: rgba(179, 18, 23, 0.06);
+      padding: 0.4rem 0.85rem;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #da292a;
+    }
+
+    .ons-careers-app__title {
+      font-size: clamp(1.65rem, 6.4vw, 2.1rem) !important;
+    }
+
+    .ons-careers-app__lede {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.68;
+      color: rgba(20, 20, 20, 0.58);
+    }
+
+    .ons-careers-app__hero {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      border-radius: 22px;
+      border: 1px solid rgba(20, 20, 20, 0.08);
+      box-shadow: 0 24px 70px -36px rgba(0, 0, 0, 0.18);
+    }
+
+    .ons-careers-app__hero-img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+    }
+
+    .ons-careers-app__hero-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(250, 248, 245, 0.25), transparent 50%);
+    }
+
+    .ons-careers-app__quote {
+      border-radius: 20px;
+      border: 1px solid rgba(20, 20, 20, 0.08);
+      background: linear-gradient(135deg, #121212 0%, #0a0a0a 100%);
+      padding: 1.15rem 1.1rem;
+      box-shadow: 0 24px 70px -40px rgba(0, 0, 0, 0.45);
+    }
+
+    .ons-careers-app__quote-text {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 600;
+      line-height: 1.35;
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    .ons-careers-app__quote-sub {
+      margin: 0.5rem 0 0;
+      font-size: 12px;
+      line-height: 1.55;
+      color: rgba(226, 192, 141, 0.75);
+    }
+
+    .ons-careers-app__cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      min-height: 48px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, #b31217, #da292a);
+      padding: 0.75rem 1.15rem;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #fff;
+      text-decoration: none;
+      box-shadow: 0 16px 40px -16px rgba(218, 41, 42, 0.55);
+    }
+
+    /* ── Klant CTA — luxury app modules ── */
+    .ons-klant-cta-app {
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+    }
+
+    .ons-klant-cta-app__sheet {
+      border-radius: 22px;
+      border: 1px solid rgba(20, 20, 20, 0.08);
+      background: rgba(255, 255, 255, 0.92);
+      padding: 1.25rem 1.15rem 1.35rem;
+      box-shadow: 0 20px 60px -36px rgba(0, 0, 0, 0.1);
+    }
+
+    .ons-klant-cta-app__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(177, 18, 23, 0.14);
+      background: rgba(177, 18, 23, 0.06);
+      padding: 0.4rem 0.85rem;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #b11217;
+    }
+
+    .ons-klant-cta-app__title {
+      font-size: clamp(1.75rem, 7vw, 2.25rem) !important;
+    }
+
+    .ons-klant-cta-app__lede {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.68;
+      color: rgba(20, 20, 20, 0.58);
+    }
+
+    .ons-klant-cta-app__pillars {
+      display: flex;
+      gap: 0.625rem;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      margin-inline: calc(var(--ipek-gutter) * -1);
+      padding-inline: var(--ipek-gutter);
+      padding-bottom: 0.25rem;
+      list-style: none;
+    }
+
+    .ons-klant-cta-app__pillars::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ons-klant-cta-app__pillar {
+      flex: 0 0 min(68vw, 220px);
+      scroll-snap-align: start;
+      border-radius: 18px;
+      border: 1px solid rgba(198, 160, 98, 0.22);
+      background: rgba(255, 255, 255, 0.88);
+      padding: 1rem 1.05rem 1.1rem;
+      box-shadow: 0 16px 48px -32px rgba(0, 0, 0, 0.12);
+      text-align: left;
+    }
+
+    .ons-klant-cta-app__pillar-icon {
+      display: grid;
+      place-items: center;
+      height: 2.25rem;
+      width: 2.25rem;
+      border-radius: 12px;
+      border: 1px solid rgba(198, 160, 98, 0.28);
+      background: rgba(255, 255, 255, 0.85);
+      color: rgba(198, 160, 98, 0.92);
+      box-shadow: 0 8px 24px -12px rgba(198, 160, 98, 0.35);
+    }
+
+    .ons-klant-cta-app__pillar-title {
+      margin: 0.7rem 0 0;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #c6a062;
+    }
+
+    .ons-klant-cta-app__pillar-sub {
+      margin: 0.35rem 0 0;
+      font-size: 11px;
+      line-height: 1.45;
+      color: rgba(20, 20, 20, 0.48);
+    }
+
+    .ons-klant-cta-app__b2b {
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid rgba(198, 160, 98, 0.22);
+      background: #fff;
+      box-shadow: 0 28px 80px -36px rgba(0, 0, 0, 0.18);
+    }
+
+    .ons-klant-cta-app__b2b-media {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+    }
+
+    .ons-klant-cta-app__b2b-media img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .ons-klant-cta-app__b2b-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(26, 21, 18, 0.45), transparent 55%);
+    }
+
+    .ons-klant-cta-app__b2b-body {
+      padding: 1rem 1.1rem 1.15rem;
+      background: linear-gradient(165deg, #1f1915 0%, #141010 100%);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .ons-klant-cta-app__b2b-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border-radius: 999px;
+      border: 1px solid rgba(226, 192, 141, 0.28);
+      background: rgba(226, 192, 141, 0.08);
+      padding: 0.35rem 0.75rem;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(226, 192, 141, 0.92);
+    }
+
+    .ons-klant-cta-app__b2b-title {
+      margin: 0.65rem 0 0;
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      line-height: 1.25;
+      color: #fff;
+    }
+
+    .ons-klant-cta-app__b2b-text {
+      margin: 0.45rem 0 0;
+      font-size: 13px;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.58);
+    }
+
+    .ons-klant-cta-app__cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      min-height: 48px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, #b31217, #da292a);
+      padding: 0.75rem 1.15rem;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #fff;
+      text-decoration: none;
+      box-shadow: 0 16px 40px -16px rgba(218, 41, 42, 0.55);
+    }
+
+    .ons-verhaal-service__panel {
+      border-radius: 1.25rem !important;
+    }
+
+    .ons-verhaal-service__panel .p-8 {
+      padding: 1.15rem !important;
+    }
+
+    .ons-verhaal-service__media {
+      min-height: 220px !important;
+    }
+
+    .ons-service__pillars > li {
+      flex: 0 0 min(68vw, 220px);
+      scroll-snap-align: start;
+    }
+
+    .ons-halal__pillars > li {
+      flex: 0 0 min(62vw, 200px);
+    }
+
+    .ons-workflow__spacer {
+      height: 140px !important;
+    }
+
+    .ons-workflow__cards-wrap {
+      margin-top: -140px !important;
+    }
+
+    .ons-workflow__steps > article {
+      min-height: 300px !important;
+    }
+
+    .ons-stats__spacer {
+      height: 120px !important;
+    }
+
+    .ons-stats__cards-wrap {
+      margin-top: -120px !important;
+    }
+
+    .ons-stats__trust > div {
+      flex: 0 0 min(72vw, 240px);
+    }
+
+    .pr-intro-premium {
+      padding-bottom: 0 !important;
+    }
+
+    .pr-intro-stack {
+      margin-bottom: 0.5rem;
+    }
+
+    .pr-trust-ribbon {
+      position: relative;
+    }
+
+    /* ── Homepage tall cards → compact app tiles ── */
+    .assortiment-unified-card {
+      border-radius: 1.25rem !important;
+    }
+
+    .assortiment-unified-card__body {
+      min-height: 272px !important;
+      padding: 1.25rem !important;
+    }
+
+    .assortiment-unified-card__body h3 {
+      font-size: 1.5rem !important;
+      line-height: 1.05 !important;
+    }
+
+    .assortiment-unified-card__body p {
+      margin-top: 0.625rem !important;
+      font-size: 12.5px !important;
+      line-height: 1.55 !important;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .assortiment-unified-card__body .mt-8 {
+      margin-top: 1rem !important;
+    }
+
+    .assortiment-unified-card__badge {
+      height: 56px !important;
+      width: 56px !important;
+      left: 1rem !important;
+      top: 1rem !important;
+    }
+
+    .voorwie-segment-card,
+    .voorwie-segment-card > * {
+      border-radius: 1.15rem;
+    }
+
+    .voorwie-segment-card__body {
+      min-height: 280px !important;
+      padding: 1.25rem !important;
+    }
+
+    .voorwie-segment-card__body .font-display {
+      font-size: 1.5rem !important;
+    }
+
+    .eindproducten-showcase-card {
+      width: 228px !important;
+    }
+
+    .eindproducten-showcase-card__shell {
+      border-radius: 1.15rem !important;
+    }
+
+    .eindproducten-showcase-card__body {
+      min-height: 0 !important;
+      max-height: 360px;
+    }
+
+    .eindproducten-showcase-card__body .flex-1 {
+      min-height: 0;
+    }
+
+    .eindproducten-showcase-card__body [class*="h-[196px]"],
+    .eindproducten-showcase-card__body [class*="w-[196px]"] {
+      height: 140px !important;
+      width: 140px !important;
+    }
+
+    .eindproducten-showcase-card__body img[class*="h-"] {
+      max-height: 160px;
+    }
+
+    .assortiment-product-card {
+      height: 240px !important;
+      border-radius: 1.15rem !important;
+    }
+
+    .speerpunten-card {
+      padding: 1.125rem !important;
+      border-radius: 1.1rem !important;
+    }
+
+    .speerpunten-card .mt-7 {
+      margin-top: 1rem !important;
+    }
+
+    .trust-image-stage {
+      min-height: 180px !important;
+    }
+
+    /* Contact — denser form + channel tiles */
+    .contact-form-shell {
+      border-radius: 1.25rem !important;
+      padding-left: 1.125rem !important;
+      padding-right: 1.125rem !important;
+    }
+
+    .contact-success-panel {
+      min-height: 0 !important;
+      padding: 2.5rem 1.25rem !important;
+      border-radius: 1.25rem !important;
+    }
+
+    .contact-detail-card {
+      border-radius: 1.15rem !important;
+      padding: 1.125rem !important;
+    }
+
+    /* Vacature / product cards */
+    .vacature-card {
+      padding: 1.125rem !important;
+      border-radius: 1.15rem !important;
+    }
+
+    .vacature-card h3 {
+      font-size: 1.25rem !important;
+    }
+
+    /* Over Ons — mobile: stacked full-width feature rows, readable copy */
+    .over-ons-bento {
+      margin-top: 1.75rem;
+      gap: 0.625rem;
+    }
+
+    .over-ons-bento__hero {
+      min-height: 200px;
+    }
+
+    .over-ons-bento__hero h3 {
+      font-size: 1.25rem;
+      line-height: 1.12;
+    }
+
+    .over-ons-bento__hero p {
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .over-ons-bento__icons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+    }
+
+    .over-ons-icon-card {
+      padding: 0.875rem 1rem !important;
+      min-height: 0 !important;
+    }
+
+    .over-ons-icon-card .over-ons-icon-card__tile {
+      height: 2.75rem;
+      width: 2.75rem;
+      flex-shrink: 0;
+    }
+
+    .over-ons-icon-card .over-ons-icon-card__icon {
+      height: 2rem;
+      width: 2rem;
+    }
+
+    .over-ons-icon-card h3 {
+      font-size: 1.05rem;
+      padding-right: 0;
+      line-height: 1.2;
+    }
+
+    .over-ons-icon-card p {
+      font-size: 12px;
+      line-height: 1.55;
+      margin-top: 0.375rem;
+      display: block;
+      overflow: visible;
+      -webkit-line-clamp: unset;
+    }
+
+    .over-ons-icon-card__rule,
+    .over-ons-icon-card__link {
+      display: none;
+    }
+
+    .over-ons-icon-card .over-ons-chip {
+      font-size: 8px;
+      padding: 0.2rem 0.5rem;
+    }
+
+    .over-ons-story {
+      padding: 1.125rem !important;
+    }
+
+    .over-ons-story p {
+      font-size: 0.9375rem;
+      line-height: 1.65;
+    }
+
+    .over-ons-proof {
+      padding: 1.125rem !important;
+    }
+
+    .over-ons-proof .over-ons-check {
+      padding: 0.5rem 0.625rem;
+      font-size: 10.5px;
+    }
+
+    /* Mobile nav drawer — safe areas + generous tap rows */
+    .nav-mobile-drawer {
+      padding-top: max(2.5rem, env(safe-area-inset-top, 0px));
+      padding-bottom: max(2.5rem, env(safe-area-inset-bottom, 0px));
+      padding-left: max(1.125rem, env(safe-area-inset-left, 0px));
+      padding-right: max(1.125rem, env(safe-area-inset-right, 0px));
+    }
+
+    .nav-mobile-link {
+      min-height: 3.25rem;
+      padding-block: 0.875rem;
+    }
+
+    .nav-mobile-cta {
+      min-height: 3rem;
+    }
+
+    /* Footer — tighter vertical rhythm on phone */
+    .site-footer__main {
+      padding-top: 2.75rem;
+      padding-bottom: 2.75rem;
+    }
+
+    .site-footer__social {
+      min-height: 2.75rem;
+      min-width: 2.75rem;
+    }
+
+    .contact-submit {
+      min-height: 2.75rem;
+    }
+
+    /* Assortiment mobile accordion rows */
+    .assortiment-mobile-link {
+      min-height: 3.25rem;
+    }
+
+    /* Speerpunten — app-dense section */
+    .speerpunten-section {
+      padding-top: clamp(2.5rem, 6.5vw, 3.5rem) !important;
+      padding-bottom: clamp(2.5rem, 6.5vw, 3.5rem) !important;
+    }
+
+    /* Homepage sections that hardcode large py */
+    .home-assortiment-section,
+    .home-products-section {
+      padding-top: 3rem !important;
+      padding-bottom: 3rem !important;
+    }
+
+    .home-products-section .mt-14 {
+      margin-top: 1.75rem !important;
+    }
+
+    .home-products-section .grid.gap-6 {
+      gap: 0.875rem !important;
+    }
+
+    /* 404 / error pages */
+    .page-not-found__code {
+      font-size: clamp(4.5rem, 22vw, 6.5rem);
+    }
+  }
+
+  @media (max-width: 359px) {
+    .ipek-dual-cta .hero-cta,
+    .ipek-dual-cta .ipek-btn-premium,
+    .ipek-dual-cta .lux-btn,
+    .ipek-dual-cta .ipek-btn {
+      font-size: 7.5px !important;
+      letter-spacing: 0.06em !important;
+    }
+  }
+
+  /* ── Dual CTA row — app-like 50/50 on mobile ── */
+  .ipek-dual-cta {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .ipek-dual-cta--center {
+    margin-inline: auto;
+  }
+
+  .ipek-dual-cta > * {
+    min-width: 0;
+  }
+
+  @media (max-width: 639px) {
+    .ipek-dual-cta .hero-cta,
+    .ipek-dual-cta .ipek-btn-premium,
+    .ipek-dual-cta .lux-btn,
+    .ipek-dual-cta .ipek-btn,
+    .ipek-dual-cta .ipek-dual-cta__secondary,
+    .ipek-dual-cta a[class*="rounded-2xl"]:not(.ipek-dual-cta__skip) {
+      display: inline-flex !important;
+      width: 100%;
+      min-height: 2.75rem;
+      padding: 0.5rem 0.375rem !important;
+      font-size: 8px !important;
+      letter-spacing: 0.08em !important;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      line-height: 1.25;
+      white-space: normal;
+      gap: 0.25rem;
+    }
+
+    .ipek-dual-cta .ipek-dual-cta__secondary {
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.06);
+      font-weight: 600;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.82);
+      text-decoration: none;
+    }
+
+    .ipek-dual-cta .ipek-dual-cta__secondary--light {
+      border-color: rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.92);
+      color: rgba(20, 20, 20, 0.72);
+    }
+
+    .ipek-dual-cta .ipek-dual-cta__secondary--gold {
+      border-color: rgba(226, 192, 141, 0.35);
+      background: rgba(226, 192, 141, 0.08);
+      color: rgba(226, 192, 141, 0.95);
+    }
+
+    .ipek-dual-cta .hero-cta svg,
+    .ipek-dual-cta .ipek-btn-premium svg,
+    .ipek-dual-cta .lux-btn svg,
+    .ipek-dual-cta .ipek-btn svg {
+      width: 11px !important;
+      height: 11px !important;
+      flex-shrink: 0;
+    }
+
+    .ipek-dual-cta .ipek-btn-premium__arrow,
+    .ipek-dual-cta .lux-btn__arrow {
+      display: none;
+    }
+  }
+
+  @media (min-width: 640px) {
+    .ipek-dual-cta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem 1rem;
+      width: auto;
+      max-width: none;
+    }
+
+    .ipek-dual-cta .ipek-dual-cta__secondary {
+      width: auto;
+      padding: 0;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      min-height: auto;
+    }
+
+    .ipek-dual-cta .ipek-dual-cta__secondary--light {
+      background: transparent;
+      border: none;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .pr-stats-rail__track {
+      display: grid !important;
+      overflow-x: visible;
+      scroll-snap-type: none;
+      margin-inline: 0;
+      padding-inline: 0;
+    }
+
+    .pr-stats-rail__track > * {
+      flex: unset;
+      scroll-snap-align: unset;
+    }
+
+    .pr-related__track {
+      display: grid !important;
+      overflow-x: visible;
+      scroll-snap-type: none;
+      margin-inline: 0;
+      padding-inline: 0;
+    }
+
+    .pr-related__track > * {
+      flex: unset;
+      scroll-snap-align: unset;
+    }
+
+    .app-hscroll-track {
+      display: grid !important;
+      overflow-x: visible;
+      scroll-snap-type: none;
+      margin-inline: 0;
+      padding-inline: 0;
+    }
+
+    .app-hscroll-track > * {
+      flex: unset;
+      scroll-snap-align: unset;
+    }
+  }
+
+  @media (max-width: 767px) and (hover: none) {
+    /* Touch devices — reveal CTAs without hover */
+    .lux-card__cta {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Softer scroll reveals — less travel on small screens */
+    [data-framer-motion] {
+      --motion-distance: 14px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    @media (prefers-reduced-motion: reduce) {
+      .nav-mobile-drawer,
+      .lux-card,
+      .over-ons-hero__img {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  }
 }
 

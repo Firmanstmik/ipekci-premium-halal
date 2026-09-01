@@ -18,7 +18,7 @@ import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
 
 const BASE = 'https://ipekcislachterij.localclicks.nl';
-const THEME = 'ipekci-theme';
+const THEME = process.env.WP_THEME ?? 'ipekci-theme-v2';
 const HOST_FILE = 'inc/customizer.php';
 const PROFILE =
   process.env.WP_PROFILE ??
@@ -34,7 +34,7 @@ const sha = (b) => createHash('sha256').update(b).digest('hex');
 const payload = files.map((rel) => ({ rel, buf: readFileSync(resolve('ipekci-theme', rel)) }));
 const original = readFileSync('ipekci-theme/' + HOST_FILE, 'utf8');
 
-const ctx = await chromium.launchPersistentContext(PROFILE, { headless: true });
+const ctx = await chromium.launchPersistentContext(PROFILE, { headless: false });
 ctx.setDefaultTimeout(240000);
 ctx.setDefaultNavigationTimeout(240000);
 const page = ctx.pages()[0] ?? (await ctx.newPage());

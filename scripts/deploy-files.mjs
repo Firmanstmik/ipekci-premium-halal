@@ -17,7 +17,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const BASE = 'https://ipekcislachterij.localclicks.nl';
-const THEME = 'ipekci-theme';
+const THEME = process.env.WP_THEME ?? 'ipekci-theme-v2';
 
 // Reuse the already-authenticated browser profile rather than logging in: the
 // wp-admin password is not in the repo (the admin/admin in the old status doc is
@@ -48,7 +48,7 @@ if (!existsSync(PROFILE) && !PASS) {
 
 // This host is slow; the wp-admin dashboard in particular can take minutes to
 // reach 'load'. Everything below waits on specific elements instead.
-const ctx = await chromium.launchPersistentContext(PROFILE, { headless: true });
+const ctx = await chromium.launchPersistentContext(PROFILE, { headless: false });
 ctx.setDefaultTimeout(120000);
 ctx.setDefaultNavigationTimeout(120000);
 const page = ctx.pages()[0] ?? (await ctx.newPage());
@@ -57,18 +57,15 @@ const page = ctx.pages()[0] ?? (await ctx.newPage());
 await page.goto(`${BASE}/wp-admin/`, { waitUntil: 'domcontentloaded' });
 
 if (!(await page.$('#wpadminbar'))) {
-  if (!PASS) {
-    console.error('profile session expired and no WP_PASS set — cannot authenticate');
-    await ctx.close();
-    process.exit(2);
+  console.error('not authenticated — pausing for login (5 min)...');
+  if (PASS) {
+    await page.goto(`${BASE}/wp-login.php`, { waitUntil: 'domcontentloaded' });
+    await page.fill('#user_login', USER);
+    await page.fill('#user_pass', PASS);
+    await page.click('#wp-submit', { noWaitAfter: true });
   }
-  await page.goto(`${BASE}/wp-login.php`, { waitUntil: 'domcontentloaded' });
-  await page.fill('#user_login', USER);
-  await page.fill('#user_pass', PASS);
-  // noWaitAfter: the post-login dashboard can take minutes to reach 'load'.
-  await page.click('#wp-submit', { noWaitAfter: true });
-  await page.waitForSelector('#wpadminbar', { timeout: 120000 });
-  console.log('logged in as', USER);
+  await page.waitForSelector('#wpadminbar', { state: 'visible', timeout: 300000 });
+  console.log('Login successful. Resuming deployment...');
 } else {
   console.log('reusing authenticated session from profile');
 }

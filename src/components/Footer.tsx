@@ -41,7 +41,7 @@ export function Footer() {
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(200,164,107,0.45),transparent)]"
       />
 
-      <div className="ipek-container relative py-20 lg:py-24">
+      <div className="ipek-container site-footer__main relative py-20 lg:py-24">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-12 xl:gap-14">
           <div className="lg:col-span-4">
             <img
@@ -78,7 +78,7 @@ export function Footer() {
                     target="_blank"
                     rel="noreferrer"
                     aria-label={label}
-                    className="group grid h-11 w-11 place-items-center rounded-xl border border-[#141414]/10 bg-white/90 text-[#141414]/65 shadow-[0_10px_28px_-18px_rgba(0,0,0,0.16)] transition-all duration-300 hover:border-[rgba(200,164,107,0.45)] hover:bg-white hover:text-primary hover:shadow-[0_14px_36px_-20px_rgba(0,0,0,0.2)]"
+                    className="site-footer__social group grid h-11 w-11 place-items-center rounded-xl border border-[#141414]/10 bg-white/90 text-[#141414]/65 shadow-[0_10px_28px_-18px_rgba(0,0,0,0.16)] transition-all duration-300 active:scale-[0.96] hover:border-[rgba(200,164,107,0.45)] hover:bg-white hover:text-primary hover:shadow-[0_14px_36px_-20px_rgba(0,0,0,0.2)]"
                   >
                     <Icon
                       size={18}

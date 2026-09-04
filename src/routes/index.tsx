@@ -46,7 +46,7 @@ import { SpeerpuntenSection } from "@/components/home/SpeerpuntenSection";
 import { HomeOverOnsSection } from "@/components/home/HomeOverOnsSection";
 import { HomeHeroSection } from "@/components/home/HomeHeroSection";
 import { AyatSectionBadge } from "@/components/home/AyatSectionBadge";
-import { IPEKCI_HERO_IMAGE } from "@/lib/home-hero-content";
+import { AYAT_HERO_IMAGE } from "@/lib/home-hero-content";
 import { PremiumMeatShowcase } from "@/components/PremiumMeatShowcase";
 import { StoryBridge, StoryItem, StoryMoment, StoryReveal } from "@/components/HomeStorytelling";
 import { DS_DURATION, DS_EASE, DS_EASE_REVEAL, dsRevealTransition } from "@/lib/design-system";
@@ -68,19 +68,7 @@ import eindKalkoenShoarmaImage from "@/assets/ayat/product-shoarma.jpg";
 import eindKipShoarmaImage from "@/assets/ayat/hero-shoarma.jpg";
 import eindMixShoarmaImage from "@/assets/ayat/hero-shoarma-bak.jpg";
 import eindKalfsShoarmaImage from "@/assets/ayat/explorer-shoarma.webp";
-import eindDiepvriesDonerImage from "@/assets/ayat/product-diepvries.jpg";
-import stickerLamsvlees from "@/assets/stiker-kambing.svg";
-import stickerRundvlees from "@/assets/stiker-sapi.svg";
-import stickerKip from "@/assets/stiker-ayam.svg";
-
-const STICKER_GOLD_FILTER =
-  "sepia(1) saturate(520%) hue-rotate(352deg) brightness(0.66) contrast(1.12) drop-shadow(0 10px 22px rgba(194,139,82,0.12))";
-
-const HERO_STICKERS = {
-  lamsvlees: stickerLamsvlees,
-  rundvlees: stickerRundvlees,
-  kip: stickerKip,
-} as const;
+import eindDiepvriesDonerImage from "@/assets/ayat/product-bg-diepvriesproducten.jpg";
 
 const SEGMENT_ICONS = {
   slagerijen: Store,
@@ -98,9 +86,8 @@ const segments = VOOR_WIE_SEGMENTS.map((s) => ({
 }));
 
 /**
- * The homepage assortiment cards still key off the original ids (they also drive
- * the sticker lookup), so this maps each one to its real Ayat product route.
- * Phase 9 moved the catalogue to /producten/{slug}.
+ * The homepage assortiment cards still key off the original ids, so this maps each one
+ * to its real Ayat product route. Phase 9 moved the catalogue to /producten/{slug}.
  */
 const PRODUCT_ROUTE: Record<string, string> = {
   lamsvlees: "/producten/doner",
@@ -118,7 +105,6 @@ const categories = [
     text: "Wij produceren verschillende soorten en smaken döner kebab producten.",
     icon: Beef,
     image: assortimentDonerHeroImage,
-    stickerSrc: HERO_STICKERS.lamsvlees,
   },
   {
     id: "rundvlees",
@@ -126,7 +112,6 @@ const categories = [
     text: "Verticaal opgestelde spit van rundvlees, kip, lamsvlees, kalkoen of mix.",
     icon: Beef,
     image: assortimentShoarmaHeroImage,
-    stickerSrc: HERO_STICKERS.rundvlees,
   },
   {
     id: "kip",
@@ -134,7 +119,6 @@ const categories = [
     text: "Dankzij onze eigen productie bieden wij u de heerlijkste gevogelte.",
     icon: Package,
     image: assortimentGevogelteHeroImage,
-    stickerSrc: HERO_STICKERS.kip,
   },
   {
     id: "eindproducten",
@@ -342,7 +326,6 @@ function AssortimentProductCard({
   description,
   image,
   imagePosition = "68% 28%",
-  stickerSrc,
   href,
   index = 0,
 }: {
@@ -351,7 +334,6 @@ function AssortimentProductCard({
   description: string;
   image: string;
   imagePosition?: string;
-  stickerSrc: string;
   href: string;
   index?: number;
 }) {
@@ -454,15 +436,6 @@ function AssortimentProductCard({
 
         <div className="relative flex h-full flex-col">
           <div className="flex items-center gap-2 px-6 pt-6 text-[10px] font-semibold uppercase tracking-[0.34em] text-[rgba(226,192,141,0.82)]">
-            <img
-              src={stickerSrc}
-              alt=""
-              aria-hidden
-              className="h-6 w-6 select-none opacity-95"
-              loading="lazy"
-              decoding="async"
-              style={{ filter: STICKER_GOLD_FILTER }}
-            />
             <span>{label}</span>
           </div>
 
@@ -525,14 +498,12 @@ function AssortimentUnifiedCard({
   title,
   description,
   image,
-  stickerSrc,
   index,
 }: {
   id: string;
   title: string;
   description: string;
   image: string;
-  stickerSrc?: string;
   index: number;
 }) {
   const badgeId = useId();
@@ -587,17 +558,7 @@ function AssortimentUnifiedCard({
             </text>
           </svg>
 
-          {stickerSrc ? (
-            <img
-              src={stickerSrc}
-              alt=""
-              aria-hidden
-              className="relative h-[28px] w-[28px] opacity-95"
-              loading="lazy"
-              decoding="async"
-              style={{ filter: STICKER_GOLD_FILTER }}
-            />
-          ) : null}
+          <ShieldCheck size={28} className="relative text-[rgba(226,192,141,0.85)]" aria-hidden />
         </div>
 
         <div className="assortiment-unified-card__body relative flex min-h-[280px] flex-col justify-end p-5 sm:min-h-[460px] sm:p-7 lg:min-h-[520px]">
@@ -1055,7 +1016,6 @@ const EINDPRODUCTEN_PRODUCTS = [
       "Geselecteerd kalfs- en kalkoenvlees, afwisselend gelegd met een kruidenmengsel speciaal voor deze combinatie.",
     traits: ["Kalf & kalkoen", "Horeca", "Retail"],
     image: eindKombiDonerImage,
-    stickerSrc: HERO_STICKERS.lamsvlees,
     href: "/producten/doner",
   },
   {
@@ -1066,7 +1026,6 @@ const EINDPRODUCTEN_PRODUCTS = [
       "Stukjes kip van de dij, ideaal gekruid voor de onmiskenbaar hartige smaak van kipdöner.",
     traits: ["Kip", "Spit", "Consistent"],
     image: eindKipDonerImage,
-    stickerSrc: HERO_STICKERS.kip,
     href: "/producten/doner",
   },
   {
@@ -1077,7 +1036,6 @@ const EINDPRODUCTEN_PRODUCTS = [
       "Vleespasteitjes van kalfsgehakt en vleesplakken afwisselend aan de spies. De meest populaire döner in Nederland.",
     traits: ["Gehakt", "Spit", "Volume"],
     image: eindGehaktDonerImage,
-    stickerSrc: HERO_STICKERS.lamsvlees,
     href: "/producten/doner",
   },
   {
@@ -1088,7 +1046,6 @@ const EINDPRODUCTEN_PRODUCTS = [
       "Puur kalfsvlees in dunne plakjes, gekruid met geselecteerde natuurlijke kruiden en op maat op de spies gelegd.",
     traits: ["Kalf", "Premium", "Natuurlijk"],
     image: eindKalfsDonerImage,
-    stickerSrc: HERO_STICKERS.rundvlees,
     href: "/producten/doner",
   },
   {
@@ -1099,7 +1056,6 @@ const EINDPRODUCTEN_PRODUCTS = [
       "Malse stukjes kalkoenvlees, perfect gekruid en snel te bereiden. Een gezonde, smaakvolle shoarma-optie.",
     traits: ["Kalkoen", "Snel", "Horeca"],
     image: eindKalkoenShoarmaImage,
-    stickerSrc: HERO_STICKERS.kip,
     href: "/producten/shoarma",
   },
   {
@@ -1110,7 +1066,6 @@ const EINDPRODUCTEN_PRODUCTS = [
       "Sappige stukjes gekruide kip, klaar om te grillen of te bakken, ideaal voor wraps, broodjes en hot counters.",
     traits: ["Kip", "Grill", "Snack"],
     image: eindKipShoarmaImage,
-    stickerSrc: HERO_STICKERS.kip,
     href: "/producten/shoarma",
   },
   {
@@ -1121,7 +1076,6 @@ const EINDPRODUCTEN_PRODUCTS = [
       "Verrukkelijke combinatie van mals lamsvlees en sappige kalkoen, authentiek gekruid voor wraps en hoofdgerechten.",
     traits: ["Mix", "Authentiek", "Horeca"],
     image: eindMixShoarmaImage,
-    stickerSrc: HERO_STICKERS.lamsvlees,
     href: "/producten/shoarma",
   },
   {
@@ -1132,7 +1086,6 @@ const EINDPRODUCTEN_PRODUCTS = [
       "Mals kalfsvlees, subtiel gekruid met komijn, paprika en knoflook. Een luxe shoarma voor snelle bereiding.",
     traits: ["Kalf", "Luxe", "Specerijen"],
     image: eindKalfsShoarmaImage,
-    stickerSrc: HERO_STICKERS.rundvlees,
     href: "/producten/shoarma",
   },
   {
@@ -1143,7 +1096,6 @@ const EINDPRODUCTEN_PRODUCTS = [
       "Bevroren gegrilde kipdöner, voorgegaard en eenvoudig op te warmen voor een snelle, authentieke döner-ervaring.",
     traits: ["Diepvries", "Voorgegaard", "Flexibel"],
     image: eindDiepvriesDonerImage,
-    stickerSrc: HERO_STICKERS.kip,
     href: "/producten",
   },
 ] as const;
@@ -1230,7 +1182,7 @@ export const Route = createFileRoute("/")({
           "Ayat Food produceert hoogwaardige Halal producten voor restaurants, supermarkten en retail. 100% Halal, NVWA-normen, snelle levering.",
       },
       { property: "og:title", content: "Ayat Food | Premium Halal Vleesgroothandel" },
-      { property: "og:image", content: IPEKCI_HERO_IMAGE },
+      { property: "og:image", content: AYAT_HERO_IMAGE },
     ],
   }),
   component: HomePage,
@@ -1849,7 +1801,6 @@ function HomePage() {
                   description="Verschillende soorten en smaken döner kebab: Halal, exclusief en klaar voor de professionele keuken."
                   image={assortmentDonerImage}
                   imagePosition="40% 30%"
-                  stickerSrc={HERO_STICKERS.lamsvlees}
                   href="/producten/doner"
                   index={0}
                 />
@@ -1859,7 +1810,6 @@ function HomePage() {
                   description="Verticaal opgestelde spit van rundvlees, kip, lamsvlees, kalkoen of mix, authentiek gekruid."
                   image={assortmentShoarmaImage}
                   imagePosition="52% 28%"
-                  stickerSrc={HERO_STICKERS.rundvlees}
                   href="/producten/shoarma"
                   index={1}
                 />
@@ -1869,7 +1819,6 @@ function HomePage() {
                   description="Dankzij onze eigen productie bieden wij u de heerlijkste kipproducten, breed inzetbaar."
                   image={assortmentGevogelteImage}
                   imagePosition="50% 30%"
-                  stickerSrc={HERO_STICKERS.kip}
                   href="/producten/gevogelte"
                   index={2}
                 />
@@ -2127,7 +2076,6 @@ function HomePage() {
                     description:
                       "Wij produceren verschillende soorten en smaken döner kebab producten, van kombidöner tot kalfsdöner.",
                     image: assortimentDonerHeroImage,
-                    stickerSrc: HERO_STICKERS.lamsvlees,
                   },
                   {
                     id: "rundvlees",
@@ -2135,7 +2083,6 @@ function HomePage() {
                     description:
                       "Verticaal opgestelde spit van rundvlees, kip, lamsvlees, kalkoen of mix, authentiek gekruid.",
                     image: assortimentShoarmaHeroImage,
-                    stickerSrc: HERO_STICKERS.rundvlees,
                   },
                   {
                     id: "kip",
@@ -2143,7 +2090,6 @@ function HomePage() {
                     description:
                       "Dankzij onze eigen productie bieden wij u de heerlijkste kipproducten, smaakvol en breed inzetbaar.",
                     image: assortimentGevogelteHeroImage,
-                    stickerSrc: HERO_STICKERS.kip,
                   },
                 ].map((c, idx) => (
                   <AssortimentUnifiedCard key={c.id} {...c} index={idx} />
@@ -2551,20 +2497,9 @@ function EindproductenShowcaseCard({
             </span>
 
             <div className="relative z-10 flex items-center justify-between gap-3 px-4 pt-4 sm:px-5 sm:pt-5">
-              <div className="flex items-center gap-2">
-                <img
-                  src={product.stickerSrc}
-                  alt=""
-                  aria-hidden
-                  loading="lazy"
-                  decoding="async"
-                  className="h-4 w-4 select-none opacity-95"
-                  style={{ filter: STICKER_GOLD_FILTER }}
-                />
-                <span className="text-[8px] font-semibold uppercase tracking-[0.28em] text-[rgba(226,192,141,0.88)]">
-                  {product.category}
-                </span>
-              </div>
+              <span className="text-[8px] font-semibold uppercase tracking-[0.28em] text-[rgba(226,192,141,0.88)]">
+                {product.category}
+              </span>
               <span className="rounded-full border border-[rgba(226,192,141,0.35)] bg-black/40 px-2.5 py-1 text-[7px] font-semibold uppercase tracking-[0.2em] text-[rgba(245,242,237,0.92)] shadow-[0_8px_24px_-12px_rgba(0,0,0,0.6)] backdrop-blur-[2px]">
                 Halal
               </span>
@@ -2662,7 +2597,6 @@ function AssortmentCategoryCard({
   text,
   icon: Icon,
   image,
-  stickerSrc,
   index,
 }: {
   id: string;
@@ -2670,7 +2604,6 @@ function AssortmentCategoryCard({
   text: string;
   icon: React.ComponentType<{ size?: number; className?: string }>;
   image: string;
-  stickerSrc?: string;
   index: number;
 }) {
   const badgeId = useId();
@@ -2726,19 +2659,7 @@ function AssortmentCategoryCard({
             </text>
           </svg>
 
-          {stickerSrc ? (
-            <img
-              src={stickerSrc}
-              alt=""
-              aria-hidden
-              className="relative h-[30px] w-[30px] opacity-90"
-              loading="lazy"
-              decoding="async"
-              style={{ filter: STICKER_GOLD_FILTER }}
-            />
-          ) : (
-            <Icon size={28} className="relative text-[rgba(226,192,141,0.85)]" />
-          )}
+          <Icon size={28} className="relative text-[rgba(226,192,141,0.85)]" />
         </div>
 
         <div className="relative flex min-h-[560px] flex-col justify-end p-8 sm:min-h-[600px]">

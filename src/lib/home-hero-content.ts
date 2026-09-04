@@ -106,6 +106,3 @@ export const HERO_TRUST_ITEMS = [
 
 export const HERO_SHOWCASE_AUTOPLAY_MS = 5200;
 export const HERO_BG_AUTOPLAY_MS = 6500;
-
-/** @deprecated Use AYAT_HERO_IMAGE */
-export const IPEKCI_HERO_IMAGE = AYAT_HERO_IMAGE;

@@ -12,14 +12,6 @@ import { ImageFrameOverlay } from "@/components/ui/premium-frame";
 import { DS_EASE } from "@/lib/design-system";
 import { HERO_SHOWCASE_AUTOPLAY_MS, HERO_SHOWCASE_SLIDES } from "@/lib/home-hero-content";
 
-const SLIDE_STICKER_KEY: Record<string, string> = {
-  doner: "lamsvlees",
-  shoarma: "rundvlees",
-  gevogelte: "kip",
-  vleessoorten: "rundvlees",
-  productie: "lamsvlees",
-};
-
 /** Soft asymmetric shell — not a plain rectangle */
 const SHELL = "rounded-[2.4rem_1.15rem_2.65rem_1.45rem] sm:rounded-[2.75rem_1.35rem_3rem_1.65rem]";
 
@@ -199,7 +191,7 @@ export function HeroShowcaseCard({
               </div>
 
               <div className="pointer-events-none absolute right-0.5 top-0.5 z-20 sm:right-1 sm:top-1">
-                <HalalStamp compact activeKey={SLIDE_STICKER_KEY[slide.id] ?? "lamsvlees"} />
+                <HalalStamp compact />
               </div>
             </div>
           </div>

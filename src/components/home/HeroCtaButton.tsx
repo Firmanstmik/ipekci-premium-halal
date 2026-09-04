@@ -3,9 +3,6 @@ import { ArrowRight } from "iconsax-react";
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import type { ReactNode } from "react";
 
-const MEAT_STICKER_FILTER =
-  "sepia(1) saturate(480%) hue-rotate(352deg) brightness(0.72) contrast(1.1) drop-shadow(0 6px 14px rgba(194,139,82,0.28))";
-
 type HeroCtaButtonProps = {
   to: string;
   variant: "primary" | "ghost";
@@ -82,5 +79,3 @@ export function HeroCtaButton({ to, variant, children }: HeroCtaButtonProps) {
     </motion.div>
   );
 }
-
-export { MEAT_STICKER_FILTER };

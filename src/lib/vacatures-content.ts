@@ -1,29 +1,30 @@
 /**
  * Vacatures — content verified from https://ayatfood.nl/vacatures/
  *
- * The three open positions, their departments, their werkzaamheden and the
- * "ervaring is een vereiste" requirement are taken verbatim from the official
- * site. The application flow and contact details mirror ayatfood.nl.
- * Presentation uses our own premium design system — the original page design
- * is deliberately not copied.
+ * Copy, vacancy titles, departments and werkzaamheden match the official page.
+ * Presentation follows the premium mockup: cream listings + dark sollicitatie split.
  */
 
 import type { LucideIcon } from "lucide-react";
 import { Boxes, Headset, ShoppingBag } from "lucide-react";
 import { BRAND } from "@/lib/brand";
-import heroVacatures from "@/assets/ayat/hero-processing.jpg";
-import introImage from "@/assets/ayat/hero-coldstorage.jpg";
+/** Official hero — ayatfood.nl/vacatures (Elementor section 90830af) */
+import heroImage from "@/assets/ayat/vacatures-hero.jpg";
+/** Official apply backdrop — ayatfood.nl/vacatures (Elementor section 50dde1c1) */
+import applyBackdrop from "@/assets/ayat/vacatures-apply.jpg";
 
-export const VACATURES_HERO_IMAGE = heroVacatures;
-export const VACATURES_INTRO_IMAGE = introImage;
+export const VACATURES_HERO_IMAGE = heroImage;
+export const VACATURES_APPLY_IMAGE = applyBackdrop;
 
+/** Cinematic hero — mirrors Producten page pattern + official vacatures assets */
 export const VACATURES_HERO = {
   breadcrumb: "Vacatures",
   eyebrow: "Werk & inkomen",
-  title: "De leukste banen voor jou",
+  title: "Vacatures",
   lede: "Ben je op zoek naar een uitdagende baan in het hoogstaande vleessegment? Bekijk de openstaande vacatures van Ayat Food.",
   ctaPrimary: "Bekijk vacatures",
   ctaSecondary: "Direct solliciteren",
+  badge: "100% Halal · Watergang",
   stats: [
     { value: "3", label: "Open posities" },
     { value: "6", label: "Teamleden" },
@@ -31,50 +32,24 @@ export const VACATURES_HERO = {
   ],
 } as const;
 
-/** Why work here — built only on facts published by Ayat Food */
-export const VACATURES_INTRO = {
-  kicker: "Werken bij",
-  badgeTitle: "Ayat Food",
-  title: "Een hecht team achter elk product",
-  paragraphs: [
-    "Ayat Food Vleesgroothandel is het adres waar afnemers en kebab-liefhebbers Halal en gezonde döner kebab producten vinden. Wij produceren verschillende soorten en smaken döner kebab producten en ondersteunen onze klanten bij het ontwikkelen van nieuwe smaken.",
-    "Ons team van zes collega's staat 24/7 klaar om vragen te beantwoorden en bestellingen op tijd te leveren. Van het magazijn tot de verkoop: iedereen draagt bij aan hetzelfde doel: hoogwaardige Halal producten, met zorg ingepakt en betrouwbaar bezorgd.",
-  ],
-  highlights: [
-    {
-      title: "100% Halal",
-      text: "Al onze producten staan onder strikte toezicht van ECC Halal.",
-    },
-    {
-      title: "NVWA-normen",
-      text: "Wij werken volledig volgens de normen en standaarden van de NVWA.",
-    },
-    {
-      title: "Modern wagenpark",
-      text: "Snelle en betrouwbare levering door heel Nederland.",
-    },
-    {
-      title: "24/7 service",
-      text: "Korte lijnen en collega's die voor elkaar klaarstaan.",
-    },
-  ],
+export const VACATURES_PAGE = {
+  breadcrumb: "Vacatures",
+  eyebrow: "Werk & inkomen",
+  title: "De leukste banen voor jou",
+  lede: "Ben je op zoek naar een uitdagende baan in het hoogstaande vleessegment? Bekijk de openstaande vacatures van Ayat Food.",
 } as const;
 
 export type Vacature = {
   id: string;
-  /** Editorial numeral shown on the card */
   index: string;
-  /** Afdeling, as listed on ayatfood.nl */
   department: string;
   title: string;
   summary: string;
   icon: LucideIcon;
-  /** Verbatim taken from the official vacancy list */
   responsibilities: readonly string[];
-  /** Only rendered when the official listing states one */
-  requirements?: readonly string[];
 };
 
+/** Three open positions — verbatim from ayatfood.nl/vacatures/ */
 export const VACATURES: readonly Vacature[] = [
   {
     id: "magazijn-medewerker",
@@ -101,8 +76,8 @@ export const VACATURES: readonly Vacature[] = [
       "Adviseren van klanten",
       "Telefonisch/mail contact",
       "Administratieve taken",
+      "Ervaring is een vereiste",
     ],
-    requirements: ["Ervaring is een vereiste"],
   },
   {
     id: "verkoper-2",
@@ -115,59 +90,75 @@ export const VACATURES: readonly Vacature[] = [
       "Adviseren van klanten",
       "Telefonisch/mail contact",
       "Administratieve taken",
+      "Ervaring is een vereiste",
     ],
-    requirements: ["Ervaring is een vereiste"],
   },
 ] as const;
 
-/** Builds the pre-filled sollicitatie-mail for a given vacancy. */
-export function sollicitatieMailto(vacatureTitle?: string) {
+export const VACATURES_FORM = {
+  title: "Solliciteren",
+  submitLabel: "Verzenden",
+  privacyNote: "Je gegevens worden vertrouwelijk behandeld",
+  fields: {
+    name: "Je naam",
+    email: "Je email",
+    cv: "CV upload",
+    motivation: "Je motivatie",
+    vacancy: "Vacature",
+  },
+} as const;
+
+export const VACATURES_SOLLICITEREN = {
+  eyebrow: "Reageer vandaag nog",
+  title: "Reageer op onze vacatures",
+  lede: "Reageren op onze vacatures is eenvoudig en snel. Na ontvangst van jouw sollicitatie reageren wij binnen een aantal werkdagen.",
+  contactHeading: BRAND.name,
+} as const;
+
+/** Mobile apply flow — matches Over Ons app-sheet step carousels */
+export const VACATURES_APPLY_STEPS = [
+  {
+    num: "01",
+    title: "Kies een vacature",
+    text: "Bekijk de openstaande posities en selecteer de rol die bij je past.",
+  },
+  {
+    num: "02",
+    title: "Vul je gegevens in",
+    text: "Naam, e-mail en motivatie — voeg je CV toe in de e-mail na verzenden.",
+  },
+  {
+    num: "03",
+    title: "Wij reageren snel",
+    text: "Na ontvangst van jouw sollicitatie reageren wij binnen een aantal werkdagen.",
+  },
+] as const;
+
+/** Pre-filled sollicitatie mail — CV must be attached manually in the mail client. */
+export function sollicitatieMailto(options?: {
+  vacatureTitle?: string;
+  name?: string;
+  email?: string;
+  motivation?: string;
+}) {
+  const { vacatureTitle, name, email, motivation } = options ?? {};
   const subject = vacatureTitle
     ? `Sollicitatie: ${vacatureTitle}`
-    : "Open sollicitatie bij Ayat Food";
+    : "Sollicitatie bij Ayat Food";
+
   const body = [
-    vacatureTitle
-      ? `Beste Ayat Food,\n\nGraag solliciteer ik op de vacature ${vacatureTitle}.`
-      : "Beste Ayat Food,\n\nGraag stel ik mij voor met een open sollicitatie.",
+    "Beste Ayat Food,",
     "",
-    "Naam:",
-    "Telefoonnummer:",
+    vacatureTitle ? `Ik solliciteer op de vacature: ${vacatureTitle}.` : "Ik solliciteer bij Ayat Food.",
+    "",
+    name ? `Naam: ${name}` : "Naam:",
+    email ? `E-mail: ${email}` : "E-mail:",
+    "",
     "Motivatie:",
+    motivation?.trim() || "",
     "",
-    "(Vergeet niet je cv als bijlage toe te voegen.)",
+    "(Voeg uw CV toe als bijlage in uw e-mailprogramma.)",
   ].join("\n");
 
   return `mailto:${BRAND.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
-
-export const VACATURES_SOLLICITEREN = {
-  eyebrow: "Solliciteren",
-  title: "Reageer op onze vacatures",
-  lede: "Reageren op onze vacatures is eenvoudig en snel. Na ontvangst van jouw sollicitatie reageren wij binnen een aantal werkdagen.",
-  steps: [
-    {
-      n: "01",
-      title: "Stuur je sollicitatie",
-      text: "Mail je naam, telefoonnummer, motivatie en cv naar ons. Vermeld de vacature waarop je reageert.",
-    },
-    {
-      n: "02",
-      title: "Wij reageren snel",
-      text: "Na ontvangst van jouw sollicitatie reageren wij binnen een aantal werkdagen.",
-    },
-    {
-      n: "03",
-      title: "Kennismaken",
-      text: "Bij een match nodigen we je uit op De Dollard 3 in Watergang voor een kennismaking.",
-    },
-  ],
-  ctaLabel: "Solliciteer via e-mail",
-  callLabel: "Bel direct",
-} as const;
-
-export const VACATURES_CLOSING = {
-  eyebrow: "Geen passende vacature?",
-  title: "Stuur ons een open sollicitatie",
-  text: "Ons team groeit mee met onze klanten. Stel jezelf voor en vertel waar jouw kracht ligt. We nemen contact op zodra er een passende rol vrijkomt.",
-  ctaLabel: "Open sollicitatie sturen",
-} as const;

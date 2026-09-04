@@ -2,6 +2,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { Outlet, Link, createRootRouteWithContext, useRouter } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import ayatLogo from "@/assets/ayat/logo-transparent.png";
+import { SplashScreen } from "@/components/SplashScreen";
 import { DualCtaRow } from "@/components/ui/DualCtaRow";
 
 function NotFoundComponent() {
@@ -94,5 +95,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootComponent() {
-  return <Outlet />;
+  return (
+    <>
+      <SplashScreen />
+      <Outlet />
+    </>
+  );
 }

@@ -20,7 +20,6 @@ import heroDoner from "@/assets/ayat/hero-doner.jpg";
 import heroShoarma from "@/assets/ayat/hero-shoarma.jpg";
 import heroGevogelte from "@/assets/ayat/hero-gevogelte.jpg";
 import heroVleessoorten from "@/assets/ayat/hero-vleessoorten.jpg";
-import heroColdStorage from "@/assets/ayat/hero-coldstorage.jpg";
 import heroTurksePizza from "@/assets/ayat/hero-turkse-pizza.jpg";
 import heroGegrild from "@/assets/ayat/hero-gegrild.jpg";
 import heroTortillaDurum from "@/assets/ayat/hero-tortilla-durum.jpg";
@@ -33,7 +32,6 @@ import productDoner from "@/assets/ayat/product-doner.jpg";
 import productShoarma from "@/assets/ayat/product-shoarma.jpg";
 import productGevogelte from "@/assets/ayat/product-gevogelte.jpg";
 import productVleessoorten from "@/assets/ayat/product-vleessoorten.jpg";
-import productDiepvries from "@/assets/ayat/product-diepvries.jpg";
 import productTurksePizza from "@/assets/ayat/product-turkse-pizza.jpg";
 import productGegrild from "@/assets/ayat/product-gegrild.jpg";
 import productDurum from "@/assets/ayat/product-durum.jpg";
@@ -346,8 +344,8 @@ export const PRODUCT_CATEGORIES: readonly ProductCategory[] = [
       "Bovendien bieden diepvriesvleesproducten gemak en flexibiliteit. Ze zijn vaak voorgesneden, gemarineerd of voorgekookt, waardoor de bereidingstijd wordt verkort. Dit maakt ze ideaal voor drukke dagen of wanneer er snel een maaltijd op tafel moet staan.",
       "Een van de voordelen van diepvriesproducten van vlees is hun langere houdbaarheid. Dit stelt consumenten in staat om vlees in bulk te kopen en op te slaan voor langere periodes, waardoor verspilling wordt verminderd.",
     ],
-    heroImage: heroColdStorage,
-    cardImage: productDiepvries,
+    heroImage: bgDiepvries,
+    cardImage: bgDiepvries,
     products: [
       {
         id: "gegrilde-kipdoner-bevroren-1kg",

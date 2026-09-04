@@ -10,7 +10,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { useId, useRef } from "react";
-import { ArrowDown, ArrowUpRight, Check, ChevronRight } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Check, ChevronRight, ShieldCheck } from "lucide-react";
 import { AssortimentKlantCta } from "@/components/assortiment/AssortimentKlantCta";
 import { MagneticButton } from "@/components/MagneticButton";
 import { DualCtaRow } from "@/components/ui/DualCtaRow";
@@ -213,15 +213,6 @@ function SegmentDetailShowcase({ segment }: { segment: VoorWieSegment }) {
                     Premium B2B partner
                   </p>
                 </div>
-                <img
-                  src={segment.stickerSrc}
-                  alt=""
-                  aria-hidden
-                  className="h-10 w-10 opacity-80"
-                  loading="lazy"
-                  decoding="async"
-                  referrerPolicy="no-referrer"
-                />
               </div>
               <div
                 aria-hidden
@@ -364,14 +355,11 @@ function SegmentCard({ segment, index }: { segment: VoorWieSegment; index: numbe
                 </textPath>
               </text>
             </svg>
-            <img
-              src={segment.stickerSrc}
-              alt=""
+            <ShieldCheck
+              size={24}
+              strokeWidth={1.75}
+              className="relative text-[rgba(198,160,98,0.92)]"
               aria-hidden
-              className="relative h-[26px] w-[26px] opacity-90"
-              loading="lazy"
-              decoding="async"
-              referrerPolicy="no-referrer"
             />
           </div>
         </div>

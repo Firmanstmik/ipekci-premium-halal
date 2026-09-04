@@ -74,7 +74,6 @@ function ProductMiniCard({ product, index }: { product: ProductenMegaItem; index
           </p>
           <p className="mt-1.5 font-display text-lg leading-tight text-[#1c1c1c]">{product.label}</p>
         </div>
-        <img src={product.stickerSrc} alt="" aria-hidden className="h-7 w-7 shrink-0 opacity-80" />
       </div>
     </motion.a>
   );
@@ -91,7 +90,6 @@ function AssortimentAppProductCard({ product }: { product: ProductenMegaItem }) 
         <p className="ons-assortiment-app__product-eyebrow">{product.eyebrow}</p>
         <p className="ons-assortiment-app__product-label">{product.label}</p>
       </div>
-      <img src={product.stickerSrc} alt="" aria-hidden className="ons-assortiment-app__product-sticker" />
     </a>
   );
 }
@@ -228,7 +226,6 @@ export function OnsVerhaalAssortimentSection() {
                   <h3 className="mt-2 font-display text-2xl text-white">{cat.label}</h3>
                   <p className="mt-3 text-[13px] leading-relaxed text-white/68">{cat.description}</p>
                 </div>
-                <img src={cat.stickerSrc} alt="" aria-hidden className="h-9 w-9 shrink-0 opacity-80" />
               </div>
               <span className="group/btn relative mx-7 mb-7 inline-flex items-center gap-2 overflow-hidden rounded-xl border border-[rgba(198,160,98,0.45)] px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-[rgba(198,160,98,0.92)] transition-colors duration-[320ms] group-hover:border-[rgba(198,160,98,0.75)] group-hover:text-[#0a0a0a]">
                 <span className="pointer-events-none absolute inset-0 -translate-x-full bg-[rgba(226,192,141,0.95)] transition-transform duration-[320ms] ease-[cubic-bezier(.22,.61,.36,1)] group-hover:translate-x-0" />

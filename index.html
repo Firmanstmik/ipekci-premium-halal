@@ -55,6 +55,49 @@
     />
   </head>
   <body>
+    <script>
+      try {
+        if (sessionStorage.getItem("ayat-splash-seen") === "1") {
+          document.documentElement.classList.add("ayat-splash-skip");
+        }
+      } catch (e) {}
+    </script>
+    <div id="ayat-splash" class="ayat-splash" aria-hidden="true">
+      <img
+        class="ayat-splash__logo"
+        src="/ayat-logo.png"
+        alt=""
+        width="180"
+        height="180"
+        decoding="async"
+        fetchpriority="high"
+      />
+    </div>
+    <style>
+      .ayat-splash-skip #ayat-splash {
+        display: none !important;
+      }
+      .ayat-splash {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #ffffff;
+        opacity: 1;
+        transition: opacity 0.45s ease;
+        pointer-events: none;
+      }
+      .ayat-splash--fade {
+        opacity: 0;
+      }
+      .ayat-splash__logo {
+        width: min(11.25rem, 42vw);
+        height: auto;
+        object-fit: contain;
+      }
+    </style>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

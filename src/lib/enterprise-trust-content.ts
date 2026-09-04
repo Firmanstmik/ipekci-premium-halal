@@ -1,11 +1,11 @@
 import type { LucideIcon } from "lucide-react";
 import { Award, BadgeCheck, Factory, HeartHandshake, ShieldCheck, Truck } from "lucide-react";
-import imgHalal from "@/assets/ayat/trust-pillar-halal.webp";
-import imgNvwa from "@/assets/ayat/trust-pillar-nvwa.webp";
-import imgKwaliteit from "@/assets/ayat/trust-pillar-kwaliteit.webp";
-import imgLevering from "@/assets/ayat/trust-pillar-levering.webp";
-import imgKlant from "@/assets/ayat/trust-pillar-klant.webp";
-import imgProductie from "@/assets/ayat/trust-pillar-productie.webp";
+import imgHalal from "@/assets/ayat/product-gevogelte.jpg";
+import imgNvwa from "@/assets/ayat/raw-meat-1.jpg";
+import imgKwaliteit from "@/assets/ayat/product-spotlight-marbled.jpg";
+import imgLevering from "@/assets/ayat/highlight-verzending.png";
+import imgKlant from "@/assets/ayat/ayat-segment-restaurants.webp";
+import imgProductie from "@/assets/ayat/hero-processing.jpg";
 
 export type EnterprisePillar = {
   id: string;
@@ -19,8 +19,7 @@ export type EnterprisePillar = {
 /**
  * Trust pillars — verified from https://ayatfood.nl/ and /over-ons/
  * Speerpunten: snelheid, kwaliteit, klantgerichtheid + Halal / NVWA / eigen productie.
- * Images: premium Ayat Food product photography style (ayatfood.nl/producten),
- * food-forward close-ups — not industrial slaughterhouse aesthetics.
+ * Images: unbranded product photography only — real packaging has no Ayat Food logo.
  */
 export const ENTERPRISE_TRUST_PILLARS: readonly EnterprisePillar[] = [
   {

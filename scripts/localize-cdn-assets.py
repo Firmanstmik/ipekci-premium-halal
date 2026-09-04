@@ -80,7 +80,7 @@ PATHS = [
     '/2025/12/placeholder.webp',
     '/2025/12/premium-kwaliteit.webp',
     '/2025/12/shortribs.png',
-    '/2025/12/werken-bij-ipekci.webp',
+    '/2025/12/werken-bij-ayat.webp',
 ]
 
 total = 0

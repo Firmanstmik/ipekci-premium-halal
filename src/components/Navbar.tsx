@@ -41,9 +41,9 @@ function NavLogo({ scrolled = false }: { scrolled?: boolean }) {
       <img
         src={LOGO_URL}
         alt="Ayat Food"
-        className={`w-auto select-none ${scrolled ? "h-[40px] sm:h-[50px]" : "h-[46px] sm:h-[58px]"}`}
-        width={200}
-        height={80}
+        className={`w-auto select-none ${scrolled ? "h-[58px] sm:h-[72px]" : "h-[68px] sm:h-[88px]"}`}
+        width={280}
+        height={112}
         loading="eager"
         decoding="async"
         style={

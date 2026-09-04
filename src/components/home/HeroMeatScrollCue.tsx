@@ -1,19 +1,13 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowDown } from "iconsax-react";
 import { useEffect, useState } from "react";
-import stickerAyam from "@/assets/stiker-ayam.svg";
-import stickerKambing from "@/assets/stiker-kambing.svg";
-import stickerSapi from "@/assets/stiker-sapi.svg";
 import { DS_EASE } from "@/lib/design-system";
 
 const MEAT_CUES = [
-  { id: "lam", src: stickerKambing },
-  { id: "rund", src: stickerSapi },
-  { id: "kip", src: stickerAyam },
+  { id: "lam", label: "L" },
+  { id: "rund", label: "R" },
+  { id: "kip", label: "K" },
 ] as const;
-
-const STICKER_ACTIVE =
-  "sepia(1) saturate(500%) hue-rotate(352deg) brightness(0.72) contrast(1.08) drop-shadow(0 2px 8px rgba(218,41,42,0.28))";
 
 export function HeroMeatScrollCue() {
   const reduceMotion = useReducedMotion();
@@ -41,18 +35,21 @@ export function HeroMeatScrollCue() {
         {MEAT_CUES.map((cue, i) => {
           const isActive = i === active;
           return (
-            <motion.img
+            <motion.span
               key={cue.id}
-              src={cue.src}
-              alt=""
               animate={{
-                scale: isActive ? 1 : 0.78,
+                scale: isActive ? 1 : 0.85,
                 opacity: isActive ? 1 : 0.35,
               }}
               transition={{ duration: 0.45, ease: DS_EASE }}
-              className="h-4 w-4 object-contain sm:h-[18px] sm:w-[18px]"
-              style={{ filter: isActive ? STICKER_ACTIVE : "brightness(0.45) saturate(0.3)" }}
-            />
+              className={`grid h-4 w-4 place-items-center rounded-full border text-[8px] font-bold sm:h-[18px] sm:w-[18px] sm:text-[9px] ${
+                isActive
+                  ? "border-[rgba(218,41,42,0.55)] bg-[rgba(218,41,42,0.15)] text-[#DA292A]"
+                  : "border-white/20 bg-white/5 text-white/45"
+              }`}
+            >
+              {cue.label}
+            </motion.span>
           );
         })}
       </div>

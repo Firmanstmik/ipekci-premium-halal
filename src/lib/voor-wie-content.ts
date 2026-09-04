@@ -2,9 +2,6 @@ import segmentSlagerijen from "@/assets/ayat/ayat-segment-slagerijen.webp";
 import segmentGroothandels from "@/assets/ayat/ayat-segment-groothandels.webp";
 import segmentSupermarkten from "@/assets/ayat/ayat-segment-supermarkten.webp";
 import segmentRestaurants from "@/assets/ayat/ayat-segment-restaurants.webp";
-import stickerLams from "@/assets/stiker-kambing.svg";
-import stickerRund from "@/assets/stiker-sapi.svg";
-import stickerKip from "@/assets/stiker-ayam.svg";
 
 export type VoorWieSegmentId = "slagerijen" | "groothandels" | "supermarkten" | "restaurants";
 
@@ -16,7 +13,6 @@ export type VoorWieSegment = {
   longDescription: string;
   image: string;
   previewImage: string;
-  stickerSrc: string;
   href: string;
   benefits: readonly string[];
 };
@@ -38,7 +34,6 @@ export const VOOR_WIE_SEGMENTS: readonly VoorWieSegment[] = [
       "Slagerijen werken met Ayat Food als betrouwbare Halal-partner: hoogwaardige vleesproducten, zorgvuldig verwerkt en verpakt, met snelle levering via ons moderne wagenpark. Wij helpen u bij het kiezen van de juiste producten, altijd onder toezicht van ECC Halal en volgens NVWA-normen.",
     image: segmentSlagerijen,
     previewImage: segmentSlagerijen,
-    stickerSrc: stickerLams,
     href: "/voor-wie/slagerijen",
     benefits: [
       "Snelle & betrouwbare levering",
@@ -57,7 +52,6 @@ export const VOOR_WIE_SEGMENTS: readonly VoorWieSegment[] = [
       "Als vleesgroothandel begrijpen wij de eisen van groothandelspartners. Reken op stabiele aanvoer van hoogwaardige Halal producten, waaronder döner, shoarma, gevogelte en diepvries, met punctuele levering en vaste afspraken, zodat u uw klanten efficiënt kunt bedienen.",
     image: segmentGroothandels,
     previewImage: segmentGroothandels,
-    stickerSrc: stickerRund,
     href: "/voor-wie/groothandels",
     benefits: [
       "Stabiele volumeleveringen",
@@ -75,7 +69,6 @@ export const VOOR_WIE_SEGMENTS: readonly VoorWieSegment[] = [
       "Voor supermarkten leveren wij Halal vleesproducten die geschikt zijn voor vers én diepvries. Producten worden zorgvuldig verwerkt, verpakt en op temperatuur gehouden, zodat versheid en smaak behouden blijven tot in uw schappen. Betrouwbare levering, constante kwaliteit.",
     image: segmentSupermarkten,
     previewImage: segmentSupermarkten,
-    stickerSrc: stickerRund,
     href: "/voor-wie/supermarkten",
     benefits: [
       "Vers én diepvries",
@@ -94,7 +87,6 @@ export const VOOR_WIE_SEGMENTS: readonly VoorWieSegment[] = [
       "Restaurants en chefs in de horeca vertrouwen op Ayat Food voor Halal producten van consistente kwaliteit. Van döner en shoarma tot gevogelte: altijd vers, goed verpakt en op tijd geleverd. Wij helpen u bij productkeuze en het ontwikkelen van nieuwe smaken, zodat uw keuken kan blijven excelleren.",
     image: segmentRestaurants,
     previewImage: segmentRestaurants,
-    stickerSrc: stickerKip,
     href: "/voor-wie/restaurants",
     benefits: [
       "Döner, shoarma & gevogelte",

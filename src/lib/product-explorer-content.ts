@@ -3,13 +3,13 @@ import productDoner from "@/assets/ayat/explorer-doner.webp";
 import productShoarma from "@/assets/ayat/explorer-shoarma.webp";
 import productGevogelte from "@/assets/ayat/explorer-gevogelte.webp";
 import productVleessoorten from "@/assets/ayat/explorer-vleessoorten.webp";
-import productDiepvries from "@/assets/ayat/explorer-diepvries.webp";
+import productDiepvries from "@/assets/ayat/product-bg-diepvriesproducten.jpg";
 import productTurksePizza from "@/assets/ayat/explorer-turkse-pizza.webp";
 import productGegrild from "@/assets/ayat/explorer-gegrild.webp";
 import productDurum from "@/assets/ayat/explorer-durum.webp";
 import trustHalalImg from "@/assets/ayat/product-doner.jpg";
 import trustQualityImg from "@/assets/ayat/hero-processing.jpg";
-import trustDeliveryImg from "@/assets/ayat/hero-coldstorage.jpg";
+import trustDeliveryImg from "@/assets/ayat/highlight-verzending.png";
 import trustServiceImg from "@/assets/ayat/product-shoarma.jpg";
 
 /**

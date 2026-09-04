@@ -16,7 +16,6 @@ import {
 import { DS_EASE } from "@/lib/design-system";
 
 const GOLD = "rgba(240,215,168,";
-const STICKER_FILTER = "sepia(1) saturate(520%) hue-rotate(352deg) brightness(0.66) contrast(1.12)";
 const RED = "rgba(218,41,42,";
 
 function activeProductenSlug(pathname: string): string | null {
@@ -92,25 +91,25 @@ export function AssortimentNavDropdown({
         sideOffset={12}
         onMouseEnter={() => onOpenChange(true)}
         onMouseLeave={() => onOpenChange(false)}
-        className="mt-2 w-[min(920px,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-white/10 bg-background/80 p-0 text-foreground shadow-[0_30px_90px_-40px_rgba(0,0,0,0.85)] backdrop-blur-2xl"
+        className="mt-2 w-[min(980px,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-[#e5e0d8] bg-[#faf8f5]/98 p-0 text-[#1a1a1a] shadow-[0_28px_80px_-32px_rgba(0,0,0,0.28)] backdrop-blur-xl"
       >
         <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_0.9fr]">
-          <div className="p-5 sm:p-6">
+          <div className="p-6 sm:p-7">
             <div className="flex items-end justify-between gap-4">
               <div>
-                <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary/90">
+                <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-[#DA292A]">
                   {ASSORTIMENT_MEGA_MENU.eyebrow}
                 </div>
-                <div className="mt-1.5 font-display text-[1.65rem] leading-none tracking-[-0.02em] text-foreground">
+                <div className="mt-2 font-display text-[1.85rem] leading-none tracking-[-0.02em] text-[#141414]">
                   {ASSORTIMENT_MEGA_MENU.title}
                 </div>
-                <p className="mt-2 max-w-md text-[12px] leading-relaxed text-foreground/55">
+                <p className="mt-2.5 max-w-md text-[13px] leading-relaxed text-[#141414]/62">
                   {ASSORTIMENT_MEGA_MENU.subtitle}
                 </p>
               </div>
             </div>
 
-            <div className="mt-5 grid gap-1.5 sm:grid-cols-2">
+            <div className="mt-6 grid gap-2 sm:grid-cols-2">
               {PRODUCTEN_MEGA_ITEMS.map((item) => {
                 const isHighlighted = hovered.id === item.id;
                 return (
@@ -118,17 +117,17 @@ export function AssortimentNavDropdown({
                     <a
                       href={item.href}
                       onMouseEnter={() => setHovered(item)}
-                      className={`group flex items-start gap-3 rounded-xl border px-3 py-2.5 transition-all duration-300 ${
+                      className={`group flex items-start gap-3.5 rounded-xl border px-3.5 py-3 transition-all duration-300 ${
                         isHighlighted
-                          ? "border-primary/35 bg-primary/[0.08] shadow-[0_12px_40px_-28px_rgba(218,41,42,0.35)]"
-                          : "border-transparent bg-transparent hover:border-white/10 hover:bg-white/[0.04]"
+                          ? "border-[#DA292A]/30 bg-[#DA292A]/[0.06] shadow-[0_12px_40px_-28px_rgba(218,41,42,0.22)]"
+                          : "border-transparent bg-transparent hover:border-[#141414]/10 hover:bg-white/70"
                       }`}
                     >
                       <span
-                        className={`grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-lg border transition-colors duration-300 ${
+                        className={`grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-lg border transition-colors duration-300 ${
                           isHighlighted
-                            ? "border-primary/45 bg-primary/15"
-                            : "border-white/10 bg-white/[0.03]"
+                            ? "border-[#DA292A]/35 bg-[#DA292A]/10"
+                            : "border-[#141414]/10 bg-white"
                         }`}
                       >
                         <img
@@ -143,24 +142,24 @@ export function AssortimentNavDropdown({
                       <span className="min-w-0 flex-1">
                         <span className="flex items-center justify-between gap-2">
                           <span
-                            className={`text-[12px] font-semibold tracking-[0.04em] transition-colors duration-300 ${
+                            className={`text-[13px] font-semibold tracking-[0.04em] transition-colors duration-300 ${
                               isHighlighted
-                                ? "text-foreground"
-                                : "text-foreground/88 group-hover:text-foreground"
+                                ? "text-[#141414]"
+                                : "text-[#141414]/88 group-hover:text-[#141414]"
                             }`}
                           >
                             {item.label}
                           </span>
                           <ArrowUpRight
-                            size={13}
+                            size={14}
                             className={`shrink-0 transition-all duration-300 ${
                               isHighlighted
-                                ? "translate-x-0.5 -translate-y-0.5 text-primary"
-                                : "text-foreground/40 group-hover:text-primary"
+                                ? "translate-x-0.5 -translate-y-0.5 text-[#DA292A]"
+                                : "text-[#141414]/35 group-hover:text-[#DA292A]"
                             }`}
                           />
                         </span>
-                        <span className="mt-0.5 block line-clamp-2 text-[11px] leading-snug text-foreground/50">
+                        <span className="mt-0.5 block line-clamp-2 text-[12px] leading-snug text-[#141414]/52">
                           {item.description}
                         </span>
                       </span>
@@ -171,11 +170,11 @@ export function AssortimentNavDropdown({
             </div>
           </div>
 
-          <div className="relative hidden border-l border-white/10 bg-white/[0.02] p-5 sm:p-6 lg:block">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground/50">
+          <div className="relative hidden border-l border-[#e5e0d8] bg-[#f3efe8] p-6 sm:p-7 lg:block">
+            <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-[#141414]/50">
               Uitgelicht
             </div>
-            <div className="mt-3 overflow-hidden rounded-2xl border border-white/10 bg-black/20">
+            <div className="mt-3.5 overflow-hidden rounded-2xl border border-[#141414]/10 bg-[#141414]/5 shadow-[0_16px_48px_-28px_rgba(0,0,0,0.22)]">
               <div className="relative aspect-[4/3] overflow-hidden">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -241,7 +240,7 @@ export function AssortimentNavDropdown({
             </div>
             <a
               href={ASSORTIMENT_MEGA_MENU.allProductsHref}
-              className="mt-4 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground/55 transition-colors hover:text-primary"
+              className="mt-4 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#141414]/55 transition-colors hover:text-[#DA292A]"
             >
               {ASSORTIMENT_MEGA_MENU.allProductsLabel}
               <ArrowUpRight size={13} />

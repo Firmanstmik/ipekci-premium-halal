@@ -21,11 +21,9 @@ import workflowStepGeniet from "@/assets/ayat/workflow-step-geniet.webp";
 import statsHeroKebab from "@/assets/ayat/stats-hero-kebab.webp";
 import overOnsLevertijd from "@/assets/ayat/over-ons-levertijd.jpg";
 import heroVlees from "@/assets/ayat/hero-vlees.jpg";
-import heroColdstorage from "@/assets/ayat/hero-coldstorage.jpg";
 import heroProcessing from "@/assets/ayat/hero-processing.jpg";
-import trustPillarKwaliteit from "@/assets/ayat/trust-pillar-kwaliteit.webp";
-import trustPillarLevering from "@/assets/ayat/trust-pillar-levering.webp";
-import trustPillarHalal from "@/assets/ayat/trust-pillar-halal.webp";
+import bgDiepvries from "@/assets/ayat/product-bg-diepvriesproducten.jpg";
+import highlightVerzending from "@/assets/ayat/highlight-verzending.png";
 import highlightBesteVlees from "@/assets/ayat/highlight-beste-vlees.webp";
 import highlightKwaliteit from "@/assets/ayat/highlight-kwaliteit.webp";
 import highlightVerzending from "@/assets/ayat/highlight-verzending.webp";
@@ -103,7 +101,7 @@ export const ONS_VERHAAL_SERVICE = {
     title: "Modern wagenpark",
     description:
       "Door ons moderne wagenpark zijn wij in staat u een snelle en betrouwbare leveringen te garanderen.",
-    thumbnails: [heroColdstorage, heroProcessing, trustPillarLevering] as const,
+    thumbnails: [bgDiepvries, heroProcessing, highlightVerzending] as const,
   },
   ctas: {
     primary: { label: "Bekijk onze producten", to: "/producten" as const },

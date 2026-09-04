@@ -11,7 +11,6 @@ import { VOOR_WIE_MEGA_MENU, VOOR_WIE_SEGMENTS, type VoorWieSegment } from "@/li
 import { DS_EASE } from "@/lib/design-system";
 
 const GOLD = "rgba(226,192,141,";
-const STICKER_FILTER = "sepia(1) saturate(520%) hue-rotate(352deg) brightness(0.66) contrast(1.12)";
 
 export function VoorWieNavDropdown({
   active,
@@ -69,7 +68,7 @@ export function VoorWieNavDropdown({
         sideOffset={12}
         onMouseEnter={() => onOpenChange(true)}
         onMouseLeave={() => onOpenChange(false)}
-        className="mt-2 w-[860px] overflow-hidden rounded-2xl border border-white/10 bg-background/70 p-0 text-foreground shadow-[0_30px_90px_-40px_rgba(0,0,0,0.85)] backdrop-blur-2xl"
+        className="mt-2 w-[min(920px,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-[#e5e0d8] bg-[#faf8f5]/98 p-0 text-[#1a1a1a] shadow-[0_28px_80px_-32px_rgba(0,0,0,0.28)] backdrop-blur-xl"
       >
         <div className="grid grid-cols-[1.1fr_0.9fr]">
           <div className="p-6">
@@ -100,21 +99,20 @@ export function VoorWieNavDropdown({
                       }`}
                     >
                       <span
-                        className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl border shadow-[0_18px_50px_-30px_rgba(0,0,0,0.9)] transition-colors duration-300 ${
+                        className={`grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-xl border shadow-[0_12px_36px_-24px_rgba(0,0,0,0.18)] transition-colors duration-300 ${
                           isHovered
-                            ? "border-primary/30 bg-primary/10"
-                            : "border-white/10 bg-white/[0.03]"
+                            ? "border-[#DA292A]/30 bg-[#DA292A]/10"
+                            : "border-[#141414]/10 bg-white"
                         }`}
                       >
                         <img
-                          src={item.stickerSrc}
+                          src={item.previewImage}
                           alt=""
                           aria-hidden
-                          className="h-5 w-5 opacity-90"
+                          className="h-full w-full object-cover"
                           loading="lazy"
                           decoding="async"
                           referrerPolicy="no-referrer"
-                          style={{ filter: STICKER_FILTER }}
                         />
                       </span>
                       <span className="min-w-0 flex-1">

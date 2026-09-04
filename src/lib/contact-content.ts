@@ -14,6 +14,38 @@ export type ContactDetail = {
   href?: string;
 };
 
+/** Cinematic hero — same pattern as Producten / Vacatures */
+export const CONTACT_HERO = {
+  breadcrumb: "Contact",
+  eyebrow: "Contact",
+  title: "Contact",
+  lede: "Heeft u een vraag over levering, assortiment of samenwerking? Ons team staat persoonlijk voor u klaar, met korte lijnen en duidelijke afspraken.",
+  ctaPrimary: "Stuur bericht",
+  ctaSecondary: "Bel direct",
+  badge: "100% Halal · Watergang",
+  stats: [
+    { value: "1 dag", label: "Reactietijd" },
+    { value: "B2B", label: "Focus" },
+    { value: "Watergang", label: "Locatie" },
+  ],
+} as const;
+
+export const CONTACT_DETAILS_SECTION = {
+  eyebrow: "Bereikbaarheid",
+  title: "Zo bereikt u ons",
+  lede: "Bel, mail of kom langs in Watergang. Wij denken graag met u mee over levering, assortiment en samenwerking.",
+} as const;
+
+export const CONTACT_FORM_SECTION = {
+  eyebrow: "Bericht",
+  title: "Stuur ons een bericht",
+  lede: "Vul het formulier in en ons team neemt persoonlijk contact met u op. Voor spoed kunt u ons ook direct bellen.",
+  formTitle: "Vertel ons over uw vraag",
+  eta: "Reactie binnen 1 werkdag",
+  privacyNote: "Uw gegevens worden vertrouwelijk behandeld en niet gedeeld met derden.",
+  brandNote: "Ayat Food B2B · Watergang",
+} as const;
+
 export const CONTACT_DETAILS: readonly ContactDetail[] = [
   {
     id: "adres",

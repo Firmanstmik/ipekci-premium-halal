@@ -33,14 +33,14 @@ FORCE = '--force' in sys.argv
 PATHS = [
     '/2025/12/Ook-klant-worden.webp',                    # front-page backdrop, /assortiment, /voor-wie, klant CTA
     '/2025/12/over-ons-40-jaar-ervaring.webp',           # /ons-verhaal video poster
-    '/2026/03/Contact-Ipekci.webp',                      # /contact
+    '/2026/03/Contact-Ayat.webp',                        # /contact
     '/2026/03/Lamsvlees-overzicht.webp',                 # /assortiment/lamsvlees
-    '/2026/01/Ipekci-rundvlees.webp',                    # /assortiment/rundvlees
+    '/2026/01/rundvlees.webp',                           # /assortiment/rundvlees
     '/2025/12/Menu-kip.webp',                            # /assortiment/kip
     '/2025/11/Altijd-dezelfde-smaak-en-kwaliteit.webp',  # /assortiment/eindproducten
     '/2025/11/Voor-wie-slagerijen.webp',                 # /voor-wie/slagerijen
     '/2025/11/Voor-wie-groothandels.webp',               # /voor-wie/groothandels
-    '/2025/11/Ipekci-voor-supermarkten.webp',            # /voor-wie/supermarkten
+    '/2025/11/voor-supermarkten.webp',                   # /voor-wie/supermarkten
     '/2025/11/Voor-restaurants.webp',                    # /voor-wie/restaurants
 ]
 
